@@ -34,11 +34,11 @@ However, scrollReveal.js allows you to describe custom reveal behavior, using *n
 
 
 
-###2.1 Keywords
-Whatever string is passed to the `data-scrollreveal` attribute is parsed for specific keywords: **tokens** that expect to be followed by a **value**, and semantic **fillers** that facilitate the use of more natural language.
+###2.1 Token
+Whatever string is passed to the `data-scrollreveal` attribute is parsed for specific words: **keywords** that expect to be followed by a **value**, and semantic **fillers** that facilitate the use of more natural language.
 
-####2.1.1 Tokens
-These words describe the reveal behavior, using **keyword** / **value** pairs.
+####2.1.1 keywords
+These words describe the reveal behavior, using **keywords** / **value** pairs.
 
 ---
 
@@ -89,6 +89,6 @@ Many thanks to Codrops, Mary Lou and the [cbpScroller.js](http://tympanus.net/co
 
 #####**If you’d like to contribute, please feel free!**
 
-© 2014 Julian Lloyd <br>
+© 2014 [@JulianLloyd](https://twitter.com/julianlloyd)<br>
 Licensed under the MIT license.
 [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
