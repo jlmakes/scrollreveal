@@ -1,8 +1,8 @@
 #scrollReveal.js
 ####Declarative CSS3 transitions on scroll.
-A simple way to create and maintain how your elements reveal, triggered when your element(s) enter the viewport. An open-source experiment by [@JulianLloyd](https://twitter.com/julianlloyd)
+A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment by [@JulianLloyd](https://twitter.com/julianlloyd)
 
-> ***Disclaimer:** This is a brand new project and still under active development. Please bare in mind that this plug-in will be updated frequently, and that breaking changes are virtually guaranteed in the next couple iterations.
+> **Disclaimer:** This is a brand new project and still under active development. Please bare in mind that this plug-in will be updated frequently, and that breaking changes are virtually guaranteed in the next couple iterations.
 
 ##1. Installation
 Please download `scrollReveal.js` into your JavaScript folder, and reference it just after the closing `</body>` tag. It will automatically instantiate itself ready-to-go when the event `DOMContentReady` fires.
@@ -83,10 +83,12 @@ While **keywords** must be followed by an appropriate accepted **value**, the us
 ```
 
 ### 3. Contributions / Thanks!
-I noticed a number of clients requesting CSS3 transitions on scroll for various site elements, so I created this little vanilla JavaScript helper plug-in to help out. Many thanks to Codrops, Mary Lou and the [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/), © 2014, Codrops.
+I noticed a number of clients requesting CSS3 transitions on scroll for various site elements, so I created this little vanilla JavaScript helper plug-in to help out.
+
+Many thanks to Codrops, Mary Lou and the [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/), © 2014, Codrops.
 
 #####**If you’d like to contribute, please feel free!**
 
-© 2014 Julian Lloyd
+© 2014 Julian Lloyd <br>
 Licensed under the MIT license.
 [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
