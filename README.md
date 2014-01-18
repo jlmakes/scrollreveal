@@ -5,7 +5,7 @@ A simple way to create and maintain how elements fade in, triggered when they en
 > **Disclaimer:** This is a brand new project and still under active development. Please bare in mind that this plug-in will be updated frequently, and that breaking changes are virtually guaranteed in the next couple iterations.
 
 ##1. Installation
-Please download `scrollReveal.js` into your JavaScript folder, and reference it just after the closing `</body>` tag. It will automatically instantiate itself ready-to-go when the event `DOMContentReady` fires.
+Please download `scrollReveal.js` into your JavaScript folder, and reference it just before the closing `</body>` tag. It will automatically instantiate itself ready-to-go when the event `DOMContentReady` fires.
 
 
 ```
@@ -34,11 +34,11 @@ However, scrollReveal.js allows you to describe custom reveal behavior, using *n
 
 
 
-###2.1 Token
+###2.1 Keywords, Values and Fillers
 Whatever string is passed to the `data-scrollreveal` attribute is parsed for specific words: **keywords** that expect to be followed by a **value**, and semantic **fillers** that facilitate the use of more natural language.
 
-####2.1.1 keywords
-These words describe the reveal behavior, using **keywords** / **value** pairs.
+####2.1.1 Keywords and Values
+These words describe the reveal behavior, using **keyword** / **value** pairs.
 
 ---
 

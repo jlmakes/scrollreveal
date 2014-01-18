@@ -17,7 +17,7 @@
     Licensed under the MIT license.
     http://www.opensource.org/licenses/mit-license.php
 
-    scrollReveal.js, © 2014 http://julianlloyd.me
+    scrollReveal.js, © 2014 https://twitter.com/julianlloyd
 
 =============================================================================*/
 
