@@ -1,5 +1,5 @@
 #scrollReveal.js
-####Declarative CSS3 transitions on scroll.
+####Declarative on-scroll reveal animations.
 A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment by [@JulianLloyd](https://twitter.com/julianlloyd)
 
 > **Disclaimer:** Please bare in mind that this plug-in is an experimental stage, and that breaking changes are virtually guaranteed in future updates.
