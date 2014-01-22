@@ -149,7 +149,7 @@
 
     parseLanguage: function (el) {
 
-  //  Splits on a sequence of one or more commas, periods or spaces.
+  //  Splits on a sequence of one or more commas or spaces.
       var words = el.getAttribute('data-scrollreveal').split(/[, ]+/),
           enterFrom,
           parsed = {};
