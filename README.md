@@ -23,11 +23,11 @@ Clone or download `scrollReveal.js` into your JavaScript folder, and reference i
 ##2. Usage
 By adding a `data-scrollreveal` attribute to an element, it will automatically be revealed (using default values) as soon as the element is within the viewport.<br><br> **Fig 1**:
 
-```
+```html
 <h1 data-scrollreveal> Hello world! </h1>
 ```
 However, scrollReveal.js allows you to define custom reveal behavior, using *descriptive language*. <br><br>**Fig 2**:
-```
+```html
 <h1 data-scrollreveal="enter from the top and move 50px over 1.33s"> Foo </h1>
 
 <p data-scrollreveal="move 66px and enter from the bottom after 1s"> Bar </p>
@@ -75,7 +75,7 @@ While **keywords** must be followed by an appropriate accepted **value**, the us
 - `but`
 
 **Fig 3**:
-```
+```html
 <!-- Eg. 3.1 — These 2 lines are equivalent -->
 <div data-scrollreveal="enter top move 25px"> Example 1 </div>
 <div data-scrollreveal="enter from the top and then move 25px"> Example 1 </div>
