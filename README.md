@@ -64,7 +64,7 @@ These words describe the reveal behavior, using **keyword** / **value** pairs.
 
 ---
 
-- **After/Wait** — The delay before your element beings its transition.
+- **After/Wait** — The delay before your element begins its transition.
 
  * Accepted value: **[ decimal ] s**
  * Example: `after 0.33s` or `wait 0.33s`
