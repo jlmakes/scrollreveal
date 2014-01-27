@@ -241,7 +241,7 @@
 
     /*=============================================================================*/
 
-    genCSS: function (el, axis) {
+    genCSS: function (el) {
       var parsed = this.parseLanguage(el);
 
       var dist   = parsed.distance || this.options.distance,
