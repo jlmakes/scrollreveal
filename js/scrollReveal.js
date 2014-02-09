@@ -21,65 +21,15 @@
 
 =============================================================================*/
 
-;(function (window) {
+window.scrollReveal = (function (window) {
 
   'use strict';
 
-  var docElem = window.document.documentElement;
-
-  function getViewportH () {
-    var client = docElem['clientHeight'],
-      inner = window['innerHeight'];
-
-    return (client < inner) ? inner : client;
-  }
-
-  function getOffset (el) {
-    var offsetTop = 0,
-        offsetLeft = 0;
-
-    do {
-      if (!isNaN(el.offsetTop)) {
-        offsetTop += el.offsetTop;
-      }
-      if (!isNaN(el.offsetLeft)) {
-        offsetLeft += el.offsetLeft;
-      }
-    } while (el = el.offsetParent)
-
-    return {
-      top: offsetTop,
-      left: offsetLeft
-    }
-  }
-
-  function isElementInViewport (el, h) {
-    var scrolled = window.pageYOffset,
-        viewed = scrolled + getViewportH(),
-        elH = el.offsetHeight,
-        elTop = getOffset(el).top,
-        elBottom = elTop + elH,
-        h = h || 0;
-
-    return (elTop + elH * h) <= viewed && (elBottom) >= scrolled;
-  }
-
-  function extend (a, b) {
-    for (var key in b) {
-      if (b.hasOwnProperty(key)) {
-        a[key] = b[key];
-      }
-    }
-    return a;
-  }
-
-
   function scrollReveal(options) {
-      this.options = extend(this.defaults, options);
+      this.docElem = window.document.documentElement;
+      this.options = this.extend(this.defaults, options);
       this._init();
   }
-
-
 
   scrollReveal.prototype = {
     defaults: {
@@ -99,7 +49,7 @@
 
       var self = this;
 
-      this.elems = Array.prototype.slice.call(docElem.querySelectorAll('[data-scrollReveal]'));
+      this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scrollReveal]'));
       this.scrolled = false;
 
   //  Initialize all scrollreveals, triggering all
@@ -138,7 +88,7 @@
         var self = this;
 
         this.elems.forEach(function (el, i) {
-            if (isElementInViewport(el, self.options.viewportFactor)) {
+            if (self.isElementInViewport(el, self.options.viewportFactor)) {
                 self.animate(el);
             }
         });
@@ -285,7 +235,7 @@
         return;
       }
 
-      if (isElementInViewport(el, this.options.viewportFactor)) {
+      if (this.isElementInViewport(el, this.options.viewportFactor)) {
         el.setAttribute('style', css.target + css.transition);
 
         setTimeout(function () {
@@ -294,11 +244,54 @@
         }, css.totalDuration);
       }
 
+    },
+
+    getViewportH : function () {
+      var client = this.docElem['clientHeight'],
+        inner = window['innerHeight'];
+
+      return (client < inner) ? inner : client;
+    },
+
+    getOffset : function(el) {
+      var offsetTop = 0,
+          offsetLeft = 0;
+
+      do {
+        if (!isNaN(el.offsetTop)) {
+          offsetTop += el.offsetTop;
+        }
+        if (!isNaN(el.offsetLeft)) {
+          offsetLeft += el.offsetLeft;
+        }
+      } while (el = el.offsetParent)
+
+      return {
+        top: offsetTop,
+        left: offsetLeft
+      }
+    },
+
+    isElementInViewport : function(el, h) {
+      var scrolled = window.pageYOffset,
+          viewed = scrolled + this.getViewportH(),
+          elH = el.offsetHeight,
+          elTop = this.getOffset(el).top,
+          elBottom = elTop + elH,
+          h = h || 0;
+
+      return (elTop + elH * h) <= viewed && (elBottom) >= scrolled;
+    },
+
+    extend: function (a, b){
+      for (var key in b) {
+        if (b.hasOwnProperty(key)) {
+          a[key] = b[key];
+        }
+      }
+      return a;
     }
   }; // end scrollReveal.prototype
 
-  document.addEventListener("DOMContentLoaded", function (evt) {
-    window.scrollReveal = new scrollReveal();
-  });
-
+  return scrollReveal;
 })(window);
