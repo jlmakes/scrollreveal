@@ -152,7 +152,7 @@ You can pass an object to the constructor with your desired default configuratio
   </script>
 </body>
 ```
-By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM with `data-scrollReveal` for attributes.
+By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM for `data-scrollReveal` attributes.
 
 #### Generated HTML
 You may have dynamically generated HTML in your use case, (AJAX, templates, other JavaScript libraries, etc.,) so as mentioned above, the scrollReveal object has the `init()` helper method that checks for new elements in the DOM.
@@ -212,6 +212,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 
 #### Controlling Easing
 The `move` keyword can be replaced with any one of the following:<br><br>
+- `ease`
 - `ease-in`
 - `ease-out`
 - `ease-in-out`
