@@ -55,8 +55,7 @@ Due to popular demand, the `reset` keyword was added. Now, you can configure you
 </script>
 ```
 
->**See it in action:** The [demo page](http://julianlloyd.me/scrollreveal) has been updated with the `reset: true`
-<br><br>
+>**See it in action:** The [demo page](http://julianlloyd.me/scrollreveal) has been updated with the `reset: true` property.
 
 #### Easing Control
 Now you can replace the `move` keyword with easing keywords to control the easing of your reveal animation.
