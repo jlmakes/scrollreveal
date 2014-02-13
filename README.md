@@ -23,7 +23,7 @@ Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder, a
 
 
 ```html
-    <!-- Everything else… -->
+  <!-- Everything else… -->
 
   <script src='{your_JavaScript_path}/scrollReveal.js'></script>
   <script>
@@ -130,20 +130,23 @@ Advanced Usage
 ####Custom defaults
 You can pass an object to the constructor with your desired default configuration.
 ```html
-    <script>
+  <!-- Everything else. -->
 
-      // The starting defaults.
-      var config = {
-              enter: 'bottom',
-              move: '0',
-              over: '0.66s',
-              delay: '0s',
-              viewportFactor: 0.33,
-              reset: false,
-              init: true
-            };
+  <script src='{your_JavaScript_path}/scrollReveal.js'></script>
+  <script>
 
-      window.scrollReveal = new scrollReveal( config );
+    // The starting defaults.
+    var config = {
+            enter: 'bottom',
+            move: '0',
+            over: '0.66s',
+            delay: '0s',
+            viewportFactor: 0.33,
+            reset: false,
+            init: true
+          };
+
+    window.scrollReveal = new scrollReveal( config );
 
   </script>
 </body>
@@ -155,7 +158,7 @@ You may have dynamically generated HTML in your use case, (AJAX, templates, othe
 
 *Example:*
 ```html
-    <!-- Everything else. -->
+  <!-- Everything else. -->
 
   <script src='{your_JavaScript_path}/scrollReveal.js'></script>
   <script>
@@ -204,7 +207,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 <!-- Note: The reset keyword works by itself. -->
 <div data-scrollReveal="reset"> Foo </div>
 ```
-> **Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements.<br><br>However, to prevent flickering in reveal animations when using the keyword `reset`, scrollReveal does not remove the this appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
+> **Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements once the reveal animation is complete.<br><br>However when using `reset` (to prevent flickering in reveal animations), scrollReveal does not remove the appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
 
 #### Controlling Easing
 The `move` keyword can be replaced with any one of the following:<br><br>
