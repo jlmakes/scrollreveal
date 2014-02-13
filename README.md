@@ -1,107 +1,241 @@
 #scrollReveal.js
-####Declarative on-scroll reveal animations.
-A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment by [@JulianLloyd](https://twitter.com/julianlloyd)
-***
-##[See Demo](http://julianlloyd.me/scrollreveal)
-> **Disclaimer:** Please bear in mind that this plug-in is an experimental stage, and that breaking changes are virtually guaranteed in future updates.
+A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment from [@JulianLloyd](https://twitter.com/julianlloyd).
 
-##1. Installation
-Clone or download `scrollReveal.js` into your JavaScript folder, and reference it just before the closing `</body>` tag. It will automatically instantiate ready-to-go when the `DOMContentReady` event fires.
+[![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js) [![Bitdeli Analytics](https://d2weczhvl823v0.cloudfront.net/julianlloyd/scrollreveal.js/trend.png)](https://bitdeli.com/free)
+***
+####**[→ View Demo ←](http://julianlloyd.me/scrollreveal)**
+***
+Installation
+------------
+> **Disclaimer:** scrollReveal.js is in early development, and breaking changes will likely occur in future updates. Before updating, please refer to the [CHANGELOG](https://github.com/julianlloyd/scrollReveal.js/blob/master/README.md) for details.
+
+##### Download
+[scrollReveal.js ](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
+
+##### GitHub
+`git clone https://github.com/julianlloyd/scrollReveal.js.git`
+
+##### Bower
+`bower install scrollReveal.js`
+
+***
+Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder, and include the following JavaScript just before the closing `</body>` tag.
 
 
 ```html
-    // Everything else
-    // ...
+    <!-- Everything else… -->
 
-    <script src="js/scrollReveal.js"></script>
+  <script src='{your_JavaScript_path}/scrollReveal.js'></script>
+  <script>
+
+      window.scrollReveal = new scrollReveal();
+
+  </script>
 </body>
 ```
-
->**NOTE:** scrollReveal.js does not require jQuery, but *does* rely upon CSS3 transitions; as such, it has been developed exclusively for modern browser use only.
-
-
-##2. Usage
-By adding a `data-scrollreveal` attribute to an element, it will automatically be revealed (using default values) as soon as the element is within the viewport.<br><br> **Fig 1**:
-
+Basic Usage
+-----------
+By adding a `data-scrollReveal` attribute to an element, it will automatically be revealed (using default values) as soon as the element is within the viewport:
 ```html
-<p data-scrollreveal> Hello world! </p>
+<!-- Reveal using defaults. -->
+<div data-scrollReveal> Hello world! </div>
 ```
-However, scrollReveal.js allows you to define custom reveals, using *descriptive language*. <br><br>**Fig 2**:
+**But wait!** It’s more fun if you define your own reveal animation parameters, which you can do using using natural, declarative language:
 ```html
-<p data-scrollreveal="enter left and move 50px over 1.33s"> Foo </p>
-<p data-scrollreveal="move 66px and enter from the bottom after 1s"> Bar </p>
-<p data-scrollreveal="enter from the top over 1.1s but wait 2.5s"> Baz </p>
+<!-- Reveal using custom parameters. -->
+<div data-scrollReveal="enter left and move 50px over 1.33s"> Foo </div>
+<div data-scrollReveal="enter from the bottom after 1s"> Bar </div>
+<div data-scrollReveal="wait 2.5s and then ease-in-out 100px"> Baz </div>
 ```
 
+Getting Started
+---------------
+What you enter into the `data-scrollReveal` attribute is parsed for specific words:
+
+- **keywords** that expect to be followed by a **value**.<br><br>
+- **fillers** as natural language sugar. (optional)
+
+##### Keywords and Values
+These specific **keyword** / **value** pairs allow you to describe basic reveal animation behavior.
+***
+**keyword:** `enter` — Controls the vector origin of your reveal animation.
+**value:** `top` | `right` | `bottom` | `left`<br><br>
+*Example:*
+```html
+<!-- Reveal your element with a downward motion. -->
+<div data-scrollReveal='enter top'> Foo </div>
+```
+***
+**keyword:** `move` — The distance your revealing element travels.
+**value:** [ integer ]px.
+
+*Example:*
+```html
+<div data-scrollReveal='move 24px'> Bar </div>
+```
+***
+**keyword:** `over` — The duration of your reveal animation.
+**value:** [ decimal ]s
 
 
-###2.1 Keywords, Values and Fillers
-Whatever string is passed to the `data-scrollreveal` attribute is parsed for specific words: **keywords** that expect to be followed by a **value**, and semantic **fillers** that facilitate more natural language.
+*Example:*
+```html
+<div data-scrollReveal='over 1.66s'> Baz </div>
+```
+***
+**keyword:** `after/wait` — The duration before your reveal begins.
+**value:** [ decimal ]s
 
-####2.1.1 Keywords and Values
-These words describe the reveal behavior, using **keyword** / **value** pairs.
 
----
+*Example:*
+```html
+<!-- Both are accepted. -->
+<div data-scrollReveal='after 0.33s'> Mel </div>
+<div data-scrollReveal='wait 0.33s'> Mel </div>
+```
 
-- **Enter** — Controls the direction of your element transition. Whatever value is passed is considered the vector origin. For example, specifying `top` will reveal your element with a downward motion.
+#####Combining Keyword/Value Pairs
+You can easily combine the above pairs to create more dynamic reveal animations.
 
-  * Accepted values: `top`, `right`, `bottom` or `left`
-  * Example: `enter top`
+*Example:*
+```html
+<div data-scrollReveal="enter top move 50px"> Foo </div>
+<div data-scrollReveal="enter top move 50px wait 0.3s"> Bar </div>
+<div data-scrollReveal="enter top move 50px wait 0.6s"> Baz </div>
+<div data-scrollReveal="enter top move 50px wait 0.9s"> Mel </div>
+```
 
----
-
-- **Move** — The distance your element will travel during transition.
-
- * Accepted value: **[ integer ] px**
- * Example: `move 33px`
-
----
-
-- **Over** — The duration of your element’s transition.
-
- * Accepted value: **[ decimal ] s**
- * Example: `over 1.66s`
-
----
-
-- **After/Wait** — The delay before your element begins its transition.
-
- * Accepted value: **[ decimal ] s**
- * Example: `after 0.33s` or `wait 0.33s`
-
----
-
-#### 2.1.2 Fillers
-While **keywords** must be followed by an appropriate accepted **value**, the use of conjoining **fillers** are permitted for more readable language. These are shown below:
+##### Fillers (optional)
+You can use conjoining filler words for more readable language.
 
 - `from`
 - `the`
 - `and`
 - `then`
 - `but`
+- `with`
+- `,`
 
-**Fig 3**:
+*Example*:
 ```html
-<!-- Eg. 3.1 — These 2 lines are equivalent -->
-<p data-scrollreveal="enter top move 25px"> foo </p>
-<p data-scrollreveal="enter from the top and then move 25px"> foo </p>
+<!-- These 4 lines are equivalent. -->
+<div data-scrollReveal="wait 0.3s, then enter left and move 40px over 2s"> Foo </div>
+<div data-scrollReveal="enter from the left after 0.3s, move 40px, over 2s"> Bar </div>
+<div data-scrollReveal="enter left move 40px over 2s after 0.3s"> Baz </div>
+<div data-scrollReveal="enter left, move 40px, over 2s, wait 0.3s"> Mel </div>
 
-<!-- Eg. 3.2 — These 3 lines are equivalent -->
-<p data-scrollreveal="enter left move 80px over 0.66s but then wait 3s"> bar </p>
-<p data-scrollreveal="over 0.66s move 80px but wait 3s and enter from the left"> bar </p>
-<p data-scrollreveal="after 3s, enter left and move 80px over 0.66s"> bar </p>
+```
+Advanced Usage
+--------------
+#####Custom defaults
+You can pass an object to the constructor with your desired default configuration.
+```html
+    <script>
+
+      // The starting defaults.
+      var config = {
+              enter: 'bottom',
+              move: '0',
+              over: '0.66s',
+              delay: '0s',
+              viewportFactor: 0.33,
+              reset: false,
+              init: true
+            };
+
+      window.scrollReveal = new scrollReveal( config );
+
+  </script>
+</body>
+```
+By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM with `data-scrollReveal` for attributes.
+
+##### Generated HTML
+You may have dynamically generated HTML in your use case, (AJAX, templates, other JavaScript libraries, etc.,) so as mentioned above, the scrollReveal object has the `init()` helper method that checks for new elements in the DOM.
+
+*Example:*
+```html
+    <!-- Everything else. -->
+
+  <script src='{your_JavaScript_path}/scrollReveal.js'></script>
+  <script>
+
+      var config = {
+              enter: 'bottom',
+              move: '40px',
+              over: '0.16s',
+              reset: true,
+              init: false
+            };
+
+      window.scrollReveal = new scrollReveal( config );
+
+      // Dummy AJAX return object:
+      var data = { newElementHtml: '<div data-scrollReveal> Foo </div>' }
+
+      var container = document.getElementById('#container');
+          container.innerHTML( data.newElementHTML );
+
+     // Now check for new elements in the DOM…
+     scrollReveal.init();
+
+  </script>
+</body>
 ```
 
-### 3. Contributions
-There are already some great ideas under development (see [open issues](https://github.com/julianlloyd/scrollReveal.js/issues?state=open)); if you’d like to contribute, please do!
 
-Many thanks to [@Codrops](https://twitter.com/codrops), [@Mary Lou](https://twitter.com/crnacura) and the [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/), © 2014, [Codrops](http://tympanus.net/codrops/).
+##### Viewport Factor
+If set to **0**, the element is considered in the viewport as soon as it enters.<br>
+If set to **1**, the element is considered in the viewport when it is fully visible.
 
-### 4. License
+*Example:*
+```javascript
+    var config = {
+      viewportFactor: 0.33
+    };
 
-Licensed under the [MIT License](http://www.opensource.org/licenses/mit-license.php)
+    // Your reveal animation triggers after 33% of
+    // your element is visible within the viewport.
+```
 
-Copyright 2014 [@JulianLloyd](https://twitter.com/julianlloyd)
+##### Replaying animations
+**Keyword:** `reset` — replay reveal animations every time elements enter the viewport.
+```html
+<!-- Note: The reset keyword works by itself. -->
+<div data-scrollReveal="reset"> Foo </div>
+```
+> ***Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements.<br><br>However, to prevent flickering in reveal animations when using the keyword `reset`, scrollReveal does not remove the this appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
+
+##### Controlling Easing
+The `move` keyword can be replaced with any one of the following:<br><br>
+- `ease-in`
+- `ease-out`
+- `ease-in-out`
+
+*Example:*
+```html
+<div data-scrollReveal="after 2s, ease-in 32px and reset over .66s"> Foo </div>
+```
+
+Browser Support
+---------------
+scrollReveal.js does not require jQuery, but does rely on [CSS3 transitions](http://caniuse.com/#search=transition) to power its reveal animations; it has been developed exclusively for **modern browser use only**.
+
+Contributions
+-------------
+Community feedback and involvement is highly encouraged.
+***
+#### [→ Open Issues ←](https://github.com/julianlloyd/scrollReveal.js/issues?state=open)
+***
+##### Special Thanks
+scrollReveal.js was inspired by the awesome [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/) by [Mary Lou](https://twitter.com/crnacura). Copyright © 2014 [Codrops](http://tympanus.net/codrops/).
+
+License
+-------
+
+The MIT License (MIT)
+
+Copyright © 2014 [Julian Lloyd](https://twitter.com/julianlloyd)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
