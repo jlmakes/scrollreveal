@@ -1,13 +1,6 @@
-##### Changelog
-# v0.0.2 — February 13th, 2014
+###### Changelog (Updated February 13th, 2014)
+#### scrollReveal.js v0.0.2
 
-Breaking Changes
-----------------
-#### Renaming Attributes
-The `scrollreveal` attribute has changed to `scrollReveal` (updated with camel case) to remain consistent with it’s usage elsewhere. If you’re updating to scrollReveal v0.0.2, make sure your data-attributes are correctly named.
-<br><br>
-***
-<br><br>
 What’s New
 ----------
 #### Manual Instantiation
