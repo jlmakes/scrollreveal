@@ -204,7 +204,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 <!-- Note: The reset keyword works by itself. -->
 <div data-scrollReveal="reset"> Foo </div>
 ```
-> ***Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements.<br><br>However, to prevent flickering in reveal animations when using the keyword `reset`, scrollReveal does not remove the this appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
+> **Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements.<br><br>However, to prevent flickering in reveal animations when using the keyword `reset`, scrollReveal does not remove the this appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
 
 #### Controlling Easing
 The `move` keyword can be replaced with any one of the following:<br><br>
