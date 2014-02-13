@@ -6,7 +6,9 @@ Breaking Changes
 ----------------
 #### Renaming Attributes
 The `scrollreveal` attribute has changed to `scrollReveal` (updated with camel case) to remain consistent with it’s usage elsewhere. If you’re updating to scrollReveal v0.0.2, make sure your data-attributes are correctly named.
-***
+<br><br>
+What‘s New
+----------
 #### Manual Instantiation
 scrollReveal no longer automatically instantiates on the `DOMContentLoaded` event. It now requires that you instantiate it manually.
 
