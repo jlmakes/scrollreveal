@@ -283,7 +283,8 @@ window.scrollReveal = (function (window) {
       var transition = "-webkit-transition: all " + dur + " " + easing + " " + delay + ";" +
                           "-moz-transition: all " + dur + " " + easing + " " + delay + ";" +
                             "-o-transition: all " + dur + " " + easing + " " + delay + ";" +
-                               "transition: all " + dur + " " + easing + " " + delay + ";";
+                               "transition: all " + dur + " " + easing + " " + delay + ";" +
+                               "-webkit-backface-visibility: hidden";
 
   //  The same as transition, but removing the delay for elements fading out.
       var reset = "-webkit-transition: all " + dur + " " + easing + ";" +
