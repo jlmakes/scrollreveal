@@ -58,7 +58,7 @@ What you enter into the `data-scrollReveal` attribute is parsed for specific wor
 #### Keywords and Values
 These specific **keyword** / **value** pairs allow you to describe basic reveal animation behavior.
 ***
-**keyword:** `enter` — Controls the vector origin of your reveal animation.
+**keyword:** `enter` — Controls the vector origin of your reveal animation.<br>
 **value:** `top` | `right` | `bottom` | `left`<br><br>
 *Example:*
 ```html
@@ -66,7 +66,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 <div data-scrollReveal='enter top'> Foo </div>
 ```
 ***
-**keyword:** `move` — The distance your revealing element travels.
+**keyword:** `move` — The distance your revealing element travels.<br>
 **value:** [ integer ]px.
 
 *Example:*
@@ -74,7 +74,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 <div data-scrollReveal='move 24px'> Bar </div>
 ```
 ***
-**keyword:** `over` — The duration of your reveal animation.
+**keyword:** `over` — The duration of your reveal animation.<br>
 **value:** [ decimal ]s
 
 
@@ -83,7 +83,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 <div data-scrollReveal='over 1.66s'> Baz </div>
 ```
 ***
-**keyword:** `after/wait` — The duration before your reveal begins.
+**keyword:** `after/wait` — The duration before your reveal begins.<br>
 **value:** [ decimal ]s
 
 
