@@ -36,6 +36,7 @@ You can now pass your own starting defaults object to the scrollReveal construct
               move: '0',
               over: '0.66s',
               delay: '0s',
+              easing: 'ease-in-out',
               viewportFactor: 0.33,
               reset: false,
               init: true
@@ -45,7 +46,7 @@ You can now pass your own starting defaults object to the scrollReveal construct
 
   </script>
 ```
-#### Reply Your Animations
+#### Replay Reveal Animations
 Due to popular demand, the `reset` keyword was added. Now, you can configure your animations to replay every time they enter the viewport:
 
 *example*:

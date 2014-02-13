@@ -182,10 +182,6 @@ window.scrollReveal = (function (window) {
             parsed.over = words[i + 1];
             return;
 
-          case "trigger":
-            parsed.eventName = words[i + 1];
-            return;
-
           default:
             return;
         }
@@ -198,8 +194,7 @@ window.scrollReveal = (function (window) {
     /*=============================================================================*/
 
     update: function (el) {
-      var css  = this.genCSS(el),
-          self = this;
+      var css  = this.genCSS(el);
 
       if (!el.getAttribute('data-scrollReveal-initialized')) {
         el.setAttribute('style', css.initial);
@@ -213,19 +208,19 @@ window.scrollReveal = (function (window) {
         return;
       }
 
+      if (el.getAttribute('data-scrollReveal-complete')) return;
+
       if (this.isElementInViewport(el, this.options.viewportFactor)) {
-          if (!el.getAttribute('data-scrollReveal-completed')) {
-            el.setAttribute('style', css.target + css.transition);
-          }
-      //  Without reset enabled, we can safely remove the style tag
-      //  to prevent CSS specificy wars with authored CSS.
-          if (!this.options.reset) {
-            setTimeout(function () {
-              el.removeAttribute('style');
-              el.setAttribute('data-scrollReveal-completed',true);
-            }, css.totalDuration);
-          }
-        return;
+        el.setAttribute('style', css.target + css.transition);
+    //  Without reset enabled, we can safely remove the style tag
+    //  to prevent CSS specificy wars with authored CSS.
+        if (!this.options.reset) {
+          setTimeout(function () {
+            el.removeAttribute('style');
+            el.setAttribute('data-scrollReveal-complete',true);
+          }, css.totalDuration);
+        }
+      return;
       }
     },
 
@@ -284,13 +279,16 @@ window.scrollReveal = (function (window) {
                           "-moz-transition: all " + dur + " " + easing + " " + delay + ";" +
                             "-o-transition: all " + dur + " " + easing + " " + delay + ";" +
                                "transition: all " + dur + " " + easing + " " + delay + ";" +
-                               "-webkit-backface-visibility: hidden";
+                      "-webkit-perspective: 1000;" +
+              "-webkit-backface-visibility: hidden;";
 
   //  The same as transition, but removing the delay for elements fading out.
-      var reset = "-webkit-transition: all " + dur + " " + easing + ";" +
-                     "-moz-transition: all " + dur + " " + easing + ";" +
-                       "-o-transition: all " + dur + " " + easing + ";" +
-                          "transition: all " + dur + " " + easing + ";";
+      var reset = "-webkit-transition: all " + dur + " " + easing + " 0s;" +
+                     "-moz-transition: all " + dur + " " + easing + " 0s;" +
+                       "-o-transition: all " + dur + " " + easing + " 0s;" +
+                          "transition: all " + dur + " " + easing + " 0s;" +
+                 "-webkit-perspective: 1000;" +
+         "-webkit-backface-visibility: hidden;";
 
       var initial = "-webkit-transform: translate" + axis + "(" + dist + ");" +
                        "-moz-transform: translate" + axis + "(" + dist + ");" +
@@ -305,6 +303,7 @@ window.scrollReveal = (function (window) {
         transition: transition,
         initial: initial,
         target: target,
+        reset: reset,
         totalDuration: ((parseFloat(dur) + parseFloat(delay)) * 1000)
       };
     },

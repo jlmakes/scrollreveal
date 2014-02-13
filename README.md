@@ -137,10 +137,11 @@ You can pass an object to the constructor with your desired default configuratio
 
     // The starting defaults.
     var config = {
+            after: '0s',
             enter: 'bottom',
-            move: '0',
+            move: '24px',
             over: '0.66s',
-            delay: '0s',
+            easing: 'ease-in-out',
             viewportFactor: 0.33,
             reset: false,
             init: true
