@@ -1,6 +1,5 @@
-#Changelog
-
-##### 0.0.2
+##### Changelog
+# v0.0.2 — February 13th, 2014
 
 Breaking Changes
 ----------------
