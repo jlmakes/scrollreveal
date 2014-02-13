@@ -7,15 +7,15 @@ A simple way to create and maintain how elements fade in, triggered when they en
 ***
 Installation
 ------------
-> **Disclaimer:** scrollReveal.js is in early development, and breaking changes will likely occur in future updates. Before updating, please refer to the [CHANGELOG](https://github.com/julianlloyd/scrollReveal.js/blob/master/README.md) for details.
+> **Disclaimer:** scrollReveal.js is in early development, and breaking changes will likely occur in future updates. Before updating, please refer to the [CHANGELOG](https://github.com/julianlloyd/scrollReveal.js/blob/master/CHANGELOG.md) for details.
 
-##### Download
+#### Download
 [scrollReveal.js ](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
 
-##### GitHub
+#### GitHub
 `git clone https://github.com/julianlloyd/scrollReveal.js.git`
 
-##### Bower
+#### Bower
 `bower install scrollReveal.js`
 
 ***
@@ -55,7 +55,7 @@ What you enter into the `data-scrollReveal` attribute is parsed for specific wor
 - **keywords** that expect to be followed by a **value**.<br><br>
 - **fillers** as natural language sugar. (optional)
 
-##### Keywords and Values
+#### Keywords and Values
 These specific **keyword** / **value** pairs allow you to describe basic reveal animation behavior.
 ***
 **keyword:** `enter` — Controls the vector origin of your reveal animation.
@@ -94,7 +94,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 <div data-scrollReveal='wait 0.33s'> Mel </div>
 ```
 
-#####Combining Keyword/Value Pairs
+####Combining Keyword/Value Pairs
 You can easily combine the above pairs to create more dynamic reveal animations.
 
 *Example:*
@@ -105,7 +105,7 @@ You can easily combine the above pairs to create more dynamic reveal animations.
 <div data-scrollReveal="enter top move 50px wait 0.9s"> Mel </div>
 ```
 
-##### Fillers (optional)
+#### Fillers (optional)
 You can use conjoining filler words for more readable language.
 
 - `from`
@@ -127,7 +127,7 @@ You can use conjoining filler words for more readable language.
 ```
 Advanced Usage
 --------------
-#####Custom defaults
+####Custom defaults
 You can pass an object to the constructor with your desired default configuration.
 ```html
     <script>
@@ -150,7 +150,7 @@ You can pass an object to the constructor with your desired default configuratio
 ```
 By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM with `data-scrollReveal` for attributes.
 
-##### Generated HTML
+#### Generated HTML
 You may have dynamically generated HTML in your use case, (AJAX, templates, other JavaScript libraries, etc.,) so as mentioned above, the scrollReveal object has the `init()` helper method that checks for new elements in the DOM.
 
 *Example:*
@@ -184,7 +184,7 @@ You may have dynamically generated HTML in your use case, (AJAX, templates, othe
 ```
 
 
-##### Viewport Factor
+#### Viewport Factor
 If set to **0**, the element is considered in the viewport as soon as it enters.<br>
 If set to **1**, the element is considered in the viewport when it is fully visible.
 
@@ -198,7 +198,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
     // your element is visible within the viewport.
 ```
 
-##### Replaying animations
+#### Replaying animations
 **Keyword:** `reset` — replay reveal animations every time elements enter the viewport.
 ```html
 <!-- Note: The reset keyword works by itself. -->
@@ -206,7 +206,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 ```
 > ***Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements.<br><br>However, to prevent flickering in reveal animations when using the keyword `reset`, scrollReveal does not remove the this appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
 
-##### Controlling Easing
+#### Controlling Easing
 The `move` keyword can be replaced with any one of the following:<br><br>
 - `ease-in`
 - `ease-out`
@@ -227,7 +227,7 @@ Community feedback and involvement is highly encouraged.
 ***
 #### [→ Open Issues ←](https://github.com/julianlloyd/scrollReveal.js/issues?state=open)
 ***
-##### Special Thanks
+#### Special Thanks
 scrollReveal.js was inspired by the awesome [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/) by [Mary Lou](https://twitter.com/crnacura). Copyright © 2014 [Codrops](http://tympanus.net/codrops/).
 
 License
