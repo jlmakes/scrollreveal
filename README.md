@@ -100,9 +100,9 @@ You can easily combine the above pairs to create more dynamic reveal animations.
 *Example:*
 ```html
 <div data-scrollReveal="enter top move 50px"> Foo </div>
-<div data-scrollReveal="enter top move 50px wait 0.3s"> Bar </div>
-<div data-scrollReveal="enter top move 50px wait 0.6s"> Baz </div>
-<div data-scrollReveal="enter top move 50px wait 0.9s"> Mel </div>
+<div data-scrollReveal="enter top move 50px, after 0.3s"> Bar </div>
+<div data-scrollReveal="enter top move 50px, after 0.6s"> Baz </div>
+<div data-scrollReveal="enter top move 50px, after 0.9s"> Mel </div>
 ```
 
 #### Fillers (optional)
@@ -211,7 +211,8 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 > **Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements once the reveal animation is complete.<br><br>However when using `reset` (to prevent flickering in reveal animations), scrollReveal does not remove the appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
 
 #### Controlling Easing
-The `move` keyword can be replaced with any one of the following:<br><br>
+The `move` keyword can be replaced with any one of the following:
+
 - `ease`
 - `ease-in`
 - `ease-out`

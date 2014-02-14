@@ -29,7 +29,6 @@ window.scrollReveal = (function (window) {
 
       this.docElem = window.document.documentElement;
       this.options = this.extend(this.defaults, options);
-      this.self    = this;
 
       if (this.options.init == true) this.init();
   }
