@@ -1,7 +1,7 @@
 #scrollReveal.js
 A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment from [@JulianLloyd](https://twitter.com/julianlloyd).
 
-[![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js) [![Bitdeli Analytics](https://d2weczhvl823v0.cloudfront.net/julianlloyd/scrollreveal.js/trend.png)](https://bitdeli.com/free)
+[![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/julianlloyd/scrollreveal.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 ***
 ####**[→ View Demo ←](http://julianlloyd.me/scrollreveal)**
 ***
@@ -23,15 +23,12 @@ Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder, a
 
 
 ```html
-  <!-- Everything else… -->
-
   <script src='{your_JavaScript_path}/scrollReveal.js'></script>
   <script>
 
       window.scrollReveal = new scrollReveal();
 
   </script>
-</body>
 ```
 Basic Usage
 -----------
