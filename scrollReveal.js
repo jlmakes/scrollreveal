@@ -1,3 +1,4 @@
+/*! scrollReveal.js v0.0.3 | (c)2014 Julian Lloyd | MIT license */
 /*
                        _ _ _____                      _   _
                       | | |  __ \                    | | (_)
