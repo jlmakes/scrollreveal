@@ -275,27 +275,21 @@ window.scrollReveal = (function (window) {
           easing = parsed.easing  || this.options.easing;
 
       var transition = "-webkit-transition: all " + dur + " " + easing + " " + delay + ";" +
-                          "-moz-transition: all " + dur + " " + easing + " " + delay + ";" +
-                            "-o-transition: all " + dur + " " + easing + " " + delay + ";" +
                                "transition: all " + dur + " " + easing + " " + delay + ";" +
                       "-webkit-perspective: 1000;" +
               "-webkit-backface-visibility: hidden;";
 
   //  The same as transition, but removing the delay for elements fading out.
       var reset = "-webkit-transition: all " + dur + " " + easing + " 0s;" +
-                     "-moz-transition: all " + dur + " " + easing + " 0s;" +
-                       "-o-transition: all " + dur + " " + easing + " 0s;" +
                           "transition: all " + dur + " " + easing + " 0s;" +
                  "-webkit-perspective: 1000;" +
          "-webkit-backface-visibility: hidden;";
 
       var initial = "-webkit-transform: translate" + axis + "(" + dist + ");" +
-                       "-moz-transform: translate" + axis + "(" + dist + ");" +
                             "transform: translate" + axis + "(" + dist + ");" +
                               "opacity: 0;";
 
       var target = "-webkit-transform: translate" + axis + "(0);" +
-                      "-moz-transform: translate" + axis + "(0);" +
                            "transform: translate" + axis + "(0);" +
                              "opacity: 1;";
       return {
