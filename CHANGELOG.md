@@ -1,5 +1,11 @@
-###### Changelog (Updated February 13th, 2014)
-#### scrollReveal.js v0.0.2
+###### scrollReveal.js Changelog
+
+###  v0.0.3  February 22th, 2014
+
+* removed `-moz-` & `-o-` from css transitions & transforms
+* added top-line comment, intending it to be kept after minification
+
+###  v0.0.2  February 13th, 2014
 
 What’s New
 ----------
