@@ -1,7 +1,7 @@
 #scrollReveal.js
 A simple way to create and maintain how elements fade in, triggered when they enter the viewport. An open-source experiment from [@JulianLloyd](https://twitter.com/julianlloyd).
 
-[![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/julianlloyd/scrollreveal.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js)
 ***
 ####**[→ View Demo ←](http://julianlloyd.me/scrollreveal)**
 ***
@@ -205,7 +205,6 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 <!-- Note: The reset keyword works by itself. -->
 <div data-scrollReveal="reset"> Foo </div>
 ```
-> **Important Note:** scrollReveal by defaut does not reset reveal animations, and will remove the appended `style` attribute (containing generated CSS) from your elements once the reveal animation is complete.<br><br>However when using `reset` (to prevent flickering in reveal animations), scrollReveal does not remove the appended `style` attribute.<br><br>This means using the `reset` keyword may cause the scrollReveal animation CSS properties to override or conflict with any other CSS transform and transition properties on that element.
 
 #### Controlling Easing
 The `move` keyword can be replaced with any one of the following:
