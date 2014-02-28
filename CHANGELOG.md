@@ -1,11 +1,20 @@
 ###### scrollReveal.js Changelog
 
+###  v0.0.4  February 28th, 2014
+
+* scrollReveal no longer destroys the existing `style` attribute on revealed elements, but instead, now ammends the necessary reveal animation styles after any existing styles. **(Fixes #18)**
+
+>**Note:** scrollReveal will still override any existing transition or transform in the `style` attribute.
+
 ###  v0.0.3  February 22th, 2014
 
-* removed `-moz-` & `-o-` from css transitions & transforms
+* removed unecessary styles (with `-moz-` & `-o-`) from css transitions & transforms
 * added top-line comment, intending it to be kept after minification
 
 ###  v0.0.2  February 13th, 2014
+
+* Added CHANGELOG
+* Improved README
 
 What’s New
 ----------

@@ -1,11 +1,10 @@
-/*! scrollReveal.js v0.0.3 | (c)2014 Julian Lloyd | MIT license */
 /*
                        _ _ _____                      _   _
                       | | |  __ \                    | | (_)
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.0.2
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.0.4
                                                         _/ |
                                                        |__/
 
@@ -18,9 +17,12 @@
     Licensed under the MIT license.
     http://www.opensource.org/licenses/mit-license.php
 
-    scrollReveal.js (c) 2014 Julian Lloyd
-
 =============================================================================*/
+
+/*! scrollReveal.js v0.0.4 (c) 2014 Julian Lloyd | MIT license */
+
+/*===========================================================================*/
+
 
 window.scrollReveal = (function (window) {
 
@@ -194,16 +196,19 @@ window.scrollReveal = (function (window) {
     /*=============================================================================*/
 
     update: function (el) {
-      var css  = this.genCSS(el);
+      var css   = this.genCSS(el);
+      var style = el.getAttribute('style');
+
+      if (style != null) style += ";"; else style = "";
 
       if (!el.getAttribute('data-scrollReveal-initialized')) {
-        el.setAttribute('style', css.initial);
+        el.setAttribute('style', style + css.initial);
         el.setAttribute('data-scrollReveal-initialized', true);
       }
 
       if (!this.isElementInViewport(el, this.options.viewportFactor)) {
         if (this.options.reset) {
-          el.setAttribute('style', css.initial + css.reset);
+          el.setAttribute('style', style + css.initial + css.reset);
         }
         return;
       }
@@ -211,12 +216,16 @@ window.scrollReveal = (function (window) {
       if (el.getAttribute('data-scrollReveal-complete')) return;
 
       if (this.isElementInViewport(el, this.options.viewportFactor)) {
-        el.setAttribute('style', css.target + css.transition);
+        el.setAttribute('style', style + css.target + css.transition);
     //  Without reset enabled, we can safely remove the style tag
     //  to prevent CSS specificy wars with authored CSS.
         if (!this.options.reset) {
           setTimeout(function () {
-            el.removeAttribute('style');
+            if (style != "") {
+              el.setAttribute('style', style);
+            } else {
+              el.removeAttribute('style');
+            }
             el.setAttribute('data-scrollReveal-complete',true);
           }, css.totalDuration);
         }
