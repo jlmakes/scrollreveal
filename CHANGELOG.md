@@ -2,7 +2,7 @@
 
 ###  v0.0.4  February 28th, 2014
 
-* scrollReveal no longer destroys the existing `style` attribute on revealed elements, but instead, now ammends the necessary reveal animation styles after any existing styles. **(Fixes #18)**
+* scrollReveal no longer destroys the existing `style` attribute on revealed elements, but instead, now appends the necessary reveal animation styles after any existing styles. **(Fixes #18)**
 
 >**Note:** scrollReveal will still override any existing transition or transform in the `style` attribute.
 
