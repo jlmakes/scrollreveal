@@ -1,13 +1,14 @@
 {
   "name": "scrollReveal.js",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "Declarative on-scroll reveal animations",
   "main": "scrollReveal.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "browserify test/test.js > test/bundle.js; open test/test.html"
+    "test": "browserify test/test.js > test/bundle.js; testling",
+    "browser": "browserify test/test.js > test/bundle.js; open test/test.html"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,15 @@
     "url": "https://github.com/julianlloyd/scrollReveal.js/issues"
   },
   "testling": {
-    "files": "test/*.js",
+    "html": "test/test.html",
     "browsers": [
       "ie/8..latest",
       "chrome/latest",
-      "firefox/latest"
+      "firefox/latest",
+      "safari/latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
     ]
   },
   "homepage": "https://github.com/julianlloyd/scrollReveal.js",
