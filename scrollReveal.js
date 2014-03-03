@@ -67,7 +67,7 @@ window.scrollReveal = (function (window) {
 
   //  Check DOM for the data-scrollReveal attribute
   //  and initialize all found elements.
-      this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scrollReveal]'));
+      this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scroll-reveal]'));
       this.elems.forEach(function (el, i) {
         self.update(el);
       });
@@ -114,7 +114,7 @@ window.scrollReveal = (function (window) {
     parseLanguage: function (el) {
 
   //  Splits on a sequence of one or more commas or spaces.
-      var words = el.getAttribute('data-scrollreveal').split(/[, ]+/),
+      var words = el.getAttribute('data-scroll-reveal').split(/[, ]+/),
           parsed = {};
 
       function filter (words) {
