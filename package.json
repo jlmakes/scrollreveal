@@ -1,6 +1,6 @@
 {
   "name": "scrollReveal.js",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Declarative on-scroll reveal animations",
   "main": "scrollReveal.js",
   "directories": {

@@ -232,6 +232,8 @@ Community feedback and involvement is highly encouraged.
 #### Special Thanks
 scrollReveal.js was inspired by the awesome [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/) by [Mary Lou](https://twitter.com/crnacura). Copyright © 2014 [Codrops](http://tympanus.net/codrops/).
 
+Also, a special thanks to Jeff Escalante ([Jenius](https://github.com/jenius)) for setting up the build process, and his ongoing help with testing and the JavaScript API.
+
 License
 -------
 

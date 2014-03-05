@@ -1,5 +1,15 @@
 ###### scrollReveal.js Changelog
 
+### v0.1.0   march 5th, 2014
+
+* scrollReveal.js now has a `dist` folder containing the AMD/CommonJS compatibile library.
+* [Gulp](http://gulpjs.com/) has been integrated, facilitating the build process.
+* Basic testing using [Testling](https://ci.testling.com/) has been put in place.
+
+Breaking Changes
+----------------
+scrollReveal is now implemented using the `data-scroll-reveal` attribute, **NOT** `data-scrollReveal`.
+
 ###  v0.0.4  February 28th, 2014
 
 * scrollReveal no longer destroys the existing `style` attribute on revealed elements, but instead, now appends the necessary reveal animation styles after any existing styles. **(Fixes #18)**
