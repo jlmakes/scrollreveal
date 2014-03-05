@@ -79,7 +79,7 @@ window.scrollReveal = (function (window) {
 
   //  Check DOM for the data-scrollReveal attribute
   //  and initialize all found elements.
-      this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scrollReveal]'));
+      this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scroll-reveal]'));
       this.elems.forEach(function (el, i) {
         self.update(el);
       });
@@ -126,7 +126,7 @@ window.scrollReveal = (function (window) {
     parseLanguage: function (el) {
 
   //  Splits on a sequence of one or more commas or spaces.
-      var words = el.getAttribute('data-scrollreveal').split(/[, ]+/),
+      var words = el.getAttribute('data-scroll-reveal').split(/[, ]+/),
           parsed = {};
 
       function filter (words) {
@@ -219,9 +219,9 @@ window.scrollReveal = (function (window) {
 
       if (style != null) style += ";"; else style = "";
 
-      if (!el.getAttribute('data-scrollReveal-initialized')) {
+      if (!el.getAttribute('data-scroll-reveal-initialized')) {
         el.setAttribute('style', style + css.initial);
-        el.setAttribute('data-scrollReveal-initialized', true);
+        el.setAttribute('data-scroll-reveal-initialized', true);
       }
 
       if (!this.isElementInViewport(el, this.options.viewportFactor)) {
@@ -231,7 +231,7 @@ window.scrollReveal = (function (window) {
         return;
       }
 
-      if (el.getAttribute('data-scrollReveal-complete')) return;
+      if (el.getAttribute('data-scroll-reveal-complete')) return;
 
       if (this.isElementInViewport(el, this.options.viewportFactor)) {
         el.setAttribute('style', style + css.target + css.transition);
@@ -244,7 +244,7 @@ window.scrollReveal = (function (window) {
             } else {
               el.removeAttribute('style');
             }
-            el.setAttribute('data-scrollReveal-complete',true);
+            el.setAttribute('data-scroll-reveal-complete',true);
           }, css.totalDuration);
         }
       return;
