@@ -32,22 +32,22 @@ Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder, a
 ```
 Basic Usage
 -----------
-By adding a `data-scrollReveal` attribute to an element, it will automatically be revealed (using default values) as soon as the element is within the viewport:
+By adding a `data-scroll-reveal` attribute to an element, it will automatically be revealed (using default values) as soon as the element is within the viewport:
 ```html
 <!-- Reveal using defaults. -->
-<div data-scrollReveal> Hello world! </div>
+<div data-scroll-reveal> Hello world! </div>
 ```
 **But wait!** It’s more fun if you define your own reveal animation parameters, which you can do using using natural, declarative language:
 ```html
 <!-- Reveal using custom parameters. -->
-<div data-scrollReveal="enter left and move 50px over 1.33s"> Foo </div>
-<div data-scrollReveal="enter from the bottom after 1s"> Bar </div>
-<div data-scrollReveal="wait 2.5s and then ease-in-out 100px"> Baz </div>
+<div data-scroll-reveal="enter left and move 50px over 1.33s"> Foo </div>
+<div data-scroll-reveal="enter from the bottom after 1s"> Bar </div>
+<div data-scroll-reveal="wait 2.5s and then ease-in-out 100px"> Baz </div>
 ```
 
 Getting Started
 ---------------
-What you enter into the `data-scrollReveal` attribute is parsed for specific words:
+What you enter into the `data-scroll-reveal` attribute is parsed for specific words:
 
 - **keywords** that expect to be followed by a **value**.<br><br>
 - **fillers** as natural language sugar. (optional)
@@ -60,7 +60,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 *Example:*
 ```html
 <!-- Reveal your element with a downward motion. -->
-<div data-scrollReveal='enter top'> Foo </div>
+<div data-scroll-reveal='enter top'> Foo </div>
 ```
 ***
 **keyword:** `move` — The distance your revealing element travels.<br>
@@ -68,7 +68,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 
 *Example:*
 ```html
-<div data-scrollReveal='move 24px'> Bar </div>
+<div data-scroll-reveal='move 24px'> Bar </div>
 ```
 ***
 **keyword:** `over` — The duration of your reveal animation.<br>
@@ -77,7 +77,7 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 
 *Example:*
 ```html
-<div data-scrollReveal='over 1.66s'> Baz </div>
+<div data-scroll-reveal='over 1.66s'> Baz </div>
 ```
 ***
 **keyword:** `after/wait` — The duration before your reveal begins.<br>
@@ -87,8 +87,8 @@ These specific **keyword** / **value** pairs allow you to describe basic reveal 
 *Example:*
 ```html
 <!-- Both are accepted. -->
-<div data-scrollReveal='after 0.33s'> Mel </div>
-<div data-scrollReveal='wait 0.33s'> Mel </div>
+<div data-scroll-reveal='after 0.33s'> Mel </div>
+<div data-scroll-reveal='wait 0.33s'> Mel </div>
 ```
 
 ####Combining Keyword/Value Pairs
@@ -96,10 +96,10 @@ You can easily combine the above pairs to create more dynamic reveal animations.
 
 *Example:*
 ```html
-<div data-scrollReveal="enter top move 50px"> Foo </div>
-<div data-scrollReveal="enter top move 50px, after 0.3s"> Bar </div>
-<div data-scrollReveal="enter top move 50px, after 0.6s"> Baz </div>
-<div data-scrollReveal="enter top move 50px, after 0.9s"> Mel </div>
+<div data-scroll-reveal="enter top move 50px"> Foo </div>
+<div data-scroll-reveal="enter top move 50px, after 0.3s"> Bar </div>
+<div data-scroll-reveal="enter top move 50px, after 0.6s"> Baz </div>
+<div data-scroll-reveal="enter top move 50px, after 0.9s"> Mel </div>
 ```
 
 #### Fillers (optional)
@@ -116,10 +116,10 @@ You can use conjoining filler words for more readable language.
 *Example*:
 ```html
 <!-- These 4 lines are equivalent. -->
-<div data-scrollReveal="wait 0.3s, then enter left and move 40px over 2s"> Foo </div>
-<div data-scrollReveal="enter from the left after 0.3s, move 40px, over 2s"> Bar </div>
-<div data-scrollReveal="enter left move 40px over 2s after 0.3s"> Baz </div>
-<div data-scrollReveal="enter left, move 40px, over 2s, wait 0.3s"> Mel </div>
+<div data-scroll-reveal="wait 0.3s, then enter left and move 40px over 2s"> Foo </div>
+<div data-scroll-reveal="enter from the left after 0.3s, move 40px, over 2s"> Bar </div>
+<div data-scroll-reveal="enter left move 40px over 2s after 0.3s"> Baz </div>
+<div data-scroll-reveal="enter left, move 40px, over 2s, wait 0.3s"> Mel </div>
 
 ```
 Advanced Usage
@@ -149,7 +149,7 @@ You can pass an object to the constructor with your desired default configuratio
   </script>
 </body>
 ```
-By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM for `data-scrollReveal` attributes.
+By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM for `data-scroll-reveal` attributes.
 
 #### Generated HTML
 You may have dynamically generated HTML in your use case, (AJAX, templates, other JavaScript libraries, etc.,) so as mentioned above, the scrollReveal object has the `init()` helper method that checks for new elements in the DOM.
@@ -172,7 +172,7 @@ You may have dynamically generated HTML in your use case, (AJAX, templates, othe
       window.scrollReveal = new scrollReveal( config );
 
       // Dummy AJAX return object:
-      var data = { newElementHtml: '<div data-scrollReveal> Foo </div>' }
+      var data = { newElementHtml: '<div data-scroll-reveal> Foo </div>' }
 
       var container = document.getElementById('#container');
           container.innerHTML( data.newElementHTML );
@@ -203,7 +203,7 @@ If set to **1**, the element is considered in the viewport when it is fully visi
 **Keyword:** `reset` — replay reveal animations every time elements enter the viewport.
 ```html
 <!-- Note: The reset keyword works by itself. -->
-<div data-scrollReveal="reset"> Foo </div>
+<div data-scroll-reveal="reset"> Foo </div>
 ```
 
 #### Controlling Easing
@@ -216,7 +216,7 @@ The `move` keyword can be replaced with any one of the following:
 
 *Example:*
 ```html
-<div data-scrollReveal="after 2s, ease-in 32px and reset over .66s"> Foo </div>
+<div data-scroll-reveal="after 2s, ease-in 32px and reset over .66s"> Foo </div>
 ```
 
 Browser Support
