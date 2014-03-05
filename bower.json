@@ -9,12 +9,13 @@
   "main": ["scrollReveal.js"],
   "keywords": [
     "scrollReveal",
+    "scroll",
+    "reveal",
+    "scroll-reveal"
     "animation",
     "CSS",
     "transition",
-    "JavaScript",
-    "scroll",
-    "reveal"
+    "JavaScript"
   ],
   "license": "MIT",
   "ignore": [
