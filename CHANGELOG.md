@@ -2,7 +2,7 @@
 
 ### v0.1.1   march 6th, 2014
 
-* Fixed a serious bug with `enter top` and `enter left` not correctly recognizing the pixel distance declared in awith the `move` keyword. **Fixes #31** (Thanks for catching this [Sherban](https://github.com/sherban1988)!)
+* Fixed a serious bug with `enter top` and `enter left` not correctly recognizing the pixel distance declared with the `move` keyword. **Fixes #13 and #31** (Thanks for catching this [Sherban](https://github.com/sherban1988) and [Danycerone](https://github.com/damycerone).)
 
 ### v0.1.0   march 5th, 2014
 
