@@ -81,6 +81,12 @@ window.scrollReveal = (function (window) {
   //  and initialize all found elements.
       this.elems = Array.prototype.slice.call(this.docElem.querySelectorAll('[data-scroll-reveal]'));
       this.elems.forEach(function (el, i) {
+
+    //  Capture original style attribute
+        if (!self.styleBank[el]) {
+          self.styleBank[el] = el.getAttribute('style');
+        }
+
         self.update(el);
       });
 
@@ -208,11 +214,6 @@ window.scrollReveal = (function (window) {
     /*=============================================================================*/
 
     update: function (el) {
-
-  //  Capture original style attribute
-      if (!this.styleBank[el]) {
-        this.styleBank[el] = el.getAttribute('style');
-      }
 
       var css   = this.genCSS(el);
       var style = this.styleBank[el];
