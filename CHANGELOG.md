@@ -1,5 +1,9 @@
 ###### scrollReveal.js Changelog
 
+### v0.1.1   march 6th, 2014
+
+* Fixed a serious bug with `enter top` and `enter left` not correctly recognizing the pixel distance declared in awith the `move` keyword. **Fixes #31** (Thanks for catching this [Sherban](https://github.com/sherban1988)!)
+
 ### v0.1.0   march 5th, 2014
 
 * scrollReveal.js now has a `dist` folder containing the AMD/CommonJS compatibile library.
