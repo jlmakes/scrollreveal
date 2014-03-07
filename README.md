@@ -3,7 +3,7 @@ A simple way to create and maintain how elements fade in, triggered when they en
 
 [![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js)
 ***
-####**[→ View Demo ←](http://scrollrevealjs.com/)**
+####**[→ View Demo ←](http://scrollrevealjs.org/)**
 ***
 Installation
 ------------
