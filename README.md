@@ -3,14 +3,14 @@ A simple way to create and maintain how elements fade in, triggered when they en
 
 [![scrollReveal version](https://badge.fury.io/gh/julianlloyd%2FscrollReveal.js.png)](http://badge.fury.io/gh/julianlloyd%2FscrollReveal.js)
 ***
-####**[→ View Demo ←](http://julianlloyd.me/scrollreveal)**
+####**[→ View Demo ←](http://scrollrevealjs.com/)**
 ***
 Installation
 ------------
 > **Disclaimer:** scrollReveal.js is in early development, and breaking changes will likely occur in future updates. Before updating, please refer to the [CHANGELOG](https://github.com/julianlloyd/scrollReveal.js/blob/master/CHANGELOG.md) for details.
 
 #### Download
-[scrollReveal.js ](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
+[master.zip](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
 
 #### GitHub
 `git clone https://github.com/julianlloyd/scrollReveal.js.git`
@@ -19,11 +19,11 @@ Installation
 `bower install scrollReveal.js`
 
 ***
-Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder, and include the following JavaScript just before the closing `</body>` tag.
+Once you have a copy of `scrollReveal.min.js`, place it in your JavaScript folder and include the following JavaScript just before the closing `</body>` tag.
 
 
 ```html
-  <script src='{your_JavaScript_path}/scrollReveal.js'></script>
+  <script src='{your_JavaScript_path}/scrollReveal.min.js'></script>
   <script>
 
       window.scrollReveal = new scrollReveal();
