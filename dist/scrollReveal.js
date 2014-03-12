@@ -1,4 +1,3 @@
-
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(factory);
@@ -364,7 +363,9 @@ window.scrollReveal = (function (window) {
           elBottom = elTop + elH,
           h = h || 0;
 
-      return (elTop + elH * h) <= viewed && (elBottom) >= scrolled;
+      return (elTop + elH * h) <= viewed 
+          && (elBottom) >= scrolled 
+          || (el.currentStyle? el.currentStyle : window.getComputedStyle(el, null)).position == 'fixed';
     },
 
     extend: function (a, b){
