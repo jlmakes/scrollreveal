@@ -292,8 +292,8 @@ window.scrollReveal = (function (window) {
           delay  = parsed.after   || this.options.after,
           easing = parsed.easing  || this.options.easing;
 
-      var transition = "-webkit-transition: all " + dur + " " + easing + " " + delay + ";" +
-                               "transition: all " + dur + " " + easing + " " + delay + ";" +
+      var transition = "-webkit-transition: -webkit-transform " + dur + " " + easing + " " + delay + ",  opacity " + dur + " " + easing + " " + delay + ";" +
+                               "transition: transform " + dur + " " + easing + " " + delay + ", opacity " + dur + " " + easing + " " + delay + ";" +
                       "-webkit-perspective: 1000;" +
               "-webkit-backface-visibility: hidden;";
 
