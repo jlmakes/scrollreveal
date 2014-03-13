@@ -1,3 +1,4 @@
+
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(factory);
@@ -302,14 +303,14 @@ window.scrollReveal = (function (window) {
           delay  = parsed.after   || this.options.after,
           easing = parsed.easing  || this.options.easing;
 
-      var transition = "-webkit-transition: all " + dur + " " + easing + " " + delay + ";" +
-                               "transition: all " + dur + " " + easing + " " + delay + ";" +
+      var transition = "-webkit-transition: -webkit-transform " + dur + " " + easing + " " + delay + ",  opacity " + dur + " " + easing + " " + delay + ";" +
+                               "transition: transform " + dur + " " + easing + " " + delay + ", opacity " + dur + " " + easing + " " + delay + ";" +
                       "-webkit-perspective: 1000;" +
               "-webkit-backface-visibility: hidden;";
 
   //  The same as transition, but removing the delay for elements fading out.
-      var reset = "-webkit-transition: all " + dur + " " + easing + " 0s;" +
-                          "transition: all " + dur + " " + easing + " 0s;" +
+      var reset = "-webkit-transition: -webkit-transform " + dur + " " + easing + " 0s,  opacity " + dur + " " + easing + " " + delay + ";" +
+                          "transition: transform " + dur + " " + easing + " 0s,  opacity " + dur + " " + easing + " " + delay + ";" +
                  "-webkit-perspective: 1000;" +
          "-webkit-backface-visibility: hidden;";
 
@@ -363,8 +364,8 @@ window.scrollReveal = (function (window) {
           elBottom = elTop + elH,
           h = h || 0;
 
-      return (elTop + elH * h) <= viewed 
-          && (elBottom) >= scrolled 
+      return (elTop + elH * h) <= viewed
+          && (elBottom) >= scrolled
           || (el.currentStyle? el.currentStyle : window.getComputedStyle(el, null)).position == 'fixed';
     },
 
