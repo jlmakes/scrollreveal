@@ -2,8 +2,8 @@
 
 ### v0.1.2   March 13th, 2014
 
-* Add support for elements with `position: fixed` ([#35](https://github.com/julianlloyd/scrollReveal.js/pull/35))
-* Revise `genCSS()` method to create less greedy styles. ([#37](https://github.com/julianlloyd/scrollReveal.js/pull/37))
+* Add support for elements with `position: fixed` (See issue [#35](https://github.com/julianlloyd/scrollReveal.js/pull/35))
+* Revise `genCSS()` method to create less greedy styles. (See issue [#37](https://github.com/julianlloyd/scrollReveal.js/pull/37))
 
 ### v0.1.1   March 6th, 2014
 
@@ -27,7 +27,7 @@ scrollReveal is now implemented using the `data-scroll-reveal` attribute, **NOT*
 
 ###  v0.0.3  February 22th, 2014
 
-* removed unecessary styles (with `-moz-` & `-o-`) from css transitions & transforms
+* removed unnecessary styles (with `-moz-` & `-o-`) from css transitions & transforms
 * added top-line comment, intending it to be kept after minification
 
 ###  v0.0.2  February 13th, 2014
