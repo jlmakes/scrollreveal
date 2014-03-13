@@ -19,11 +19,11 @@ Installation
 `bower install scrollReveal.js`
 
 ***
-Once you have a copy of `scrollReveal.min.js`, place it in your JavaScript folder and include the following JavaScript just before the closing `</body>` tag.
+Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder and include the following JavaScript just before the closing `</body>` tag.
 
 
 ```html
-  <script src='{your_JavaScript_path}/scrollReveal.min.js'></script>
+  <script src='{your_JavaScript_path}/scrollReveal.js'></script>
   <script>
 
       window.scrollReveal = new scrollReveal();
@@ -149,10 +149,12 @@ You can pass an object to the constructor with your desired default configuratio
   </script>
 </body>
 ```
-By default `init` is set to `true`, meaning `scrollReveal.init()` fires on instantiation. (This registers DOM elements and prepares them to reveal)<br><br>You may want to set `init` to `false` if you’re working with templates or other generated content, letting you control when `scrollReveal.init()` is first called.<br><br>You can also call this method any time afterwards to re-check all elements in the DOM for `data-scroll-reveal` attributes.
 
 #### Generated HTML
-You may have dynamically generated HTML in your use case, (AJAX, templates, other JavaScript libraries, etc.,) so as mentioned above, the scrollReveal object has the `init()` helper method that checks for new elements in the DOM.
+
+The `scrollReveal.init()` method to checks for any new elements in the DOM. By default, this method fires on instantiation, but by changing amending our config object with `init: false`, one can then choose when `scrollReveal.init()` is first fired. (Say, after your DOM is updated.)
+
+It’s worth nothing, you can also call this method at any time to re-check the DOM for all elements with `data-scroll-reveal` attributes.
 
 *Example:*
 ```html
