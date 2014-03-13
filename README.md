@@ -152,9 +152,9 @@ You can pass an object to the constructor with your desired default configuratio
 
 #### Generated HTML
 
-The `scrollReveal.init()` method to checks for any new elements in the DOM. By default, this method fires on instantiation, but by changing amending our config object with `init: false`, one can then choose when `scrollReveal.init()` is first fired. (Say, after your DOM is updated.)
+The `scrollReveal.init()` method checks the DOM for all elements with `data-scroll-reveal` attributes, and initializes your reveal animations on them. By default, this method fires on instantiation, but by changing amending our config object with `init: false`, you can then choose when `scrollReveal.init()` is first fired. (Say, after your DOM is updated.)
 
-It’s worth nothing, you can also call this method at any time to re-check the DOM for all elements with `data-scroll-reveal` attributes.
+^**Note:** It’s worth nothing, you can also call this method at any time to re-check the DOM.
 
 *Example:*
 ```html
