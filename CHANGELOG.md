@@ -1,6 +1,11 @@
 ###### scrollReveal.js Changelog
 
-### v0.1.1   march 6th, 2014
+### v0.1.2   March 13th, 2014
+
+* Add support for elements with `position: fixed` (#35)
+* Revise `genCSS()` method to create less greedy styles. (#37)
+
+### v0.1.1   March 6th, 2014
 
 * Fixed a serious bug with `enter top` and `enter left` not correctly recognizing the pixel distance declared with the `move` keyword. **Fixes #13 and #31** (Thanks for catching this [Sherban](https://github.com/sherban1988) and [Danycerone](https://github.com/damycerone).)
 
