@@ -2,8 +2,8 @@
 
 ### v0.1.2   March 13th, 2014
 
-* Add support for elements with `position: fixed` (#35)
-* Revise `genCSS()` method to create less greedy styles. (#37)
+* Add support for elements with `position: fixed` ([#35](https://github.com/julianlloyd/scrollReveal.js/pull/35))
+* Revise `genCSS()` method to create less greedy styles. ([#37](https://github.com/julianlloyd/scrollReveal.js/pull/37))
 
 ### v0.1.1   March 6th, 2014
 
