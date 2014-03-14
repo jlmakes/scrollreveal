@@ -27,12 +27,15 @@
 window.scrollReveal = (function (window) {
 
   'use strict';
+  
+  // generator (increments) for the next scroll-reveal-id
+  var nextId = 1;
 
   function scrollReveal(options) {
 
       this.docElem = window.document.documentElement;
       this.options = this.extend(this.defaults, options);
-      this.styleBank = [];
+      this.styleBank = {};
 
       if (this.options.init == true) this.init();
   }
@@ -72,8 +75,13 @@ window.scrollReveal = (function (window) {
       this.elems.forEach(function (el, i) {
 
     //  Capture original style attribute
-        if (!self.styleBank[el]) {
-          self.styleBank[el] = el.getAttribute('style');
+        var id = el.getAttribute("data-scroll-reveal-id");
+        if (!id) {
+            id = nextId++;
+            el.setAttribute("data-scroll-reveal-id", id);
+        }
+        if (!self.styleBank[id]) {
+          self.styleBank[id] = el.getAttribute('style');
         }
 
         self.update(el);
@@ -205,7 +213,7 @@ window.scrollReveal = (function (window) {
     update: function (el) {
 
       var css   = this.genCSS(el);
-      var style = this.styleBank[el];
+      var style = this.styleBank[el.getAttribute("data-scroll-reveal-id")];
 
       if (style != null) style += ";"; else style = "";
 
