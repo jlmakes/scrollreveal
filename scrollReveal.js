@@ -57,11 +57,12 @@ window.scrollReveal = (function (window) {
   scrollReveal.prototype = {
 
     defaults: {
-      after:  '0s',
-      enter:  'bottom',
-      move:   '24px',
-      over:   '0.66s',
-      easing: 'ease-in-out',
+      after:   '0s',
+      enter:   'bottom',
+      move:    '24px',
+      over:    '0.66s',
+      easing:  'ease-in-out',
+      opacity: 0,
 
   //  if 0, the element is considered in the viewport as soon as it enters
   //  if 1, the element is considered in the viewport when it's fully visible
@@ -311,10 +312,11 @@ window.scrollReveal = (function (window) {
         }
       }
 
-      var dist   = parsed.move    || this.options.move,
-          dur    = parsed.over    || this.options.over,
-          delay  = parsed.after   || this.options.after,
-          easing = parsed.easing  || this.options.easing;
+      var dist    = parsed.move    || this.options.move,
+          dur     = parsed.over    || this.options.over,
+          delay   = parsed.after   || this.options.after,
+          easing  = parsed.easing  || this.options.easing,
+          opacity = parsed.opacity || this.options.opacity;
 
       var transition = "-webkit-transition: -webkit-transform " + dur + " " + easing + " " + delay + ",  opacity " + dur + " " + easing + " " + delay + ";" +
                                "transition: transform " + dur + " " + easing + " " + delay + ", opacity " + dur + " " + easing + " " + delay + ";" +
@@ -329,7 +331,7 @@ window.scrollReveal = (function (window) {
 
       var initial = "-webkit-transform: translate" + axis + "(" + dist + ");" +
                             "transform: translate" + axis + "(" + dist + ");" +
-                              "opacity: 0;";
+                              "opacity: " + opacity + ";";
 
       var target = "-webkit-transform: translate" + axis + "(0);" +
                            "transform: translate" + axis + "(0);" +
