@@ -106,7 +106,7 @@ window.scrollReveal = (function (window) {
         if (!self.scrolled) {
           self.scrolled = true;
           requestAnimFrame(function () {
-            self._scrollPage
+            self._scrollPage();
           });
         }
       };
