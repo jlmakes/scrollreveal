@@ -31,6 +31,20 @@ window.scrollReveal = (function (window) {
   // generator (increments) for the next scroll-reveal-id
   var nextId = 1;
 
+  /**
+   * RequestAnimationFrame polyfill
+   * @function
+   * @private
+   */
+  var requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      function (callback) {
+        window.setTimeout(callback, 1000 / 60);
+    };
+  }());
+
   function scrollReveal(options) {
 
       this.docElem = window.document.documentElement;
@@ -87,12 +101,13 @@ window.scrollReveal = (function (window) {
         self.update(el);
       });
 
-      var scrollHandler = function () {
+      var scrollHandler = function (e) {
+        // No changing, exit
         if (!self.scrolled) {
           self.scrolled = true;
-          setTimeout(function () {
-            self._scrollPage();
-          }, 60);
+          requestAnimFrame(function () {
+            self._scrollPage
+          });
         }
       };
 
@@ -109,6 +124,7 @@ window.scrollReveal = (function (window) {
         self.resizeTimeout = setTimeout(delayed, 200);
       };
 
+      // captureScroll
       window.addEventListener('scroll', scrollHandler, false);
       window.addEventListener('resize', resizeHandler, false);
     },
