@@ -15,7 +15,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.1.2
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.1.3
                                                         _/ |
                                                        |__/
 
@@ -39,6 +39,9 @@ window.scrollReveal = (function (window) {
 
   'use strict';
 
+  // generator (increments) for the next scroll-reveal-id
+  var nextId = 1;
+
   /**
    * RequestAnimationFrame polyfill
    * @function
@@ -57,7 +60,7 @@ window.scrollReveal = (function (window) {
 
       this.docElem = window.document.documentElement;
       this.options = this.extend(this.defaults, options);
-      this.styleBank = [];
+      this.styleBank = {};
 
       if (this.options.init == true) this.init();
   }
@@ -65,11 +68,12 @@ window.scrollReveal = (function (window) {
   scrollReveal.prototype = {
 
     defaults: {
-      after:  '0s',
-      enter:  'bottom',
-      move:   '24px',
-      over:   '0.66s',
-      easing: 'ease-in-out',
+      after:   '0s',
+      enter:   'bottom',
+      move:    '24px',
+      over:    '0.66s',
+      easing:  'ease-in-out',
+      opacity: 0,
 
   //  if 0, the element is considered in the viewport as soon as it enters
   //  if 1, the element is considered in the viewport when it's fully visible
@@ -97,8 +101,13 @@ window.scrollReveal = (function (window) {
       this.elems.forEach(function (el, i) {
 
     //  Capture original style attribute
-        if (!self.styleBank[el]) {
-          self.styleBank[el] = el.getAttribute('style');
+        var id = el.getAttribute("data-scroll-reveal-id");
+        if (!id) {
+            id = nextId++;
+            el.setAttribute("data-scroll-reveal-id", id);
+        }
+        if (!self.styleBank[id]) {
+          self.styleBank[id] = el.getAttribute('style');
         }
 
         self.update(el);
@@ -232,7 +241,7 @@ window.scrollReveal = (function (window) {
     update: function (el) {
 
       var css   = this.genCSS(el);
-      var style = this.styleBank[el];
+      var style = this.styleBank[el.getAttribute("data-scroll-reveal-id")];
 
       if (style != null) style += ";"; else style = "";
 
@@ -314,10 +323,11 @@ window.scrollReveal = (function (window) {
         }
       }
 
-      var dist   = parsed.move    || this.options.move,
-          dur    = parsed.over    || this.options.over,
-          delay  = parsed.after   || this.options.after,
-          easing = parsed.easing  || this.options.easing;
+      var dist    = parsed.move    || this.options.move,
+          dur     = parsed.over    || this.options.over,
+          delay   = parsed.after   || this.options.after,
+          easing  = parsed.easing  || this.options.easing,
+          opacity = parsed.opacity || this.options.opacity;
 
       var transition = "-webkit-transition: -webkit-transform " + dur + " " + easing + " " + delay + ",  opacity " + dur + " " + easing + " " + delay + ";" +
                                "transition: transform " + dur + " " + easing + " " + delay + ", opacity " + dur + " " + easing + " " + delay + ";" +
@@ -332,7 +342,7 @@ window.scrollReveal = (function (window) {
 
       var initial = "-webkit-transform: translate" + axis + "(" + dist + ");" +
                             "transform: translate" + axis + "(" + dist + ");" +
-                              "opacity: 0;";
+                              "opacity: " + opacity + ";";
 
       var target = "-webkit-transform: translate" + axis + "(0);" +
                            "transform: translate" + axis + "(0);" +

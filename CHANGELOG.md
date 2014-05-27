@@ -1,5 +1,13 @@
 ###### scrollReveal.js Changelog
 
+v0.1.3   May 26th, 2014
+-------------------------
+
+- Add support for customizing starting element opacity (from kierzniak, see issue [#33](https://github.com/julianlloyd/scrollReveal.js/pull/33))
+- Implement RequestAnimationFrame (from pazguille, see issue [#46](https://github.com/julianlloyd/scrollReveal.js/pull/46))
+- Refactor how `styleBank` functions (from georgelee1, see issue [#38](https://github.com/julianlloyd/scrollReveal.js/pull/38))
+
+
 v0.1.2   March 13th, 2014
 -------------------------
 
