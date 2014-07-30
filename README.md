@@ -27,7 +27,9 @@ Once you have a copy of `scrollReveal.js`, place it in your JavaScript folder an
   <script>
 
       window.scrollReveal = new scrollReveal();
-
+      //or
+      window.scrollReveal2 = new scrollReveal( {reset: true,elem: document.getElementById('srcontainer')} );
+      
   </script>
 ```
 Basic Usage
