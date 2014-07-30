@@ -128,8 +128,14 @@ window.scrollReveal = (function (window) {
             };
 
             // captureScroll
-            this.docElem.addEventListener('scroll', scrollHandler, false);
-            this.docElem.addEventListener('resize', resizeHandler, false);
+            if (this.docElem == window.document.documentElement) {
+                window.addEventListener('scroll', scrollHandler, false);
+                window.addEventListener('resize', resizeHandler, false);
+            }
+            else {
+                this.docElem.addEventListener('scroll', scrollHandler, false);
+            }
+
         },
 
         /*=============================================================================*/
@@ -377,14 +383,16 @@ window.scrollReveal = (function (window) {
         },
 
         isElementInViewport: function (el, h) {
-            var scrolled = this.docElem.scrollTop,
+            var scrolled = this.docElem.scrollTop + this.docElem.offsetTop;
+            if (this.docElem == window.document.documentElement)scrolled = window.pageYOffset;
+            var
                 viewed = scrolled + this.getViewportH(),
                 elH = el.offsetHeight,
                 elTop = this.getOffset(el).top,
                 elBottom = elTop + elH,
                 h = h || 0;
 
-            return (elTop + elH * h) <= viewed
+            return   (elTop + elH * h) <= viewed
                 && (elBottom) >= scrolled
                 || (el.currentStyle ? el.currentStyle : window.getComputedStyle(el, null)).position == 'fixed';
         },
