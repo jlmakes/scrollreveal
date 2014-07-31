@@ -4,7 +4,7 @@
  ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
  / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
  \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
- |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.1.2
+ |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v.0.1.3
  _/ |
  |__/
 
@@ -57,12 +57,11 @@ window.scrollReveal = (function (window) {
     scrollReveal.prototype = {
 
         defaults: {
-            elem: window.document.documentElement,
-            after: '0s',
-            enter: 'bottom',
-            move: '24px',
-            over: '0.66s',
-            easing: 'ease-in-out',
+            after:   '0s',
+            enter:   'bottom',
+            move:    '24px',
+            over:    '0.66s',
+            easing:  'ease-in-out',
             opacity: 0,
 
             //  if 0, the element is considered in the viewport as soon as it enters
@@ -74,7 +73,8 @@ window.scrollReveal = (function (window) {
             reset: false,
 
             // if true, scrollReveal.init() is automaticaly called upon instantiation
-            init: true
+            init: true,
+            elem: window.document.documentElement
         },
 
         /*=============================================================================*/
@@ -123,7 +123,6 @@ window.scrollReveal = (function (window) {
                     self._scrollPage();
                     self.resizeTimeout = null;
                 }
-
                 self.resizeTimeout = setTimeout(delayed, 200);
             };
 
@@ -135,7 +134,6 @@ window.scrollReveal = (function (window) {
             else {
                 this.docElem.addEventListener('scroll', scrollHandler, false);
             }
-
         },
 
         /*=============================================================================*/
@@ -157,7 +155,7 @@ window.scrollReveal = (function (window) {
             var words = el.getAttribute('data-scroll-reveal').split(/[, ]+/),
                 parsed = {};
 
-            function filter(words) {
+            function filter (words) {
                 var ret = [],
 
                     blacklist = [
@@ -237,7 +235,7 @@ window.scrollReveal = (function (window) {
 
         update: function (el) {
 
-            var css = this.genCSS(el);
+            var css   = this.genCSS(el);
             var style = this.styleBank[el.getAttribute("data-scroll-reveal-id")];
 
             if (style != null) style += ";"; else style = "";
@@ -267,7 +265,7 @@ window.scrollReveal = (function (window) {
                         } else {
                             el.removeAttribute('style');
                         }
-                        el.setAttribute('data-scroll-reveal-complete', true);
+                        el.setAttribute('data-scroll-reveal-complete',true);
                     }, css.totalDuration);
                 }
                 return;
@@ -320,10 +318,10 @@ window.scrollReveal = (function (window) {
                 }
             }
 
-            var dist = parsed.move || this.options.move,
-                dur = parsed.over || this.options.over,
-                delay = parsed.after || this.options.after,
-                easing = parsed.easing || this.options.easing,
+            var dist    = parsed.move    || this.options.move,
+                dur     = parsed.over    || this.options.over,
+                delay   = parsed.after   || this.options.after,
+                easing  = parsed.easing  || this.options.easing,
                 opacity = parsed.opacity || this.options.opacity;
 
             var transition = "-webkit-transition: -webkit-transform " + dur + " " + easing + " " + delay + ",  opacity " + dur + " " + easing + " " + delay + ";" +
@@ -353,7 +351,7 @@ window.scrollReveal = (function (window) {
             };
         },
 
-        getViewportH: function () {
+        getViewportH : function () {
             var client = this.docElem['clientHeight'],
                 inner = window['innerHeight'];
 
@@ -363,7 +361,7 @@ window.scrollReveal = (function (window) {
                 return client;
         },
 
-        getOffset: function (el) {
+        getOffset : function(el) {
             var offsetTop = 0,
                 offsetLeft = 0;
 
@@ -382,7 +380,7 @@ window.scrollReveal = (function (window) {
             }
         },
 
-        isElementInViewport: function (el, h) {
+        isElementInViewport : function(el, h) {
             var scrolled = this.docElem.scrollTop + this.docElem.offsetTop;
             if (this.docElem == window.document.documentElement)scrolled = window.pageYOffset;
             var
@@ -392,12 +390,12 @@ window.scrollReveal = (function (window) {
                 elBottom = elTop + elH,
                 h = h || 0;
 
-            return   (elTop + elH * h) <= viewed
+            return (elTop + elH * h) <= viewed
                 && (elBottom) >= scrolled
-                || (el.currentStyle ? el.currentStyle : window.getComputedStyle(el, null)).position == 'fixed';
+                || (el.currentStyle? el.currentStyle : window.getComputedStyle(el, null)).position == 'fixed';
         },
 
-        extend: function (a, b) {
+        extend: function (a, b){
             for (var key in b) {
                 if (b.hasOwnProperty(key)) {
                     a[key] = b[key];
