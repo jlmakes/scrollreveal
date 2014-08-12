@@ -45,13 +45,13 @@ window.scrollReveal = (function (window) {
     };
   }());
 
-  function scrollReveal(options) {
+  function scrollReveal(options, callback) {
 
       this.docElem = window.document.documentElement;
       this.options = this.extend(this.defaults, options);
       this.styleBank = {};
 
-      if (this.options.init == true) this.init();
+      if (this.options.init == true) this.init(callback);
   }
 
   scrollReveal.prototype = {
@@ -78,7 +78,7 @@ window.scrollReveal = (function (window) {
 
     /*=============================================================================*/
 
-    init: function () {
+    init: function (callback) {
 
       this.scrolled = false;
 
@@ -99,7 +99,7 @@ window.scrollReveal = (function (window) {
           self.styleBank[id] = el.getAttribute('style');
         }
 
-        self.update(el);
+        self.update(el, callback);
       });
 
       var scrollHandler = function (e) {
@@ -136,7 +136,7 @@ window.scrollReveal = (function (window) {
         var self = this;
 
         this.elems.forEach(function (el, i) {
-          self.update(el);
+          self.update(el, function() {});
         });
         this.scrolled = false;
     },
@@ -227,7 +227,7 @@ window.scrollReveal = (function (window) {
 
     /*=============================================================================*/
 
-    update: function (el) {
+    update: function (el, callback) {
 
       var css   = this.genCSS(el);
       var style = this.styleBank[el.getAttribute("data-scroll-reveal-id")];
@@ -260,6 +260,7 @@ window.scrollReveal = (function (window) {
               el.removeAttribute('style');
             }
             el.setAttribute('data-scroll-reveal-complete',true);
+            callback(el);
           }, css.totalDuration);
         }
       return;
