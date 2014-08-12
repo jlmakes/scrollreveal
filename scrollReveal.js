@@ -45,13 +45,13 @@ window.scrollReveal = (function (window) {
     };
   }());
 
-  function scrollReveal(options, callback) {
+  function scrollReveal(options) {
 
       this.docElem = window.document.documentElement;
       this.options = this.extend(this.defaults, options);
       this.styleBank = {};
 
-      if (this.options.init == true) this.init(callback);
+      if (this.options.init == true) this.init();
   }
 
   scrollReveal.prototype = {
@@ -78,7 +78,7 @@ window.scrollReveal = (function (window) {
 
     /*=============================================================================*/
 
-    init: function (callback) {
+    init: function () {
 
       this.scrolled = false;
 
@@ -99,7 +99,7 @@ window.scrollReveal = (function (window) {
           self.styleBank[id] = el.getAttribute('style');
         }
 
-        self.update(el, callback);
+        self.update(el);
       });
 
       var scrollHandler = function (e) {
@@ -136,7 +136,7 @@ window.scrollReveal = (function (window) {
         var self = this;
 
         this.elems.forEach(function (el, i) {
-          self.update(el, function() {});
+          self.update(el);
         });
         this.scrolled = false;
     },
@@ -227,8 +227,9 @@ window.scrollReveal = (function (window) {
 
     /*=============================================================================*/
 
-    update: function (el, callback) {
+    update: function (el) {
 
+      var that = this;
       var css   = this.genCSS(el);
       var style = this.styleBank[el.getAttribute("data-scroll-reveal-id")];
 
@@ -260,7 +261,7 @@ window.scrollReveal = (function (window) {
               el.removeAttribute('style');
             }
             el.setAttribute('data-scroll-reveal-complete',true);
-            callback(el);
+            that.options.callback(el);
           }, css.totalDuration);
         }
       return;
