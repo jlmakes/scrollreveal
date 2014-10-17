@@ -1,0 +1,5 @@
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+node_modules
