@@ -36,8 +36,12 @@ window.scrollReveal = (function( window ) {
 
       if ( self.isMobile() && !self.config.mobile ) return
 
-      window.addEventListener( 'scroll', handler, false )
-      window.addEventListener( 'resize', handler, false )
+      if ( self.config.viewport == window.document.documentElement ) {
+
+        window.addEventListener( 'scroll', handler, false )
+        window.addEventListener( 'resize', handler, false )
+
+      } else self.config.viewport.addEventListener( 'scroll', handler, false )
 
       self.init()
   }
