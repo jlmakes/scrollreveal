@@ -334,7 +334,7 @@ window.scrollReveal = (function( window ) {
       })
 
       /**
-       * Build config object from defaults and element
+       * Build default config object, then apply any
        * overrides parsed from the data-sr attribute.
        */
       config = extend( config, self.config )
@@ -344,13 +344,13 @@ window.scrollReveal = (function( window ) {
       if ( config.enter  == 'left' || config.enter == 'right'  ) config.axis = 'X'
 
       /**
-       * Make sure to check for our custom hustle easing
+       * Make sure to check for our custom hustle easing.
        */
       if ( config.easing == 'hustle' ) config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )'
 
       /**
        * Let’s make sure our our pixel distances are negative for top and left.
-       * e.g. "move 25px from top" starts at 'top: -25px' in CSS.
+       * e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
        */
       if ( config.enter == 'top' || config.enter == 'left' ) config.move = '-' + config.move
 
