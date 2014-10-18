@@ -4,7 +4,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.0
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.1
                                                         _/ |
                                                        |__/
 
@@ -174,7 +174,7 @@ window.scrollReveal = (function( window ) {
                */
               elem.domEl.setAttribute( 'style', elem.styles.inline )
               elem.domEl.setAttribute( 'data-sr-complete', true )
-              elem.config.complete( elem.docEl )
+              elem.config.complete( elem.domEl )
               /**
                * Reveal animation complete.
                */
@@ -389,9 +389,6 @@ window.scrollReveal = (function( window ) {
        */
       build = function( flag ) {
 
-        initial = 'transform:'
-        target  = 'transform:'
-
         if ( parseInt( elem.config.move ) != 0 ) {
 
           initial += ' translate' + elem.config.axis + '(' + elem.config.move + ')'
@@ -409,15 +406,18 @@ window.scrollReveal = (function( window ) {
 
         initial += '; opacity: ' + elem.config.opacity + '; '
         target  += '; opacity: 1; ';
-
-        if ( flag ) {
-
-          initial += '-webkit-transform:'
-          target  += '-webkit-transform:'
-
-          build( false )
-        }
       }
+
+      initial = 'transform:'
+      target  = 'transform:'
+
+      build()
+
+      /**
+       * And again for webkit…
+       */
+      initial += '-webkit-transform:'
+      target  += '-webkit-transform:'
 
       build()
 

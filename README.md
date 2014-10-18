@@ -1,9 +1,10 @@
 #scrollReveal.js
-[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.0.0-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.0.1-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ### Easily reveal elements as they enter the viewport.
 
  - Developed for modern browsers
+ - **3.2KB** minified and Gzipped
  - An open-source project by [Julian Lloyd](https://twitter.com/julianlloyd)
 
 ***
@@ -15,7 +16,7 @@
 Installation
 ------------
 
-Please use which ever is more comfortable:
+Please use which ever is most comfortable:
 
 - [Download ZIP](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
 - `git clone https://github.com/julianlloyd/scrollReveal.js.git`
@@ -43,7 +44,7 @@ Once you’ve got `scrollReveal.min.js` into your project’s JavaScript directo
 Basic Usage
 -----------
 
-How does it work? It’s as simple as adding `data-sr` to an element, it will reveal as it enters the viewport.
+How does it work? Just add `data-sr` to an element, and it will reveal as it enters the viewport.
 ```html
 <p data-sr> Chips Ahoy! </p>
 ```
@@ -54,8 +55,8 @@ Taking Control
 You guessed it, the `data-sr` attribute is waiting for _you_ to describe the type of animation you want. It’s as simple as using a few **keywords** and natural language.
 ```html
 <div data-sr="enter left please, and hustle 20px"> Foo </div>
-<div data-sr="enter bottom and move 50px after 1s"> Bar </div>
-<div data-sr="wait 2.5s and then ease-in-out 100px"> Baz </div>
+<div data-sr="wait 2.5s and then ease-in-out 100px"> Bar </div>
+<div data-sr="enter bottom and scale up 20% over 2s"> Baz </div>
 ```
 What you enter into the `data-sr` attribute is parsed for specific words:
 

@@ -15,7 +15,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.0
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.1
                                                         _/ |
                                                        |__/
 
@@ -47,8 +47,12 @@ window.scrollReveal = (function( window ) {
 
       if ( self.isMobile() && !self.config.mobile ) return
 
-      window.addEventListener( 'scroll', handler, false )
-      window.addEventListener( 'resize', handler, false )
+      if ( self.config.viewport == window.document.documentElement ) {
+
+        window.addEventListener( 'scroll', handler, false )
+        window.addEventListener( 'resize', handler, false )
+
+      } else self.config.viewport.addEventListener( 'scroll', handler, false )
 
       self.init()
   }
@@ -168,8 +172,6 @@ window.scrollReveal = (function( window ) {
             )
           }
 
-          if ( self.config.delay == 'once' )
-
           /**
            * Reset is disabled for this element, so lets restore the style attribute
            * to its pre-scrollReveal state after the animation completes.
@@ -183,7 +185,7 @@ window.scrollReveal = (function( window ) {
                */
               elem.domEl.setAttribute( 'style', elem.styles.inline )
               elem.domEl.setAttribute( 'data-sr-complete', true )
-              elem.config.complete( elem.docEl )
+              elem.config.complete( elem.domEl )
               /**
                * Reveal animation complete.
                */
@@ -343,7 +345,7 @@ window.scrollReveal = (function( window ) {
       })
 
       /**
-       * Build config object from defaults and element
+       * Build default config object, then apply any
        * overrides parsed from the data-sr attribute.
        */
       config = extend( config, self.config )
@@ -353,13 +355,13 @@ window.scrollReveal = (function( window ) {
       if ( config.enter  == 'left' || config.enter == 'right'  ) config.axis = 'X'
 
       /**
-       * Make sure to check for our custom hustle easing
+       * Make sure to check for our custom hustle easing.
        */
       if ( config.easing == 'hustle' ) config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )'
 
       /**
        * Let’s make sure our our pixel distances are negative for top and left.
-       * e.g. "move 25px from top" starts at 'top: -25px' in CSS.
+       * e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
        */
       if ( config.enter == 'top' || config.enter == 'left' ) config.move = '-' + config.move
 
@@ -398,9 +400,6 @@ window.scrollReveal = (function( window ) {
        */
       build = function( flag ) {
 
-        initial = 'transform:'
-        target  = 'transform:'
-
         if ( parseInt( elem.config.move ) != 0 ) {
 
           initial += ' translate' + elem.config.axis + '(' + elem.config.move + ')'
@@ -418,15 +417,18 @@ window.scrollReveal = (function( window ) {
 
         initial += '; opacity: ' + elem.config.opacity + '; '
         target  += '; opacity: 1; ';
-
-        if ( flag ) {
-
-          initial += '-webkit-transform:'
-          target  += '-webkit-transform:'
-
-          build( false )
-        }
       }
+
+      initial = 'transform:'
+      target  = 'transform:'
+
+      build()
+
+      /**
+       * And again for webkit…
+       */
+      initial += '-webkit-transform:'
+      target  += '-webkit-transform:'
 
       build()
 
