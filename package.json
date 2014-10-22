@@ -2,7 +2,7 @@
   "name": "scrollReveal.js",
   "version": "2.0.1",
   "description": "Easily reveal elements as they enter the viewport.",
-  "main": "scrollReveal.js",
+  "main": "dist/scrollReveal.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/julianlloyd/scrollReveal.js.git"
