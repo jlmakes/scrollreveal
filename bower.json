@@ -6,7 +6,7 @@
     "Julian Lloyd <https://twitter.com/julianlloyd>"
   ],
   "description": "Easily reveal elements as they enter the viewport.",
-  "main": ["scrollReveal.js"],
+  "main": ["dist/scrollReveal.js"],
   "keywords": [
     "scrollReveal",
     "scroll",
