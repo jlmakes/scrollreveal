@@ -387,7 +387,7 @@ window.scrollReveal = (function( window ) {
       /**
        * Construct initial and target styles.
        */
-      build = function( flag ) {
+      build = function() {
 
         if ( parseInt( elem.config.move ) != 0 ) {
 
