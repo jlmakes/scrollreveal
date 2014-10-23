@@ -1,6 +1,6 @@
 {
   "name": "scrollReveal.js",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Easily reveal elements as they enter the viewport.",
   "main": "dist/scrollReveal.js",
   "repository": {

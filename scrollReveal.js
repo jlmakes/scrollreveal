@@ -4,7 +4,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.1
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.2
                                                         _/ |
                                                        |__/
 
@@ -144,7 +144,7 @@ window.scrollReveal = (function( window ) {
 
           if ( self.config.delay == 'always'
           || ( self.config.delay == 'onload' && flag )
-          || ( self.config.delay == 'once' && !elem.seen ) ) {
+          || ( self.config.delay == 'once'   && !elem.seen ) ) {
 
             elem.domEl.setAttribute( 'style',
 
@@ -503,7 +503,7 @@ window.scrollReveal = (function( window ) {
       var elHeight = elem.domEl.offsetHeight
         , elTop    = self.getOffset( elem.domEl ).top
         , elBottom = elTop + elHeight
-        , vFactor     = elem.config.vFactor || 0
+        , vFactor  = elem.config.vFactor || 0
 
       return ( elTop + elHeight * vFactor < self.scrolled + self.getViewportH() )
           && ( elBottom - elHeight * vFactor > self.scrolled )
