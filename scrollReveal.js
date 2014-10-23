@@ -102,6 +102,10 @@ window.scrollReveal = (function( window ) {
           elem.config = self.configFactory( elem )
           elem.styles = self.styleFactory( elem )
           elem.seen   = false
+
+        } else if ( typeof( elem ) === 'undefined' ) {
+
+          throw 'Error: Multiple instances of scrollReveal are attempting to use the same viewport.'
         }
 
         /**
