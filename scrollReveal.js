@@ -91,26 +91,22 @@ window.scrollReveal = (function( window ) {
         id = self.serial++
 
         /**
-         * If no data-sr-id attribute is found, begin assembling
-         * a new object for our self.elems array.
+         * Begin assembling a new object for our self.elems array.
          */
-        if ( !el.getAttribute( 'data-sr-id' ) ) {
+        elem        = self.elems[ id ] = { domEl: el }
+        elem.config = self.configFactory( elem )
+        elem.styles = self.styleFactory( elem )
+        elem.seen   = false
 
-          el.setAttribute( 'data-sr-id', id )
+        /**
+         * Everything is setup, so add the initial styles.
+         */
+        el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
 
-          elem        = self.elems[ id ] = { domEl: el }
-          elem.config = self.configFactory( elem )
-          elem.styles = self.styleFactory( elem )
-          elem.seen   = false
-
-          /**
-           * Everything is setup, so add the initial styles.
-           */
-          el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
-        }
-
-
-        return
+        /**
+         * Remove data-sr attribute to prevent querying initialized elements on further init() calls
+         */
+        el.removeAttribute('data-sr')
       })
 
       self.scrolled = self.scrollY()
@@ -506,7 +502,7 @@ window.scrollReveal = (function( window ) {
           && ( elBottom - elHeight * vFactor > self.scrolled )
           || ( elem.domEl.currentStyle ? elem.domEl.currentStyle : window.getComputedStyle( elem.domEl, null ) ).position == 'fixed'
     },
-
+ 
     isMobile: function() {
 
       var agent = navigator.userAgent || navigator.vendor || window.opera
