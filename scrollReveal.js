@@ -103,15 +103,12 @@ window.scrollReveal = (function( window ) {
           elem.styles = self.styleFactory( elem )
           elem.seen   = false
 
-        } else if ( typeof( elem ) === 'undefined' ) {
-
-          throw 'Error: Multiple instances of scrollReveal are attempting to use the same viewport.'
+          /**
+           * Everything is setup, so add the initial styles.
+           */
+          el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
         }
 
-        /**
-         * Everything is setup, so add the initial styles.
-         */
-        el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
 
         return
       })
