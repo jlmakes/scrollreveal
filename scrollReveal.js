@@ -28,22 +28,22 @@ window.scrollReveal = (function( window ) {
 
   function scrollReveal( config ) {
 
-      self         = this
-      self.elems   = {}
-      self.serial  = 1
-      self.blocked = false
-      self.config  = extend( self.defaults, config )
+    self         = this
+    self.elems   = {}
+    self.serial  = 1
+    self.blocked = false
+    self.config  = extend( self.defaults, config )
 
-      if ( self.isMobile() && !self.config.mobile ) return
+    if ( self.isMobile() && !self.config.mobile ) return
 
-      if ( self.config.viewport == window.document.documentElement ) {
+    if ( self.config.viewport == window.document.documentElement ) {
 
-        window.addEventListener( 'scroll', handler, false )
-        window.addEventListener( 'resize', handler, false )
+      window.addEventListener( 'scroll', handler, false )
+      window.addEventListener( 'resize', handler, false )
 
-      } else self.config.viewport.addEventListener( 'scroll', handler, false )
+    } else self.config.viewport.addEventListener( 'scroll', handler, false )
 
-      self.init()
+    self.init()
   }
 
   scrollReveal.prototype = {
@@ -104,9 +104,9 @@ window.scrollReveal = (function( window ) {
         el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
 
         /**
-         * Remove data-sr attribute to prevent querying initialized elements on further init() calls
+         * Remove data-sr attribute to prevent querying initialized elements on subsequent init() calls
          */
-        el.removeAttribute('data-sr')
+        el.removeAttribute( 'data-sr' )
       })
 
       self.scrolled = self.scrollY()
@@ -164,7 +164,7 @@ window.scrollReveal = (function( window ) {
            */
           if ( !elem.config.reset ) {
 
-            setTimeout(function () {
+            setTimeout(function() {
 
               /**
                * Reset inline styles and fire callback.
@@ -367,7 +367,7 @@ window.scrollReveal = (function( window ) {
       inline = ( elem.domEl.getAttribute( 'style' ) ) ? elem.domEl.getAttribute( 'style' ) + '; visibility: visible; ' : 'visibility: visible; '
 
       /**
-       * Want to disable delay on mobile devices? (uncomment the line below)
+       * Want to disable delay on mobile devices? Uncomment the line below.
        */
       //if ( self.isMobile() && self.config.mobile ) elem.config.wait = 0
 
@@ -460,7 +460,10 @@ window.scrollReveal = (function( window ) {
       var client = self.config.viewport[ 'clientHeight' ]
         , inner  = window[ 'innerHeight' ]
 
-      if ( self.config.viewport == window.document.documentElement ) return ( client < inner ) ? inner : client
+      if ( self.config.viewport == window.document.documentElement ) {
+
+        return ( client < inner ) ? inner : client
+      }
 
       return client
     },
@@ -502,7 +505,7 @@ window.scrollReveal = (function( window ) {
           && ( elBottom - elHeight * vFactor > self.scrolled )
           || ( elem.domEl.currentStyle ? elem.domEl.currentStyle : window.getComputedStyle( elem.domEl, null ) ).position == 'fixed'
     },
- 
+
     isMobile: function() {
 
       var agent = navigator.userAgent || navigator.vendor || window.opera
@@ -542,7 +545,7 @@ window.scrollReveal = (function( window ) {
   /**
    * RequestAnimationFrame polyfill.
    */
-  _requestAnimFrame = (function () {
+  _requestAnimFrame = (function() {
 
     return window.requestAnimationFrame        ||
            window.webkitRequestAnimationFrame  ||
