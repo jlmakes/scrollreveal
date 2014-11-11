@@ -81,19 +81,19 @@ window.scrollReveal = (function( window ) {
 
     init: function() {
 
-      var id
+      var serial
         , elem
         , query
 
       query = Array.prototype.slice.call( self.config.viewport.querySelectorAll( '[data-sr]' ) )
       query.forEach(function ( el ) {
 
-        id = self.serial++
+        serial = self.serial++
 
         /**
          * Begin assembling a new object for our self.elems array.
          */
-        elem        = self.elems[ id ] = { domEl: el }
+        elem        = self.elems[ serial ] = { domEl: el }
         elem.config = self.configFactory( elem )
         elem.styles = self.styleFactory( elem )
         elem.seen   = false
@@ -529,17 +529,17 @@ window.scrollReveal = (function( window ) {
     }
   }
 
-  extend = function( a, b ) {
+  extend = function( target, src ) {
 
-    for ( var key in b ) {
+    for ( var prop in src ) {
 
-      if ( b.hasOwnProperty( key ) ) {
+      if ( src.hasOwnProperty( prop ) ) {
 
-        a[ key ] = b[ key ]
+        target[ prop ] = src[ prop ]
       }
     }
 
-    return a
+    return target
   }
 
   /**
