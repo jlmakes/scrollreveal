@@ -501,8 +501,8 @@ window.scrollReveal = (function( window ) {
         , elBottom = elTop + elHeight
         , vFactor  = elem.config.vFactor || 0
 
-      return ( elTop + elHeight * vFactor < self.scrolled + self.getViewportH() )
-          && ( elBottom - elHeight * vFactor > self.scrolled )
+      return ( elTop + elHeight * vFactor > self.scrolled )
+          && ( elBottom - elHeight * vFactor < self.scrolled + self.getViewportH() )
           || ( elem.domEl.currentStyle ? elem.domEl.currentStyle : window.getComputedStyle( elem.domEl, null ) ).position == 'fixed'
     },
 
