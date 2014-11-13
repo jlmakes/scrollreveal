@@ -17,6 +17,7 @@
     "gulp": "*",
     "gulp-uglify": "*",
     "gulp-wrap-umd": "*",
-    "gulp-rename": "~1.1.0"
+    "gulp-rename": "~1.1.0",
+    "gulp-livereload": "^2.1.1"
   }
 }
