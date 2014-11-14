@@ -208,6 +208,11 @@ window.scrollReveal = (function( window ) {
       self.blocked = false
     },
 
+    /**
+     * Parses an elements data-sr attribute, and returns a configuration object.
+     * @param {object} elem — An object from self.elems.
+     * @return {object}
+     */
     configFactory: function( elem ) {
 
       var parsed = {}
@@ -344,7 +349,7 @@ window.scrollReveal = (function( window ) {
       if ( config.enter  == 'left' || config.enter == 'right'  ) config.axis = 'X'
 
       /**
-       * Make sure to check for our custom hustle easing.
+       * Check for hustle easing.
        */
       if ( config.easing == 'hustle' ) config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )'
 
@@ -358,6 +363,11 @@ window.scrollReveal = (function( window ) {
 
     },
 
+    /**
+     * Generates styles based on an elements configuration property.
+     * @param {object} elem — An object from self.elems.
+     * @return {object}
+     */
     styleFactory: function( elem ) {
 
       var transition
@@ -385,7 +395,7 @@ window.scrollReveal = (function( window ) {
           '-webkit-backface-visibility: hidden; '
 
       /**
-       * Construct initial and target styles.
+       * Constructs initial and target styles.
        */
       build = function() {
 
@@ -414,7 +424,7 @@ window.scrollReveal = (function( window ) {
       build()
 
       /**
-       * And again for webkit…
+       * Build again for webkit.
        */
       initial += '-webkit-transform:'
       target  += '-webkit-transform:'
