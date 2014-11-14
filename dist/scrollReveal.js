@@ -15,7 +15,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.2
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.3
                                                         _/ |
                                                        |__/
 
@@ -39,22 +39,22 @@ window.scrollReveal = (function( window ) {
 
   function scrollReveal( config ) {
 
-      self         = this
-      self.elems   = {}
-      self.serial  = 1
-      self.blocked = false
-      self.config  = extend( self.defaults, config )
+    self         = this
+    self.elems   = {}
+    self.serial  = 1
+    self.blocked = false
+    self.config  = extend( self.defaults, config )
 
-      if ( self.isMobile() && !self.config.mobile ) return
+    if ( self.isMobile() && !self.config.mobile ) return
 
-      if ( self.config.viewport == window.document.documentElement ) {
+    if ( self.config.viewport == window.document.documentElement ) {
 
-        window.addEventListener( 'scroll', handler, false )
-        window.addEventListener( 'resize', handler, false )
+      window.addEventListener( 'scroll', handler, false )
+      window.addEventListener( 'resize', handler, false )
 
-      } else self.config.viewport.addEventListener( 'scroll', handler, false )
+    } else self.config.viewport.addEventListener( 'scroll', handler, false )
 
-      self.init()
+    self.init( true )
   }
 
   scrollReveal.prototype = {
@@ -90,124 +90,122 @@ window.scrollReveal = (function( window ) {
       complete: function( el ) {} // Note: reset animations do not complete.
     },
 
-    init: function() {
+    /**
+     * Queries the DOM, builds scrollReveal elements and triggers animation.
+     * @param {boolean} flag — a hook for controlling delay on first load.
+     */
+    init: function( flag ) {
 
-      var id
+      var serial
         , elem
         , query
 
       query = Array.prototype.slice.call( self.config.viewport.querySelectorAll( '[data-sr]' ) )
       query.forEach(function ( el ) {
 
-        id = self.serial++
+        serial      = self.serial++
+        elem        = self.elems[ serial ] = { domEl: el }
+        elem.config = self.configFactory( elem )
+        elem.styles = self.styleFactory( elem )
+        elem.seen   = false
 
-        /**
-         * If no data-sr-id attribute is found, begin assembling
-         * a new object for our self.elems array.
-         */
-        if ( !el.getAttribute( 'data-sr-id' ) ) {
+        el.removeAttribute( 'data-sr' )
+        el.setAttribute( 'style',
 
-          el.setAttribute( 'data-sr-id', id )
-
-          elem        = self.elems[ id ] = { domEl: el }
-          elem.config = self.configFactory( elem )
-          elem.styles = self.styleFactory( elem )
-          elem.seen   = false
-
-        } else if ( typeof( elem ) === 'undefined' ) {
-
-          throw 'Error: Multiple instances of scrollReveal are attempting to use the same viewport.'
-        }
-
-        /**
-         * Everything is setup, so add the initial styles.
-         */
-        el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
-
-        return
+            elem.styles.inline
+          + elem.styles.initial
+        )
       })
 
       self.scrolled = self.scrollY()
-      self.animate( true )
+      self.animate( flag )
     },
 
+    /**
+     * Applies and removes appropriate styles.
+     * @param {boolean} flag — a hook for controlling delay on first load.
+     */
     animate: function( flag ) {
 
-      var elem
+      var key
+        , elem
+        , visible
+        , complete
 
-      for ( var id in self.elems ) {
+      /**
+       * Cleans the DOM and removes completed elements from self.elems.
+       * @param {integer} key — self.elems property key.
+       */
+      complete = function( key ) {
 
-        elem = self.elems[ id ]
+        var elem = self.elems[ key ]
 
-        /**
-         * First, let’s skip any (non-reseting) elements that have completed their reveal.
-         */
-        if ( elem.domEl.getAttribute( 'data-sr-complete' ) ) {
+        setTimeout(function() {
 
-          delete self.elems[ id ]
-          continue
-        }
+          elem.domEl.setAttribute( 'style', elem.styles.inline )
+          elem.config.complete( elem.domEl )
+          delete self.elems[ key ]
 
-        /**
-         * If our element is visible, run through config.
-         */
-        if ( self.isElemInViewport( elem ) ) {
+        }, elem.styles.duration )
+      }
 
-          if ( self.config.delay == 'always'
-          || ( self.config.delay == 'onload' && flag )
-          || ( self.config.delay == 'once'   && !elem.seen ) ) {
+      /**
+       * Begin loop.
+       */
+      for ( key in self.elems ) {
+        if ( self.elems.hasOwnProperty( key ) ) {
 
-            elem.domEl.setAttribute( 'style',
+          elem    = self.elems[ key ]
+          visible = self.isElemInViewport( elem )
 
-                elem.styles.inline
-              + elem.styles.target
-              + elem.styles.transition
-            )
+          if ( visible ) {
+
+            if ( self.config.delay === 'always'
+            || ( self.config.delay === 'onload' && flag )
+            || ( self.config.delay === 'once'   && !elem.seen ) ) {
+
+              /**
+               * Use delay.
+               */
+              elem.domEl.setAttribute( 'style',
+
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.transition
+              )
+
+            } else {
+
+              /**
+               * Don’t use delay.
+               */
+              elem.domEl.setAttribute( 'style',
+
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.reset
+              )
+            }
 
             elem.seen = true
 
-          } else {
-
-            elem.domEl.setAttribute( 'style',
-
-                elem.styles.inline
-              + elem.styles.target
-              + elem.styles.reset
-            )
-          }
-
-          /**
-           * Reset is disabled for this element, so lets restore the style attribute
-           * to its pre-scrollReveal state after the animation completes.
-           */
-          if ( !elem.config.reset ) {
-
-            setTimeout(function () {
+            if ( !elem.config.reset && !elem.animating ) {
 
               /**
-               * Reset inline styles and fire callback.
+               * Reset is DISABLED for this element,
+               * so let’s count down to animation complete.
                */
-              elem.domEl.setAttribute( 'style', elem.styles.inline )
-              elem.domEl.setAttribute( 'data-sr-complete', true )
-              elem.config.complete( elem.domEl )
-              /**
-               * Reveal animation complete.
-               */
-
-            }, elem.styles.duration )
+              elem.animating = true
+              complete( key )
+            }
           }
 
-          continue
+          if ( !visible && elem.config.reset ) {
 
-        }
-
-        if ( !self.isElemInViewport( elem ) ) {
-
-          /**
-           * The element isn’t visible, so check if we should apply reset styles.
-           */
-          if ( elem.config.reset ) {
-
+            /**
+             * Reset is ENABLED for this element,
+             * so let’s apply its reset styles.
+             */
             elem.domEl.setAttribute( 'style',
 
                 elem.styles.inline
@@ -215,14 +213,17 @@ window.scrollReveal = (function( window ) {
               + elem.styles.reset
             )
           }
-
-          continue
         }
       }
 
       self.blocked = false
     },
 
+    /**
+     * Parses an elements data-sr attribute, and returns a configuration object.
+     * @param {object} elem — An object from self.elems.
+     * @return {object}
+     */
     configFactory: function( elem ) {
 
       var parsed = {}
@@ -359,7 +360,7 @@ window.scrollReveal = (function( window ) {
       if ( config.enter  == 'left' || config.enter == 'right'  ) config.axis = 'X'
 
       /**
-       * Make sure to check for our custom hustle easing.
+       * Check for hustle easing.
        */
       if ( config.easing == 'hustle' ) config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )'
 
@@ -373,6 +374,11 @@ window.scrollReveal = (function( window ) {
 
     },
 
+    /**
+     * Generates styles based on an elements configuration property.
+     * @param {object} elem — An object from self.elems.
+     * @return {object}
+     */
     styleFactory: function( elem ) {
 
       var transition
@@ -385,7 +391,7 @@ window.scrollReveal = (function( window ) {
       inline = ( elem.domEl.getAttribute( 'style' ) ) ? elem.domEl.getAttribute( 'style' ) + '; visibility: visible; ' : 'visibility: visible; '
 
       /**
-       * Want to disable delay on mobile devices? (uncomment the line below)
+       * Want to disable delay on mobile devices? Uncomment the line below.
        */
       //if ( self.isMobile() && self.config.mobile ) elem.config.wait = 0
 
@@ -400,7 +406,7 @@ window.scrollReveal = (function( window ) {
           '-webkit-backface-visibility: hidden; '
 
       /**
-       * Construct initial and target styles.
+       * Constructs initial and target styles.
        */
       build = function() {
 
@@ -429,7 +435,7 @@ window.scrollReveal = (function( window ) {
       build()
 
       /**
-       * And again for webkit…
+       * Build again for webkit.
        */
       initial += '-webkit-transform:'
       target  += '-webkit-transform:'
@@ -478,7 +484,10 @@ window.scrollReveal = (function( window ) {
       var client = self.config.viewport[ 'clientHeight' ]
         , inner  = window[ 'innerHeight' ]
 
-      if ( self.config.viewport == window.document.documentElement ) return ( client < inner ) ? inner : client
+      if ( self.config.viewport == window.document.documentElement ) {
+
+        return ( client < inner ) ? inner : client
+      }
 
       return client
     },
@@ -516,8 +525,8 @@ window.scrollReveal = (function( window ) {
         , elBottom = elTop + elHeight
         , vFactor  = elem.config.vFactor || 0
 
-      return ( elTop + elHeight * vFactor < self.scrolled + self.getViewportH() )
-          && ( elBottom - elHeight * vFactor > self.scrolled )
+      return ( elTop + elHeight * vFactor > self.scrolled )
+          && ( elBottom - elHeight * vFactor < self.scrolled + self.getViewportH() )
           || ( elem.domEl.currentStyle ? elem.domEl.currentStyle : window.getComputedStyle( elem.domEl, null ) ).position == 'fixed'
     },
 
@@ -544,23 +553,23 @@ window.scrollReveal = (function( window ) {
     }
   }
 
-  extend = function( a, b ) {
+  extend = function( target, src ) {
 
-    for ( var key in b ) {
+    for ( var prop in src ) {
 
-      if ( b.hasOwnProperty( key ) ) {
+      if ( src.hasOwnProperty( prop ) ) {
 
-        a[ key ] = b[ key ]
+        target[ prop ] = src[ prop ]
       }
     }
 
-    return a
+    return target
   }
 
   /**
    * RequestAnimationFrame polyfill.
    */
-  _requestAnimFrame = (function () {
+  _requestAnimFrame = (function() {
 
     return window.requestAnimationFrame        ||
            window.webkitRequestAnimationFrame  ||
