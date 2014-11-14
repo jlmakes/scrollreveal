@@ -43,7 +43,7 @@ window.scrollReveal = (function( window ) {
 
     } else self.config.viewport.addEventListener( 'scroll', handler, false )
 
-    self.init()
+    self.init( true )
   }
 
   scrollReveal.prototype = {
@@ -79,7 +79,11 @@ window.scrollReveal = (function( window ) {
       complete: function( el ) {} // Note: reset animations do not complete.
     },
 
-    init: function() {
+    /**
+     * Queries the DOM, builds scrollReveal elements and triggers animation.
+     * @param {boolean} flag — a hook for controlling delay on first load.
+     */
+    init: function( flag ) {
 
       var serial
         , elem
@@ -88,29 +92,22 @@ window.scrollReveal = (function( window ) {
       query = Array.prototype.slice.call( self.config.viewport.querySelectorAll( '[data-sr]' ) )
       query.forEach(function ( el ) {
 
-        serial = self.serial++
-
-        /**
-         * Begin assembling a new object for our self.elems array.
-         */
+        serial      = self.serial++
         elem        = self.elems[ serial ] = { domEl: el }
         elem.config = self.configFactory( elem )
         elem.styles = self.styleFactory( elem )
         elem.seen   = false
 
-        /**
-         * Everything is setup, so add the initial styles.
-         */
-        el.setAttribute( 'style', elem.styles.inline + elem.styles.initial )
-
-        /**
-         * Remove data-sr attribute to prevent querying initialized elements on subsequent init() calls
-         */
         el.removeAttribute( 'data-sr' )
+        el.setAttribute( 'style',
+
+            elem.styles.inline
+          + elem.styles.initial
+        )
       })
 
       self.scrolled = self.scrollY()
-      self.animate( true )
+      self.animate( flag )
     },
 
     /**
