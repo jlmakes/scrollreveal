@@ -113,83 +113,91 @@ window.scrollReveal = (function( window ) {
       self.animate( true )
     },
 
+    /**
+     * Applies and removes appropriate styles.
+     * @param {boolean} flag — a hook for controlling delay on first load.
+     */
     animate: function( flag ) {
 
-      var elem
+      var key
+        , elem
+        , visible
+        , complete
 
-      for ( var id in self.elems ) {
+      /**
+       * Cleans the DOM and removes completed elements from self.elems.
+       * @param {integer} key — self.elems property key.
+       */
+      complete = function( key ) {
 
-        elem = self.elems[ id ]
+        elem = self.elems[ key ]
 
-        /**
-         * First, let’s skip any (non-reseting) elements that have completed their reveal.
-         */
-        if ( elem.domEl.getAttribute( 'data-sr-complete' ) ) {
+        setTimeout(function() {
 
-          delete self.elems[ id ]
-          continue
-        }
+          elem.domEl.setAttribute( 'style', elem.styles.inline )
+          elem.config.complete( elem.domEl )
+          delete self.elems[ key ]
 
-        /**
-         * If our element is visible, run through config.
-         */
-        if ( self.isElemInViewport( elem ) ) {
+        }, elem.styles.duration )
+      }
 
-          if ( self.config.delay == 'always'
-          || ( self.config.delay == 'onload' && flag )
-          || ( self.config.delay == 'once'   && !elem.seen ) ) {
+      /**
+       * Begin loop.
+       */
+      for ( key in self.elems ) {
+        if ( self.elems.hasOwnProperty( key ) ) {
 
-            elem.domEl.setAttribute( 'style',
+          elem    = self.elems[ key ]
+          visible = self.isElemInViewport( elem )
 
-                elem.styles.inline
-              + elem.styles.target
-              + elem.styles.transition
-            )
+          if ( visible ) {
+
+            if ( self.config.delay === 'always'
+            || ( self.config.delay === 'onload' && flag )
+            || ( self.config.delay === 'once'   && !elem.seen ) ) {
+
+              /**
+               * Use delay.
+               */
+              elem.domEl.setAttribute( 'style',
+
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.transition
+              )
+
+            } else {
+
+              /**
+               * Don’t use delay.
+               */
+              elem.domEl.setAttribute( 'style',
+
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.reset
+              )
+            }
 
             elem.seen = true
 
-          } else {
-
-            elem.domEl.setAttribute( 'style',
-
-                elem.styles.inline
-              + elem.styles.target
-              + elem.styles.reset
-            )
-          }
-
-          /**
-           * Reset is disabled for this element, so lets restore the style attribute
-           * to its pre-scrollReveal state after the animation completes.
-           */
-          if ( !elem.config.reset ) {
-
-            setTimeout(function() {
+            if ( !elem.config.reset && !elem.animating ) {
 
               /**
-               * Reset inline styles and fire callback.
+               * Reset is DISABLED for this element,
+               * so let’s count down to animation complete.
                */
-              elem.domEl.setAttribute( 'style', elem.styles.inline )
-              elem.domEl.setAttribute( 'data-sr-complete', true )
-              elem.config.complete( elem.domEl )
-              /**
-               * Reveal animation complete.
-               */
-
-            }, elem.styles.duration )
+              elem.animating = true
+              complete( key )
+            }
           }
 
-          continue
+          if ( !visible && elem.config.reset ) {
 
-        }
-
-        if ( !self.isElemInViewport( elem ) ) {
-
-          /**
-           * The element isn’t visible, so check if we should apply reset styles.
-           */
-          if ( elem.config.reset ) {
-
+            /**
+             * Reset is ENABLED for this element,
+             * so let’s apply its reset styles.
+             */
             elem.domEl.setAttribute( 'style',
 
                 elem.styles.inline
@@ -197,8 +205,6 @@ window.scrollReveal = (function( window ) {
               + elem.styles.reset
             )
           }
-
-          continue
         }
       }
 
