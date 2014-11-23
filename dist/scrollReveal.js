@@ -15,7 +15,7 @@
     ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
    / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
    \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.4
+   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.0.5
                                                         _/ |
                                                        |__/
 
@@ -133,6 +133,23 @@ window.scrollReveal = (function( window ) {
         , complete
 
       /**
+       * Cleans the DOM and removes completed elements from self.elems.
+       * @param {integer} key — self.elems property key.
+       */
+      complete = function( key ) {
+
+        var elem = self.elems[ key ]
+
+        setTimeout(function() {
+
+          elem.domEl.setAttribute( 'style', elem.styles.inline )
+          elem.config.complete( elem.domEl )
+          delete self.elems[ key ]
+
+        }, elem.styles.duration )
+      }
+
+      /**
        * Begin loop.
        */
       for ( key in self.elems ) {
@@ -200,23 +217,6 @@ window.scrollReveal = (function( window ) {
       }
 
       self.blocked = false
-
-      /**
-       * Cleans the DOM and removes completed elements from self.elems.
-       * @param {integer} key — self.elems property key.
-       */
-      complete = function( key ) {
-
-        var elem = self.elems[ key ]
-
-        setTimeout(function() {
-
-          elem.domEl.setAttribute( 'style', elem.styles.inline )
-          elem.config.complete( elem.domEl )
-          delete self.elems[ key ]
-
-        }, elem.styles.duration )
-      }
     },
 
     /**
