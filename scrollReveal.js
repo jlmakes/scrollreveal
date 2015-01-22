@@ -60,6 +60,7 @@ window.scrollReveal = (function( window ) {
       easing:   'ease',
 
       scale:    { direction: 'up', power: '5%' },
+      rotate:   { x: 0, y: 0, z: 0, power: 0},
 
       opacity:  0,
       mobile:   false,
@@ -315,6 +316,17 @@ window.scrollReveal = (function( window ) {
             parsed.over = words[ i + 1 ]
             return
 
+          case 'pitch':
+          case 'yaw':
+          case 'roll':
+
+            parsed.rotate = {}
+            parsed.rotate.z = keyword === 'pitch'? 1 : 0
+            parsed.rotate.y = keyword === 'yaw'? 1 : 0
+            parsed.rotate.x = keyword === 'roll'? 1 : 0
+            parsed.rotate.power = words[ i + 1 ]
+            return
+
           case 'reset':
 
             if ( words[ i - 1 ] == 'no' ) parsed.reset = false
@@ -415,6 +427,12 @@ window.scrollReveal = (function( window ) {
 
           initial += ' scale(' + elem.config.scale.value + ')'
           target  += ' scale(1)'
+        }
+
+        if ( parseInt( elem.config.rotate.power ) != 0 ) {
+
+          initial += ' rotate3d(' + elem.config.rotate.x + ',' + elem.config.rotate.y + ',' + elem.config.rotate.z + ',' + elem.config.rotate.power + 'deg)'
+          target  += ' none'
         }
 
         initial += '; opacity: ' + elem.config.opacity + '; '
