@@ -60,7 +60,7 @@ window.scrollReveal = (function( window ){
       easing:   'ease',
 
       scale:    { direction: 'up', power: '5%' },
-      rotate:   { x: 0, y: 0, z: 0, power: 0},
+      rotate:   { x: 0, y: 0, z: 0 },
 
       opacity:  0,
       mobile:   false,
@@ -282,14 +282,18 @@ window.scrollReveal = (function( window ){
             break;
 
           case 'flip':
-          case 'spin':
-          case 'roll':
+            parsed.rotate   = parsed.rotate || {};
+            parsed.rotate.x = words[ i + 1 ];
+            break;
 
-            parsed.rotate       = {};
-            parsed.rotate.x     = ( keyword === 'flip' ) ? 1 : 0;
-            parsed.rotate.y     = ( keyword === 'spin' ) ? 1 : 0;
-            parsed.rotate.z     = ( keyword === 'roll' ) ? 1 : 0;
-            parsed.rotate.power = words[ i + 1 ];
+          case 'spin':
+            parsed.rotate   = parsed.rotate || {};
+            parsed.rotate.y = words[ i + 1 ];
+            break;
+
+          case 'roll':
+            parsed.rotate   = parsed.rotate || {};
+            parsed.rotate.z = words[ i + 1 ];
             break;
 
           case 'reset':
@@ -405,7 +409,7 @@ window.scrollReveal = (function( window ){
 
         if ( parseInt( cfg.scale.power ) !== 0 ){
 
-          if ( cfg.scale.direction === 'up'   ){
+          if ( cfg.scale.direction === 'up' ){
             cfg.scale.value = 1 - ( parseFloat( cfg.scale.power ) * 0.01 );
           } else if ( cfg.scale.direction === 'down' ){
             cfg.scale.value = 1 + ( parseFloat( cfg.scale.power ) * 0.01 );
@@ -415,9 +419,19 @@ window.scrollReveal = (function( window ){
           target  += ' scale(1)';
         }
 
-        if ( parseInt( cfg.rotate.power ) !== 0 ){
-          initial += ' rotate3d(' + cfg.rotate.x + ',' + cfg.rotate.y + ',' + cfg.rotate.z + ',' + cfg.rotate.power + ')';
-          target  += ' none';
+        if ( cfg.rotate.x ){
+          initial += ' rotateX(' + cfg.rotate.x + ')';
+          target  += ' rotateX(0)';
+        }
+
+        if ( cfg.rotate.y ){
+          initial += ' rotateY(' + cfg.rotate.y + ')';
+          target  += ' rotateY(0)';
+        }
+
+        if ( cfg.rotate.z ){
+          initial += ' rotateZ(' + cfg.rotate.z + ')';
+          target  += ' rotateZ(0)';
         }
 
         initial += '; opacity: ' + cfg.opacity + '; ';
