@@ -21,6 +21,7 @@ Please use which ever is most comfortable:
 - [Download ZIP](https://github.com/julianlloyd/scrollReveal.js/archive/master.zip)
 - `git clone https://github.com/julianlloyd/scrollReveal.js.git`
 - `bower install scrollReveal.js`
+- `npm install scrollreveal`
 
 Once you’ve got `scrollReveal.min.js` into your project’s JavaScript directory, let’s instantiate it!
 
