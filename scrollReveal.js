@@ -282,11 +282,13 @@ window.scrollReveal = (function( window ){
             break;
 
           case 'flip':
+          case 'pitch':
             parsed.rotate   = parsed.rotate || {};
             parsed.rotate.x = words[ i + 1 ];
             break;
 
           case 'spin':
+          case 'yaw':
             parsed.rotate   = parsed.rotate || {};
             parsed.rotate.y = words[ i + 1 ];
             break;
@@ -363,7 +365,7 @@ window.scrollReveal = (function( window ){
       var duration = ( parseFloat( cfg.over ) + parseFloat( cfg.wait ) ) * 1000;
 
       // Want to disable delay on mobile devices? Uncomment the line below.
-      // if ( self.isMobile() && self.config.mobile ) cfg.wait = 0
+      // if ( self.isMobile() && self.config.mobile ) cfg.wait = 0;
 
       if ( elem.domEl.getAttribute('style') ){
         inline = elem.domEl.getAttribute('style') + '; visibility: visible; ';
