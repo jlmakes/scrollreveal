@@ -1,5 +1,5 @@
 #scrollReveal.js
-[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.1.0-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.2.0-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ### Easily reveal elements as they enter the viewport.
 
@@ -44,7 +44,7 @@ Once you’ve got `scrollReveal.min.js` into your project’s JavaScript directo
 Basic Usage
 -----------
 
-How does it work? Just add `data-sr` to an element, and it will reveal as it enters the viewport.
+How does it work? Just add `data-sr` to an element, and it will reveal (using default values) as it enters the viewport.
 ```html
 <p data-sr> Chips Ahoy! </p>
 ```
@@ -52,16 +52,13 @@ How does it work? Just add `data-sr` to an element, and it will reveal as it ent
 Taking Control
 --------------
 
-You guessed it, the `data-sr` attribute is waiting for _you_ to describe the type of animation you want. It’s as simple as using a few **keywords** and natural language.
+To override default values, scrollReveal uses special **keyword** / **value** pairs (e.g. `move 50px`) allowing you to customize the animation style.
 ```html
-<div data-sr="enter left please, and hustle 20px"> Foo </div>
-<div data-sr="wait 2.5s and then ease-in-out 100px"> Bar </div>
-<div data-sr="enter bottom and scale up 20% over 2s"> Baz </div>
+<div data-sr="enter left, hustle 20px"> Foo </div>
+<div data-sr="wait 2.5s, ease-in-out 100px"> Bar </div>
+<div data-sr="move 16px scale up 20%, over 2s"> Baz </div>
+<div data-sr="enter bottom, roll 45deg, over 2s"> Bun </div>
 ```
-What you enter into the `data-sr` attribute is parsed for specific words:
-
-- **Keywords** that expect to be followed by a **value**. (e.g. move 50px)
-- **Sugar** (optional) for fun and comprehension. (e.g. and, then, please, etc.)
 
 ***
 

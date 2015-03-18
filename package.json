@@ -1,23 +1,27 @@
 {
-  "name": "scrollReveal.js",
-  "version": "2.1.0",
+  "name":        "scrollreveal",
+  "version":     "2.2.0",
   "description": "Easily reveal elements as they enter the viewport.",
-  "main": "dist/scrollReveal.js",
+  "homepage":    "http://scrollrevealjs.org",
+  "main":        "dist/scrollReveal.js",
+
   "repository": {
     "type": "git",
-    "url": "https://github.com/julianlloyd/scrollReveal.js.git"
+    "url":  "https://github.com/julianlloyd/scrollReveal.js.git"
   },
-  "author": "Julian Lloyd",
+
+  "author":  "Julian Lloyd",
   "license": "MIT",
+
   "bugs": {
     "url": "https://github.com/julianlloyd/scrollReveal.js/issues"
   },
-  "homepage": "http://scrollrevealjs.org",
+
   "devDependencies": {
-    "gulp": "*",
-    "gulp-uglify": "*",
-    "gulp-wrap-umd": "*",
-    "gulp-rename": "~1.1.0",
+    "gulp":            "*",
+    "gulp-uglify":     "*",
+    "gulp-wrap-umd":   "*",
+    "gulp-rename":     "~1.1.0",
     "gulp-livereload": "^2.1.1"
   }
 }
