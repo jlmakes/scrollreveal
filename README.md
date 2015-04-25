@@ -1,5 +1,5 @@
 #scrollReveal.js
-[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.2.0-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+[![scrollReveal version](http://img.shields.io/badge/scrollReveal.js-v2.3.0-brightgreen.svg)](http://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ### Easily reveal elements as they enter the viewport.
 
