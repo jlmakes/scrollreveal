@@ -337,10 +337,6 @@ window.scrollReveal = (function( window ){
         config.axis = 'X';
       }
 
-      if ( config.easing === 'hustle' ){
-        config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
-      }
-
       // Let’s make sure our our pixel distances are negative for top and left.
       // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
       if ( config.enter === 'top' || config.enter === 'left' ){
