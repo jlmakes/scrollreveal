@@ -321,6 +321,15 @@ window.scrollReveal = (function( window ){
             parsed.scale.power = words[ i + 1 ];
             break;
 
+          case 'vFactor':
+          case 'vF':
+            parsed.vFactor = words[ i + 1 ];
+            break;
+
+          case 'opacity':
+            parsed.opacity = words[ i + 1 ];
+            break;
+
           default:
             return;
         }
