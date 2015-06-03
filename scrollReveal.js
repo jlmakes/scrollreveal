@@ -25,6 +25,9 @@ window.scrollReveal = (function( window ){
   var self;
 
   function scrollReveal( config ){
+    if (!(this instanceof scrollReveal)) {
+      return new scrollReveal(config);
+    }
 
     self         = this;
     self.elems   = {};
