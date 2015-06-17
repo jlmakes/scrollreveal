@@ -5,7 +5,7 @@
 
  - Developed for modern browsers
  - **3.2KB** minified and Gzipped
- - An open-source project by [Julian Lloyd](https://twitter.com/julianlloyd)
+ - An open-source project by [Julian Lloyd](https://twitter.com/jlmakes)
 
 ***
 
