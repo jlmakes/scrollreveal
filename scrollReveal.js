@@ -1,56 +1,33 @@
 /*
-                       _ _ _____                      _   _
-                      | | |  __ \                    | | (_)
-    ___  ___ _ __ ___ | | | |__) |_____   _____  __ _| |  _ ___
-   / __|/ __| '__/ _ \| | |  _  // _ \ \ / / _ \/ _` | | | / __|
-   \__ \ (__| | | (_) | | | | \ \  __/\ V /  __/ (_| | |_| \__ \
-   |___/\___|_|  \___/|_|_|_|  \_\___| \_/ \___|\__,_|_(_) |___/ v2.3.2
-                                                        _/ |
-                                                       |__/
+                          ________                       __    _
+    ___________________  / / / __ \___ _   _____  ____ _/ /   (_)____
+   / ___/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /   / / ___/
+  (__  ) /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /   / (__  )
+ /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_(_)_/ /____/    v3.0.0
+                                                        /___/
+________________________________________________________________________________
 
-================================================================================
-
-   scrollReveal.js (c) 2015 Julian Lloyd ( @julianlloyd )
-   Licensed under MIT ( http://www.opensource.org/licenses/mit-license.php )
-
-==============================================================================*/
+   scrollReveal.js (c) 2015   •   Julian Lloyd ( @jlmakes )   •   MIT License
+______________________________________________________________________________*/
 
 window.scrollReveal = (function( window ){
 
   'use strict';
 
-  var _requestAnimFrame;
-  var _extend;
-  var _handler;
-  var self;
+  var _requestAnimFrame, _extend, _handler, self;
 
   function scrollReveal( config ){
 
-    if ( !( this instanceof scrollReveal ) ) {
-      return new scrollReveal( config );
+    self             = this;
+    self.elems       = [];
+    self.blocked     = false;
+    self.defaults    = _extend( self.defaults, config );
+    self.initialized = false;
+    self.viewports   = [ self.defaults.viewport ];
+
+    if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
+      self.clean();
     }
-
-    self         = this;
-    self.elems   = {};
-    self.serial  = 1;
-    self.blocked = false;
-    self.config  = _extend( self.defaults, config );
-
-    if ( self.isMobile() && !self.config.mobile || !self.isSupported() ){
-      self.destroy();
-      return;
-    }
-
-    if ( self.config.viewport === window.document.documentElement ){
-
-      window.addEventListener( 'scroll', _handler, false );
-      window.addEventListener( 'resize', _handler, false );
-
-    } else {
-      self.config.viewport.addEventListener( 'scroll', _handler, false );
-    }
-
-    self.init( true );
   }
 
   scrollReveal.prototype = {
@@ -84,275 +61,308 @@ window.scrollReveal = (function( window ){
       //        visible for its reveal animation to trigger.
       vFactor:  0.60,
 
-      complete: function( el ){} // Note: reset animations do not complete.
+      complete: function( domEl ){} // Note: reset animations do not complete.
     },
 
-    // Queries the DOM, builds scrollReveal elements and triggers animation.
-    // @param {boolean} flag — a hook for controlling delay on first load.
-    init: function( flag ){
+    init: function(){
 
-      var serial;
-      var elem;
-      var query;
+      var viewport, i = 0;
 
-      query = Array.prototype.slice.call( self.config.viewport.querySelectorAll('[data-sr]') );
-      query.forEach(function( el ){
+      for ( ; i < self.viewports.length; i++ ){
 
-        serial      = self.serial++;
-        elem        = self.elems[ serial ] = { domEl: el };
-        elem.config = self.configFactory( elem );
+        viewport = self.viewports[ i ];
+
+        if ( viewport === window.document.documentElement ){
+
+          window.addEventListener( 'scroll', _handler, false );
+          window.addEventListener( 'resize', _handler, false );
+
+        } else {
+          viewport.addEventListener( 'scroll', _handler, false );
+        }
+      }
+
+      self.reveal( '[data-sr]', self.defaults );
+      self.animate();
+    },
+
+    // Populates scrollReveal list of elements to be revealed.
+    reveal: function( selector, config ){
+
+      var elem, elems, i = 0;
+
+      elems =
+        Array
+          .prototype
+          .slice
+          .call( self.defaults.viewport.querySelectorAll( selector ) );
+
+      for ( ; i < elems.length; i++ ){
+
+        elem        = { domEl: elems[ i ] };
+        elem.config = self.configFactory( config );
         elem.styles = self.styleFactory( elem );
         elem.seen   = false;
 
-        el.removeAttribute('data-sr');
+        if ( self.viewports.indexOf( elem.config.viewport ) == -1 ){
+          self.viewports.push( elem.config.viewport );
+        }
 
-        el.setAttribute( 'style',
+        elem.domEl.removeAttribute('data-sr');
+
+        elem.domEl.setAttribute( 'style',
             elem.styles.inline
           + elem.styles.initial
         );
-      })
 
-      self.scrolled = self.scrollY();
-      self.animate( flag );
+        self.elems.push( elem );
+      }
     },
 
     // Applies and removes appropriate styles.
-    // @param {boolean} flag — a hook for controlling delay on first load.
-    animate: function( flag ){
+    animate: function(){
 
-      var key;
-      var elem;
-      var visible;
+      var elem, visible, i = 0;
+
+      self.scrolled = self.scrollY();
 
       // Begin element store digest.
-      for ( key in self.elems ){
-        if ( self.elems.hasOwnProperty( key ) ){
+      for ( ; i < self.elems.length; i++ ){
 
-          elem    = self.elems[ key ];
-          visible = self.isElemInViewport( elem );
+        elem    = self.elems[ i ];
+        visible = self.isElemInViewport( elem );
 
-          if ( visible ){
+        if ( visible ){
 
-            if ( self.config.delay === 'always'
-            || ( self.config.delay === 'onload' && flag )
-            || ( self.config.delay === 'once'   && !elem.seen ) ){
+          if ( elem.config.delay === 'always'
+          || ( elem.config.delay === 'onload' && !self.initialized )
+          || ( elem.config.delay === 'once'   && !elem.seen ) ){
 
-              // Use delay.
-              elem.domEl.setAttribute( 'style',
-                  elem.styles.inline
-                + elem.styles.target
-                + elem.styles.transition
-              );
-
-            } else {
-
-              // Don’t use delay.
-              elem.domEl.setAttribute( 'style',
-                  elem.styles.inline
-                + elem.styles.target
-                + elem.styles.reset
-              );
-            }
-
-            elem.seen = true;
-
-            if ( !elem.config.reset && !elem.animating ){
-              elem.animating = true;
-              complete( key );
-            }
-
-          } else if ( !visible && elem.config.reset ){
-
+            // Use delay.
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
-              + elem.styles.initial
+              + elem.styles.target
+              + elem.styles.transition
+            );
+
+          } else {
+
+            // Don’t use delay.
+            elem.domEl.setAttribute( 'style',
+                elem.styles.inline
+              + elem.styles.target
               + elem.styles.reset
             );
           }
+
+          elem.seen = true;
+
+          if ( !elem.config.reset && !elem.animating ){
+            elem.animating = true;
+            complete( i );
+          }
+
+        } else if ( !visible && elem.config.reset ){
+
+          elem.domEl.setAttribute( 'style',
+              elem.styles.inline
+            + elem.styles.initial
+            + elem.styles.reset
+          );
         }
       }
 
       // Digest complete, now un-block the event handler.
-      self.blocked = false;
+      self.initialized = true;
+      self.blocked     = false;
 
-      // Cleans the DOM and removes completed elements from self.elems.
-      // @param {integer} key — self.elems property key.
-      function complete( key ){
+      // Prunes completed elements from scrollReveal
+      function complete( i ){
 
-        var elem = self.elems[ key ];
+        var elem = self.elems[ i ];
 
         setTimeout(function(){
 
           elem.domEl.setAttribute( 'style', elem.styles.inline );
           elem.config.complete( elem.domEl );
-          delete self.elems[ key ];
+          delete self.elems[ i ];
 
         }, elem.styles.duration );
       }
     },
 
-    // Parses an elements data-sr attribute, and returns a configuration object.
-    // @param {object} elem — An object from self.elems.
-    // @return {object}
-    configFactory: function( elem ){
+    configFactory: function( data ){
 
-      var parsed = {};
-      var config = {};
-      var words  = elem.domEl.getAttribute('data-sr').split( /[, ]+/ );
+      var words, parsed = {}, config = {}, i = 0;
 
-      words.forEach(function( keyword, i ){
-        switch ( keyword ){
+      if ( !data ){
+        config = self.defaults;
+      }
 
-          case 'enter':
+      else if ( typeof data === 'object' && data.constructor == Object ){
+        config = _extend( self.defaults, data );
+      }
 
-            parsed.enter = words[ i + 1 ];
-            break;
+      else if ( typeof data === 'string' ){
 
-          case 'wait':
+        words = data.split( /[, ]+/ );
+        words.forEach(function( word, i ){
+          switch ( word ){
 
-            parsed.wait = words[ i + 1 ];
-            break;
+            case 'enter':
 
-          case 'move':
-
-            parsed.move = words[ i + 1 ];
-            break;
-
-          case 'ease':
-
-            parsed.move = words[ i + 1 ];
-            parsed.ease = 'ease';
-            break;
-
-          case 'ease-in':
-
-            if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-in';
+              parsed.enter = words[ i + 1 ];
               break;
-            }
 
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-in';
-            break;
+            case 'wait':
 
-          case 'ease-in-out':
-
-            if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-in-out';
+              parsed.wait = words[ i + 1 ];
               break;
-            }
 
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-in-out';
-            break;
+            case 'move':
 
-          case 'ease-out':
-
-            if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-out';
+              parsed.move = words[ i + 1 ];
               break;
-            }
 
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-out';
-            break;
+            case 'ease':
 
-          case 'hustle':
-
-            if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
+              parsed.move = words[ i + 1 ];
+              parsed.ease = 'ease';
               break;
-            }
 
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
-            break;
+            case 'ease-in':
 
-          case 'over':
+              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
 
-            parsed.over = words[ i + 1 ];
-            break;
+                parsed.scale.direction = words[ i + 1 ];
+                parsed.scale.power     = words[ i + 2 ];
+                parsed.easing          = 'ease-in';
+                break;
+              }
 
-          case 'flip':
-          case 'pitch':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.x = words[ i + 1 ];
-            break;
-
-          case 'spin':
-          case 'yaw':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.y = words[ i + 1 ];
-            break;
-
-          case 'roll':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.z = words[ i + 1 ];
-            break;
-
-          case 'reset':
-
-            if ( words[ i - 1 ] == 'no' ){
-              parsed.reset = false;
-            } else {
-              parsed.reset = true;
-            }
-            break;
-
-          case 'scale':
-
-            parsed.scale = {};
-
-            if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
+              parsed.move   = words[ i + 1 ];
+              parsed.easing = 'ease-in';
               break;
-            }
 
-            parsed.scale.power = words[ i + 1 ];
-            break;
+            case 'ease-in-out':
 
-          case 'vFactor':
-          case 'vF':
-            parsed.vFactor = words[ i + 1 ];
-            break;
+              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
 
-          case 'opacity':
-            parsed.opacity = words[ i + 1 ];
-            break;
+                parsed.scale.direction = words[ i + 1 ];
+                parsed.scale.power     = words[ i + 2 ];
+                parsed.easing          = 'ease-in-out';
+                break;
+              }
 
-          default:
-            return;
-        }
-      });
+              parsed.move   = words[ i + 1 ];
+              parsed.easing = 'ease-in-out';
+              break;
 
-      // Build default config object, then apply any keywords parsed from the
-      // data-sr attribute.
-      config = _extend( config, self.config );
-      config = _extend( config, parsed );
+            case 'ease-out':
 
-      if ( config.enter === 'top' || config.enter === 'bottom' ){
+              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+
+                parsed.scale.direction = words[ i + 1 ];
+                parsed.scale.power     = words[ i + 2 ];
+                parsed.easing          = 'ease-out';
+                break;
+              }
+
+              parsed.move   = words[ i + 1 ];
+              parsed.easing = 'ease-out';
+              break;
+
+            case 'hustle':
+
+              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+
+                parsed.scale.direction = words[ i + 1 ];
+                parsed.scale.power     = words[ i + 2 ];
+                parsed.easing          = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
+                break;
+              }
+
+              parsed.move   = words[ i + 1 ];
+              parsed.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
+              break;
+
+            case 'over':
+
+              parsed.over = words[ i + 1 ];
+              break;
+
+            case 'flip':
+            case 'pitch':
+              parsed.rotate   = parsed.rotate || {};
+              parsed.rotate.x = words[ i + 1 ];
+              break;
+
+            case 'spin':
+            case 'yaw':
+              parsed.rotate   = parsed.rotate || {};
+              parsed.rotate.y = words[ i + 1 ];
+              break;
+
+            case 'roll':
+              parsed.rotate   = parsed.rotate || {};
+              parsed.rotate.z = words[ i + 1 ];
+              break;
+
+            case 'reset':
+
+              if ( words[ i - 1 ] == 'no' ){
+                parsed.reset = false;
+              } else {
+                parsed.reset = true;
+              }
+              break;
+
+            case 'scale':
+
+              parsed.scale = {};
+
+              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+
+                parsed.scale.direction = words[ i + 1 ];
+                parsed.scale.power     = words[ i + 2 ];
+                break;
+              }
+
+              parsed.scale.power = words[ i + 1 ];
+              break;
+
+            case 'vFactor':
+            case 'vF':
+              parsed.vFactor = words[ i + 1 ];
+              break;
+
+            case 'opacity':
+              parsed.opacity = words[ i + 1 ];
+              break;
+
+            default:
+              return;
+          }
+        });
+
+        config = _extend( self.defaults, parsed );
+      }
+
+
+      if ( config.enter === 'top'
+        || config.enter === 'bottom' ){
+
         config.axis = 'Y';
-      } else if ( config.enter === 'left' || config.enter === 'right' ){
+
+      } else {
         config.axis = 'X';
       }
 
       // Let’s make sure our our pixel distances are negative for top and left.
       // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
-      if ( config.enter === 'top' || config.enter === 'left' ){
+      if ( config.enter === 'top'
+        || config.enter === 'left' ){
+
         config.move = '-' + config.move;
       }
 
@@ -374,7 +384,7 @@ window.scrollReveal = (function( window ){
       var duration = ( parseFloat( cfg.over ) + parseFloat( cfg.wait ) ) * 1000;
 
       // Want to disable delay on mobile devices? Uncomment the line below.
-      // if ( self.isMobile() && self.config.mobile ) cfg.wait = 0;
+      // if ( self.isMobile() && self.defaults.mobile ) cfg.wait = 0;
 
       if ( elem.domEl.getAttribute('style') ){
         inline = elem.domEl.getAttribute('style') + '; visibility: visible; ';
@@ -452,10 +462,10 @@ window.scrollReveal = (function( window ){
 
     getViewportH: function(){
 
-      var client = self.config.viewport['clientHeight'];
+      var client = self.defaults.viewport['clientHeight'];
       var inner  = window['innerHeight'];
 
-      if ( self.config.viewport === window.document.documentElement ){
+      if ( self.defaults.viewport === window.document.documentElement ){
         return ( client < inner ) ? inner : client;
       }
 
@@ -463,10 +473,10 @@ window.scrollReveal = (function( window ){
     },
 
     scrollY: function(){
-      if ( self.config.viewport === window.document.documentElement ){
+      if ( self.defaults.viewport === window.document.documentElement ){
         return window.pageYOffset;
       } else {
-        return self.config.viewport.scrollTop + self.config.viewport.offsetTop;
+        return self.defaults.viewport.scrollTop + self.defaults.viewport.offsetTop;
       }
     },
 
@@ -540,14 +550,10 @@ window.scrollReveal = (function( window ){
       return true;
     },
 
-    destroy: function(){
-
-      var node = self.config.viewport;
-      var query = Array.prototype.slice.call( node.querySelectorAll('[data-sr]') );
-
-      query.forEach(function( el ){
-        el.removeAttribute('data-sr');
-      });
+    clean: function(){
+      for ( var i = 0; i < self.elems.length; i++ ){
+        self.elems[ i ].domEl.removeAttribute('data-sr');
+      }
     }
   } // End of the scrollReveal prototype ======================================|
 
@@ -556,7 +562,6 @@ window.scrollReveal = (function( window ){
     if ( !self.blocked ){
 
       self.blocked  = true;
-      self.scrolled = self.scrollY();
 
       _requestAnimFrame(function(){
         self.animate();
