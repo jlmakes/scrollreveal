@@ -1,14 +1,14 @@
 /*
-                          ________                       __    _
-    ___________________  / / / __ \___ _   _____  ____ _/ /   (_)____
-   / ___/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /   / / ___/
-  (__  ) /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /   / (__  )
- /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_(_)_/ /____/    v3.0.0
-                                                        /___/
-________________________________________________________________________________
-
-   scrollReveal.js (c) 2015   •   Julian Lloyd ( @jlmakes )   •   MIT License
+                           ________                       __    _
+     ___________________  / / / __ \___ _   _____  ____ _/ /   (_)____
+    / ___/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /   / / ___/
+   (__  ) /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /   / (__  )
+  /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_(_)_/ /____/    v3.0.0
+                                                          /___/
 ______________________________________________________________________________*/
+
+// Open source under the MIT license.
+// Copyright 2015 Julian Lloyd (@jlmakes) All rights reserved.
 
 window.scrollReveal = (function( window ){
 
@@ -19,10 +19,11 @@ window.scrollReveal = (function( window ){
   function scrollReveal( config ){
 
     self             = this;
-    self.elems       = [];
+    self.elems       = {};
     self.blocked     = false;
     self.defaults    = _extend( self.defaults, config );
     self.initialized = false;
+    self.serial      = 1;
     self.viewports   = [ self.defaults.viewport ];
 
     if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
@@ -82,7 +83,7 @@ window.scrollReveal = (function( window ){
         }
       }
 
-      self.reveal( '[data-sr]', self.defaults );
+      self.reveal('[data-sr]');
       self.animate();
     },
 
@@ -99,7 +100,7 @@ window.scrollReveal = (function( window ){
 
       for ( ; i < elems.length; i++ ){
 
-        elem        = { domEl: elems[ i ] };
+        elem        = self.elems[ self.serial++ ] = { domEl: elems[ i ] };
         elem.config = self.configFactory( config );
         elem.styles = self.styleFactory( elem );
         elem.seen   = false;
@@ -114,61 +115,59 @@ window.scrollReveal = (function( window ){
             elem.styles.inline
           + elem.styles.initial
         );
-
-        self.elems.push( elem );
       }
     },
 
     // Applies and removes appropriate styles.
     animate: function(){
 
-      var elem, visible, i = 0;
-
-      self.scrolled = self.scrollY();
+      var elem, serial, visible;
 
       // Begin element store digest.
-      for ( ; i < self.elems.length; i++ ){
+      for ( serial in self.elems ){
+        if ( self.elems.hasOwnProperty( serial ) ){
 
-        elem    = self.elems[ i ];
-        visible = self.isElemInViewport( elem );
+          elem    = self.elems[ serial ];
+          visible = self.isElemInViewport( elem );
 
-        if ( visible ){
+          if ( visible ){
 
-          if ( elem.config.delay === 'always'
-          || ( elem.config.delay === 'onload' && !self.initialized )
-          || ( elem.config.delay === 'once'   && !elem.seen ) ){
+            elem.seen = true;
 
-            // Use delay.
+            if ( elem.config.delay === 'always'
+            || ( elem.config.delay === 'onload' && !self.initialized )
+            || ( elem.config.delay === 'once'   && !elem.seen ) ){
+
+              // Use delay.
+              elem.domEl.setAttribute( 'style',
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.transition
+              );
+
+            } else {
+
+              // Don’t use delay.
+              elem.domEl.setAttribute( 'style',
+                  elem.styles.inline
+                + elem.styles.target
+                + elem.styles.reset
+              );
+            }
+
+            if ( !elem.config.reset && !elem.animating ){
+              elem.animating = true;
+              complete( serial );
+            }
+
+          } else if ( !visible && elem.config.reset ){
+
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
-              + elem.styles.target
-              + elem.styles.transition
-            );
-
-          } else {
-
-            // Don’t use delay.
-            elem.domEl.setAttribute( 'style',
-                elem.styles.inline
-              + elem.styles.target
+              + elem.styles.initial
               + elem.styles.reset
             );
           }
-
-          elem.seen = true;
-
-          if ( !elem.config.reset && !elem.animating ){
-            elem.animating = true;
-            complete( i );
-          }
-
-        } else if ( !visible && elem.config.reset ){
-
-          elem.domEl.setAttribute( 'style',
-              elem.styles.inline
-            + elem.styles.initial
-            + elem.styles.reset
-          );
         }
       }
 
@@ -177,15 +176,15 @@ window.scrollReveal = (function( window ){
       self.blocked     = false;
 
       // Prunes completed elements from scrollReveal
-      function complete( i ){
+      function complete( serial ){
 
-        var elem = self.elems[ i ];
+        var elem = self.elems[ serial ];
 
         setTimeout(function(){
 
           elem.domEl.setAttribute( 'style', elem.styles.inline );
           elem.config.complete( elem.domEl );
-          delete self.elems[ i ];
+          delete self.elems[ serial ];
 
         }, elem.styles.duration );
       }
@@ -232,7 +231,8 @@ window.scrollReveal = (function( window ){
 
             case 'ease-in':
 
-              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+              if ( words[ i + 1 ] == 'up'
+                || words[ i + 1 ] == 'down' ){
 
                 parsed.scale.direction = words[ i + 1 ];
                 parsed.scale.power     = words[ i + 2 ];
@@ -246,7 +246,8 @@ window.scrollReveal = (function( window ){
 
             case 'ease-in-out':
 
-              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+              if ( words[ i + 1 ] == 'up'
+                || words[ i + 1 ] == 'down' ){
 
                 parsed.scale.direction = words[ i + 1 ];
                 parsed.scale.power     = words[ i + 2 ];
@@ -260,7 +261,8 @@ window.scrollReveal = (function( window ){
 
             case 'ease-out':
 
-              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+              if ( words[ i + 1 ] == 'up'
+                || words[ i + 1 ] == 'down' ){
 
                 parsed.scale.direction = words[ i + 1 ];
                 parsed.scale.power     = words[ i + 2 ];
@@ -274,7 +276,8 @@ window.scrollReveal = (function( window ){
 
             case 'hustle':
 
-              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+              if ( words[ i + 1 ] == 'up'
+                || words[ i + 1 ] == 'down' ){
 
                 parsed.scale.direction = words[ i + 1 ];
                 parsed.scale.power     = words[ i + 2 ];
@@ -321,7 +324,8 @@ window.scrollReveal = (function( window ){
 
               parsed.scale = {};
 
-              if ( words[ i + 1 ] == 'up' || words[ i + 1 ] == 'down' ){
+              if ( words[ i + 1 ] == 'up'
+                || words[ i + 1 ] == 'down' ){
 
                 parsed.scale.direction = words[ i + 1 ];
                 parsed.scale.power     = words[ i + 2 ];
@@ -460,39 +464,42 @@ window.scrollReveal = (function( window ){
       }
     },
 
-    getViewportH: function(){
+    getViewportH: function( viewport ){
 
-      var client = self.defaults.viewport['clientHeight'];
-      var inner  = window['innerHeight'];
+      var client   = viewport['clientHeight'];
+      var inner    = window['innerHeight'];
 
-      if ( self.defaults.viewport === window.document.documentElement ){
+      if ( viewport === window.document.documentElement ){
         return ( client < inner ) ? inner : client;
       }
 
       return client;
     },
 
-    scrollY: function(){
-      if ( self.defaults.viewport === window.document.documentElement ){
+    scrollY: function( elem ){
+
+      var viewport = elem.config.viewport;
+
+      if ( viewport === window.document.documentElement ){
         return window.pageYOffset;
       } else {
-        return self.defaults.viewport.scrollTop + self.defaults.viewport.offsetTop;
+        return viewport.scrollTop + viewport.offsetTop;
       }
     },
 
-    getOffset: function( el ){
+    getOffset: function( domEl ){
 
       var offsetTop  = 0;
       var offsetLeft = 0;
 
       do {
-        if ( !isNaN( el.offsetTop ) ){
-          offsetTop  += el.offsetTop;
+        if ( !isNaN( domEl.offsetTop ) ){
+          offsetTop  += domEl.offsetTop;
         }
-        if ( !isNaN( el.offsetLeft ) ){
-          offsetLeft += el.offsetLeft;
+        if ( !isNaN( domEl.offsetLeft ) ){
+          offsetLeft += domEl.offsetLeft;
         }
-      } while ( el = el.offsetParent );
+      } while ( domEl = domEl.offsetParent );
 
       return {
         top: offsetTop,
@@ -513,16 +520,15 @@ window.scrollReveal = (function( window ){
 
         var top        = elTop + elHeight * vFactor;
         var bottom     = elBottom - elHeight * vFactor;
-        var viewBottom = self.scrolled + self.getViewportH();
-        var viewTop    = self.scrolled;
+        var viewBottom = self.scrollY( elem ) + self.getViewportH( elem.config.viewport );
+        var viewTop    = self.scrollY( elem );
 
         return ( top < viewBottom ) && ( bottom > viewTop );
       }
 
       function isPositionFixed(){
 
-        var el    = elem.domEl;
-        var style = el.currentStyle || window.getComputedStyle( el, null );
+        var style = elem.domEl.currentStyle || window.getComputedStyle( elem.domEl, null );
 
         return style.position === 'fixed';
       }
