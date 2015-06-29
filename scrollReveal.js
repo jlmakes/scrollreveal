@@ -263,9 +263,8 @@ window.scrollReveal = (function( window ){
     else if ( typeof config === 'string' ){
 
       words = config.split( /[, ]+/ );
-
-      for( var i = 0; i < words.length; i++ ){
-        switch ( words[ i ] ){
+      words.forEach(function( word, i ){
+        switch ( word ){
 
           case 'enter':
 
@@ -406,11 +405,14 @@ window.scrollReveal = (function( window ){
           default:
             return;
         }
-      }
+      });
 
       config = _extendClone( self.defaults, parsed );
     }
 
+    if ( config.easing == 'hustle' ){
+      config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
+    }
 
     if ( config.enter === 'top'
       || config.enter === 'bottom' ){
