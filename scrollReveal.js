@@ -18,6 +18,7 @@ window.scrollReveal = (function( window ){
     , _extend
     , _extendClone
     , _handler
+    , _isDOMElement
     , _updateStore
     , self;
 
@@ -703,6 +704,13 @@ window.scrollReveal = (function( window ){
     }
 
     return clone;
+  };
+
+  _isDOMElement = function( obj ) {
+    return (
+      typeof HTMLElement === "object" ? obj instanceof HTMLElement : // DOM2
+      obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName==="string"
+    );
   };
 
   // Polyfill //////////////////////////////////////////////////////////////////
