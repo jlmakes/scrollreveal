@@ -24,12 +24,11 @@ window.scrollReveal = (function( window ){
 
   function scrollReveal( config ){
 
-    self = this; // Store reference to instance.
+    self = this;
 
     _extend( self.defaults, config );
 
     if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
-      // TODO: Refactor "shutdown" behavior.
       self.clean();
       return null;
     }
@@ -195,6 +194,7 @@ window.scrollReveal = (function( window ){
           || ( elem.config.delay === 'once'   && !elem.seen ) ){
 
             // Use delay.
+
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
               + elem.styles.target
@@ -204,6 +204,7 @@ window.scrollReveal = (function( window ){
           } else {
 
             // Don’t use delay.
+
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
               + elem.styles.target
@@ -212,6 +213,7 @@ window.scrollReveal = (function( window ){
           }
 
           // Our element is still animating, so lets trigger our callback.
+
           if ( !elem.config.reset && !elem.animating ){
             elem.animating = true;
             complete( key );
@@ -229,11 +231,13 @@ window.scrollReveal = (function( window ){
     }
 
     // Digest complete, now un-block the event handler.
+
     self.initialized = true;
     self.blocked     = false;
 
     // Prunes completed elements from scrollReveal.
     // TODO: Look into clearing lingering setTimeouts.
+
     function complete( key ){
 
       var elem = self.store.elements[ key ];
@@ -428,6 +432,7 @@ window.scrollReveal = (function( window ){
 
     // Let’s make sure our our pixel distances are negative for top and left.
     // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
+
     if ( config.enter === 'top'
       || config.enter === 'left' ){
 
@@ -647,7 +652,6 @@ window.scrollReveal = (function( window ){
     return true;
   };
 
-  // TODO: Review and refactor clean method... maybe move to private methods?
 
 
   scrollReveal.prototype.clean = function(){
