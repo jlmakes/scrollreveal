@@ -99,6 +99,8 @@ window.scrollReveal = (function( window ){
     }
 
     self.animate();
+
+    return self;
   };
 
 
