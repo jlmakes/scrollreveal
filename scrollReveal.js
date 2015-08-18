@@ -157,8 +157,8 @@ window.scrollReveal = (function( window ){
       // Now that we have an element, let’s update its
       // stored configuration and styles.
 
-      if ( elem.config && elem.config != {} ) _extend( elem.config, config )
-      else               elem.config = config;
+      elem.config = elem.config || {};
+      _extend( elem.config, config )
 
       elem.styles = self.styleFactory( elem );
 
