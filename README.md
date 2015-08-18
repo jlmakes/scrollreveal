@@ -8,4 +8,4 @@
 - No dependencies.
 - Fully documented and customizable.
 
-Made with ![love](http://i.imgur.com/JElWA2A.png) by [J.L. Makes](https://twitter.com/jlmakes).
+Made with ![love](http://i.imgur.com/oXJmdtz.gif) by [J.L. Makes](https://twitter.com/jlmakes).
