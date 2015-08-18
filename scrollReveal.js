@@ -93,7 +93,14 @@ window.scrollReveal = (function( window ){
 
       viewport = self.store.viewports[ i ];
 
-      viewport.addEventListener( 'scroll', _handler, false );
+      if ( viewport === window.document.documentElement ){
+        window.addEventListener( 'scroll', _handler, false );
+      }
+
+      else {
+        viewport.addEventListener( 'scroll', _handler, false );
+      }
+
       window.addEventListener( 'resize', _handler, false );
     }
 
@@ -245,6 +252,7 @@ window.scrollReveal = (function( window ){
       setTimeout(function(){
 
         elem.domEl.setAttribute( 'style', elem.styles.inline );
+        elem.domEl.removeAttribute( 'data-sr-id' );
         elem.config.complete( elem.domEl );
         delete self.store.elements[ key ];
 
