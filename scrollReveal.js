@@ -148,10 +148,10 @@ window.scrollReveal = (function( window ){
         // Otherwise, create a new element.
 
         elem.domEl = elems[ i ];
-        elem.id    = self.serial;
+        elem.id    = self.serial++;
         elem.seen  = false;
 
-        elem.domEl.setAttribute( 'data-sr-id', self.serial++ );
+        elem.domEl.setAttribute( 'data-sr-id', elem.id );
       }
 
       // Now that we have an element, let’s update its
