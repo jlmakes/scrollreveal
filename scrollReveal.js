@@ -157,7 +157,7 @@ window.scrollReveal = (function( window ){
       // Now that we have an element, let’s update its
       // stored configuration and styles.
 
-      if ( elem.config ) _extend( elem.config, config )
+      if ( elem.config && elem.config != {} ) _extend( elem.config, config )
       else               elem.config = config;
 
       elem.styles = self.styleFactory( elem );
@@ -264,17 +264,29 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.configFactory = function( config ){
+  scrollReveal.prototype.configFactory = function( config, ctx ){
 
     var words
+      , context
       , parsed = {};
 
-    if ( config == null ){
-      config = self.defaults;
+    // The default configuration is the default context, but in instances
+    // where we call sr.reveal() more than once on the same element set
+    // (perhaps to re-configure or override), we need to set the context
+    // to the element’s existing styles
+
+    if ( ctx == null ) context = self.defaults;
+
+    else if ( ctx && typeof ctx === 'object' && cfgContext.constructor == Object ){
+      context = ctx;
     }
 
+    // Now, we can carry on handling our config logic
+
+    if ( config == null ) config = context;
+
     else if ( typeof config === 'object' && config.constructor == Object ){
-      config = _extendClone( self.defaults, config );
+      config = _extendClone( context, config );
     }
 
     else if ( typeof config === 'string' ){
@@ -426,6 +438,8 @@ window.scrollReveal = (function( window ){
 
       config = _extendClone( self.defaults, parsed );
     }
+
+    // Now let’s prepare the configuration for CSS
 
     if ( config.easing == 'hustle' ){
       config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
