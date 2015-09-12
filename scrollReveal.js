@@ -167,17 +167,16 @@ window.scrollReveal = (function( window ){
       elem.config = self.configFactory( config, elem.config );
       elem.styles = self.styleFactory( elem );
 
-      // Update data store.
-      _updateElemStore( elem );
-
-      // TODO: Move this to the configFactory for when data-sr is parsed.
-      elem.domEl.removeAttribute('data-sr');
+      if ( selector == '[data-sr]' ){
+        elem.domEl.removeAttribute('data-sr');
+      }
 
       elem.domEl.setAttribute( 'style',
           elem.styles.inline
         + elem.styles.initial
       );
 
+      _updateElemStore( elem );
     }
 
     return self;
@@ -293,13 +292,15 @@ window.scrollReveal = (function( window ){
 
     // Confirm configuration
 
-    if ( config == null ) config = context;
+    if ( config == null ) {
 
-    else if ( typeof config === 'object' && config.constructor == Object ){
+      config = context;
+
+    } else if ( typeof config === 'object' && config.constructor == Object ){
+
       config = _extendClone( context, config );
-    }
 
-    else if ( typeof config === 'string' ){
+    } else if ( typeof config === 'string' ){
 
       words = config.split( /[, ]+/ );
       words.forEach(function( word, i ){
