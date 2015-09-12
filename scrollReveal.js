@@ -113,15 +113,22 @@ window.scrollReveal = (function( window ){
 
   scrollReveal.prototype.reveal = function( selector, config ){
 
-    var elem, elems;
+    var elem, elems, viewport;
 
-    config = self.configFactory( config );
+    if ( config && config.viewport ){
+
+      viewport = config.viewport;
+
+    } else {
+
+      viewport = self.defaults.viewport;
+    }
 
     elems =
       Array
         .prototype
         .slice
-        .call( config.viewport.querySelectorAll( selector ) );
+        .call( viewport.querySelectorAll( selector ) );
 
     // If no elements are found, display warning message in console and exit.
 
@@ -157,13 +164,11 @@ window.scrollReveal = (function( window ){
       // Now that we have an element, let’s update its
       // stored configuration and styles.
 
-      elem.config = elem.config || {};
-      _extend( elem.config, config )
-
+      elem.config = self.configFactory( config, elem.config );
       elem.styles = self.styleFactory( elem );
 
       // Update data store.
-      _updateStore( elem );
+      _updateElemStore( elem );
 
       // TODO: Move this to the configFactory for when data-sr is parsed.
       elem.domEl.removeAttribute('data-sr');
