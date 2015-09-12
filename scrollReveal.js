@@ -264,24 +264,29 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.configFactory = function( config, ctx ){
-
-    var words
-      , context
-      , parsed = {};
+  scrollReveal.prototype.configFactory = function( config, context ){
 
     // The default configuration is the default context, but in instances
     // where we call sr.reveal() more than once on the same element set
     // (perhaps to re-configure or override), we need to set the context
     // to the element’s existing styles
 
-    if ( ctx == null ) context = self.defaults;
+    var words
+      , parsed = {};
 
-    else if ( ctx && typeof ctx === 'object' && cfgContext.constructor == Object ){
-      context = ctx;
+    // Confirm our context
+
+    if ( context == null ){
+
+      context = self.defaults;
+
+    } else if ( context && typeof context !== 'object' || context.constructor != Object ){
+
+      context = self.defaults;
+      console.warn('configFactory: Invalid context object.')
     }
 
-    // Now, we can carry on handling our config logic
+    // Confirm configuration
 
     if ( config == null ) config = context;
 
@@ -436,7 +441,7 @@ window.scrollReveal = (function( window ){
         }
       });
 
-      config = _extendClone( self.defaults, parsed );
+      config = _extendClone( context, parsed );
     }
 
     // Now let’s prepare the configuration for CSS
