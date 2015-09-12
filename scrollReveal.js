@@ -19,7 +19,7 @@ window.scrollReveal = (function( window ){
     , _extendClone
     , _handler
     , _isDOMElement
-    , _updateStore
+    , _updateElemStore
     , self;
 
   function scrollReveal( config ){
@@ -40,7 +40,7 @@ window.scrollReveal = (function( window ){
 
     self.serial      = 1;     // Primary key for element store.
     self.blocked     = false; // Flag used to throttle scroll events.
-    self.initialized = false; // Flag used to for 'onload' delay styles.
+    self.initialized = false; // Flag used for 'onload' delay styles.
   }
 
 
@@ -94,16 +94,16 @@ window.scrollReveal = (function( window ){
       viewport = self.store.viewports[ i ];
 
       if ( viewport === window.document.documentElement ){
-        window.addEventListener( 'scroll', _handler, false );
-      }
 
-      else {
+        window.addEventListener( 'scroll', _handler, false );
+
+      } else {
+
         viewport.addEventListener( 'scroll', _handler, false );
       }
-
-      window.addEventListener( 'resize', _handler, false );
     }
 
+    window.addEventListener( 'resize', _handler, false );
     self.animate();
 
     return self;
@@ -688,7 +688,7 @@ window.scrollReveal = (function( window ){
 
 // Private Methods /////////////////////////////////////////////////////////////
 
-  _updateStore = function( elem ){
+  _updateElemStore = function( elem ){
 
     self.store.elements[ elem.id ] = elem;
 
@@ -736,7 +736,7 @@ window.scrollReveal = (function( window ){
     return clone;
   };
 
-  _isDOMElement = function( obj ) {
+  _isDOMElement = function( obj ){
     return (
       typeof HTMLElement === "object" ? obj instanceof HTMLElement : // DOM2
       obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName==="string"
