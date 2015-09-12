@@ -491,12 +491,13 @@ window.scrollReveal = (function( window ){
   scrollReveal.prototype.styleFactory = function( elem ){
 
     var initial
+      , inline
+      , original
       , reset
       , target
       , transition
 
       , config   = elem.config
-      , inline   = elem.domEl.getAttribute('style')
       , duration = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000;
 
     // You can customize ScrollReveal with mobile-only logic here, for example,
@@ -504,6 +505,17 @@ window.scrollReveal = (function( window ){
 
     if ( self.isMobile() && self.defaults.mobile ){
       // Stuff...
+    }
+
+    // Check if element already has generated styles
+
+    if ( !elem.styles ){
+
+      original = elem.domEl.getAttribute('style')
+
+    } else {
+
+      original = elem.styles.original;
     }
 
     // Since JavaScript runs after the page has begun rendering, it’s possible
@@ -514,8 +526,14 @@ window.scrollReveal = (function( window ){
     // so they load hidden, allowing ScrollReveal to overwrite visibility here.
     // TODO: Add link to Wiki tips section
 
-    if ( inline ) inline += '; visibility: visible; ';
-    else          inline = 'visibility: visible; ';
+    if ( original ){
+
+      inline = original + '; visibility: visible; ';
+
+    } else {
+
+      inline = 'visibility: visible; ';
+    }
 
     // Build unprefixed and webkit transition styles.
 
@@ -546,12 +564,13 @@ window.scrollReveal = (function( window ){
     generateStyles();
 
     return {
-      transition: transition,
+      duration:   duration,
       initial:    initial,
-      target:     target,
-      reset:      reset,
       inline:     inline,
-      duration:   duration
+      original:   original,
+      reset:      reset,
+      transition: transition,
+      target:     target
     };
 
     function generateStyles(){
