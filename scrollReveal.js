@@ -85,7 +85,7 @@ window.scrollReveal = (function( window ){
 
     // Register any inline ScrollReveal instructions.
 
-    self.reveal('[data-sr]');
+    self.reveal.call( self.init, '[data-sr]' );
 
     // Go through the viewport store, and bind event listeners.
 
@@ -114,6 +114,10 @@ window.scrollReveal = (function( window ){
   scrollReveal.prototype.reveal = function( selector, config ){
 
     var elem, elems, viewport;
+
+    if ( selector == '[data-sr]' && this != self.init ){
+      return console.warn('reveal(): invalid selector [data-sr] (reserved by system)');
+    }
 
     if ( config && config.viewport ){
 
@@ -164,12 +168,17 @@ window.scrollReveal = (function( window ){
       // Now that we have an element, let’s update its
       // stored configuration and styles.
 
-      elem.config = self.configFactory( config, elem.config );
-      elem.styles = self.styleFactory( elem );
+      if ( this == self.init ){
 
-      if ( selector == '[data-sr]' ){
+        elem.config = self.configFactory( elem.domEl.getAttribute('data-sr'), elem.config );
         elem.domEl.removeAttribute('data-sr');
+
+      } else {
+
+        elem.config = self.configFactory( config, elem.config );
       }
+
+      elem.styles = self.styleFactory( elem );
 
       elem.domEl.setAttribute( 'style',
           elem.styles.inline
