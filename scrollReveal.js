@@ -34,13 +34,13 @@ window.scrollReveal = (function( window ){
     }
 
     self.store = {
-      elements:  {}, // Element store to manage styles.
-      viewports: []  // Viewport store to manage event binding.
+      elements:  {}, // Element store to manage styles
+      viewports: []  // Viewport store to manage event binding
     };
 
-    self.serial      = 1;     // Primary key for element store.
-    self.blocked     = false; // Flag used to throttle scroll events.
-    self.initialized = false; // Flag used for 'onload' delay styles.
+    self.serial      = 1;     // Primary key for element store
+    self.blocked     = false; // Flag used to throttle scroll events
+    self.initialized = false; // Flag used for 'onload' delay styles
   }
 
 
@@ -61,20 +61,20 @@ window.scrollReveal = (function( window ){
     reset:    false,
 
     //        Expects a reference to a DOM node (the <html> node by default)
-    //        which is used as the context when checking element visibility.
+    //        which is used as the context when checking element visibility
     viewport: window.document.documentElement,
 
-    //        'always' — Delay every time an animation resets.
-    //        'onload' - Delay only for animations triggered by first load.
-    //        'once'   — Delay only the first time an animation reveals.
+    //        'always' — Delay every time an animation resets
+    //        'onload' - Delay only for animations triggered by first load
+    //        'once'   — Delay only the first time an animation reveals
     delay:    'once',
 
-    //        vFactor changes when an element is considered in the viewport.
+    //        vFactor changes when an element is considered in the viewport
     //        The default value of 0.60 means 60% of an element must be
-    //        visible for its reveal animation to trigger.
+    //        visible for its reveal animation to trigger
     vFactor:  0.60,
 
-    complete: function( domEl ){} // Note: reset animations will not "complete".
+    complete: function( domEl ){} // Note: reset animations will not "complete"
   };
 
 
@@ -83,11 +83,11 @@ window.scrollReveal = (function( window ){
 
     var viewport;
 
-    // Register any inline ScrollReveal instructions.
+    // Register any inline ScrollReveal instructions
 
     self.reveal.call( self.init, '[data-sr]' );
 
-    // Go through the viewport store, and bind event listeners.
+    // Go through the viewport store, and bind event listeners
 
     for ( var i = 0; i < self.store.viewports.length; i++ ){
 
@@ -134,7 +134,7 @@ window.scrollReveal = (function( window ){
         .slice
         .call( viewport.querySelectorAll( selector ) );
 
-    // If no elements are found, display warning message in console and exit.
+    // If no elements are found, display warning message in console and exit
 
     if ( elems.length == 0 && selector != '[data-sr]' ){
       console.warn( selector + " inside " + config.viewport + " returned 0 elements." );
@@ -149,7 +149,7 @@ window.scrollReveal = (function( window ){
       if ( id ){
 
         // If we find an element, populate our element
-        // with the object at that key in the data store.
+        // with the object at that key in the data store
 
         elem = self.store.elements[ id ];
       }
@@ -165,8 +165,7 @@ window.scrollReveal = (function( window ){
         elem.domEl.setAttribute( 'data-sr-id', elem.id );
       }
 
-      // Now that we have an element, let’s update its
-      // stored configuration and styles.
+      // Now that we have an element, let’s update its config and styles
 
       if ( this == self.init ){
 
@@ -199,7 +198,7 @@ window.scrollReveal = (function( window ){
       , key
       , visible;
 
-    // Begin element store digest.
+    // Begin element store digest
 
     for ( key in self.store.elements ){
       if ( self.store.elements.hasOwnProperty( key ) ){
@@ -215,7 +214,7 @@ window.scrollReveal = (function( window ){
           || ( elem.config.delay === 'onload' && !self.initialized )
           || ( elem.config.delay === 'once'   && !elem.seen ) ){
 
-            // Use delay.
+            // Use delay
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
@@ -225,7 +224,7 @@ window.scrollReveal = (function( window ){
 
           } else {
 
-            // Don’t use delay.
+            // Don’t use delay
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
@@ -234,7 +233,7 @@ window.scrollReveal = (function( window ){
             );
           }
 
-          // Our element is still animating, so lets trigger our callback.
+          // Our element is still animating, so lets trigger our callback
 
           if ( !elem.config.reset && !elem.animating ){
             elem.animating = true;
@@ -252,13 +251,13 @@ window.scrollReveal = (function( window ){
       }
     }
 
-    // Digest complete, now un-block the event handler.
+    // Digest complete, now un-block the event handler
 
     self.initialized = true;
     self.blocked     = false;
 
-    // Prunes completed elements from scrollReveal.
-    // TODO: Look into clearing lingering setTimeouts.
+    // Prunes completed elements from scrollReveal
+    // TODO: Look into clearing lingering setTimeouts
 
     function complete( key ){
 
@@ -475,7 +474,7 @@ window.scrollReveal = (function( window ){
     }
 
     // Let’s make sure our our pixel distances are negative for top and left.
-    // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS.
+    // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS
 
     if ( config.enter === 'top'
       || config.enter === 'left' ){
@@ -501,13 +500,13 @@ window.scrollReveal = (function( window ){
       , duration = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000;
 
     // You can customize ScrollReveal with mobile-only logic here, for example,
-    // change the starting opacity, or remove animation delay.
+    // change the starting opacity, or remove animation delay
 
     if ( self.isMobile() && self.defaults.mobile ){
       // Stuff...
     }
 
-    // Check if element already has generated styles
+    // Capture the original inline styles.
 
     if ( !elem.styles ){
 
@@ -520,11 +519,10 @@ window.scrollReveal = (function( window ){
 
     // Since JavaScript runs after the page has begun rendering, it’s possible
     // that elements will be seen before ScrollReveal can hide them during
-    // initialization.
+    // initialization
 
     // One technique is to apply `visibility: hidden` via CSS to your elements
-    // so they load hidden, allowing ScrollReveal to overwrite visibility here.
-    // TODO: Add link to Wiki tips section
+    // so they load hidden, allowing ScrollReveal to overwrite visibility here
 
     if ( original ){
 
@@ -535,28 +533,28 @@ window.scrollReveal = (function( window ){
       inline = 'visibility: visible; ';
     }
 
-    // Build unprefixed and webkit transition styles.
+    // Build unprefixed and webkit transition styles
 
     transition = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
                          'transition: transform '         + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
                 '-webkit-perspective: 1000;' +
         '-webkit-backface-visibility: hidden;';
 
-    // Build alternate transition styles with no delay, for animation resets.
+    // Build alternate transition styles with no delay, for animation resets
 
     reset      = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
                          'transition: transform '         + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
                 '-webkit-perspective: 1000; ' +
         '-webkit-backface-visibility: hidden; ';
 
-    // Create initial and target animation styles.
+    // Create initial and target animation styles
 
     initial = 'transform:';
     target  = 'transform:';
 
     generateStyles();
 
-    // Create initial and target animation styles again, for webkit browsers.
+    // Create initial and target animation styles again, for webkit browsers
 
     initial += '-webkit-transform:';
     target  += '-webkit-transform:';
