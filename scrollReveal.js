@@ -95,15 +95,15 @@ window.scrollReveal = (function( window ){
 
       if ( viewport === window.document.documentElement ){
 
-        window.addEventListener( 'scroll', _handler, false );
+        window.addEventListener( 'scroll', _handler, true );
 
       } else {
 
-        viewport.addEventListener( 'scroll', _handler, false );
+        viewport.addEventListener( 'scroll', _handler, true );
       }
     }
 
-    window.addEventListener( 'resize', _handler, false );
+    window.addEventListener( 'resize', _handler, true );
     self.animate();
 
     return self;
