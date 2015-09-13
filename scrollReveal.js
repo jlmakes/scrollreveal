@@ -257,10 +257,10 @@ window.scrollReveal = (function( window ){
       }
     }
 
-    // Digest complete, now un-block the event handler
+    // Unblock the event handler and register the first initialization
 
-    self.initialized = true;
     self.blocked     = false;
+    self.initialized = true;
 
     // Callback Handlers  //////////////////////////////////////////////////////
 
@@ -285,7 +285,7 @@ window.scrollReveal = (function( window ){
         elem.config.afterReveal( elem.domEl );
 
         // If reset is disabled for this element, we can safely assume this
-        // is its last animation and remove it from the ScrollReveal store.
+        // is its last animation and remove it from the ScrollReveal store
 
         if ( !elem.config.reset ){
 
@@ -300,17 +300,18 @@ window.scrollReveal = (function( window ){
       return elem.revealed = true;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+
     function queueResetCallback( elem ){
 
       var elapsed  = 0
         , duration = elem.styles.duration.reset;
 
       // Check if element already has a running timer, and capture the elapsed
-      // time so we can offset our reset animation duration.
+      // time so we can offset our reset animation duration
 
       if ( elem.timer ){
         elapsed = Math.abs( elem.timer.started - new Date() );
-        console.log( elapsed );
         clearTimeout( elem.timer.clock );
       }
 
