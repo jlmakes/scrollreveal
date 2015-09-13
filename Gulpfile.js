@@ -23,7 +23,7 @@ gulp.task( 'minify', function() {
 gulp.task( 'default', function() {
 
   livereload.listen()
-  gulp.watch([ 'dev/*.html', '*.js']).on( 'change', livereload.changed )
+  gulp.watch([ 'dev/*.html', '*.js' ]).on( 'change', livereload.changed )
 })
 
 gulp.task( 'build', [ 'wrap', 'minify' ])
