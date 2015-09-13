@@ -179,7 +179,6 @@ window.scrollReveal = (function( window ){
       if ( this == self.init ){
 
         elem.config = self.configFactory( elem.domEl.getAttribute('data-sr'), elem.config );
-        elem.domEl.removeAttribute('data-sr');
 
       } else {
 
@@ -283,15 +282,6 @@ window.scrollReveal = (function( window ){
 
         elem.domEl.setAttribute( 'style', elem.styles.inline );
         elem.config.afterReveal( elem.domEl );
-
-        // If reset is disabled for this element, we can safely assume this
-        // is its last animation and remove it from the ScrollReveal store
-
-        if ( !elem.config.reset ){
-
-          elem.domEl.removeAttribute( 'data-sr-id' );
-          delete self.store.elements[ key ];
-        }
 
         return elem.timer = null;
 
