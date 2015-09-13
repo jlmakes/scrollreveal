@@ -47,34 +47,39 @@ window.scrollReveal = (function( window ){
 
   scrollReveal.prototype.defaults = {
 
-    enter:    'bottom',
-    move:     '8px',
-    over:     '0.6s',
-    wait:     '0s',
-    easing:   'ease',
+    enter:       'bottom',
+    move:        '0px',
+    over:        '0.75s',
+    wait:        '0s',
+    easing:      'ease',
 
-    scale:    { direction: 'up', power: '5%' },
-    rotate:   { x: 0, y: 0, z: 0 },
+    scale:       { direction: 'up', power: '10%' },
+    rotate:      { x: 0, y: 0, z: 0 },
 
-    opacity:  0,
-    mobile:   true,
-    reset:    false,
+    opacity:     0,    // The starting opacity for reveal animations.
+    mobile:      true, // Controls whether or not reveals occur on mobile.
 
-    //        Expects a reference to a DOM node (the <html> node by default)
-    //        which is used as the context when checking element visibility
-    viewport: window.document.documentElement,
+    //           Controls whether or not reveal animations play each time the
+    //           element enters its viewport, or just once.
+    reset:       false,
 
-    //        'always' — Delay every time an animation resets
-    //        'onload' - Delay only for animations triggered by first load
-    //        'once'   — Delay only the first time an animation reveals
-    delay:    'once',
+    //           Expects a reference to a DOM node (the <html> node by default)
+    //           which is used as the context when checking element visibility
+    viewport:    window.document.documentElement,
 
-    //        vFactor changes when an element is considered in the viewport
-    //        The default value of 0.60 means 60% of an element must be
-    //        visible for its reveal animation to trigger
-    vFactor:  0.60,
+    //           'always' — Delay every time an animation resets
+    //           'onload' - Delay only for animations triggered by first load
+    //           'once'   — Delay only the first time an animation reveals
+    delay:       'once',
 
-    complete: function( domEl ){} // Note: reset animations will not "complete"
+    //           vFactor changes when an element is considered in the viewport
+    //           The default value of 0.60 means 60% of an element must be
+    //           visible for its reveal animation to trigger
+    vFactor:     0.60,
+
+    //           Callbacks:
+    afterReveal: function(){},
+    afterReset:  function(){}
   };
 
 
