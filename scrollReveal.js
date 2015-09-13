@@ -267,7 +267,7 @@ window.scrollReveal = (function( window ){
     function queueRevealCallback( elem ){
 
       var elapsed  = 0
-        , duration = ( parseFloat( elem.config.over ) + parseFloat( elem.config.wait ) ) * 1000;
+        , duration = elem.styles.duration.reveal;
 
       // Check if element already has a running timer, and capture the elapsed
       // time so we can offset our reveal animation duration.
@@ -303,7 +303,7 @@ window.scrollReveal = (function( window ){
     function queueResetCallback( elem ){
 
       var elapsed  = 0
-        , duration = parseFloat( elem.config.over ) * 1000;
+        , duration = elem.styles.duration.reset;
 
       // Check if element already has a running timer, and capture the elapsed
       // time so we can offset our reset animation duration.
@@ -543,6 +543,7 @@ window.scrollReveal = (function( window ){
     var initial
       , inline
       , config
+      , duration
       , original
       , reset
       , target
@@ -582,7 +583,14 @@ window.scrollReveal = (function( window ){
       inline = 'visibility: visible; ';
     }
 
-    config = elem.config;
+
+    // Calculate animation duration (in milliseconds)
+
+    config   = elem.config;
+    duration = {};
+
+    duration.reveal = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000
+    duration.reset  =   parseFloat( config.over ) * 1000;
 
     // Build unprefixed and webkit transition styles
 
@@ -613,12 +621,13 @@ window.scrollReveal = (function( window ){
     generateStyles();
 
     return {
-      initial:        initial,
-      inline:         inline,
-      original:       original,
-      reset:          reset,
-      transition:     transition,
-      target:         target
+      initial:    initial,
+      inline:     inline,
+      duration:   duration,
+      original:   original,
+      reset:      reset,
+      transition: transition,
+      target:     target
     };
 
     function generateStyles(){
