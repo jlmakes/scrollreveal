@@ -1,4 +1,4 @@
-# Ignore nonessential files and directories in production releases
+# Ignore nonessential files and directories for releases
 # See: http://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes#Exporting-Your-Repository
 
 .gitattributes export-ignore
