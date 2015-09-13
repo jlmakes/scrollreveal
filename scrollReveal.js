@@ -280,9 +280,7 @@ window.scrollReveal = (function( window ){
 
       elem.timer.clock = setTimeout(function(){
 
-        elem.domEl.setAttribute( 'style', elem.styles.inline );
         elem.config.afterReveal( elem.domEl );
-
         return elem.timer = null;
 
       }, duration - elapsed );
