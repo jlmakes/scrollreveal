@@ -125,7 +125,7 @@ window.scrollReveal = (function( window ){
     var elem, elems, viewport;
 
     if ( selector == '[data-sr]' && this != self.init ){
-      return console.warn('reveal(): invalid selector [data-sr] (reserved by system)');
+      return console.warn("Invalid selector [data-sr] passed to reveal method.");
     }
 
     if ( config && config.viewport ){
@@ -161,9 +161,8 @@ window.scrollReveal = (function( window ){
         // with the object at that key in the data store
 
         elem = self.store.elements[ id ];
-      }
 
-      else {
+      } else {
 
         // Otherwise, create a new element.
 
@@ -230,9 +229,8 @@ window.scrollReveal = (function( window ){
               + elem.styles.target
               + elem.styles.transition
             );
-          }
 
-          else {
+          } else {
 
             // Don’t use delay
 
@@ -250,7 +248,9 @@ window.scrollReveal = (function( window ){
             complete( key );
           }
 
-        } else if ( !visible && elem.config.reset ){
+        }
+
+        else if ( !visible && elem.config.reset ){
 
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
@@ -266,7 +266,6 @@ window.scrollReveal = (function( window ){
     self.initialized = true;
     self.blocked     = false;
 
-    // Prunes completed elements from scrollReveal
     // TODO: Look into clearing lingering setTimeouts
 
     function complete( key ){
@@ -280,7 +279,7 @@ window.scrollReveal = (function( window ){
         elem.config.complete( elem.domEl );
         delete self.store.elements[ key ];
 
-      }, elem.styles.duration );
+      }, elem.styles.revealDuration );
     }
   };
 
@@ -299,26 +298,24 @@ window.scrollReveal = (function( window ){
     // Confirm our context
 
     if ( context == null ){
-
       context = self.defaults;
+    }
 
-    } else if ( context && typeof context !== 'object' || context.constructor != Object ){
-
+    else if ( context && typeof context !== 'object' || context.constructor != Object ){
       context = self.defaults;
-      console.warn('configFactory: Invalid context object.')
     }
 
     // Confirm configuration
 
     if ( config == null ) {
-
       config = context;
+    }
 
-    } else if ( typeof config === 'object' && config.constructor == Object ){
-
+    else if ( typeof config === 'object' && config.constructor == Object ){
       config = _extendClone( context, config );
+    }
 
-    } else if ( typeof config === 'string' ){
+    else if ( typeof config === 'string' ){
 
       words = config.split( /[, ]+/ );
       words.forEach(function( word, i ){
@@ -506,8 +503,9 @@ window.scrollReveal = (function( window ){
       , target
       , transition
 
-      , config   = elem.config
-      , duration = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000;
+      , config         = elem.config
+      , revealDuration = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000
+      , resetDuration  = parseFloat( config.over ) * 1000;
 
     // You can customize ScrollReveal with mobile-only logic here, for example,
     // change the starting opacity, or remove animation delay
@@ -572,13 +570,14 @@ window.scrollReveal = (function( window ){
     generateStyles();
 
     return {
-      duration:   duration,
-      initial:    initial,
-      inline:     inline,
-      original:   original,
-      reset:      reset,
-      transition: transition,
-      target:     target
+      initial:        initial,
+      inline:         inline,
+      original:       original,
+      reset:          reset,
+      revealDuration: revealDuration,
+      resetDuration:  resetDuration,
+      transition:     transition,
+      target:         target
     };
 
     function generateStyles(){
@@ -641,8 +640,11 @@ window.scrollReveal = (function( window ){
   scrollReveal.prototype.getScrolled = function( viewport ){
 
     if ( viewport === window.document.documentElement ){
+
       return window.pageYOffset;
+
     } else {
+
       return viewport.scrollTop + viewport.offsetTop;
     }
   };
@@ -655,12 +657,15 @@ window.scrollReveal = (function( window ){
     var offsetLeft = 0;
 
     do {
+
       if ( !isNaN( domEl.offsetTop ) ){
         offsetTop  += domEl.offsetTop;
       }
+
       if ( !isNaN( domEl.offsetLeft ) ){
         offsetLeft += domEl.offsetLeft;
       }
+
     } while ( domEl = domEl.offsetParent );
 
     return {
