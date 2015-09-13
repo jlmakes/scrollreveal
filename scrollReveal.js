@@ -82,8 +82,8 @@ window.scrollReveal = (function( window ){
     vFactor:     0.60,
 
     //           Callbacks:
-    afterReveal: function(){},
-    afterReset:  function(){}
+    afterReveal: function( domEl ){},
+    afterReset:  function( domEl ){}
   };
 
 
