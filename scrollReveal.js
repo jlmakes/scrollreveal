@@ -166,9 +166,10 @@ window.scrollReveal = (function( window ){
 
         // Otherwise, create a new element.
 
-        elem.domEl = elems[ i ];
-        elem.id    = self.serial++;
-        elem.seen  = false;
+        elem.domEl    = elems[ i ];
+        elem.id       = self.serial++;
+        elem.seen     = false;
+        elem.revealed = false;
 
         elem.domEl.setAttribute( 'data-sr-id', elem.id );
       }
@@ -214,15 +215,13 @@ window.scrollReveal = (function( window ){
         elem    = self.store.elements[ key ];
         visible = self.isElemVisible( elem );
 
-        if ( visible ){
-
-          elem.seen = true;
+        if ( visible && !elem.revealed ){
 
           if ( elem.config.delay === 'always'
           || ( elem.config.delay === 'onload' && !self.initialized )
           || ( elem.config.delay === 'once'   && !elem.seen ) ){
 
-            // Use delay
+            // Use animation with delay
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
@@ -232,7 +231,7 @@ window.scrollReveal = (function( window ){
 
           } else {
 
-            // Don’t use delay
+            // Use animation without delay
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
@@ -241,22 +240,19 @@ window.scrollReveal = (function( window ){
             );
           }
 
-          // Our element is still animating, so lets trigger our callback
-
-          if ( !elem.config.reset && !elem.animating ){
-            elem.animating = true;
-            complete( key );
-          }
-
+          elem.seen = true;
+          queueRevealCallback( elem );
         }
 
-        else if ( !visible && elem.config.reset ){
+        else if ( !visible && elem.config.reset && elem.revealed ){
 
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.initial
             + elem.styles.reset
           );
+
+          queueResetCallback( elem );
         }
       }
     }
@@ -266,20 +262,68 @@ window.scrollReveal = (function( window ){
     self.initialized = true;
     self.blocked     = false;
 
-    // TODO: Look into clearing lingering setTimeouts
+    // Callback Handlers  //////////////////////////////////////////////////////
 
-    function complete( key ){
+    function queueRevealCallback( elem ){
 
-      var elem = self.store.elements[ key ];
+      var elapsed  = 0
+        , duration = ( parseFloat( elem.config.over ) + parseFloat( elem.config.wait ) ) * 1000;
 
-      setTimeout(function(){
+      // Check if element already has a running timer, and capture the elapsed
+      // time so we can offset our reveal animation duration.
+
+      if ( elem.timer ){
+        elapsed = Math.abs( elem.timer.started - new Date() );
+        clearTimeout( elem.timer.clock );
+      }
+
+      elem.timer = { started: new Date() };
+
+      elem.timer.clock = setTimeout(function(){
 
         elem.domEl.setAttribute( 'style', elem.styles.inline );
-        elem.domEl.removeAttribute( 'data-sr-id' );
-        elem.config.complete( elem.domEl );
-        delete self.store.elements[ key ];
+        elem.config.afterReveal( elem.domEl );
 
-      }, elem.styles.revealDuration );
+        // If reset is disabled for this element, we can safely assume this
+        // is its last animation and remove it from the ScrollReveal store.
+
+        if ( !elem.config.reset ){
+
+          elem.domEl.removeAttribute( 'data-sr-id' );
+          delete self.store.elements[ key ];
+        }
+
+        return elem.timer = null;
+
+      }, duration - elapsed );
+
+      return elem.revealed = true;
+    }
+
+    function queueResetCallback( elem ){
+
+      var elapsed  = 0
+        , duration = parseFloat( elem.config.over ) * 1000;
+
+      // Check if element already has a running timer, and capture the elapsed
+      // time so we can offset our reset animation duration.
+
+      if ( elem.timer ){
+        elapsed = Math.abs( elem.timer.started - new Date() );
+        console.log( elapsed );
+        clearTimeout( elem.timer.clock );
+      }
+
+      elem.timer = { started: new Date() };
+
+      elem.timer.clock = setTimeout(function(){
+
+        elem.config.afterReset( elem.domEl );
+        return elem.timer = null;
+
+      }, duration - elapsed );
+
+      return elem.revealed = false;
     }
   };
 
@@ -498,14 +542,11 @@ window.scrollReveal = (function( window ){
 
     var initial
       , inline
+      , config
       , original
       , reset
       , target
-      , transition
-
-      , config         = elem.config
-      , revealDuration = ( parseFloat( config.over ) + parseFloat( config.wait ) ) * 1000
-      , resetDuration  = parseFloat( config.over ) * 1000;
+      , transition;
 
     // You can customize ScrollReveal with mobile-only logic here, for example,
     // change the starting opacity, or remove animation delay
@@ -541,6 +582,8 @@ window.scrollReveal = (function( window ){
       inline = 'visibility: visible; ';
     }
 
+    config = elem.config;
+
     // Build unprefixed and webkit transition styles
 
     transition = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
@@ -574,8 +617,6 @@ window.scrollReveal = (function( window ){
       inline:         inline,
       original:       original,
       reset:          reset,
-      revealDuration: revealDuration,
-      resetDuration:  resetDuration,
       transition:     transition,
       target:         target
     };
