@@ -1,0 +1,7 @@
+# Ignore nonessential files and directories in production releases
+# See: http://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes#Exporting-Your-Repository
+
+.gitattributes export-ignore
+.gitignore export-ignore
+Gulpfile.js export-ignore
+scrollReveal.js
