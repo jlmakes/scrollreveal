@@ -29,7 +29,11 @@ window.scrollReveal = (function( window ){
     _extend( self.defaults, config );
 
     if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
-      self.clean();
+
+      // Remove any data-sr attributes found in the DOM and abort
+
+      self.cleanDOM();
+      console.warn('ScrollReveal instantiation aborted.');
       return null;
     }
 
@@ -226,8 +230,9 @@ window.scrollReveal = (function( window ){
               + elem.styles.target
               + elem.styles.transition
             );
+          }
 
-          } else {
+          else {
 
             // Don’t use delay
 
@@ -720,7 +725,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.clean = function(){
+  scrollReveal.prototype.cleanDOM = function(){
     for ( var key in self.store.elements ){
       if ( self.store.elements.hasOwnProperty( key ) ){
         self.store.elements[ key ].domEl.removeAttribute('data-sr data-sr-id');
