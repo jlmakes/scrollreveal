@@ -7,7 +7,7 @@
                                                          /___/
 ________________________________________________________________________________
 
-----  Copyright 2015 Julian Lloyd (@jlmakes) Open source under MIT license  ----
+      Copyright 2015 Julian Lloyd (@jlmakes) Open source under MIT license
 ______________________________________________________________________________*/
 
 window.scrollReveal = (function( window ){
@@ -272,12 +272,12 @@ window.scrollReveal = (function( window ){
 
       if ( elem.timer ){
         elapsed = Math.abs( elem.timer.started - new Date() );
-        clearTimeout( elem.timer.clock );
+        window.clearTimeout( elem.timer.clock );
       }
 
       elem.timer = { started: new Date() };
 
-      elem.timer.clock = setTimeout(function(){
+      elem.timer.clock = window.setTimeout(function(){
 
         elem.config[ callback ]( elem.domEl );
         elem.timer = null;
