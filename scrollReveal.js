@@ -240,7 +240,7 @@ window.scrollReveal = (function( window ){
           }
 
           elem.seen = true;
-          queueRevealCallback( elem );
+          queueCallback( 'reveal', elem );
         }
 
         else if ( !visible && elem.config.reset && elem.revealed ){
@@ -251,7 +251,7 @@ window.scrollReveal = (function( window ){
             + elem.styles.reset
           );
 
-          queueResetCallback( elem );
+          queueCallback( 'reset', elem );
         }
       }
     }
@@ -263,10 +263,11 @@ window.scrollReveal = (function( window ){
 
     // Callback Handlers  //////////////////////////////////////////////////////
 
-    function queueRevealCallback( elem ){
+    function queueCallback( type, elem ){
 
       var elapsed  = 0
-        , duration = elem.styles.duration.reveal;
+        , duration = elem.styles.duration[ type ]
+        , callback = "after" + type.charAt(0).toUpperCase() + type.slice(1);
 
       // Check if element already has a running timer, and capture the elapsed
       // time so we can offset our reveal animation duration.
@@ -280,39 +281,12 @@ window.scrollReveal = (function( window ){
 
       elem.timer.clock = setTimeout(function(){
 
-        elem.config.afterReveal( elem.domEl );
-        return elem.timer = null;
+        elem.config[ callback ]( elem.domEl );
+        elem.timer = null;
 
       }, duration - elapsed );
 
-      return elem.revealed = true;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-
-    function queueResetCallback( elem ){
-
-      var elapsed  = 0
-        , duration = elem.styles.duration.reset;
-
-      // Check if element already has a running timer, and capture the elapsed
-      // time so we can offset our reset animation duration
-
-      if ( elem.timer ){
-        elapsed = Math.abs( elem.timer.started - new Date() );
-        clearTimeout( elem.timer.clock );
-      }
-
-      elem.timer = { started: new Date() };
-
-      elem.timer.clock = setTimeout(function(){
-
-        elem.config.afterReset( elem.domEl );
-        return elem.timer = null;
-
-      }, duration - elapsed );
-
-      return elem.revealed = false;
+      return ( type == "reveal" ) ? elem.revealed = true : elem.revealed = false;
     }
   };
 
