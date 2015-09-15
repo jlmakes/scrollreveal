@@ -261,8 +261,6 @@ window.scrollReveal = (function( window ){
     self.blocked     = false;
     self.initialized = true;
 
-    // Callback Handlers  //////////////////////////////////////////////////////
-
     function queueCallback( type, elem ){
 
       var elapsed  = 0
@@ -270,7 +268,7 @@ window.scrollReveal = (function( window ){
         , callback = "after" + type.charAt(0).toUpperCase() + type.slice(1);
 
       // Check if element already has a running timer, and capture the elapsed
-      // time so we can offset our reveal animation duration.
+      // time so we can offset the animation duration
 
       if ( elem.timer ){
         elapsed = Math.abs( elem.timer.started - new Date() );
