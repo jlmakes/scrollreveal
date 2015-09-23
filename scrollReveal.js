@@ -1,16 +1,16 @@
 /*
-                           ________                       __    _
-     ___________________  / / / __ \___ _   _____  ____ _/ /   (_)____
-    / ___/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /   / / ___/
-   (__  ) /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /   / (__  )
-  /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_(_)_/ /____/    v3.0.0
-                                                         /___/
+           _____                 ________                       __
+          / ___/______________  / / / __ \___ _   _____  ____ _/ /
+          \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
+         ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
+        /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/   v3.0.0
+
 ________________________________________________________________________________
 
       Copyright 2015 Julian Lloyd (@jlmakes) Open source under MIT license
 ______________________________________________________________________________*/
 
-window.scrollReveal = (function( window ){
+window.ScrollReveal = (function( window ){
 
   'use strict';
 
@@ -22,7 +22,7 @@ window.scrollReveal = (function( window ){
     , _updateElemStore
     , self;
 
-  function scrollReveal( config ){
+  function ScrollReveal( config ){
 
     self = this;
 
@@ -49,9 +49,9 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.defaults = {
+  ScrollReveal.prototype.defaults = {
 
-    enter:       'bottom',
+    enter:       'bottom', // top, right, bottom, left
     move:        '0px',
     over:        '0.75s',
     wait:        '0s',
@@ -61,10 +61,10 @@ window.scrollReveal = (function( window ){
     rotate:      { x: 0, y: 0, z: 0 },
 
     opacity:     0,    // The starting opacity for reveal animations.
-    mobile:      true, // Controls whether or not reveals occur on mobile.
+    mobile:      true, // Controls whether or not reveals occur on mobile
 
     //           Controls whether or not reveal animations play each time the
-    //           element enters its viewport, or just once.
+    //           element enters its viewport, or just once
     reset:       false,
 
     //           Expects a reference to a DOM node (the <html> node by default)
@@ -88,7 +88,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.init = function(){
+  ScrollReveal.prototype.init = function(){
 
     var viewport;
 
@@ -120,7 +120,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.reveal = function( selector, config ){
+  ScrollReveal.prototype.reveal = function( selector, config ){
 
     var elem, elems, viewport;
 
@@ -200,7 +200,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.animate = function(){
+  ScrollReveal.prototype.animate = function(){
 
     var elem
       , key
@@ -290,7 +290,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.configFactory = function( config, context ){
+  ScrollReveal.prototype.configFactory = function( config, context ){
 
     // The default configuration is the default context, but in instances
     // where we call sr.reveal() more than once on the same element set
@@ -499,7 +499,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.styleFactory = function( elem ){
+  ScrollReveal.prototype.styleFactory = function( elem ){
 
     var initial
       , inline
@@ -634,7 +634,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.getViewportHeight = function( viewport ){
+  ScrollReveal.prototype.getViewportHeight = function( viewport ){
 
     var client = viewport['clientHeight'];
     var inner  = window['innerHeight'];
@@ -648,7 +648,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.getScrolled = function( viewport ){
+  ScrollReveal.prototype.getScrolled = function( viewport ){
 
     if ( viewport === window.document.documentElement ){
 
@@ -662,7 +662,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.getOffset = function( domEl ){
+  ScrollReveal.prototype.getOffset = function( domEl ){
 
     var offsetTop  = 0;
     var offsetLeft = 0;
@@ -687,7 +687,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.isElemVisible = function( elem ){
+  ScrollReveal.prototype.isElemVisible = function( elem ){
 
     var elHeight = elem.domEl.offsetHeight
       , elTop    = self.getOffset( elem.domEl ).top
@@ -715,7 +715,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.isMobile = function(){
+  ScrollReveal.prototype.isMobile = function(){
 
     var agent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -724,7 +724,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.isSupported = function(){
+  ScrollReveal.prototype.isSupported = function(){
 
     var sensor    = document.createElement('sensor')
       , cssPrefix = 'Webkit,Moz,O,'.split(',')
@@ -741,7 +741,7 @@ window.scrollReveal = (function( window ){
 
 
 
-  scrollReveal.prototype.cleanDOM = function(){
+  ScrollReveal.prototype.cleanDOM = function(){
     for ( var key in self.store.elements ){
       if ( self.store.elements.hasOwnProperty( key ) ){
         self.store.elements[ key ].domEl.removeAttribute('data-sr data-sr-id');
@@ -821,6 +821,6 @@ window.scrollReveal = (function( window ){
 
   //////////////////////////////////////////////////////////////////////////////
 
-  return scrollReveal;
+  return ScrollReveal;
 
 })( window );
