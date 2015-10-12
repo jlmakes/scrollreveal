@@ -1,7 +1,7 @@
 {
   "name":        "scrollreveal",
-  "description": "Easily reveal elements as they enter the viewport.",
-  "homepage":    "https://github.com/julianlloyd/scrollReveal.js",
+  "description": "Easy scroll animations for web and mobile browsers.",
+  "homepage":    "https://jlmak.es/scrollreveal",
   "main":        ["dist/scrollReveal.js"],
 
   "authors": ["Julian Lloyd"],
@@ -11,7 +11,8 @@
     "scroll",
     "reveal",
     "animation",
-    "JavaScript"
+    "javascript",
+    "mobile"
   ],
 
   "ignore": [

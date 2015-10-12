@@ -1,20 +1,20 @@
 {
   "name":        "scrollreveal",
-  "version":     "2.3.2",
-  "description": "Easily reveal elements as they enter the viewport.",
-  "homepage":    "http://scrollrevealjs.org",
+  "version":     "3.0.0",
+  "description": "Easy scroll animations for web and mobile browsers.",
+  "homepage":    "http://jlmak.es/scrollreveal",
   "main":        "dist/scrollReveal.js",
 
   "repository": {
     "type": "git",
-    "url":  "https://github.com/julianlloyd/scrollReveal.js.git"
+    "url":  "https://github.com/jlmakes/scrollreveal.git"
   },
 
   "author":  "Julian Lloyd",
   "license": "MIT",
 
   "bugs": {
-    "url": "https://github.com/julianlloyd/scrollReveal.js/issues"
+    "url": "https://github.com/jlmakes/scrollreveal/issues"
   },
 
   "devDependencies": {
