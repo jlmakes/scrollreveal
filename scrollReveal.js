@@ -112,7 +112,11 @@ window.ScrollReveal = (function( window ){
       }
     }
 
-    window.addEventListener( 'resize', _handler, true );
+    if ( !self.initialized ){
+      window.addEventListener( 'resize', _handler, true );
+      self.initialized = true;
+    }
+
     self.animate();
 
     return self;
@@ -258,8 +262,7 @@ window.ScrollReveal = (function( window ){
 
     // Unblock the event handler and register the first initialization
 
-    self.blocked     = false;
-    self.initialized = true;
+    self.blocked = false;
 
     function queueCallback( type, elem ){
 
