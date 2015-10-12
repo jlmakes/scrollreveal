@@ -2,8 +2,8 @@
   "name":        "scrollreveal",
   "version":     "3.0.0",
   "description": "Easy scroll animations for web and mobile browsers.",
-  "homepage":    "http://jlmak.es/scrollreveal",
-  "main":        "dist/scrollReveal.js",
+  "homepage":    "https://jlmak.es/scrollreveal",
+  "main":        "dist/ScrollReveal.js",
 
   "repository": {
     "type": "git",

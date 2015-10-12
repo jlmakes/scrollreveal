@@ -6,17 +6,17 @@ var gulp       = require( 'gulp' )
 
 gulp.task( 'wrap', function() {
 
-  gulp.src( 'scrollReveal.js' )
-    .pipe( umd({ namespace: 'scrollReveal', exports: 'scrollReveal' }) )
+  gulp.src( 'ScrollReveal.js' )
+    .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
     .pipe( gulp.dest( 'dist' ) )
 })
 
 gulp.task( 'minify', function() {
 
-  gulp.src( 'scrollReveal.js' )
-    .pipe( umd({ namespace: 'scrollReveal', exports: 'scrollReveal' }) )
+  gulp.src( 'ScrollReveal.js' )
+    .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
     .pipe( uglify() )
-    .pipe( rename( 'scrollReveal.min.js' ) )
+    .pipe( rename( 'ScrollReveal.min.js' ) )
     .pipe( gulp.dest( 'dist' ) )
 })
 
