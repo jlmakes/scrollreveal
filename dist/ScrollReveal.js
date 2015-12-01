@@ -29,7 +29,7 @@ window.ScrollReveal = (function( window ){
     , _extend
     , _extendClone
     , _handler
-    , _isDOMElement
+    , _isNode
     , _isObject
     , _updateElemStore
     , self;
@@ -65,11 +65,11 @@ window.ScrollReveal = (function( window ){
 
     enter:       'bottom', // top, right, bottom, left
     move:        '0px',
-    over:        '0.75s',
+    over:        '0.6s',
     wait:        '0s',
-    easing:      'ease',
+    easing:      'hustle', // ease, easeIn, easeOut, easeInOut, hustle, linear
 
-    scale:       { direction: 'up', power: '10%' },
+    scale:       { direction: 'up', power: '10%' }, // up, down
     rotate:      { x: 0, y: 0, z: 0 },
 
     opacity:     0,    // The starting opacity for reveal animations.
@@ -89,9 +89,9 @@ window.ScrollReveal = (function( window ){
     delay:       'once',
 
     //           vFactor changes when an element is considered in the viewport
-    //           The default value of 0.60 means 60% of an element must be
+    //           The default value of 0.35 means 35% of an element must be
     //           visible for its reveal animation to trigger
-    vFactor:     0.60,
+    vFactor:     0.35,
 
     //           Callbacks:
     afterReveal: function( domEl ){},
@@ -117,11 +117,8 @@ window.ScrollReveal = (function( window ){
       viewport = self.store.viewports[ i ];
 
       if ( viewport === window.document.documentElement ){
-
         window.addEventListener( 'scroll', _handler, true );
-
       } else {
-
         viewport.addEventListener( 'scroll', _handler, true );
       }
     }
@@ -150,7 +147,7 @@ window.ScrollReveal = (function( window ){
       viewport = self.defaults.viewport;
     }
 
-    if ( _isDOMElement( selector ) ){
+    if ( _isNode( selector ) ){
       elems = [ selector ];
     } else {
       elems = Array.prototype.slice.call( viewport.querySelectorAll( selector ) );
@@ -189,11 +186,8 @@ window.ScrollReveal = (function( window ){
       // Now that we have an element, let’s update its config and styles
 
       if ( this == self.init ){
-
         elem.config = self.configFactory( elem.domEl.getAttribute('data-sr'), elem.config );
-
       } else {
-
         elem.config = self.configFactory( config, elem.config );
       }
 
@@ -527,11 +521,8 @@ window.ScrollReveal = (function( window ){
     // Capture the original inline styles.
 
     if ( !elem.styles ){
-
       original = elem.domEl.getAttribute('style')
-
     } else {
-
       original = elem.styles.original;
     }
 
@@ -543,11 +534,8 @@ window.ScrollReveal = (function( window ){
     // so they load hidden, allowing ScrollReveal to overwrite visibility here
 
     if ( original ){
-
       inline = original + '; visibility: visible; ';
-
     } else {
-
       inline = 'visibility: visible; ';
     }
 
@@ -802,7 +790,6 @@ window.ScrollReveal = (function( window ){
   _handler = function( e ){
 
     if ( !self.blocked ){
-
       self.blocked = true;
       _requestAnimFrame( self.animate );
     }
@@ -839,7 +826,7 @@ window.ScrollReveal = (function( window ){
     return ( typeof obj === 'object' && obj.constructor == Object );
   };
 
-  _isDOMElement = function( obj ){
+  _isNode = function( obj ){
     return (
       typeof HTMLElement === "object" ? obj instanceof HTMLElement : // DOM2
       obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName==="string"
