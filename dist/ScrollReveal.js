@@ -145,15 +145,16 @@ window.ScrollReveal = (function( window ){
     }
 
     if ( config && config.viewport ){
-
       viewport = config.viewport;
-
     } else {
-
       viewport = self.defaults.viewport;
     }
 
-    elems = Array.prototype.slice.call( viewport.querySelectorAll( selector ) );
+    if ( _isDOMElement( selector ) ){
+      elems = [ selector ];
+    } else {
+      elems = Array.prototype.slice.call( viewport.querySelectorAll( selector ) );
+    }
 
     // If no elements are found, display warning message in console and exit
 
