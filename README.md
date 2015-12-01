@@ -1,10 +1,10 @@
-![ScrollReveal](https://jlmak.es/ScrollReveal/assets/logo.png)
+![ScrollReveal](https://jlmak.es/scrollreveal/assets/logo.png)
 
 ***
 
 #### Easy scroll animations for web and mobile browsers.
 
-[![ScrollReveal version](http://img.shields.io/badge/ScrollReveal.js-v3.0.0-2d2d2d.svg)](https://jlmak.es/ScrollReveal)
+[![ScrollReveal version](http://img.shields.io/badge/ScrollReveal.js-v3.0.0-2d2d2d.svg)](https://jlmak.es/scrollreveal)
 [![License](http://img.shields.io/badge/License-MIT-2d2d2d.svg)](http://opensource.org/licenses/MIT)
 
 - 3.9KB minified and Gzipped.
