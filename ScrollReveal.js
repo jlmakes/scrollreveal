@@ -159,8 +159,9 @@ window.ScrollReveal = (function( window ){
         // with the object at that key in the data store
 
         elem = self.store.elements[ id ];
+      }
 
-      } else {
+      else {
 
         // Otherwise, create a new element.
 
@@ -222,8 +223,9 @@ window.ScrollReveal = (function( window ){
               + elem.styles.transform.target
               + elem.styles.transition.delayed
             );
+          }
 
-          } else {
+          else {
 
             // Use animation without delay
 
@@ -470,8 +472,9 @@ window.ScrollReveal = (function( window ){
       || config.enter === 'bottom' ){
 
       config.axis = 'Y';
+    }
 
-    } else {
+    else {
       config.axis = 'X';
     }
 
@@ -652,8 +655,9 @@ window.ScrollReveal = (function( window ){
         x: window.pageXOffset,
         y: window.pageYOffset
       };
+    }
 
-    } else {
+    else {
       return {
         x: viewport.scrollLeft + viewport.offsetLeft,
         y: viewport.scrollTop + viewport.offsetTop
@@ -681,7 +685,7 @@ window.ScrollReveal = (function( window ){
     } while ( domEl = domEl.offsetParent );
 
     return {
-      top: offsetTop,
+      top:  offsetTop,
       left: offsetLeft
     };
   };
@@ -777,7 +781,6 @@ window.ScrollReveal = (function( window ){
   };
 
   _handler = function( e ){
-
     if ( !self.blocked ){
       self.blocked = true;
       _requestAnimFrame( self.animate );
@@ -789,15 +792,13 @@ window.ScrollReveal = (function( window ){
       if ( src.hasOwnProperty( prop ) ){
 
         if ( _isObject( src[ prop ] ) ){
-
           if ( !target[ prop ] || !_isObject( target[ prop ] ) ){
             target[ prop ] = {};
           }
-
           _extend( target[ prop ], src[ prop ] );
+        }
 
-        } else {
-
+        else {
           target[ prop ] = src[ prop ];
         }
       }
@@ -811,15 +812,15 @@ window.ScrollReveal = (function( window ){
     return _extend( _extend( clone, target ), src );
   };
 
-  _isObject = function( obj ){
-    return ( typeof obj === 'object' && obj.constructor == Object );
-  };
-
   _isNode = function( obj ){
     return (
       typeof HTMLElement === "object" ? obj instanceof HTMLElement : // DOM2
       obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName==="string"
     );
+  };
+
+  _isObject = function( obj ){
+    return ( typeof obj === 'object' && obj.constructor == Object );
   };
 
   // Polyfill //////////////////////////////////////////////////////////////////
