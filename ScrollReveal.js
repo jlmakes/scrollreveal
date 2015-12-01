@@ -630,7 +630,7 @@ window.ScrollReveal = (function( window ){
       }
 
       initial += '; opacity: ' + config.opacity + '; ';
-      target  += '; opacity: 1; ';
+      target  += '; opacity: ' + window.getComputedStyle( elem.domEl ).opacity; + '; ';
     }
   };
 
