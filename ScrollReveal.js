@@ -93,8 +93,10 @@ window.ScrollReveal = (function( window ){
     var viewport;
 
     // Register any inline ScrollReveal instructions
+    // and trigger reveal animationss.
 
     self.reveal.call( self.init, '[data-sr]' );
+    self.animate();
 
     // Go through the viewport store, and bind event listeners
 
@@ -116,8 +118,6 @@ window.ScrollReveal = (function( window ){
       window.addEventListener( 'resize', _handler, true );
       self.initialized = true;
     }
-
-    self.animate();
 
     return self;
   };
@@ -192,7 +192,7 @@ window.ScrollReveal = (function( window ){
 
       elem.domEl.setAttribute( 'style',
           elem.styles.inline
-        + elem.styles.initial
+        + elem.styles.transform.initial
       );
 
       _updateElemStore( elem );
@@ -227,8 +227,8 @@ window.ScrollReveal = (function( window ){
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
-              + elem.styles.target
-              + elem.styles.transition
+              + elem.styles.transform.target
+              + elem.styles.transition.delayed
             );
 
           } else {
@@ -237,8 +237,8 @@ window.ScrollReveal = (function( window ){
 
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
-              + elem.styles.target
-              + elem.styles.reset
+              + elem.styles.transform.target
+              + elem.styles.transition.instant
             );
           }
 
@@ -250,8 +250,8 @@ window.ScrollReveal = (function( window ){
 
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
-            + elem.styles.initial
-            + elem.styles.reset
+            + elem.styles.transform.initial
+            + elem.styles.transition.instant
           );
 
           queueCallback( 'reset', elem );
@@ -503,14 +503,14 @@ window.ScrollReveal = (function( window ){
 
   ScrollReveal.prototype.styleFactory = function( elem ){
 
-    var initial
-      , inline
+    var inline
       , config
       , duration
+      , elOpacity
       , original
-      , reset
-      , target
-      , transition;
+
+      , transform  = {}
+      , transition = {};
 
     // You can customize ScrollReveal with mobile-only logic here, for example,
     // change the starting opacity, or remove animation delay
@@ -546,6 +546,13 @@ window.ScrollReveal = (function( window ){
       inline = 'visibility: visible; ';
     }
 
+    // Retrieve the computed opacity
+
+    if ( !elem.opacity ){
+      elem.opacity = window.getComputedStyle( elem.domEl ).getPropertyValue('opacity');
+    }
+
+    elOpacity = elem.opactiy;
 
     // Calculate animation duration (in milliseconds)
 
@@ -557,47 +564,43 @@ window.ScrollReveal = (function( window ){
 
     // Build unprefixed and webkit transition styles
 
-    transition = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
-                         'transition: transform '         + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
-                '-webkit-perspective: 1000;' +
-        '-webkit-backface-visibility: hidden;';
+    transition.delayed = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
+                                 'transition: transform '         + config.over + ' ' + config.easing + ' ' + config.wait + ', opacity ' + config.over + ' ' + config.easing + ' ' + config.wait + '; ' +
+                        '-webkit-perspective: 1000;' +
+                '-webkit-backface-visibility: hidden;';
 
-    // Build alternate transition styles with no delay, for animation resets
-
-    reset      = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
-                         'transition: transform '         + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
-                '-webkit-perspective: 1000; ' +
-        '-webkit-backface-visibility: hidden; ';
+    transition.instant = '-webkit-transition: -webkit-transform ' + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
+                                 'transition: transform '         + config.over + ' ' + config.easing + ' 0s, opacity ' + config.over + ' ' + config.easing + ' 0s; ' +
+                        '-webkit-perspective: 1000; ' +
+                '-webkit-backface-visibility: hidden; ';
 
     // Create initial and target animation styles
 
-    initial = 'transform:';
-    target  = 'transform:';
+    transform.initial = 'transform:';
+    transform.target  = 'transform:';
 
-    generateStyles();
+    generateStyles( transform );
 
     // Create initial and target animation styles again, for webkit browsers
 
-    initial += '-webkit-transform:';
-    target  += '-webkit-transform:';
+    transform.initial += '-webkit-transform:';
+    transform.target  += '-webkit-transform:';
 
-    generateStyles();
+    generateStyles( transform );
 
     return {
-      initial:    initial,
       inline:     inline,
       duration:   duration,
       original:   original,
-      reset:      reset,
-      transition: transition,
-      target:     target
+      transform:  transform,
+      transition: transition
     };
 
-    function generateStyles(){
+    function generateStyles(t){
 
       if ( parseInt( config.move ) !== 0 ){
-        initial += ' translate' + config.axis + '(' + config.move + ')';
-        target  += ' translate' + config.axis + '(0)';
+        t.initial += ' translate' + config.axis + '(' + config.move + ')';
+        t.target  += ' translate' + config.axis + '(0)';
       }
 
       if ( parseInt( config.scale.power ) !== 0 ){
@@ -610,27 +613,27 @@ window.ScrollReveal = (function( window ){
           config.scale.value = 1 + ( parseFloat( config.scale.power ) * 0.01 );
         }
 
-        initial += ' scale(' + config.scale.value + ')';
-        target  += ' scale(1)';
+        t.initial += ' scale(' + config.scale.value + ')';
+        t.target  += ' scale(1)';
       }
 
       if ( config.rotate.x ){
-        initial += ' rotateX(' + config.rotate.x + ')';
-        target  += ' rotateX(0)';
+        t.initial += ' rotateX(' + config.rotate.x + ')';
+        t.target  += ' rotateX(0)';
       }
 
       if ( config.rotate.y ){
-        initial += ' rotateY(' + config.rotate.y + ')';
-        target  += ' rotateY(0)';
+        t.initial += ' rotateY(' + config.rotate.y + ')';
+        t.target  += ' rotateY(0)';
       }
 
       if ( config.rotate.z ){
-        initial += ' rotateZ(' + config.rotate.z + ')';
-        target  += ' rotateZ(0)';
+        t.initial += ' rotateZ(' + config.rotate.z + ')';
+        t.target  += ' rotateZ(0)';
       }
 
-      initial += '; opacity: ' + config.opacity + '; ';
-      target  += '; opacity: ' + window.getComputedStyle( elem.domEl ).opacity + '; ';
+      t.initial += '; opacity: ' + config.opacity + '; ';
+      t.target  += '; opacity: ' + elOpacity + '; ';
     }
   };
 
