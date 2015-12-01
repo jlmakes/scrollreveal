@@ -732,10 +732,10 @@ window.ScrollReveal = (function( window ){
         , viewLeft   = scrolled.x
         , viewRight  = viewLeft + viewport.width;
 
-      return ( top < viewBottom )
-          && ( bottom > viewTop )
-          && ( left > viewLeft )
-          && ( right < viewRight );
+      return ( top    < viewBottom )
+          && ( bottom > viewTop    )
+          && ( left   > viewLeft   )
+          && ( right  < viewRight  );
     }
 
     function isPositionFixed(){
