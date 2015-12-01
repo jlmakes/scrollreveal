@@ -30,6 +30,7 @@ window.ScrollReveal = (function( window ){
     , _extendClone
     , _handler
     , _isDOMElement
+    , _isObject
     , _updateElemStore
     , self;
 
@@ -311,11 +312,7 @@ window.ScrollReveal = (function( window ){
 
     // Confirm our context
 
-    if ( context == null ){
-      context = self.defaults;
-    }
-
-    else if ( context && typeof context !== 'object' || context.constructor != Object ){
+    if ( context == null || !_isObject( context ) ){
       context = self.defaults;
     }
 
@@ -325,7 +322,7 @@ window.ScrollReveal = (function( window ){
       config = context;
     }
 
-    else if ( typeof config === 'object' && config.constructor == Object ){
+    else if ( _isObject( config ) ){
       config = _extendClone( context, config );
     }
 
@@ -743,10 +740,10 @@ window.ScrollReveal = (function( window ){
         , viewLeft   = scrolled.x
         , viewRight  = viewLeft + viewport.width;
 
-      return ( top < viewBottom )
-          && ( bottom > viewTop )
-          && ( left > viewLeft )
-          && ( right < viewRight );
+      return ( top    < viewBottom )
+          && ( bottom > viewTop    )
+          && ( left   > viewLeft   )
+          && ( right  < viewRight  );
     }
 
     function isPositionFixed(){
@@ -811,10 +808,21 @@ window.ScrollReveal = (function( window ){
   };
 
   _extend = function( target, src ){
-
     for ( var prop in src ){
       if ( src.hasOwnProperty( prop ) ){
-        target[ prop ] = src[ prop ];
+
+        if ( _isObject( src[ prop ] ) ){
+
+          if ( !target[ prop ] || !_isObject( target[ prop ] ) ){
+            target[ prop ] = {};
+          }
+
+          _extend( target[ prop ], src[ prop ] );
+
+        } else {
+
+          target[ prop ] = src[ prop ];
+        }
       }
     }
 
@@ -822,22 +830,12 @@ window.ScrollReveal = (function( window ){
   };
 
   _extendClone = function( target, src ){
-
     var clone = {};
+    return _extend( _extend( clone, target ), src );
+  };
 
-    for ( var prop in target ){
-      if ( target.hasOwnProperty( prop ) ){
-        clone[ prop ] = target[ prop ];
-      }
-    }
-
-    for ( var prop in src ){
-      if ( src.hasOwnProperty( prop ) ){
-        clone[ prop ] = src[ prop ];
-      }
-    }
-
-    return clone;
+  _isObject = function( obj ){
+    return ( typeof obj === 'object' && obj.constructor == Object );
   };
 
   _isDOMElement = function( obj ){
