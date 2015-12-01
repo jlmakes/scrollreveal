@@ -141,11 +141,7 @@ window.ScrollReveal = (function( window ){
       viewport = self.defaults.viewport;
     }
 
-    elems =
-      Array
-        .prototype
-        .slice
-        .call( viewport.querySelectorAll( selector ) );
+    elems = Array.prototype.slice.call( viewport.querySelectorAll( selector ) );
 
     // If no elements are found, display warning message in console and exit
 
@@ -549,7 +545,7 @@ window.ScrollReveal = (function( window ){
     // Retrieve the computed opacity
 
     if ( !elem.opacity ){
-      elem.opacity = window.getComputedStyle( elem.domEl ).getPropertyValue('opacity');
+      elem.opacity = window.getComputedStyle( elem.domEl ).opacity
     }
 
     elOpacity = elem.opactiy;
@@ -736,12 +732,14 @@ window.ScrollReveal = (function( window ){
         , viewLeft   = scrolled.x
         , viewRight  = viewLeft + viewport.width;
 
-      return ( top < viewBottom ) && ( bottom > viewTop ) && ( left > viewLeft ) && ( right < viewRight );
+      return ( top < viewBottom )
+          && ( bottom > viewTop )
+          && ( left > viewLeft )
+          && ( right < viewRight );
     }
 
     function isPositionFixed(){
-      var style = elem.domEl.currentStyle || window.getComputedStyle( elem.domEl, null );
-      return style.position === 'fixed';
+      return ( window.getComputedStyle( elem.domEl ).position === 'fixed' );
     }
   };
 
