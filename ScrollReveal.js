@@ -630,22 +630,32 @@ window.ScrollReveal = (function( window ){
       }
 
       initial += '; opacity: ' + config.opacity + '; ';
-      target  += '; opacity: ' + window.getComputedStyle( elem.domEl ).opacity; + '; ';
+      target  += '; opacity: ' + window.getComputedStyle( elem.domEl ).opacity + '; ';
     }
   };
 
 
 
-  ScrollReveal.prototype.getViewportHeight = function( viewport ){
+  ScrollReveal.prototype.getViewportSize = function( viewport ){
 
-    var client = viewport['clientHeight'];
-    var inner  = window['innerHeight'];
+    var clientWidth  = viewport['clientWidth'] || 0
+      , clientHeight = viewport['clientWidth'] || 0;
 
     if ( viewport === window.document.documentElement ){
-      return ( client < inner ) ? inner : client;
+
+      var w = Math.max( clientWidth,  window.innerWidth  || 0 );
+      var h = Math.max( clientHeight, window.innerHeight || 0 );
+
+      return {
+        width:  w,
+        height: h
+      };
     }
 
-    return client;
+    return {
+      width:  clientWidth,
+      height: clientHeight
+    };
   };
 
 
@@ -653,12 +663,16 @@ window.ScrollReveal = (function( window ){
   ScrollReveal.prototype.getScrolled = function( viewport ){
 
     if ( viewport === window.document.documentElement ){
-
-      return window.pageYOffset;
+      return {
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      };
 
     } else {
-
-      return viewport.scrollTop + viewport.offsetTop;
+      return {
+        x: viewport.scrollLeft + viewport.offsetLeft,
+        y: viewport.scrollTop + viewport.offsetTop
+      };
     }
   };
 
@@ -691,11 +705,19 @@ window.ScrollReveal = (function( window ){
 
   ScrollReveal.prototype.isElemVisible = function( elem ){
 
-    var elHeight = elem.domEl.offsetHeight
-      , elTop    = self.getOffset( elem.domEl ).top
+    var offset   = self.getOffset( elem.domEl )
+      , viewport = self.getViewportSize( elem.config.viewport )
+      , scrolled = self.getScrolled( elem.config.viewport )
+
+      , elHeight = elem.domEl.offsetHeight
+      , elWidth  = elem.domEl.offsetWidth
+
+      , elTop    = offset.top
       , elBottom = elTop + elHeight
-      , vFactor  = elem.config.vFactor
-      , viewport = elem.config.viewport;
+      , elLeft   = offset.left
+      , elRight  = elLeft + elWidth
+
+      , vFactor  = elem.config.vFactor;
 
     return ( confirmBounds() || isPositionFixed() );
 
@@ -703,10 +725,15 @@ window.ScrollReveal = (function( window ){
 
       var top        = elTop + elHeight * vFactor
         , bottom     = elBottom - elHeight * vFactor
-        , viewTop    = self.getScrolled( viewport )
-        , viewBottom = viewTop + self.getViewportHeight( viewport );
+        , left       = elLeft + elWidth * vFactor
+        , right      = elRight - elWidth * vFactor
 
-      return ( top < viewBottom ) && ( bottom > viewTop );
+        , viewTop    = scrolled.y
+        , viewBottom = viewTop + viewport.height
+        , viewLeft   = scrolled.x
+        , viewRight  = viewLeft + viewport.width;
+
+      return ( top < viewBottom ) && ( bottom > viewTop ) && ( left > viewLeft ) && ( right < viewRight );
     }
 
     function isPositionFixed(){
