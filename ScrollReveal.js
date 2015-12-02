@@ -93,10 +93,6 @@ window.ScrollReveal = (function( window ){
 
     var viewport;
 
-    // Register any inline ScrollReveal instructions
-    // and trigger reveal animationss.
-
-    self.reveal.call( self.init, '[data-sr]' );
     self.animate();
 
     // Go through the viewport store, and bind event listeners
@@ -126,10 +122,6 @@ window.ScrollReveal = (function( window ){
 
     var elem, elems, viewport;
 
-    if ( selector == '[data-sr]' && this != self.init ){
-      return console.warn("Invalid selector [data-sr] passed to reveal method.");
-    }
-
     if ( config && config.viewport ){
       viewport = config.viewport;
     } else {
@@ -144,8 +136,8 @@ window.ScrollReveal = (function( window ){
 
     // If no elements are found, display warning message in console and exit
 
-    if ( elems.length == 0 && selector != '[data-sr]' ){
-      return console.warn( selector + " inside " + config.viewport + " returned 0 elements." );
+    if ( elems.length == 0 ){
+      return console.warn( selector + " inside " + viewport + " returned 0 elements." );
     }
 
     for ( var i = 0; i < elems.length; i++ ){
@@ -175,12 +167,7 @@ window.ScrollReveal = (function( window ){
 
       // Now that we have an element, let’s update its config and styles
 
-      if ( this == self.init ){
-        elem.config = self.configFactory( elem.domEl.getAttribute('data-sr'), elem.config );
-      } else {
-        elem.config = self.configFactory( config, elem.config );
-      }
-
+      elem.config = self.configFactory( config, elem.config );
       elem.styles = self.styleFactory( elem );
 
       elem.domEl.setAttribute( 'style',
@@ -288,178 +275,21 @@ window.ScrollReveal = (function( window ){
 
   ScrollReveal.prototype.configFactory = function( config, context ){
 
-    // The default configuration is the default context, but in instances
+    // The default context is the instance defaults, but in cases
     // where we call sr.reveal() more than once on the same element set
-    // (perhaps to re-configure or override), we need to set the context
-    // to the element’s existing styles
+    // (perhaps to re-configure or override), we pass the element's
+    // existing configutation as the context
 
-    var words
-      , parsed = {};
-
-    // Confirm our context
-
-    if ( context == null || !_isObject( context ) ){
+    if ( !context ){
       context = self.defaults;
     }
 
-    // Confirm configuration
-
-    if ( config == null ) {
+    if ( !config ) {
       config = context;
     }
 
     else if ( _isObject( config ) ){
       config = _extendClone( context, config );
-    }
-
-    else if ( typeof config === 'string' ){
-
-      words = config.split( /[, ]+/ );
-      words.forEach(function( word, i ){
-        switch ( word ){
-
-          case 'enter':
-
-            parsed.enter = words[ i + 1 ];
-            break;
-
-          case 'wait':
-
-            parsed.wait = words[ i + 1 ];
-            break;
-
-          case 'move':
-
-            parsed.move = words[ i + 1 ];
-            break;
-
-          case 'ease':
-
-            parsed.move = words[ i + 1 ];
-            parsed.ease = 'ease';
-            break;
-
-          case 'ease-in':
-
-            if ( words[ i + 1 ] == 'up'
-              || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-in';
-              break;
-            }
-
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-in';
-            break;
-
-          case 'ease-in-out':
-
-            if ( words[ i + 1 ] == 'up'
-              || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-in-out';
-              break;
-            }
-
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-in-out';
-            break;
-
-          case 'ease-out':
-
-            if ( words[ i + 1 ] == 'up'
-              || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'ease-out';
-              break;
-            }
-
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'ease-out';
-            break;
-
-          case 'hustle':
-
-            if ( words[ i + 1 ] == 'up'
-              || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              parsed.easing          = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
-              break;
-            }
-
-            parsed.move   = words[ i + 1 ];
-            parsed.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
-            break;
-
-          case 'over':
-
-            parsed.over = words[ i + 1 ];
-            break;
-
-          case 'flip':
-          case 'pitch':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.x = words[ i + 1 ];
-            break;
-
-          case 'spin':
-          case 'yaw':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.y = words[ i + 1 ];
-            break;
-
-          case 'roll':
-            parsed.rotate   = parsed.rotate || {};
-            parsed.rotate.z = words[ i + 1 ];
-            break;
-
-          case 'reset':
-
-            if ( words[ i - 1 ] == 'no' ){
-              parsed.reset = false;
-            } else {
-              parsed.reset = true;
-            }
-            break;
-
-          case 'scale':
-
-            parsed.scale = {};
-
-            if ( words[ i + 1 ] == 'up'
-              || words[ i + 1 ] == 'down' ){
-
-              parsed.scale.direction = words[ i + 1 ];
-              parsed.scale.power     = words[ i + 2 ];
-              break;
-            }
-
-            parsed.scale.power = words[ i + 1 ];
-            break;
-
-          case 'vFactor':
-          case 'vF':
-            parsed.vFactor = words[ i + 1 ];
-            break;
-
-          case 'opacity':
-            parsed.opacity = words[ i + 1 ];
-            break;
-
-          default:
-            return;
-        }
-      });
-
-      config = _extendClone( context, parsed );
     }
 
     // Now let’s prepare the configuration for CSS
@@ -468,22 +298,16 @@ window.ScrollReveal = (function( window ){
       config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
     }
 
-    if ( config.enter === 'top'
-      || config.enter === 'bottom' ){
-
+    if ( config.enter === 'top' || config.enter === 'bottom' ){
       config.axis = 'Y';
-    }
-
-    else {
+    } else {
       config.axis = 'X';
     }
 
     // Let’s make sure our our pixel distances are negative for top and left.
     // e.g. "enter top and move 25px" starts at 'top: -25px' in CSS
 
-    if ( config.enter === 'top'
-      || config.enter === 'left' ){
-
+    if ( config.enter === 'top' || config.enter === 'left' ){
       config.move = '-' + config.move;
     }
 
