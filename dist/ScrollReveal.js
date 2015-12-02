@@ -637,8 +637,8 @@ window.ScrollReveal = (function( window ){
 
   ScrollReveal.prototype.getViewportSize = function( viewport ){
 
-    var clientWidth  = viewport['clientWidth'] || 0
-      , clientHeight = viewport['clientWidth'] || 0;
+    var clientWidth  = viewport['clientWidth']  || 0
+      , clientHeight = viewport['clientHeight'] || 0;
 
     if ( viewport === window.document.documentElement ){
 
@@ -729,9 +729,9 @@ window.ScrollReveal = (function( window ){
         , right      = elRight - elWidth * vFactor
 
         , viewTop    = scrolled.y
-        , viewBottom = viewTop + viewport.height
+        , viewBottom = scrolled.y + viewport.height
         , viewLeft   = scrolled.x
-        , viewRight  = viewLeft + viewport.width;
+        , viewRight  = scrolled.x + viewport.width;
 
       return ( top    < viewBottom )
           && ( bottom > viewTop    )
