@@ -31,8 +31,6 @@ window.ScrollReveal = (function( window ){
 
     if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
 
-      // Remove any data-sr attributes found in the DOM and abort
-
       self.cleanDOM();
       console.warn('ScrollReveal instantiation aborted.');
       return null;
@@ -120,7 +118,7 @@ window.ScrollReveal = (function( window ){
 
   ScrollReveal.prototype.reveal = function( selector, config ){
 
-    var elem, elems, viewport;
+    var elems, viewport;
 
     if ( config && config.viewport ){
       viewport = config.viewport;
@@ -239,8 +237,6 @@ window.ScrollReveal = (function( window ){
         }
       }
     }
-
-    // Unblock the event handler and register the first initialization
 
     self.blocked = false;
 
@@ -405,7 +401,7 @@ window.ScrollReveal = (function( window ){
       transition: transition
     };
 
-    function generateStyles(t){
+    function generateStyles( t ){
 
       if ( parseInt( config.move ) !== 0 ){
         t.initial += ' translate' + config.axis + '(' + config.move + ')';
@@ -588,7 +584,7 @@ window.ScrollReveal = (function( window ){
   ScrollReveal.prototype.cleanDOM = function(){
     for ( var key in self.store.elements ){
       if ( self.store.elements.hasOwnProperty( key ) ){
-        self.store.elements[ key ].domEl.removeAttribute('data-sr data-sr-id');
+        self.store.elements[ key ].domEl.removeAttribute('data-sr-id');
       }
     }
   };
