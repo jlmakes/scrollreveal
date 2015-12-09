@@ -14,12 +14,22 @@ window.ScrollReveal = (function( window ){
 
   'use strict';
 
-  var _requestAnimFrame
+  var _animate
+    , _cleanDOM
+    , _configFactory
     , _extend
     , _extendClone
+    , _getOffset
+    , _getScrolled
+    , _getViewportSize
     , _handler
+    , _isElemVisible
+    , _isMobile
     , _isNode
     , _isObject
+    , _isSupported
+    , _requestAnimFrame
+    , _styleFactory
     , _updateElemStore
     , self;
 
@@ -29,9 +39,9 @@ window.ScrollReveal = (function( window ){
 
     _extend( self.defaults, config );
 
-    if ( self.isMobile() && !self.defaults.mobile || !self.isSupported() ){
+    if ( _isMobile() && !self.defaults.mobile || !_isSupported() ){
 
-      self.cleanDOM();
+      _cleanDOM();
       console.warn('ScrollReveal instantiation aborted.');
       return null;
     }
@@ -91,7 +101,7 @@ window.ScrollReveal = (function( window ){
 
     var viewport;
 
-    self.animate();
+    _animate();
 
     // Go through the viewport store, and bind event listeners
 
@@ -165,8 +175,8 @@ window.ScrollReveal = (function( window ){
 
       // Now that we have an element, let’s update its config and styles
 
-      elem.config = self.configFactory( config, elem.config );
-      elem.styles = self.styleFactory( elem );
+      elem.config = _configFactory( config, elem.config );
+      elem.styles = _styleFactory( elem );
 
       elem.domEl.setAttribute( 'style',
           elem.styles.inline
@@ -181,7 +191,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.animate = function(){
+  _animate = function(){
 
     var elem
       , key
@@ -193,7 +203,7 @@ window.ScrollReveal = (function( window ){
       if ( self.store.elements.hasOwnProperty( key ) ){
 
         elem    = self.store.elements[ key ];
-        visible = self.isElemVisible( elem );
+        visible = _isElemVisible( elem );
 
         if ( visible && !elem.revealed ){
 
@@ -269,7 +279,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.configFactory = function( config, context ){
+  _configFactory = function( config, context ){
 
     // The default context is the instance defaults, but in cases
     // where we call sr.reveal() more than once on the same element set
@@ -312,7 +322,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.styleFactory = function( elem ){
+  _styleFactory = function( elem ){
 
     var inline
       , config
@@ -326,7 +336,7 @@ window.ScrollReveal = (function( window ){
     // You can customize ScrollReveal with mobile-only logic here, for example,
     // change the starting opacity, or remove animation delay
 
-    if ( self.isMobile() && self.defaults.mobile ){
+    if ( _isMobile() && self.defaults.mobile ){
       // Stuff...
     }
 
@@ -444,7 +454,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.getViewportSize = function( viewport ){
+  _getViewportSize = function( viewport ){
 
     var clientWidth  = viewport['clientWidth']  || 0
       , clientHeight = viewport['clientHeight'] || 0;
@@ -468,7 +478,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.getScrolled = function( viewport ){
+  _getScrolled = function( viewport ){
 
     if ( viewport === window.document.documentElement ){
       return {
@@ -487,7 +497,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.getOffset = function( domEl ){
+  _getOffset = function( domEl ){
 
     var offsetTop  = 0;
     var offsetLeft = 0;
@@ -512,11 +522,11 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.isElemVisible = function( elem ){
+  _isElemVisible = function( elem ){
 
-    var offset   = self.getOffset( elem.domEl )
-      , viewport = self.getViewportSize( elem.config.viewport )
-      , scrolled = self.getScrolled( elem.config.viewport )
+    var offset   = _getOffset( elem.domEl )
+      , viewport = _getViewportSize( elem.config.viewport )
+      , scrolled = _getScrolled( elem.config.viewport )
 
       , elHeight = elem.domEl.offsetHeight
       , elWidth  = elem.domEl.offsetWidth
@@ -555,7 +565,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.isMobile = function(){
+  _isMobile = function(){
 
     var agent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -564,7 +574,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.isSupported = function(){
+  _isSupported = function(){
 
     var sensor    = document.createElement('sensor')
       , cssPrefix = 'Webkit,Moz,O,'.split(',')
@@ -581,7 +591,7 @@ window.ScrollReveal = (function( window ){
 
 
 
-  ScrollReveal.prototype.cleanDOM = function(){
+  _cleanDOM = function(){
     for ( var key in self.store.elements ){
       if ( self.store.elements.hasOwnProperty( key ) ){
         self.store.elements[ key ].domEl.removeAttribute('data-sr-id');
@@ -603,7 +613,7 @@ window.ScrollReveal = (function( window ){
   _handler = function( e ){
     if ( !self.blocked ){
       self.blocked = true;
-      _requestAnimFrame( self.animate );
+      _requestAnimFrame( _animate );
     }
   };
 
