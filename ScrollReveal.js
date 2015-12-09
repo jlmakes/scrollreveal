@@ -73,7 +73,7 @@ window.ScrollReveal = (function( window ){
     move:        '0px',
     over:        '0.6s',
     wait:        '0s',
-    easing:      'hustle', // ease, easeIn, easeOut, easeInOut, hustle, linear
+    easing:      'cubic-bezier( 0.6, 0.2, 0.1, 1 )', // any valid CSS easing
 
     scale:       { direction: 'up', power: '10%' }, // up, down
     rotate:      { x: 0, y: 0, z: 0 },
@@ -315,12 +315,6 @@ window.ScrollReveal = (function( window ){
 
     else if ( _isObject( config ) ){
       config = _extendClone( context, config );
-    }
-
-    // Now let’s prepare the configuration for CSS
-
-    if ( config.easing == 'hustle' ){
-      config.easing = 'cubic-bezier( 0.6, 0.2, 0.1, 1 )';
     }
 
     if ( config.enter === 'top' || config.enter === 'bottom' ){
