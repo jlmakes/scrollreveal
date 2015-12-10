@@ -76,7 +76,7 @@ window.ScrollReveal = (function( window ){
     easing:      'cubic-bezier( 0.6, 0.2, 0.1, 1 )', // any valid CSS easing
 
     scale:       { direction: 'up', power: '10%' }, // up, down
-    rotate:      { x: 0, y: 0, z: 0 },
+    rotate:      { x: '0deg', y: '0deg', z: '0deg' },
 
     opacity:     0,    // The starting opacity for reveal animations.
     mobile:      true, // Controls whether or not reveals occur on mobile
