@@ -233,8 +233,13 @@ _Continuing our example from 4.1._
 <html>
   <head>
     <style>
-      .fooReveal { visibility: hidden; }
+      /* prevents flickering while JavaScript loads */
+      .js .fooReveal { visibility: hidden; }
     </style>
+    <script>
+      // ensures our elements are only hidden when JavaScript is enabled
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
 
@@ -260,9 +265,12 @@ _Continuing our example from 4.2._
 <html>
   <head>
     <style>
-      .fooReveal { visibility: hidden; }
+      .js .fooReveal { visibility: hidden; }
       .fooContainer { perspective: 800px; }
     </style>
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
 
