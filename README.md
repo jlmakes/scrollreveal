@@ -149,7 +149,9 @@ window.sr = ScrollReveal()
 
 #### 3.3. Asynchronous Content
 
-The `sync()` method updates asynchronously loaded content with any existing reveal sets. Let’s take look an example _without_ jQuery.
+The `sync()` method updates asynchronously loaded content with any existing reveal sets.
+
+_Example:_
 
 ```html
 <!-- index.html -->
