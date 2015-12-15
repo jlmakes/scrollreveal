@@ -234,7 +234,7 @@ _Continuing our example from 4.1._
   <head>
     <script>
       // to ensure our elements are only hidden when JavaScript is enabled
-      // we attach the class 'js' to the <html> element
+      // we attach a class, e.g. 'js-enabled', to the <html> element
       document.documentElement.classList.add('js-enabled');
     </script>
     <style>
