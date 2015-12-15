@@ -1,4 +1,6 @@
-![ScrollReveal — Easy scroll animations for web and mobile browsers.](https://scrollrevealjs.org/assets/scrollreveal-repo-header.png)
+[![ScrollReveal — Easy scroll animations for web and mobile browsers.](https://scrollrevealjs.org/assets/scrollreveal-repo-header.png)](https://scrollrevealjs.org)
+
+[![ScrollReveal Demo](https://scrollrevealjs.org/assets/scrollreveal-demo.png)](https://scrollrevealjs.org)
 
 ***
 
@@ -7,10 +9,6 @@
 - 2.7KB minified and Gzipped
 - No dependencies
 - From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)
-
-![ScrollReveal Demo](https://scrollrevealjs.org/assets/scrollreveal-demo.png)
-
-***
 
 ## 1. How To Use
 
