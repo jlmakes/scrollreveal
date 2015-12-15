@@ -29,9 +29,14 @@ sr.reveal('.bar');
 ```
 #### 1.2. Method Chaining
 
-The ScrollReveal constructor, and it's primary methods all support chaining. The same example JavaScript from 1.1 could be re-written as:
+The ScrollReveal constructor, and it's primary methods all support chaining.
 ```js
 // JavaScript:
+window.sr = ScrollReveal();
+sr.reveal('.foo');
+sr.reveal('.bar');
+
+// Is the same as...
 window.sr = ScrollReveal().reveal('.foo, .bar');
 ```
 
@@ -70,7 +75,7 @@ afterReveal : function( domEl ) {},
 afterReset  : function( domEl ) {}
 ```
 
-#### 2.3. A Closer Look
+#### 2.3. Configuration Details
 
 key | type | values | notes
 ----|------|---------|-------
@@ -78,15 +83,15 @@ origin | `string` | `'top'`<br/>`'right'`<br/>`'bottom'`<br/>`'left'`
 distance | `string` | `'20px'`<br/>`'10vw'`<br/>`'5%'` | Any valid CSS unit will work.
 duration | `number` | `500` | Time in milliseconds.
 delay | `number` | `0` | Time in milliseconds.
-rotate | `object`/`number` | `{ x: 50 }` | Starting angle in degrees.
+rotate | `object`/`number` | `{ x: 0, y: 0, z: 0 }` | Starting angle in degrees.
 opacity | `number` | `0` | Starting opacity.
 scale | `number` | `0.9` | Starting scale.
 easing | `string` | `'ease'`<br/>`'ease-in'`<br/>`'ease-out'`<br/>`'ease-in-out'`<br/>`'cubic-bezier()'` | Any valid CSS easing will work.
 container | `node` | `document.getElementById('foo')`
-mobile | `boolean` | `true` / `false` | Animate on mobile devices?
+mobile | `boolean` | `true` / `false` | Toggle animations on mobile
 reset | `boolean` | `true` / `false` | Elements reveal either once, or reset to reveal each time they are within viewport/container bounds.
 useDelay | `string` | `'always'`<br/>`'once'`<br/>`'onload'` | Control when elements use animation delay.
-viewFactor | `number` | `0.20` | Means 20% of an element must be within viewport/container bounds before it reveals.
+viewFactor | `number` | `0.20` | e.g. 20% of an element must be within viewport/container bounds before it reveals.
 viewOffset | `object`/`number` | `{ top: 48, bottom: 24 }` | Increase viewport/container bounds in pixels. ([See Diagram](https://scrollrevealjs.org/assets/viewoffset-diagram.png))
 afterReveal | `function` | `function( domEl ) {}` | Fires after reveal animations.
 afterReset | `function` | `function( domEl ) {}` | Fires after reset animations.
@@ -95,7 +100,7 @@ afterReset | `function` | `function( domEl ) {}` | Fires after reset animations.
 
 #### 3.1. Override Configurations
 
-The reveal pipeline is equipped to handle references to the same element set, so it's easy to override previously set configurations.
+`reveal()` is equipped to handle calls on the same element, so it's easy to override element configuration.
 
 ```html
 <div class="foo"> Foo </div>
@@ -117,7 +122,7 @@ window.sr = ScrollReveal()
 
 #### 3.2. Custom/Multiple Containers
 
-The default container is the viewport, but you can change it—and even assign distinct containers to any number of reveal sets.
+The default container is the viewport, but you assign any container to any reveal set.
 
 >**Tip:** ScrollReveal works just as well with horizontally scrolling containers too!
 
@@ -223,7 +228,7 @@ _Example:_
 
 #### 4.2. Improve User Experience
 
-In most cases presumably, your elements will start at `opacity: 0` so they can fade in. However, since JavaScript loads after the page begins rendering, you might see your elements flickering as they begin rendering before being hidden by ScrollReveal's JavaScript.
+In most cases, your elements will start at `opacity: 0` so they can fade in. However, since JavaScript loads after the page begins rendering, you might see your elements flickering as they begin rendering before being hidden by ScrollReveal's JavaScript.
 
 The ideal solution is to **set your reveal elements visibility to hidden** in the `<head>` of your page, to ensure they render hidden while your JavaScript loads:
 
@@ -233,12 +238,11 @@ _Continuing our example from 4.1._
 <html>
   <head>
     <script>
-      // to ensure our elements are only hidden when JavaScript is enabled
-      // we attach a class, e.g. 'js-enabled', to the <html> element
+      // if JavaScript is enabled, add '.js-enabled' to <html> element
       document.documentElement.classList.add('js-enabled');
     </script>
     <style>
-      /* ensures elements load hidden, only if JavaScript is present */
+      /* ensures elements load hidden before ScrollReveal runs */
       .js-enabled .fooReveal { visibility: hidden; }
     </style>
   </head>
