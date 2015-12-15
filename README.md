@@ -232,14 +232,15 @@ _Continuing our example from 4.1._
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      /* prevents flickering while JavaScript loads */
-      .js .fooReveal { visibility: hidden; }
-    </style>
     <script>
-      // ensures our elements are only hidden when JavaScript is enabled
-      document.documentElement.classList.add('js');
+      // to ensure our elements are only hidden when JavaScript is enabled
+      // we attach the class 'js' to the <html> element
+      document.documentElement.classList.add('js-enabled');
     </script>
+    <style>
+      /* ensures elements load hidden, only if JavaScript is present */
+      .js-enabled .fooReveal { visibility: hidden; }
+    </style>
   </head>
   <body>
 
@@ -264,13 +265,13 @@ _Continuing our example from 4.2._
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      document.documentElement.classList.add('js-enabled');
+    </script>
     <style>
-      .js .fooReveal { visibility: hidden; }
+      .js-enabled .fooReveal { visibility: hidden; }
       .fooContainer { perspective: 800px; }
     </style>
-    <script>
-      document.documentElement.classList.add('js');
-    </script>
   </head>
   <body>
 
