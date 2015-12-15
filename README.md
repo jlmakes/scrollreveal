@@ -17,12 +17,12 @@ The `reveal()` method is the primary API, and makes it easy to create and manage
 #### 1.1. The Basics
 
 ```html
-<!-- HTML: -->
+<!-- HTML -->
 <div class="foo"> Foo </div>
 <div class="bar"> Bar </div>
 ```
 ```js
-// JavaScript:
+// JavaScript
 window.sr = ScrollReveal();
 sr.reveal('.foo');
 sr.reveal('.bar');
@@ -31,7 +31,6 @@ sr.reveal('.bar');
 
 The ScrollReveal constructor, and it's primary methods all support chaining.
 ```js
-// JavaScript:
 window.sr = ScrollReveal();
 sr.reveal('.foo');
 sr.reveal('.bar');
@@ -45,10 +44,10 @@ Passing a configuration object to `ScrollReveal()` changes the defaults for all 
 
 #### 2.1. Practical Example
 ```js
-// changing the defaults
+// Changing the defaults
 window.sr = ScrollReveal({ reset: true });
 
-// customizing a reveal set
+// Customizing a reveal set
 sr.reveal( '.foo', { wait: 200 } );
 ```
 
@@ -179,17 +178,17 @@ xmlhttp.onreadystatechange = function() {
   if ( xmlhttp.readyState == XMLHttpRequest.DONE ) {
     if ( xmlhttp.status == 200 ) {
 
-    // Turn our response into HTML...
+      // Turn our response into HTML...
       var content = document.createElement('div');
       content.innerHTML = xmlhttp.responseText;
       content = content.childNodes;
 
-    // Add each element to the DOM...
+      // Add each element to the DOM...
       for ( var i = 0; i < content.length; i++ ) {
         fooContainer.appendChild( content[ i ]);
       };
 
-    // Finally!
+      // Finally!
       sr.sync();
     }
   }
@@ -238,11 +237,11 @@ _Continuing our example from 4.1._
 <html>
   <head>
     <script>
-      // if JavaScript is enabled, add '.js-enabled' to <html> element
+      // If JavaScript is enabled, add '.js-enabled' to <html> element
       document.documentElement.classList.add('js-enabled');
     </script>
     <style>
-      /* ensures elements load hidden before ScrollReveal runs */
+      /* Ensure elements load hidden before ScrollReveal runs */
       .js-enabled .fooReveal { visibility: hidden; }
     </style>
   </head>
