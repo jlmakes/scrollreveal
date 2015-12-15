@@ -1,12 +1,13 @@
 ![ScrollReveal — Easy scroll animations for web and mobile browsers.](https://scrollrevealjs.org/assets/scrollreveal-repo-header.png)
 
-<center>
-[![ScrollReveal version](http://img.shields.io/badge/scrollreveal.js-v3.0.0-1a2434.svg)](https://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-1a2434.svg)](http://opensource.org/licenses/MIT)
-<center>
-2.7KB minified and Gzipped
-— No dependencies —
+***
 
-<center>From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)</center>
+[![ScrollReveal version](http://img.shields.io/badge/scrollreveal.js-v3.0.0-1a2434.svg)](https://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-1a2434.svg)](http://opensource.org/licenses/MIT)
+
+- 2.7KB minified and Gzipped
+- No dependencies
+- From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)
+
 ![ScrollReveal Demo](https://scrollrevealjs.org/assets/scrollreveal-demo.png)
 
 ***
