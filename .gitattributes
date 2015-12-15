@@ -4,6 +4,6 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 gulpfile.js export-ignore
-bower.js export-ignore
+bower.json export-ignore
 package.json export-ignore
 scrollreveal.js export-ignore
