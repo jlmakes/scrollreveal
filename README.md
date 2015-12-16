@@ -16,6 +16,14 @@
 
 #### 1.1. Installation
 
+The simplest method is to copy paste this snippet just before your closing `</body>` tag (thanks to jsDelivr)
+
+```html
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.0/scrollreveal.min.js"></script>
+```
+
+But you can also:
+
 - [Download ZIP](https://github.com/jlmakes/scrollreveal.js/archive/master.zip)
 - `npm install scrollreveal`
 - `bower install scrollreveal`
