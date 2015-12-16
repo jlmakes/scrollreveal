@@ -179,7 +179,7 @@ ______________________________________________________________________________*/
       }
     };
 
-    ScrollReveal.prototype.updateStore = function( elem, selector, config ) {
+    ScrollReveal.prototype.updateStore = function( elem ) {
       var container = elem.config.container;
       if ( container && sr.store.containers.indexOf( container ) == -1 ) {
         sr.store.containers.push( elem.config.container );
