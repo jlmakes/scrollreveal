@@ -10,11 +10,19 @@
 - No dependencies
 - From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)
 
+***
+
 ## 1. How To Use
 
-The `reveal()` method is the primary API, and makes it easy to create and manage various types of animations.
+#### 1.1. Installation
 
-#### 1.1. The Basics
+- [Download ZIP](https://github.com/jlmakes/scrollreveal.js/archive/master.zip)
+- `npm install scrollreveal`
+- `bower install scrollreveal`
+
+#### 1.2. The Basics
+
+The `reveal()` method is the primary API, and makes it easy to create and manage various types of animations.
 
 ```html
 <!-- HTML -->
