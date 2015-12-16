@@ -12,7 +12,7 @@
 
 ***
 
-## 1. How To Use
+## 1. Getting Started
 
 #### 1.1. Installation
 
@@ -43,7 +43,7 @@ window.sr = ScrollReveal();
 sr.reveal('.foo');
 sr.reveal('.bar');
 ```
-#### 1.2. Method Chaining
+#### 1.3. Method Chaining
 
 The ScrollReveal constructor, and it's primary methods all support chaining.
 ```js
