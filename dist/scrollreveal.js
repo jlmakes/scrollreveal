@@ -330,7 +330,7 @@ ______________________________________________________________________________*/
 
     ScrollReveal.prototype.sync = function() {
       for ( var i = 0; i < sr.history.length; i++ ) {
-        var record = sr.history[i];
+        var record = sr.history[ i ];
         sr.reveal( record.selector, record.config, true );
       };
       return sr;
@@ -342,11 +342,11 @@ ______________________________________________________________________________*/
 
   var Tools = (function() {
 
-    Tools.prototype.clamp = function( min, num, max ){
+    Tools.prototype.clamp = function( min, num, max ) {
       return Math.min( Math.max( min, num ), max );
     };
 
-    Tools.prototype.isObject = function( object ){
+    Tools.prototype.isObject = function( object ) {
       return object !== null && typeof object === 'object' && object.constructor == Object;
     };
 
