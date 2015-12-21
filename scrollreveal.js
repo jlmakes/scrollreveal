@@ -221,7 +221,7 @@ ______________________________________________________________________________*/
 
       sr.tools.forOwn( sr.store.elements, function( elemId ) {
         elem    = sr.store.elements[ elemId ];
-        visible = sr.isVisible( elem );
+        visible = sr.isElemVisible( elem );
         if ( visible && !elem.revealed ) {
 
           if ( elem.config.useDelay === 'always'
@@ -285,36 +285,89 @@ ______________________________________________________________________________*/
       }
     };
 
-    ScrollReveal.prototype.isVisible = function( elem ) {
-      var config, rect, viewable;
-      var viewport = {
-        width  : window.document.documentElement.clientWidth,
-        height : window.document.documentElement.clientHeight
+    ScrollReveal.prototype.getContainerSize = function( container ){
+      if ( !container ) {
+        container = window.document.documentElement;
+      }
+      var w = container['clientWidth']  || 0;
+      var h = container['clientHeight'] || 0;
+      return {
+        width:  w,
+        height: h
       };
-      if ( elem.config.container ) {
-        var container = elem.config.container.getBoundingClientRect();
-        viewable = {
-          top    : sr.tools.clamp( 0, container.top,    viewport.height ),
-          right  : sr.tools.clamp( 0, container.right,  viewport.width  ),
-          bottom : sr.tools.clamp( 0, container.bottom, viewport.height ),
-          left   : sr.tools.clamp( 0, container.left,   viewport.width  )
+    };
+
+    ScrollReveal.prototype.getScrolled = function( container ){
+      if ( !container ) {
+        return {
+          x: window.pageXOffset,
+          y: window.pageYOffset
         };
       } else {
-        viewable = {
-          top    : 0,
-          right  : viewport.width,
-          bottom : viewport.height,
-          left   : 0
-        }
+        var offset = sr.getOffset( container );
+        return {
+          x: container.scrollLeft + offset.left,
+          y: container.scrollTop  + offset.top
+        };
       }
-      rect   = elem.domEl.getBoundingClientRect();
-      config = elem.config;
-      return (
-        rect.top    + ( rect.height * config.viewFactor ) < viewable.bottom - config.viewOffset.bottom &&
-        rect.right  - ( rect.width  * config.viewFactor ) > viewable.left   + config.viewOffset.left   &&
-        rect.bottom - ( rect.height * config.viewFactor ) > viewable.top    + config.viewOffset.top    &&
-        rect.left   + ( rect.width  * config.viewFactor ) < viewable.right  - config.viewOffset.right
-      );
+    };
+
+    ScrollReveal.prototype.getOffset = function( domEl ) {
+      var offsetTop  = 0;
+      var offsetLeft = 0;
+
+      do {
+        if ( !isNaN( domEl.offsetTop ) ) {
+          offsetTop += domEl.offsetTop;
+        }
+        if ( !isNaN( domEl.offsetLeft ) ) {
+          offsetLeft += domEl.offsetLeft;
+        }
+      } while ( domEl = domEl.offsetParent );
+
+      return {
+        top:  offsetTop,
+        left: offsetLeft
+      };
+    };
+
+    ScrollReveal.prototype.isElemVisible = function( elem ){
+
+      var offset     = sr.getOffset( elem.domEl );
+      var container  = sr.getContainerSize( elem.config.container );
+      var scrolled   = sr.getScrolled( elem.config.container );
+      var vF         = elem.config.viewFactor;
+
+      var elemHeight = elem.domEl.offsetHeight;
+      var elemWidth  = elem.domEl.offsetWidth;
+      var elemTop    = offset.top;
+      var elemBottom = elemTop + elemHeight;
+      var elemLeft   = offset.left;
+      var elemRight  = elemLeft + elemWidth;
+
+      return ( confirmBounds() || isPositionFixed() );
+
+      function confirmBounds(){
+
+        var top        = elemTop    + elemHeight * vF;
+        var bottom     = elemBottom - elemHeight * vF;
+        var left       = elemLeft   + elemWidth  * vF;
+        var right      = elemRight  - elemWidth  * vF;
+
+        var viewTop    = scrolled.y + elem.config.viewOffset.top;
+        var viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height;
+        var viewLeft   = scrolled.x + elem.config.viewOffset.left;
+        var viewRight  = scrolled.x - elem.config.viewOffset.right + container.width;
+
+        return ( top    < viewBottom )
+            && ( bottom > viewTop    )
+            && ( left   > viewLeft   )
+            && ( right  < viewRight  );
+      }
+
+      function isPositionFixed(){
+        return ( window.getComputedStyle( elem.domEl ).position === 'fixed' );
+      }
     };
 
     ScrollReveal.prototype.sync = function() {
@@ -330,10 +383,6 @@ ______________________________________________________________________________*/
   })();
 
   var Tools = (function() {
-
-    Tools.prototype.clamp = function( min, num, max ) {
-      return Math.min( Math.max( min, num ), max );
-    };
 
     Tools.prototype.isObject = function( object ) {
       return object !== null && typeof object === 'object' && object.constructor == Object;
