@@ -1,7 +1,7 @@
 {
   "name"        : "scrollreveal",
   "description" : "Easy scroll animations for web and mobile browsers.",
-  "homepage"    : "https://scrollrevealjs.orgeal",
+  "homepage"    : "https://scrollrevealjs.org",
   "main"        : ["dist/scrollreveal.js"],
   "authors"     : ["Julian Lloyd"],
   "license"     : "MIT",
