@@ -11,6 +11,11 @@ gulp.task( 'dist', function() {
     .pipe( gulp.dest('dist') )
 });
 
+gulp.task( 'dev', function() {
+  gulp.src('scrollreveal.js')
+    .pipe( gulp.dest('dev') );
+});
+
 gulp.task( 'dist:minify', function() {
   gulp.src('scrollreveal.js')
     .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
@@ -21,7 +26,8 @@ gulp.task( 'dist:minify', function() {
 
 gulp.task( 'default', function() {
   browser.init({ server: { baseDir: "./dev" } });
-  gulp.watch([ 'dev/*.html', '*.js' ]).on( "change", browser.reload );
+  gulp.watch([ 'scrollreveal.js '], [ 'dev' ])
+  gulp.watch([ 'dev/*.*' ]).on( "change", browser.reload );
 });
 
 gulp.task( 'build', [ 'dist', 'dist:minify' ]);
