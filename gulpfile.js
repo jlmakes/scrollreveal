@@ -2,6 +2,7 @@ var gulp    = require('gulp');
 var uglify  = require('gulp-uglify');
 var umd     = require('gulp-wrap-umd');
 var rename  = require('gulp-rename');
+var bower   = require('bower-json');
 var browser = require('browser-sync').create();
 
 
@@ -16,6 +17,16 @@ gulp.task( 'dev', function() {
     .pipe( gulp.dest('dev') );
 });
 
+gulp.task( 'validate', function() {
+  bower.read('./bower.json', function( err, json ) {
+    if ( err ) {
+      console.error('There was an error reading the file');
+      console.error( err.message );
+      return;
+    }
+  });
+});
+
 gulp.task( 'dist:minify', function() {
   gulp.src('scrollreveal.js')
     .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
@@ -26,8 +37,9 @@ gulp.task( 'dist:minify', function() {
 
 gulp.task( 'default', function() {
   browser.init({ server: { baseDir: "./dev" } });
+  gulp.start(['dev']);
   gulp.watch([ 'scrollreveal.js '], [ 'dev' ])
   gulp.watch([ 'dev/*.*' ]).on( "change", browser.reload );
 });
 
-gulp.task( 'build', [ 'dist', 'dist:minify' ]);
+gulp.task( 'build', [ 'validate','dist', 'dist:minify' ]);
