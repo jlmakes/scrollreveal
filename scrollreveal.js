@@ -3,7 +3,7 @@
            / ___/______________  / / / __ \___ _   _____  ____ _/ /
            \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
           ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
-         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.0
+         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.2
 
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
    Copyright 2014–2016 Julian Lloyd (@jlmakes) Open source under MIT license
@@ -127,30 +127,38 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.style = function( elem ) {
-      var config = elem.config;
+      var config   = elem.config;
+      var computed = window.getComputedStyle( elem.domEl );
 
       if ( !elem.styles ) {
         elem.styles = {
           transition : {},
-          transform  : {}
+          transform  : {},
+          computed   : {}
         };
-        elem.styles.inline  = elem.domEl.getAttribute('style') || '';
-        elem.styles.inline += '; visibility: visible; ';
-        elem.styles.opacity = window.getComputedStyle( elem.domEl ).opacity;
+        elem.styles.inline           = elem.domEl.getAttribute('style') || '';
+        elem.styles.inline          += '; visibility: visible; ';
+        elem.styles.computed.opacity = computed.opacity;
+
+        if ( !computed.transition || computed.transition == 'all 0s ease 0s' ) {
+          elem.styles.computed.transition = '';
+        } else {
+          elem.styles.computed.transition = computed.transition + ', ';
+        }
       }
 
-      elem.styles.transition.instant = 'transition: transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ' +
-                       '-webkit-transition: -webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ';
+      elem.styles.transition.instant = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ' +
+                                               'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ';
 
-      elem.styles.transition.delayed = 'transition: transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ' +
-                       '-webkit-transition: -webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ';
-
-      elem.styles.transform.initial = 'transform:';
-      elem.styles.transform.target  = 'transform:';
-      generateTransform( elem.styles.transform );
+      elem.styles.transition.delayed = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ' +
+                                               'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ';
 
       elem.styles.transform.initial += ' -webkit-transform:';
       elem.styles.transform.target  += ' -webkit-transform:';
+      generateTransform( elem.styles.transform );
+
+      elem.styles.transform.initial = 'transform:';
+      elem.styles.transform.target  = 'transform:';
       generateTransform( elem.styles.transform );
 
       function generateTransform( transform ) {
@@ -175,7 +183,7 @@ ______________________________________________________________________________*/
           transform.target  += ' rotateZ(0)';
         }
         transform.initial += '; opacity: ' + config.opacity + ';';
-        transform.target  += '; opacity: ' + elem.styles.opacity + ';';
+        transform.target  += '; opacity: ' + elem.styles.computed.opacity + ';';
       }
     };
 
