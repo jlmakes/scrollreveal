@@ -4,7 +4,7 @@
 
 ***
 
-[![ScrollReveal version](http://img.shields.io/badge/scrollreveal.js-v3.0.2-1a2434.svg)](https://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-1a2434.svg)](http://opensource.org/licenses/MIT)
+[![ScrollReveal version](http://img.shields.io/badge/scrollreveal.js-v3.0.3-1a2434.svg)](https://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-1a2434.svg)](http://opensource.org/licenses/MIT)
 
 - 2.9KB minified and Gzipped
 - No dependencies
@@ -19,7 +19,7 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag (thanks to jsDelivr)
 
 ```html
-<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.2/scrollreveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.3/scrollreveal.min.js"></script>
 ```
 
 But you can also:

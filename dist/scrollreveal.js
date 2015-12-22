@@ -14,7 +14,7 @@
            / ___/______________  / / / __ \___ _   _____  ____ _/ /
            \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
           ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
-         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.2
+         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.3
 
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
    Copyright 2014–2016 Julian Lloyd (@jlmakes) Open source under MIT license
@@ -83,7 +83,8 @@ ______________________________________________________________________________*/
 
       elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
       if ( !elements.length ) {
-        return console.warn( 'reveal("' + selector + '"") returned 0 elements.' );
+        console.warn( 'reveal(\'' + selector + '\') failed: no elements found.' );
+        return sr;
       }
       for ( var i = 0; i < elements.length; i++ ) {
         elem   = {}
@@ -390,10 +391,14 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.sync = function() {
-      for ( var i = 0; i < sr.history.length; i++ ) {
-        var record = sr.history[ i ];
-        sr.reveal( record.selector, record.config, true );
-      };
+      if ( sr.history.length ) {
+        for ( var i = 0; i < sr.history.length; i++ ) {
+          var record = sr.history[ i ];
+          sr.reveal( record.selector, record.config, true );
+        };
+      } else {
+        console.warn('sync() failed: no reveals found.');
+      }
       return sr;
     };
 
@@ -409,7 +414,7 @@ ______________________________________________________________________________*/
 
     Tools.prototype.forOwn = function( object, callback ) {
       if ( !this.isObject( object ) ){
-        throw new TypeError( 'Expected "object", but received "' + typeof object + '".' );
+        throw new TypeError( 'Expected \'object\', but received \'' + typeof object + '\'.' );
       } else {
         for ( var property in object ) {
           if ( object.hasOwnProperty( property ) ) {
