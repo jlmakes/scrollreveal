@@ -61,7 +61,7 @@ ______________________________________________________________________________*/
       return sr;
     }
 
-    ScrollReveal.prototype.reveal = function( selector, config, sync ){
+    ScrollReveal.prototype.reveal = function( selector, config, sync ) {
       var elements, container, elem, elemId;
 
       if ( config && config.container ) {
@@ -72,7 +72,7 @@ ______________________________________________________________________________*/
 
       elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
       if ( !elements.length ) {
-        console.warn( 'reveal(\'' + selector + '\') failed: no elements found.' );
+        console.warn('reveal(\'' + selector + '\') failed: no elements found.');
         return sr;
       }
       for ( var i = 0; i < elements.length; i++ ) {
@@ -403,7 +403,7 @@ ______________________________________________________________________________*/
 
     Tools.prototype.forOwn = function( object, callback ) {
       if ( !this.isObject( object ) ){
-        throw new TypeError( 'Expected \'object\', but received \'' + typeof object + '\'.' );
+        throw new TypeError('Expected \'object\', but received \'' + typeof object + '\'.');
       } else {
         for ( var property in object ) {
           if ( object.hasOwnProperty( property ) ) {
