@@ -46,7 +46,7 @@ ______________________________________________________________________________*/
 
       if ( sr.tools.isMobile() && !sr.defaults.mobile ) {
         return false;
-      } else if ( !sr.tools.browserSupports('transform') ) {
+      } else if ( !sr.tools.isSupported('transform') ) {
         return console.warn('Your browser does not support CSS transform.');
       }
 
@@ -435,7 +435,7 @@ ______________________________________________________________________________*/
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent );
     };
 
-    Tools.prototype.browserSupports = function( feature ) {
+    Tools.prototype.isSupported = function( feature ) {
       var sensor    = document.createElement('sensor');
       var cssPrefix = 'Webkit,Moz,O,'.split(',');
       var tests     = ( feature + cssPrefix.join( feature + ',' ) ).split(',');
