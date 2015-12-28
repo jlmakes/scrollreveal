@@ -46,8 +46,8 @@ ______________________________________________________________________________*/
 
       if ( sr.tools.isMobile() && !sr.defaults.mobile ) {
         return false;
-      } else if ( !sr.tools.isSupported('transform') ) {
-        return console.warn('Your browser does not support CSS transform.');
+      } else if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ) {
+        return console.warn('ScrollReveal is not supported in this browser.');
       }
 
       sr.store = {
