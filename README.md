@@ -64,7 +64,7 @@ Passing a configuration object to `ScrollReveal()` changes the defaults for all 
 window.sr = ScrollReveal({ reset: true });
 
 // Customizing a reveal set
-sr.reveal( '.foo', { wait: 200 } );
+sr.reveal( '.foo', { duration: 200 } );
 ```
 
 #### 2.2. The Starting Defaults
