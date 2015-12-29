@@ -154,12 +154,12 @@ ______________________________________________________________________________*/
       elem.styles.transition.delayed = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ' +
                                                'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ';
 
-      elem.styles.transform.initial += ' -webkit-transform:';
-      elem.styles.transform.target  += ' -webkit-transform:';
+      elem.styles.transform.initial = ' -webkit-transform:';
+      elem.styles.transform.target  = ' -webkit-transform:';
       generateTransform( elem.styles.transform );
 
-      elem.styles.transform.initial = 'transform:';
-      elem.styles.transform.target  = 'transform:';
+      elem.styles.transform.initial += 'transform:';
+      elem.styles.transform.target  += 'transform:';
       generateTransform( elem.styles.transform );
 
       function generateTransform( transform ) {
