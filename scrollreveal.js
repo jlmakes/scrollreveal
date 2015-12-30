@@ -206,7 +206,7 @@ ______________________________________________________________________________*/
 
     ScrollReveal.prototype.init = function() {
       sr.animate();
-      for ( var i = sr.store.containers.length - 1; i >= 0; i-- ) {
+      for ( var i = 0; i < sr.store.containers.length; i++ ) {
         sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
         sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
       }
