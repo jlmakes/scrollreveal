@@ -210,7 +210,7 @@ ______________________________________________________________________________*/
         sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
         sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
       }
-      if ( !sr.initialized ){
+      if ( !sr.initialized ) {
         window.addEventListener( 'scroll', sr.handler );
         window.addEventListener( 'resize', sr.handler );
         sr.initialized = true;
@@ -251,7 +251,7 @@ ______________________________________________________________________________*/
           elem.seen = true;
           queueCallback( 'reveal', elem );
 
-        } else if ( !visible && elem.config.reset && elem.revealed ){
+        } else if ( !visible && elem.config.reset && elem.revealed ) {
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.transform.initial
@@ -294,19 +294,19 @@ ______________________________________________________________________________*/
       }
     };
 
-    ScrollReveal.prototype.getContainerSize = function( container ){
+    ScrollReveal.prototype.getContainer = function( container ) {
       if ( !container ) {
         container = window.document.documentElement;
       }
-      var w = container['clientWidth']  || 0;
-      var h = container['clientHeight'] || 0;
+      var w = container.clientWidth;
+      var h = container.clientHeight;
       return {
         width:  w,
         height: h
       };
     };
 
-    ScrollReveal.prototype.getScrolled = function( container ){
+    ScrollReveal.prototype.getScrolled = function( container ) {
       if ( !container ) {
         return {
           x: window.pageXOffset,
@@ -340,10 +340,10 @@ ______________________________________________________________________________*/
       };
     };
 
-    ScrollReveal.prototype.isElemVisible = function( elem ){
+    ScrollReveal.prototype.isElemVisible = function( elem ) {
 
       var offset     = sr.getOffset( elem.domEl );
-      var container  = sr.getContainerSize( elem.config.container );
+      var container  = sr.getContainer( elem.config.container );
       var scrolled   = sr.getScrolled( elem.config.container );
       var vF         = elem.config.viewFactor;
 
@@ -356,7 +356,7 @@ ______________________________________________________________________________*/
 
       return ( confirmBounds() || isPositionFixed() );
 
-      function confirmBounds(){
+      function confirmBounds() {
 
         var top        = elemTop    + elemHeight * vF;
         var bottom     = elemBottom - elemHeight * vF;
@@ -374,7 +374,7 @@ ______________________________________________________________________________*/
             && ( right  < viewRight  );
       }
 
-      function isPositionFixed(){
+      function isPositionFixed() {
         return ( window.getComputedStyle( elem.domEl ).position === 'fixed' );
       }
     };
@@ -403,7 +403,7 @@ ______________________________________________________________________________*/
     };
 
     Tools.prototype.forOwn = function( object, callback ) {
-      if ( !this.isObject( object ) ){
+      if ( !this.isObject( object ) ) {
         throw new TypeError('Expected \'object\', but received \'' + typeof object + '\'.');
       } else {
         for ( var property in object ) {
@@ -441,7 +441,7 @@ ______________________________________________________________________________*/
       var cssPrefix = 'Webkit,Moz,O,'.split(',');
       var tests     = ( feature + cssPrefix.join( feature + ',' ) ).split(',');
 
-      for ( var i = 0; i < tests.length; i++ ){
+      for ( var i = 0; i < tests.length; i++ ) {
         if ( !sensor.style[ tests[ i ] ] === '' ) {
           return false;
         }
@@ -449,7 +449,7 @@ ______________________________________________________________________________*/
       return true;
     };
 
-    function Tools(){};
+    function Tools() {};
     return Tools;
 
   })();
