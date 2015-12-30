@@ -322,8 +322,10 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.getOffset = function( domEl ) {
-      var offsetTop  = 0;
-      var offsetLeft = 0;
+      var offsetTop    = 0;
+      var offsetLeft   = 0;
+      var offsetHeight = domEl.offsetHeight;
+      var offsetWidth  = domEl.offsetWidth;
 
       do {
         if ( !isNaN( domEl.offsetTop ) ) {
@@ -335,8 +337,10 @@ ______________________________________________________________________________*/
       } while ( domEl = domEl.offsetParent );
 
       return {
-        top:  offsetTop,
-        left: offsetLeft
+        top    : offsetTop,
+        left   : offsetLeft,
+        height : offsetHeight,
+        width  : offsetWidth
       };
     };
 
@@ -347,8 +351,8 @@ ______________________________________________________________________________*/
       var scrolled   = sr.getScrolled( elem.config.container );
       var vF         = elem.config.viewFactor;
 
-      var elemHeight = elem.domEl.offsetHeight;
-      var elemWidth  = elem.domEl.offsetWidth;
+      var elemHeight = offset.height;
+      var elemWidth  = offset.width;
       var elemTop    = offset.top;
       var elemBottom = elemTop + elemHeight;
       var elemLeft   = offset.left;
