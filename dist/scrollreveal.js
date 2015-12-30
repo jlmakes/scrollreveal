@@ -14,7 +14,7 @@
            / ___/______________  / / / __ \___ _   _____  ____ _/ /
            \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
           ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
-         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.3
+         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.4
 
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
    Copyright 2014–2016 Julian Lloyd (@jlmakes) Open source under MIT license
@@ -57,8 +57,8 @@ ______________________________________________________________________________*/
 
       if ( sr.tools.isMobile() && !sr.defaults.mobile ) {
         return false;
-      } else if ( !sr.tools.browserSupports('transform') ) {
-        return console.warn('Your browser does not support CSS transform.');
+      } else if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ) {
+        return console.warn('ScrollReveal is not supported in this browser.');
       }
 
       sr.store = {
@@ -72,7 +72,7 @@ ______________________________________________________________________________*/
       return sr;
     }
 
-    ScrollReveal.prototype.reveal = function( selector, config, sync ){
+    ScrollReveal.prototype.reveal = function( selector, config, sync ) {
       var elements, container, elem, elemId;
 
       if ( config && config.container ) {
@@ -83,7 +83,7 @@ ______________________________________________________________________________*/
 
       elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
       if ( !elements.length ) {
-        console.warn( 'reveal(\'' + selector + '\') failed: no elements found.' );
+        console.warn('reveal(\'' + selector + '\') failed: no elements found.');
         return sr;
       }
       for ( var i = 0; i < elements.length; i++ ) {
@@ -115,8 +115,8 @@ ______________________________________________________________________________*/
       }
       if ( !sync ) {
         sr.record( selector, config );
+        sr.init();
       }
-      sr.init();
       return sr;
     };
 
@@ -165,12 +165,12 @@ ______________________________________________________________________________*/
       elem.styles.transition.delayed = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ' +
                                                'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ';
 
-      elem.styles.transform.initial += ' -webkit-transform:';
-      elem.styles.transform.target  += ' -webkit-transform:';
+      elem.styles.transform.initial = ' -webkit-transform:';
+      elem.styles.transform.target  = ' -webkit-transform:';
       generateTransform( elem.styles.transform );
 
-      elem.styles.transform.initial = 'transform:';
-      elem.styles.transform.target  = 'transform:';
+      elem.styles.transform.initial += 'transform:';
+      elem.styles.transform.target  += 'transform:';
       generateTransform( elem.styles.transform );
 
       function generateTransform( transform ) {
@@ -221,7 +221,7 @@ ______________________________________________________________________________*/
         sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
         sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
       }
-      if ( !sr.initialized ){
+      if ( !sr.initialized ) {
         window.addEventListener( 'scroll', sr.handler );
         window.addEventListener( 'resize', sr.handler );
         sr.initialized = true;
@@ -262,7 +262,7 @@ ______________________________________________________________________________*/
           elem.seen = true;
           queueCallback( 'reveal', elem );
 
-        } else if ( !visible && elem.config.reset && elem.revealed ){
+        } else if ( !visible && elem.config.reset && elem.revealed ) {
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.transform.initial
@@ -305,19 +305,19 @@ ______________________________________________________________________________*/
       }
     };
 
-    ScrollReveal.prototype.getContainerSize = function( container ){
+    ScrollReveal.prototype.getContainer = function( container ) {
       if ( !container ) {
         container = window.document.documentElement;
       }
-      var w = container['clientWidth']  || 0;
-      var h = container['clientHeight'] || 0;
+      var w = container.clientWidth;
+      var h = container.clientHeight;
       return {
         width:  w,
         height: h
       };
     };
 
-    ScrollReveal.prototype.getScrolled = function( container ){
+    ScrollReveal.prototype.getScrolled = function( container ) {
       if ( !container ) {
         return {
           x: window.pageXOffset,
@@ -333,8 +333,10 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.getOffset = function( domEl ) {
-      var offsetTop  = 0;
-      var offsetLeft = 0;
+      var offsetTop    = 0;
+      var offsetLeft   = 0;
+      var offsetHeight = domEl.offsetHeight;
+      var offsetWidth  = domEl.offsetWidth;
 
       do {
         if ( !isNaN( domEl.offsetTop ) ) {
@@ -346,38 +348,38 @@ ______________________________________________________________________________*/
       } while ( domEl = domEl.offsetParent );
 
       return {
-        top:  offsetTop,
-        left: offsetLeft
+        top    : offsetTop,
+        left   : offsetLeft,
+        height : offsetHeight,
+        width  : offsetWidth
       };
     };
 
-    ScrollReveal.prototype.isElemVisible = function( elem ){
-
+    ScrollReveal.prototype.isElemVisible = function( elem ) {
       var offset     = sr.getOffset( elem.domEl );
-      var container  = sr.getContainerSize( elem.config.container );
+      var container  = sr.getContainer( elem.config.container );
       var scrolled   = sr.getScrolled( elem.config.container );
       var vF         = elem.config.viewFactor;
 
-      var elemHeight = elem.domEl.offsetHeight;
-      var elemWidth  = elem.domEl.offsetWidth;
+      var elemHeight = offset.height;
+      var elemWidth  = offset.width;
       var elemTop    = offset.top;
-      var elemBottom = elemTop + elemHeight;
       var elemLeft   = offset.left;
+      var elemBottom = elemTop  + elemHeight;
       var elemRight  = elemLeft + elemWidth;
 
       return ( confirmBounds() || isPositionFixed() );
 
-      function confirmBounds(){
-
+      function confirmBounds() {
         var top        = elemTop    + elemHeight * vF;
-        var bottom     = elemBottom - elemHeight * vF;
         var left       = elemLeft   + elemWidth  * vF;
+        var bottom     = elemBottom - elemHeight * vF;
         var right      = elemRight  - elemWidth  * vF;
 
         var viewTop    = scrolled.y + elem.config.viewOffset.top;
-        var viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height;
         var viewLeft   = scrolled.x + elem.config.viewOffset.left;
-        var viewRight  = scrolled.x - elem.config.viewOffset.right + container.width;
+        var viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height;
+        var viewRight  = scrolled.x - elem.config.viewOffset.right  + container.width;
 
         return ( top    < viewBottom )
             && ( bottom > viewTop    )
@@ -385,7 +387,7 @@ ______________________________________________________________________________*/
             && ( right  < viewRight  );
       }
 
-      function isPositionFixed(){
+      function isPositionFixed() {
         return ( window.getComputedStyle( elem.domEl ).position === 'fixed' );
       }
     };
@@ -396,6 +398,7 @@ ______________________________________________________________________________*/
           var record = sr.history[ i ];
           sr.reveal( record.selector, record.config, true );
         };
+        sr.init();
       } else {
         console.warn('sync() failed: no reveals found.');
       }
@@ -413,8 +416,8 @@ ______________________________________________________________________________*/
     };
 
     Tools.prototype.forOwn = function( object, callback ) {
-      if ( !this.isObject( object ) ){
-        throw new TypeError( 'Expected \'object\', but received \'' + typeof object + '\'.' );
+      if ( !this.isObject( object ) ) {
+        throw new TypeError('Expected \'object\', but received \'' + typeof object + '\'.');
       } else {
         for ( var property in object ) {
           if ( object.hasOwnProperty( property ) ) {
@@ -446,12 +449,12 @@ ______________________________________________________________________________*/
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent );
     };
 
-    Tools.prototype.browserSupports = function( feature ) {
+    Tools.prototype.isSupported = function( feature ) {
       var sensor    = document.createElement('sensor');
       var cssPrefix = 'Webkit,Moz,O,'.split(',');
       var tests     = ( feature + cssPrefix.join( feature + ',' ) ).split(',');
 
-      for ( var i = 0; i < tests.length; i++ ){
+      for ( var i = 0; i < tests.length; i++ ) {
         if ( !sensor.style[ tests[ i ] ] === '' ) {
           return false;
         }
@@ -459,14 +462,14 @@ ______________________________________________________________________________*/
       return true;
     };
 
-    function Tools(){};
+    function Tools() {};
     return Tools;
 
   })();
 
-  var _requestAnimationFrame = this.requestAnimationFrame       ||
-                               this.webkitRequestAnimationFrame ||
-                               this.mozRequestAnimationFrame;
+  var _requestAnimationFrame = window.requestAnimationFrame       ||
+                               window.webkitRequestAnimationFrame ||
+                               window.mozRequestAnimationFrame;
 
 }).call( this );
 

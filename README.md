@@ -4,7 +4,8 @@
 
 ***
 
-[![ScrollReveal version](http://img.shields.io/badge/scrollreveal.js-v3.0.3-1a2434.svg)](https://scrollrevealjs.org) [![License](http://img.shields.io/badge/License-MIT-1a2434.svg)](http://opensource.org/licenses/MIT)
+[![NPM version][npm-image]][npm-url]
+[![NPM downloads][downloads-image]][downloads-url]
 
 - 2.9KB minified and Gzipped
 - No dependencies
@@ -16,10 +17,10 @@
 
 #### 1.1. Installation
 
-The simplest method is to copy paste this snippet just before your closing `</body>` tag (thanks to jsDelivr)
+The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
-<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.3/scrollreveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.4/scrollreveal.min.js"></script>
 ```
 
 But you can also:
@@ -338,3 +339,8 @@ Want to see your page here? Please send me your work (or of others) using Scroll
 #### 5.4. Special Thanks
 
 ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crnacura) and her [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/).
+
+[npm-image]: https://img.shields.io/npm/v/scrollreveal.svg?style=flat
+[npm-url]: https://npmjs.org/package/scrollreveal
+[downloads-image]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
+[downloads-url]: https://npmjs.org/package/scrollreveal
