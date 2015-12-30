@@ -453,8 +453,8 @@ ______________________________________________________________________________*/
 
   })();
 
-  var _requestAnimationFrame = this.requestAnimationFrame       ||
-                               this.webkitRequestAnimationFrame ||
-                               this.mozRequestAnimationFrame;
+  var _requestAnimationFrame = window.requestAnimationFrame       ||
+                               window.webkitRequestAnimationFrame ||
+                               window.mozRequestAnimationFrame;
 
 }).call( this );
