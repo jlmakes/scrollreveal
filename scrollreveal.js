@@ -104,8 +104,8 @@ ______________________________________________________________________________*/
       }
       if ( !sync ) {
         sr.record( selector, config );
+        sr.init();
       }
-      sr.init();
       return sr;
     };
 
@@ -385,6 +385,7 @@ ______________________________________________________________________________*/
           var record = sr.history[ i ];
           sr.reveal( record.selector, record.config, true );
         };
+        sr.init();
       } else {
         console.warn('sync() failed: no reveals found.');
       }
@@ -453,8 +454,8 @@ ______________________________________________________________________________*/
 
   })();
 
-  var _requestAnimationFrame = this.requestAnimationFrame       ||
-                               this.webkitRequestAnimationFrame ||
-                               this.mozRequestAnimationFrame;
+  var _requestAnimationFrame = window.requestAnimationFrame       ||
+                               window.webkitRequestAnimationFrame ||
+                               window.mozRequestAnimationFrame;
 
 }).call( this );
