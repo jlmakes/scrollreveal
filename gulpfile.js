@@ -8,7 +8,7 @@ var browser = require('browser-sync').create();
 
 gulp.task( 'dist', function() {
   gulp.src('scrollreveal.js')
-    .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
+    .pipe( umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }) )
     .pipe( gulp.dest('dist') )
 });
 
@@ -29,7 +29,7 @@ gulp.task( 'validate', function() {
 
 gulp.task( 'dist:minify', function() {
   gulp.src('scrollreveal.js')
-    .pipe( umd({ namespace: 'ScrollReveal', exports: 'ScrollReveal' }) )
+    .pipe( umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }) )
     .pipe( uglify() )
     .pipe( rename('scrollreveal.min.js') )
     .pipe( gulp.dest('dist') )
