@@ -345,7 +345,6 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.isElemVisible = function( elem ) {
-
       var offset     = sr.getOffset( elem.domEl );
       var container  = sr.getContainer( elem.config.container );
       var scrolled   = sr.getScrolled( elem.config.container );
@@ -354,23 +353,22 @@ ______________________________________________________________________________*/
       var elemHeight = offset.height;
       var elemWidth  = offset.width;
       var elemTop    = offset.top;
-      var elemBottom = elemTop + elemHeight;
       var elemLeft   = offset.left;
+      var elemBottom = elemTop  + elemHeight;
       var elemRight  = elemLeft + elemWidth;
 
       return ( confirmBounds() || isPositionFixed() );
 
       function confirmBounds() {
-
         var top        = elemTop    + elemHeight * vF;
-        var bottom     = elemBottom - elemHeight * vF;
         var left       = elemLeft   + elemWidth  * vF;
+        var bottom     = elemBottom - elemHeight * vF;
         var right      = elemRight  - elemWidth  * vF;
 
         var viewTop    = scrolled.y + elem.config.viewOffset.top;
-        var viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height;
         var viewLeft   = scrolled.x + elem.config.viewOffset.left;
-        var viewRight  = scrolled.x - elem.config.viewOffset.right + container.width;
+        var viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height;
+        var viewRight  = scrolled.x - elem.config.viewOffset.right  + container.width;
 
         return ( top    < viewBottom )
             && ( bottom > viewTop    )
