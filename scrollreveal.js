@@ -106,7 +106,12 @@ ______________________________________________________________________________*/
       }
       if ( !sync ) {
         sr.record( selector, config );
-        sr.init();
+        if ( sr.initTimeout ) {
+          window.clearTimeout( sr.initTimeout );
+        }
+        sr.initTimeout = window.setTimeout(function(){
+          sr.init();
+        }, 0 );
       }
       return sr;
     };
