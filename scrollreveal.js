@@ -56,7 +56,7 @@ ______________________________________________________________________________*/
       };
       sr.history     = [];
       sr.counter     = 0;
-      sr.blocked     = false;
+      sr.running     = false;
       sr.initialized = false;
       return sr;
     }
@@ -224,9 +224,11 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.handler = function() {
-      if ( !sr.blocked ) {
-        sr.blocked = true;
-        _requestAnimationFrame( sr.animate );
+      if ( !sr.running ) {
+        _requestAnimationFrame(function(){
+          sr.running = true;
+          sr.animate();
+        });
       }
     };
 
@@ -266,7 +268,7 @@ ______________________________________________________________________________*/
         }
       });
 
-      sr.blocked = false;
+      sr.running = false;
 
       function queueCallback( type, elem ) {
         var elapsed  = 0;
