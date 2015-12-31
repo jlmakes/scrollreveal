@@ -14,7 +14,7 @@
            / ___/______________  / / / __ \___ _   _____  ____ _/ /
            \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
           ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
-         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.4
+         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.5
 
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
    Copyright 2014–2016 Julian Lloyd (@jlmakes) Open source under MIT license
@@ -67,7 +67,7 @@ ______________________________________________________________________________*/
       };
       sr.history     = [];
       sr.counter     = 0;
-      sr.blocked     = false;
+      sr.running     = false;
       sr.initialized = false;
       return sr;
     }
@@ -77,6 +77,8 @@ ______________________________________________________________________________*/
 
       if ( config && config.container ) {
         container = config.container;
+      } else if ( sr.defaults.container ) {
+        container = sr.defaults.container;
       } else {
         container = window.document.documentElement;
       }
@@ -115,7 +117,10 @@ ______________________________________________________________________________*/
       }
       if ( !sync ) {
         sr.record( selector, config );
-        sr.init();
+        if ( sr.initTimeout ) {
+          window.clearTimeout( sr.initTimeout );
+        }
+        sr.initTimeout = window.setTimeout( sr.init, 0 );
       }
       return sr;
     };
@@ -230,9 +235,11 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.handler = function() {
-      if ( !sr.blocked ) {
-        sr.blocked = true;
-        _requestAnimationFrame( sr.animate );
+      if ( !sr.running ) {
+        _requestAnimationFrame(function(){
+          sr.running = true;
+          sr.animate();
+        });
       }
     };
 
@@ -272,7 +279,7 @@ ______________________________________________________________________________*/
         }
       });
 
-      sr.blocked = false;
+      sr.running = false;
 
       function queueCallback( type, elem ) {
         var elapsed  = 0;
