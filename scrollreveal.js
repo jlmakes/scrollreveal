@@ -66,6 +66,8 @@ ______________________________________________________________________________*/
 
       if ( config && config.container ) {
         container = config.container;
+      } else if ( sr.defaults.container ) {
+        container = sr.defaults.container;
       } else {
         container = window.document.documentElement;
       }
