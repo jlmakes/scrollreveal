@@ -16,6 +16,7 @@ ______________________________________________________________________________*/
   this.ScrollReveal = (function(){
 
     ScrollReveal.prototype.defaults = {
+
       // Configuration
       // -------------
       // This object signature can be passed directly to the ScrollReveal
