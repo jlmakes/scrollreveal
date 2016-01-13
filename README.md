@@ -362,9 +362,10 @@ Feeling inspired? Please contribute! Optimizations, compatibility and bug fixes 
 
 Here are some cool sites using ScrollReveal:
 
-- [www.sequoiacap.com/](https://www.sequoiacap.com)
-- [www.ispg.co/](http://www.ispg.co/)
-- [www.whiterabbitexpress.com/](https://www.whiterabbitexpress.com/)
+- [Sequoia Capital](https://www.sequoiacap.com)
+- [Petravic Digital Designer](http://petravic.us/)
+- [ISPG Co.](http://www.ispg.co/)
+- [White Rabit Express](https://www.whiterabbitexpress.com/)
 
 Want to see your page here? Please send me your work (or of others) using ScrollReveal on Twitter ([@jlmakes](https://twitter.com/jlmakes))
 
