@@ -44,9 +44,7 @@ ______________________________________________________________________________*/
       sr.tools = new Tools();
       sr.tools.extend( sr.defaults, config || {} );
 
-      if ( sr.tools.isMobile() && !sr.defaults.mobile ){
-        return false;
-      } else if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ){
+      if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ){
         return console.log('ScrollReveal is not supported in this browser.');
       }
 
