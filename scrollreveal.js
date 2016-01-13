@@ -178,7 +178,7 @@ ______________________________________________________________________________*/
       //
       // Since `reveal()` is called internally by `sync()`, we don’t want to
       // record or intiialize each reveal.`
-      if ( !sync ){
+      if ( !sync && sr.supported() ){
         _record( selector, config );
         // We push initialization to the event queue using setTimeout, so that
         // we can give ScrollReveal room to process all reveal calls before
@@ -195,7 +195,7 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.sync = function(){
-      if ( sr.history.length ){
+      if ( sr.history.length && sr.supported() ){
         // Loop through all stored recorded `reveal()` calls, and run them
         // again to make sure all elements in the DOM are properly recognized
         // by ScrollReveal.
