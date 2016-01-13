@@ -87,7 +87,7 @@ duration    : 500,
 delay       : 0,
 
 //            Starting angles in degrees, will transition from these
-//            values to 0 in all axis.
+//            values to 0 in all axes.
 rotate      : { x : 0, y : 0, z : 0 },
 
 //            Starting opacity value, will transition from this value to
@@ -311,13 +311,15 @@ ScrollReveal supports 3d rotation out of the box, but you may want to emphasize 
 _Continuing our example from 4.2._
 ```html
 <!DOCTYPE html>
-<html>
+<html class="no-js">
   <head>
     <script>
-      document.documentElement.classList.add('js-enabled');
+      // Change <html> classes if JavaScript is enabled
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
     </script>
     <style>
-      .js-enabled .fooReveal { visibility: hidden; }
+      .js .fooReveal { visibility: hidden; }
       .fooContainer { perspective: 800px; }
     </style>
   </head>
