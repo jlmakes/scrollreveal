@@ -47,7 +47,7 @@ ______________________________________________________________________________*/
       if ( sr.tools.isMobile() && !sr.defaults.mobile ){
         return false;
       } else if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ){
-        return console.warn('ScrollReveal is not supported in this browser.');
+        return console.log('ScrollReveal is not supported in this browser.');
       }
 
       sr.store = {
@@ -74,7 +74,7 @@ ______________________________________________________________________________*/
 
       elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
       if ( !elements.length ){
-        console.warn('reveal(\'' + selector + '\') failed: no elements found.');
+        console.log('reveal(\'' + selector + '\') failed: no elements found.');
         return sr;
       }
       for ( var i = 0; i < elements.length; i++ ){
@@ -396,7 +396,7 @@ ______________________________________________________________________________*/
         };
         sr.init();
       } else {
-        console.warn('sync() failed: no reveals found.');
+        console.log('sync() failed: no reveals found.');
       }
       return sr;
     };
