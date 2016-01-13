@@ -98,9 +98,9 @@ ______________________________________________________________________________*/
           elem.domEl.setAttribute( 'data-sr-id', elem.id );
         }
 
-        sr.configure( elem, config || {} );
-        sr.style( elem );
-        sr.updateStore( elem );
+        _configure( elem, config || {} );
+        _style( elem );
+        _updateStore( elem );
 
         if ( sr.tools.isMobile() && !elem.config.mobile || !sr.supported() ){
           elem.domEl.setAttribute( 'style', elem.styles.inline );
@@ -113,7 +113,7 @@ ______________________________________________________________________________*/
         }
       }
       if ( !sync ){
-        sr.record( selector, config );
+        _record( selector, config );
         if ( sr.initTimeout ){
           window.clearTimeout( sr.initTimeout );
         }
@@ -122,7 +122,26 @@ ______________________________________________________________________________*/
       return sr;
     };
 
-    ScrollReveal.prototype.configure = function( elem, config ){
+    ScrollReveal.prototype.sync = function(){
+      if ( sr.history.length ){
+        for ( var i = 0; i < sr.history.length; i++ ){
+          var record = sr.history[ i ];
+          sr.reveal( record.selector, record.config, true );
+        };
+        _init();
+      } else {
+        console.log('sync() failed: no reveals found.');
+      }
+      return sr;
+    };
+
+  // Private Methods
+  // ---------------
+  // Ah, the beauty of closures. These methods remain accessible ONLY to the
+  // ScrollReveal instance, even though they technically only 'lived' during
+  // it’s instantiation outside of the constructors scope.
+
+    function _configure( elem, config ){
       if ( !elem.config ){
         elem.config = sr.tools.extendClone( sr.defaults, config );
       } else {
@@ -138,9 +157,9 @@ ______________________________________________________________________________*/
       if ( elem.config.origin === 'top' || elem.config.origin === 'left' ){
         elem.config.distance = '-' + elem.config.distance;
       }
-    };
+    }
 
-    ScrollReveal.prototype.style = function( elem ){
+    function _style( elem ){
       var config   = elem.config;
       var computed = window.getComputedStyle( elem.domEl );
 
@@ -199,9 +218,9 @@ ______________________________________________________________________________*/
         transform.initial += '; opacity: ' + config.opacity + ';';
         transform.target  += '; opacity: ' + elem.styles.computed.opacity + ';';
       }
-    };
+    }
 
-    ScrollReveal.prototype.updateStore = function( elem ){
+    function _updateStore( elem ){
       var container = elem.config.container;
       if ( container && sr.store.containers.indexOf( container ) == -1 ){
         sr.store.containers.push( elem.config.container );
@@ -209,45 +228,45 @@ ______________________________________________________________________________*/
       sr.store.elements[ elem.id ] = elem;
     };
 
-    ScrollReveal.prototype.record = function( selector, config ){
+    function _record( selector, config ){
       var record = {
         selector : selector,
         config   : config
       };
       sr.history.push( record );
-    };
+    }
 
-    ScrollReveal.prototype.init = function(){
+    function _init(){
       if ( sr.supported() ){
-        sr.animate();
+        _animate();
         for ( var i = 0; i < sr.store.containers.length; i++ ){
-          sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
-          sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
+          sr.store.containers[ i ].addEventListener( 'scroll', _handler );
+          sr.store.containers[ i ].addEventListener( 'resize', _handler );
         }
         if ( !sr.initialized ){
-          window.addEventListener( 'scroll', sr.handler );
-          window.addEventListener( 'resize', sr.handler );
+          window.addEventListener( 'scroll', _handler );
+          window.addEventListener( 'resize', _handler );
           sr.initialized = true;
         }
       }
       return sr;
-    };
+    }
 
-    ScrollReveal.prototype.handler = function(){
+    function _handler(){
       if ( !sr.running ){
         _requestAnimationFrame(function(){
           sr.running = true;
-          sr.animate();
+          _animate();
         });
       }
-    };
+    }
 
-    ScrollReveal.prototype.animate = function(){
+    function _animate(){
       var elem, visible;
 
       sr.tools.forOwn( sr.store.elements, function( elemId ){
         elem    = sr.store.elements[ elemId ];
-        visible = sr.isElemVisible( elem );
+        visible = _isElemVisible( elem );
         if ( visible && !elem.revealed && !elem.disabled ){
 
           if ( elem.config.useDelay === 'always'
@@ -301,7 +320,7 @@ ______________________________________________________________________________*/
           window.clearTimeout( elem.timer.clock );
         }
 
-        elem.timer = { started: new Date() };
+        elem.timer = { started : new Date() };
 
         elem.timer.clock = window.setTimeout(function(){
           elem.config[ callback ]( elem.domEl );
@@ -309,9 +328,9 @@ ______________________________________________________________________________*/
         }, duration - elapsed );
         return type === 'reveal' ? elem.revealed = true : elem.revealed = false;
       }
-    };
+    }
 
-    ScrollReveal.prototype.getContainer = function( container ){
+    function _getContainer( container ){
       if ( !container ){
         container = window.document.documentElement;
       }
@@ -321,24 +340,24 @@ ______________________________________________________________________________*/
         width  : w,
         height : h
       };
-    };
+    }
 
-    ScrollReveal.prototype.getScrolled = function( container ){
+    function _getScrolled( container ){
       if ( !container ){
         return {
           x : window.pageXOffset,
           y : window.pageYOffset
         };
       } else {
-        var offset = sr.getOffset( container );
+        var offset = _getOffset( container );
         return {
           x : container.scrollLeft + offset.left,
           y : container.scrollTop  + offset.top
         };
       }
-    };
+    }
 
-    ScrollReveal.prototype.getOffset = function( domEl ){
+    function _getOffset( domEl ){
       var offsetTop    = 0;
       var offsetLeft   = 0;
       var offsetHeight = domEl.offsetHeight;
@@ -359,12 +378,12 @@ ______________________________________________________________________________*/
         height : offsetHeight,
         width  : offsetWidth
       };
-    };
+    }
 
-    ScrollReveal.prototype.isElemVisible = function( elem ){
-      var offset     = sr.getOffset( elem.domEl );
-      var container  = sr.getContainer( elem.config.container );
-      var scrolled   = sr.getScrolled( elem.config.container );
+    function _isElemVisible( elem ){
+      var offset     = _getOffset( elem.domEl );
+      var container  = _getContainer( elem.config.container );
+      var scrolled   = _getScrolled( elem.config.container );
       var vF         = elem.config.viewFactor;
 
       var elemHeight = offset.height;
@@ -396,20 +415,7 @@ ______________________________________________________________________________*/
       function isPositionFixed(){
         return ( window.getComputedStyle( elem.domEl ).position === 'fixed' );
       }
-    };
-
-    ScrollReveal.prototype.sync = function(){
-      if ( sr.history.length ){
-        for ( var i = 0; i < sr.history.length; i++ ){
-          var record = sr.history[ i ];
-          sr.reveal( record.selector, record.config, true );
-        };
-        sr.init();
-      } else {
-        console.log('sync() failed: no reveals found.');
-      }
-      return sr;
-    };
+    }
 
     return ScrollReveal;
 
