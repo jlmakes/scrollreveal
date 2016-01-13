@@ -44,7 +44,7 @@ ______________________________________________________________________________*/
       sr.tools = new Tools();
       sr.tools.extend( sr.defaults, config || {} );
 
-      if ( !sr.tools.isSupported('transform') || !sr.tools.isSupported('transition') ){
+      if ( !sr.supported() ){
         return console.log('ScrollReveal is not supported in this browser.');
       }
 
@@ -58,6 +58,13 @@ ______________________________________________________________________________*/
       sr.initialized = false;
       return sr;
     }
+
+    ScrollReveal.prototype.supported = function(){
+      var style = document.documentElement.style;
+      return (
+        'transform'  in style && 'WebkitTransform'  in style &&
+        'transition' in style && 'WebkitTransition' in style ) ? true : false;
+    };
 
     ScrollReveal.prototype.reveal = function( selector, config, sync ){
       var elements, container, elem, elemId;
@@ -441,19 +448,6 @@ ______________________________________________________________________________*/
 
     Tools.prototype.isMobile = function(){
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent );
-    };
-
-    Tools.prototype.isSupported = function( feature ){
-      var sensor    = document.createElement('sensor');
-      var cssPrefix = 'Webkit,Moz,O,'.split(',');
-      var tests     = ( feature + cssPrefix.join( feature + ',' ) ).split(',');
-
-      for ( var i = 0; i < tests.length; i++ ){
-        if ( !sensor.style[ tests[ i ] ] === '' ){
-          return false;
-        }
-      }
-      return true;
     };
 
     function Tools(){};
