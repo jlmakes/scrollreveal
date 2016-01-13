@@ -70,47 +70,72 @@ sr.reveal( '.foo', { duration: 200 } );
 
 #### 2.2. The Starting Defaults
 ```js
-// Animation
+// Configuration
+// -------------
+// This object signature can be passed directly to the ScrollReveal
+// constructor, or as the second argument of the reveal() method.
+
+//            'bottom', 'left', 'top', 'right'
 origin      : 'bottom',
+
+//            Can be any valid CSS distance, e.g.
+//            '5rem', '10%', '20vw', etc.
 distance    : '20px',
+
+//            Time in milliseconds.
 duration    : 500,
 delay       : 0,
-rotate      : { x: 0, y: 0, z: 0 },
+
+//            Starting angles in degrees, will transition from these
+//            values to 0 in all axis.
+rotate      : { x : 0, y : 0, z : 0 },
+
+//            Starting opacity value, will transition from this value to
+//            the elements computed opacity.
 opacity     : 0,
+
+//            Starting scale value, will transition from this value to 1
 scale       : 0.9,
+
+//            Accepts any valid CSS easing, e.g.
+//            'ease', 'ease-in-out', 'linear', etc.
 easing      : 'cubic-bezier( 0.6, 0.2, 0.1, 1 )',
 
-// Options
+//            When null, `<html>` is assumed to be the reveal container.
+//            You can pass a DOM node as a custom container, e.g.
+//            document.querySelector('.fooContainer');
 container   : null,
+
+//            true/false to control reveal animations on mobile.
 mobile      : true,
+
+//            true:  reveals occur every time elements become visible
+//            false: reveals occur once as elements become visible
 reset       : false,
+
+//            'always' — delay for all reveal animations
+//            'once'   — delay only the first time reveals occur
+//            'onload' - delay only for animations triggered by first load
 useDelay    : 'always',
-viewFactor  : 0.20,
-viewOffset  : { top: 0, right: 0, bottom: 0, left: 0 },
-afterReveal : function( domEl ) {},
-afterReset  : function( domEl ) {}
+
+//            Change when an element is considered in the viewport.
+//            The default value of 0.20 means 20% of an element must be
+//            visible for its reveal to occur.
+viewFactor  : 0.2,
+
+//            Pixel values that alter the container boundaries. e.g.
+//            Set `{ top: 48 }`, if you have a 48px tall fixed toolbar.
+//            --
+//            Visual Aid: https://scrollrevealjs.org/assets/viewoffset.png
+viewOffset  : { top : 0, right : 0, bottom : 0, left : 0 },
+
+//            Callbacks that fire for each completed element reveal, and
+//            if `config.reset = true`, for each completed element reset.
+//            When creating your callbacks, remember they are passed the
+//            element’s DOM node that triggered it as the first argument.
+afterReveal : function( domEl ){},
+afterReset  : function( domEl ){}
 ```
-
-#### 2.3. Configuration Details
-
-key | type | values | notes
-----|------|---------|-------
-origin | `string` | `'top'`<br/>`'right'`<br/>`'bottom'`<br/>`'left'`
-distance | `string` | `'20px'`<br/>`'10vw'`<br/>`'5%'` | Any valid CSS unit will work.
-duration | `number` | `500` | Time in milliseconds.
-delay | `number` | `0` | Time in milliseconds.
-rotate | `object`/`number` | `{ x: 0, y: 0, z: 0 }` | Starting angle in degrees.
-opacity | `number` | `0` | Starting opacity.
-scale | `number` | `0.9` | Starting scale.
-easing | `string` | `'ease'`<br/>`'ease-in'`<br/>`'ease-out'`<br/>`'ease-in-out'`<br/>`'cubic-bezier()'` | Any valid CSS easing will work.
-container | `node` | `document.getElementById('foo')`
-mobile | `boolean` | `true` / `false` | Toggle animations on mobile
-reset | `boolean` | `true` / `false` | Elements reveal either once, or reset to reveal each time they are within viewport/container bounds.
-useDelay | `string` | `'always'`<br/>`'once'`<br/>`'onload'` | Control when elements use animation delay.
-viewFactor | `number` | `0.20` | e.g. 20% of an element must be within viewport/container bounds before it reveals.
-viewOffset | `object`/`number` | `{ top: 48, bottom: 24 }` | Increase viewport/container bounds in pixels. ([See Diagram](https://scrollrevealjs.org/assets/viewoffset-diagram.png))
-afterReveal | `function` | `function( domEl ) {}` | Fires after reveal animations.
-afterReset | `function` | `function( domEl ) {}` | Fires after reset animations.
 
 ## 3. Advanced
 
