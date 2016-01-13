@@ -188,7 +188,7 @@ ______________________________________________________________________________*/
         if ( sr.initTimeout ){
           window.clearTimeout( sr.initTimeout );
         }
-        sr.initTimeout = window.setTimeout( sr.init, 0 );
+        sr.initTimeout = window.setTimeout( _init, 0 );
       }
       return sr;
     };
