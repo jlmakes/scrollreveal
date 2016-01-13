@@ -172,18 +172,18 @@ ______________________________________________________________________________*/
         }
       }
 
-      // Each `reveal()` is recorded so that when `sync()` while working with
-      // asynchronously loaded content, it can re-trace your steps by but with
-      // your new elements now in the DOM.
-      //
+      // Each `reveal()` is recorded so that when calling `sync()` while working
+      // with asynchronously loaded content, it can re-trace your steps but with
+      // all your new elements now in the DOM.
+
       // Since `reveal()` is called internally by `sync()`, we don’t want to
-      // record or intiialize each reveal.`
+      // record or intiialize each reveal during syncing.
       if ( !sync && sr.supported() ){
         _record( selector, config );
         // We push initialization to the event queue using setTimeout, so that
         // we can give ScrollReveal room to process all reveal calls before
         // putting things into motion.
-        //
+        // --
         // Recommended: Philip Roberts - What the heck is the event loop anyway?
         // @ JSConf EU 2014: https://www.youtube.com/watch?v=8aGhZQkoFbQ
         if ( sr.initTimeout ){
@@ -312,13 +312,17 @@ ______________________________________________________________________________*/
 
     function _updateStore( elem ){
       var container = elem.config.container;
+      // If this element’s container isn’t already in the store, let’s add it.
       if ( container && sr.store.containers.indexOf( container ) == -1 ){
         sr.store.containers.push( elem.config.container );
       }
+      // Update the elemented stored with our new element.
       sr.store.elements[ elem.id ] = elem;
     };
 
     function _record( selector, config ){
+      // Save the `reveal()` arguments that triggered this `_record()` call,
+      // so we can re-trace our steps when calling the `sync()` method.
       var record = {
         selector : selector,
         config   : config
@@ -445,16 +449,20 @@ ______________________________________________________________________________*/
     }
 
     function _getScrolled( container ){
-      if ( !container ){
-        return {
-          x : window.pageXOffset,
-          y : window.pageYOffset
-        };
-      } else {
+      // Return the container scroll values, plus the offset values of it's
+      // position (since element offset is relevant to the document origin.)
+      if ( container ){
         var offset = _getOffset( container );
         return {
           x : container.scrollLeft + offset.left,
           y : container.scrollTop  + offset.top
+        };
+      }
+      // Otherwise, default to the window object’s scroll values.
+      else {
+        return {
+          x : window.pageXOffset,
+          y : window.pageYOffset
         };
       }
     }
