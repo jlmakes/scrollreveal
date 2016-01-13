@@ -54,7 +54,6 @@ ______________________________________________________________________________*/
       };
       sr.history     = [];
       sr.counter     = 0;
-      sr.running     = false;
       sr.initialized = false;
       return sr;
     }
@@ -253,12 +252,7 @@ ______________________________________________________________________________*/
     }
 
     function _handler(){
-      if ( !sr.running ){
-        _requestAnimationFrame(function(){
-          sr.running = true;
-          _animate();
-        });
-      }
+      _requestAnimationFrame( _animate );
     }
 
     function _animate(){
@@ -296,8 +290,6 @@ ______________________________________________________________________________*/
           queueCallback( 'reset', elem );
         }
       });
-
-      sr.running = false;
 
       function queueCallback( type, elem ){
         var elapsed  = 0;
