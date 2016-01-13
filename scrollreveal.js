@@ -45,7 +45,7 @@ ______________________________________________________________________________*/
       sr.tools.extend( sr.defaults, config || {} );
 
       if ( !sr.supported() ){
-        return console.log('ScrollReveal is not supported in this browser.');
+        console.log('ScrollReveal is not supported in this browser.');
       }
 
       sr.store = {
@@ -102,7 +102,10 @@ ______________________________________________________________________________*/
         sr.style( elem );
         sr.updateStore( elem );
 
-        if ( !elem.revealed ){
+        if ( sr.tools.isMobile() && !elem.config.mobile || !sr.supported() ){
+          elem.domEl.setAttribute( 'style', elem.styles.inline );
+          elem.disabled = true;
+        } else if ( !elem.revealed ){
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.transform.initial
@@ -215,15 +218,17 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.init = function(){
-      sr.animate();
-      for ( var i = 0; i < sr.store.containers.length; i++ ){
-        sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
-        sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
-      }
-      if ( !sr.initialized ){
-        window.addEventListener( 'scroll', sr.handler );
-        window.addEventListener( 'resize', sr.handler );
-        sr.initialized = true;
+      if ( sr.supported() ){
+        sr.animate();
+        for ( var i = 0; i < sr.store.containers.length; i++ ){
+          sr.store.containers[ i ].addEventListener( 'scroll', sr.handler );
+          sr.store.containers[ i ].addEventListener( 'resize', sr.handler );
+        }
+        if ( !sr.initialized ){
+          window.addEventListener( 'scroll', sr.handler );
+          window.addEventListener( 'resize', sr.handler );
+          sr.initialized = true;
+        }
       }
       return sr;
     };
@@ -243,7 +248,7 @@ ______________________________________________________________________________*/
       sr.tools.forOwn( sr.store.elements, function( elemId ){
         elem    = sr.store.elements[ elemId ];
         visible = sr.isElemVisible( elem );
-        if ( visible && !elem.revealed ){
+        if ( visible && !elem.revealed && !elem.disabled ){
 
           if ( elem.config.useDelay === 'always'
           || ( elem.config.useDelay === 'onload' && !sr.initialized )
@@ -263,7 +268,7 @@ ______________________________________________________________________________*/
           elem.seen = true;
           queueCallback( 'reveal', elem );
 
-        } else if ( !visible && elem.config.reset && elem.revealed ){
+        } else if ( !visible && elem.config.reset && elem.revealed && !elem.disabled ){
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.transform.initial
