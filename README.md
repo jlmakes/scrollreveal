@@ -316,27 +316,31 @@ _Continuing our example from 4.2._
 
 Open source under the [MIT License](http://img.shields.io/badge/License-MIT-1a2434.svg). ©2014–2016 Julian Lloyd.
 
-#### 5.1. Issues and Reporting Bugs
+#### 5.1. Browser Compatibility
+
+ScrollReveal works on any JavaScript enabled browser that supports both [CSS Transform](http://caniuse.com/#search=transform) and [CSS Transition](http://caniuse.com/#search=transitions). This includes Internet Explorer 10, and most modern desktop and mobile browsers.
+
+#### 5.2. Issues and Reporting Bugs
 
 **Please search existing issues, before creating a new one;** every issue is labeled and attended carefully. If you open a duplicate issue, it will be closed immediately.
 
 If you cannot find your issue/bug in a previous ticket, please include details such as your browser, any other 3rd party JavaScript libraries you are using, and ideally a code sample demonstrating the problem. (Try [JSBin](http://jsbin.com/?html,css,js,output))
 
-#### 5.2. Contributing
+#### 5.3. Contributing
 
 Feeling inspired? Please contribute! Optimizations, compatibility and bug fixes are greatly preferred over new features, but don’t be shy. One thing sorely missing from ScrollReveal right now is a test suite.
 
-
-#### 5.3. Showcase
+#### 5.4. Showcase
 
 Here are some cool sites using ScrollReveal:
 
 - [www.sequoiacap.com/](https://www.sequoiacap.com)
 - [www.ispg.co/](http://www.ispg.co/)
+- [www.whiterabbitexpress.com/](https://www.whiterabbitexpress.com/)
 
 Want to see your page here? Please send me your work (or of others) using ScrollReveal on Twitter ([@jlmakes](https://twitter.com/jlmakes))
 
-#### 5.4. Special Thanks
+#### 5.5. Special Thanks
 
 ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crnacura) and her [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/).
 
