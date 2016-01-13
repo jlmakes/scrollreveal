@@ -14,7 +14,7 @@
            / ___/______________  / / / __ \___ _   _____  ____ _/ /
            \__ \/ ___/ ___/ __ \/ / / /_/ / _ \ | / / _ \/ __ `/ /
           ___/ / /__/ /  / /_/ / / / _, _/  __/ |/ /  __/ /_/ / /
-         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.7
+         /____/\___/_/   \____/_/_/_/ |_|\___/|___/\___/\__,_/_/    v3.0.8
 
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
    Copyright 2014–2016 Julian Lloyd (@jlmakes) Open source under MIT license
@@ -45,7 +45,7 @@ ______________________________________________________________________________*/
       delay       : 0,
 
       //            Starting angles in degrees, will transition from these
-      //            values to 0 in all axis.
+      //            values to 0 in all axes.
       rotate      : { x : 0, y : 0, z : 0 },
 
       //            Starting opacity value, will transition from this value to
@@ -189,7 +189,7 @@ ______________________________________________________________________________*/
       //
       // Since `reveal()` is called internally by `sync()`, we don’t want to
       // record or intiialize each reveal.`
-      if ( !sync ){
+      if ( !sync && sr.supported() ){
         _record( selector, config );
         // We push initialization to the event queue using setTimeout, so that
         // we can give ScrollReveal room to process all reveal calls before
@@ -206,7 +206,7 @@ ______________________________________________________________________________*/
     };
 
     ScrollReveal.prototype.sync = function(){
-      if ( sr.history.length ){
+      if ( sr.history.length && sr.supported() ){
         // Loop through all stored recorded `reveal()` calls, and run them
         // again to make sure all elements in the DOM are properly recognized
         // by ScrollReveal.
