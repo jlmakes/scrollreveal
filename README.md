@@ -253,20 +253,21 @@ The ideal solution is to **set your reveal elements visibility to hidden** in th
 _Continuing our example from 4.1._
 ```html
 <!DOCTYPE html>
-<html>
+<html class="no-js">
   <head>
     <script>
-      // If JavaScript is enabled, add '.js-enabled' to <html> element
-      document.documentElement.classList.add('js-enabled');
+      // Change <html> classes if JavaScript is enabled
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
     </script>
     <style>
       /* Ensure elements load hidden before ScrollReveal runs */
-      .js-enabled .fooReveal { visibility: hidden; }
+      .js .fooReveal { visibility: hidden; }
     </style>
   </head>
   <body>
 
-      <!-- All the things... -->
+    <!-- All the things... -->
 
     <script src="js/scrollreveal.min.js"></script>
     <script>
