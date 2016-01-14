@@ -1,6 +1,6 @@
 {
   "name"        : "scrollreveal",
-  "version"     : "3.0.8",
+  "version"     : "3.0.9",
   "description" : "Easy scroll animations for web and mobile browsers.",
   "homepage"    : "https://scrollrevealjs.org",
   "main"        : "dist/scrollreveal.js",

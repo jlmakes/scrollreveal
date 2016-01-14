@@ -20,7 +20,7 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
-<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.8/scrollreveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.0.9/scrollreveal.min.js"></script>
 ```
 
 But you can also:
@@ -363,7 +363,7 @@ Feeling inspired? Please contribute! Optimizations, compatibility and bug fixes 
 Here are some cool sites using ScrollReveal:
 
 - [Sequoia Capital](https://www.sequoiacap.com)
-- [Petravic Digital Designer](http://petravic.us/)
+- [Andrius Petravic](http://petravic.us/)
 - [ISPG Co.](http://www.ispg.co/)
 - [White Rabit Express](https://www.whiterabbitexpress.com/)
 
