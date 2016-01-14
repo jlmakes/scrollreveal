@@ -109,8 +109,8 @@ ______________________________________________________________________________*/
     ScrollReveal.prototype.supported = function(){
       var style = document.documentElement.style;
       return (
-        'transform'  in style && 'WebkitTransform'  in style &&
-        'transition' in style && 'WebkitTransition' in style ) ? true : false;
+        'WebkitTransition' in style && 'WebkitTransform' in style ||
+        'transition' in style && 'transform' in style ) ? true : false;
     };
 
     ScrollReveal.prototype.reveal = function( selector, config, sync ){
