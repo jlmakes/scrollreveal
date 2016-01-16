@@ -84,6 +84,8 @@ ______________________________________________________________________________*/
       afterReset  : function( domEl ){}
     };
 
+////////////////////////////////////////////////////////////////////////////////
+
     function ScrollReveal( config ){
       if ( window == this ){
         return new ScrollReveal( config );
@@ -106,12 +108,16 @@ ______________________________________________________________________________*/
       return sr;
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     ScrollReveal.prototype.supported = function(){
       var style = document.documentElement.style;
       return (
         'WebkitTransition' in style && 'WebkitTransform' in style ||
         'transition' in style && 'transform' in style ) ? true : false;
     };
+
+////////////////////////////////////////////////////////////////////////////////
 
     ScrollReveal.prototype.reveal = function( selector, config, sync ){
       var elements, container, elem, elemId;
@@ -194,6 +200,8 @@ ______________________________________________________________________________*/
       return sr;
     };
 
+////////////////////////////////////////////////////////////////////////////////
+
     ScrollReveal.prototype.sync = function(){
       if ( sr.history.length && sr.supported() ){
         // Loop through all stored recorded `reveal()` calls, and run them
@@ -210,6 +218,8 @@ ______________________________________________________________________________*/
       }
       return sr;
     };
+
+////////////////////////////////////////////////////////////////////////////////
 
     // Private Methods
     // ---------------
@@ -241,6 +251,8 @@ ______________________________________________________________________________*/
         elem.config.distance = '-' + elem.config.distance;
       }
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _style( elem ){
       var config   = elem.config;
@@ -310,6 +322,8 @@ ______________________________________________________________________________*/
       }
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _updateStore( elem ){
       var container = elem.config.container;
       // If this element’s container isn’t already in the store, let’s add it.
@@ -320,6 +334,8 @@ ______________________________________________________________________________*/
       sr.store.elements[ elem.id ] = elem;
     };
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _record( selector, config ){
       // Save the `reveal()` arguments that triggered this `_record()` call,
       // so we can re-trace our steps when calling the `sync()` method.
@@ -329,6 +345,8 @@ ______________________________________________________________________________*/
       };
       sr.history.push( record );
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _init(){
       if ( sr.supported() ){
@@ -351,9 +369,13 @@ ______________________________________________________________________________*/
       return sr;
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _handler(){
       _requestAnimationFrame( _animate );
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _animate(){
       var elem;
@@ -392,6 +414,8 @@ ______________________________________________________________________________*/
       });
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _queueCallback( type, elem ){
       var elapsed  = 0;
       var duration = 0;
@@ -424,10 +448,14 @@ ______________________________________________________________________________*/
       return type === 'reveal' ? elem.revealed = true : elem.revealed = false;
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _shouldReveal( elem ){
       var visible = _isElemVisible( elem );
       return ( visible && !elem.revealed && !elem.disabled ) ? true : false;
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _shouldUseDelay( elem ){
       var delayType = elem.config.useDelay;
@@ -436,11 +464,15 @@ ______________________________________________________________________________*/
           || ( delayType === 'once'   && !elem.seen ) ) ? true : false;
     }
 
+////////////////////////////////////////////////////////////////////////////////
+
     function _shouldReset( elem ){
       var visible = _isElemVisible( elem );
       return ( !visible && elem.config.reset
           && elem.revealed && !elem.disabled ) ? true : false;
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _getContainer( container ){
       if ( !container ){
@@ -453,6 +485,8 @@ ______________________________________________________________________________*/
         height : h
       };
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _getScrolled( container ){
       // Return the container scroll values, plus the offset values of its
@@ -472,6 +506,8 @@ ______________________________________________________________________________*/
         };
       }
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _getOffset( domEl ){
       var offsetTop    = 0;
@@ -498,6 +534,8 @@ ______________________________________________________________________________*/
         width  : offsetWidth
       };
     }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _isElemVisible( elem ){
       var offset     = _getOffset( elem.domEl );
