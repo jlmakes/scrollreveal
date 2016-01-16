@@ -290,36 +290,42 @@ ______________________________________________________________________________*/
       // Generate transform styles, first with the webkit prefix.
       elem.styles.transform.initial = ' -webkit-transform:';
       elem.styles.transform.target  = ' -webkit-transform:';
-      generateTransform( elem.styles.transform );
+      _generateTransform( elem );
       // And again without any prefix.
       elem.styles.transform.initial += 'transform:';
       elem.styles.transform.target  += 'transform:';
-      generateTransform( elem.styles.transform );
+      _generateTransform( elem );
 
-      function generateTransform( transform ){
-        if ( parseInt( config.distance ) ){
-          transform.initial += ' translate' + config.axis + '(' + config.distance + ')';
-          transform.target  += ' translate' + config.axis + '(0)';
-        }
-        if ( config.scale ){
-          transform.initial += ' scale(' + config.scale + ')';
-          transform.target  += ' scale(1)';
-        }
-        if ( config.rotate.x ){
-          transform.initial += ' rotateX(' + config.rotate.x + 'deg)';
-          transform.target  += ' rotateX(0)';
-        }
-        if ( config.rotate.y ){
-          transform.initial += ' rotateY(' + config.rotate.y + 'deg)';
-          transform.target  += ' rotateY(0)';
-        }
-        if ( config.rotate.z ){
-          transform.initial += ' rotateZ(' + config.rotate.z + 'deg)';
-          transform.target  += ' rotateZ(0)';
-        }
-        transform.initial += '; opacity: ' + config.opacity + ';';
-        transform.target  += '; opacity: ' + elem.styles.computed.opacity + ';';
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    function _generateTransform( elem ){
+      var config    = elem.config;
+      var transform = elem.styles.transform;
+
+      if ( parseInt( config.distance ) ){
+        transform.initial += ' translate' + config.axis + '(' + config.distance + ')';
+        transform.target  += ' translate' + config.axis + '(0)';
       }
+      if ( config.scale ){
+        transform.initial += ' scale(' + config.scale + ')';
+        transform.target  += ' scale(1)';
+      }
+      if ( config.rotate.x ){
+        transform.initial += ' rotateX(' + config.rotate.x + 'deg)';
+        transform.target  += ' rotateX(0)';
+      }
+      if ( config.rotate.y ){
+        transform.initial += ' rotateY(' + config.rotate.y + 'deg)';
+        transform.target  += ' rotateY(0)';
+      }
+      if ( config.rotate.z ){
+        transform.initial += ' rotateZ(' + config.rotate.z + 'deg)';
+        transform.target  += ' rotateZ(0)';
+      }
+      transform.initial += '; opacity: ' + config.opacity + ';';
+      transform.target  += '; opacity: ' + elem.styles.computed.opacity + ';';
     }
 
 ////////////////////////////////////////////////////////////////////////////////
