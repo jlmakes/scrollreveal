@@ -356,28 +356,19 @@ ______________________________________________________________________________*/
     }
 
     function _animate(){
-      var elem, visible;
+      var elem;
       // Loop through all elements in the store
       sr.tools.forOwn( sr.store.elements, function( elemId ){
-        elem    = sr.store.elements[ elemId ];
-        visible = _isElemVisible( elem );
-
-        // Reveal
-        // ------
-        // Should element reveal?
-        if ( visible && !elem.revealed && !elem.disabled ){
-          // Should element reveal + with delay?
-          if ( elem.config.useDelay === 'always'
-          || ( elem.config.useDelay === 'onload' && !sr.initialized )
-          || ( elem.config.useDelay === 'once'   && !elem.seen ) ){
+        elem = sr.store.elements[ elemId ];
+        // Let’s see if we should reveal, and if so, whether to use delay.
+        if ( _shouldReveal( elem ) ){
+          if ( _shouldUseDelay( elem ) ){
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
               + elem.styles.transform.target
               + elem.styles.transition.delayed
             );
-          }
-          // Otherwise use a reveal animation - without delay.
-          else {
+          } else {
             elem.domEl.setAttribute( 'style',
                 elem.styles.inline
               + elem.styles.transform.target
@@ -386,54 +377,69 @@ ______________________________________________________________________________*/
           }
           // The element revealed, so let’s queue the `afterReveal` callback,
           // and mark it as `seen` for future reference.
-          queueCallback( 'reveal', elem );
+          _queueCallback( 'reveal', elem );
           return elem.seen = true;
         }
-
-        // Reset
-        // -----
         // If we got this far our element shouldn’t reveal, but should it reset?
-        if ( !visible && elem.config.reset && elem.revealed && !elem.disabled ){
+        if ( _shouldReset( elem ) ){
           elem.domEl.setAttribute( 'style',
               elem.styles.inline
             + elem.styles.transform.initial
             + elem.styles.transition.instant
           );
-          queueCallback( 'reset', elem );
+          _queueCallback( 'reset', elem );
         }
       });
+    }
 
-      function queueCallback( type, elem ){
-        var elapsed  = 0;
-        var duration = 0;
-        var callback = 'after';
-        // deduce the correct callback.
-        switch ( type ){
-          case 'reveal':
-            duration = elem.config.duration + elem.config.delay;
-            callback += 'Reveal';
-            break;
-          case 'reset':
-            duration = elem.config.duration;
-            callback += 'Reset';
-            break;
-        }
-        // If a countdown timer is already running, let’s capture the elapsed
-        // time and clear the clock. (i.e. animation was canceled.)
-        if ( elem.timer ){
-          elapsed = Math.abs( elem.timer.started - new Date() );
-          window.clearTimeout( elem.timer.clock );
-        }
-        // Start a new timer...
-        elem.timer = { started : new Date() };
-        elem.timer.clock = window.setTimeout(function(){
-          // The timer completed, so let’s fire the callback and kill the timer.
-          elem.config[ callback ]( elem.domEl );
-          elem.timer = null;
-        }, duration - elapsed );
-        // Update element status for future animate loops.
-        return type === 'reveal' ? elem.revealed = true : elem.revealed = false;
+    function _queueCallback( type, elem ){
+      var elapsed  = 0;
+      var duration = 0;
+      var callback = 'after';
+      // deduce the correct callback.
+      switch ( type ){
+        case 'reveal':
+          duration = elem.config.duration + elem.config.delay;
+          callback += 'Reveal';
+          break;
+        case 'reset':
+          duration = elem.config.duration;
+          callback += 'Reset';
+          break;
       }
+      // If a countdown timer is already running, let’s capture the elapsed
+      // time and clear the clock. (i.e. animation was canceled.)
+      if ( elem.timer ){
+        elapsed = Math.abs( elem.timer.started - new Date() );
+        window.clearTimeout( elem.timer.clock );
+      }
+      // Start a new timer...
+      elem.timer = { started : new Date() };
+      elem.timer.clock = window.setTimeout(function(){
+        // The timer completed, so let’s fire the callback and kill the timer.
+        elem.config[ callback ]( elem.domEl );
+        elem.timer = null;
+      }, duration - elapsed );
+      // Update element status for future animate loops.
+      return type === 'reveal' ? elem.revealed = true : elem.revealed = false;
+    }
+
+    function _shouldReveal( elem ){
+      var visible = _isElemVisible( elem );
+      return ( visible && !elem.revealed && !elem.disabled ) ? true : false;
+    }
+
+    function _shouldUseDelay( elem ){
+      var delayType = elem.config.useDelay;
+      return ( delayType === 'always'
+          || ( delayType === 'onload' && !sr.initialized )
+          || ( delayType === 'once'   && !elem.seen ) ) ? true : false;
+    }
+
+    function _shouldReset( elem ){
+      var visible = _isElemVisible( elem );
+      return ( !visible && elem.config.reset
+          && elem.revealed && !elem.disabled ) ? true : false;
     }
 
     function _getContainer( container ){
