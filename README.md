@@ -156,9 +156,9 @@ var fooReveal = {
   scale    : 1.1
 };
 
-window.sr = ScrollReveal()
-  .reveal( '.foo', fooReveal )
-  .reveal( '#chocolate', { delay: 500, scale: 0.9 } );
+window.sr = ScrollReveal();
+sr.reveal( '.foo', fooReveal );
+sr.reveal( '#chocolate', { delay: 500, scale: 0.9 } );
 ```
 
 #### 3.2. Custom/Multiple Containers
@@ -184,9 +184,9 @@ The default container is the viewport, but you assign any container to any revea
 var fooContainer = document.getElementById('fooContainer');
 var barContainer = document.getElementById('barContainer');
 
-window.sr = ScrollReveal()
-  .reveal( '.foo', { container: fooContainer } );
-  .reveal( '.bar', { container: barContainer } );
+window.sr = ScrollReveal();
+sr.reveal( '.foo', { container: fooContainer } );
+sr.reveal( '.bar', { container: barContainer } );
 ```
 
 #### 3.3. Asynchronous Content
@@ -334,7 +334,7 @@ _Continuing our example from 4.2._
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
-    sr.reveal( '.fooReveal', { rotate: {x: 65} } );
+      sr.reveal( '.fooReveal', { rotate: {x: 65} } );
   </script>
   </body>
 </html>
