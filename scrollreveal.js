@@ -316,7 +316,7 @@ ______________________________________________________________________________*/
       if ( container && sr.store.containers.indexOf( container ) == -1 ){
         sr.store.containers.push( elem.config.container );
       }
-      // Update the elemented stored with our new element.
+      // Update the element stored with our new element.
       sr.store.elements[ elem.id ] = elem;
     };
 
