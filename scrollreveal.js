@@ -255,7 +255,6 @@ ______________________________________________________________________________*/
 ////////////////////////////////////////////////////////////////////////////////
 
     function _style( elem ){
-      var config   = elem.config;
       var computed = window.getComputedStyle( elem.domEl );
 
       if ( !elem.styles ){
@@ -280,22 +279,29 @@ ______________________________________________________________________________*/
           elem.styles.computed.transition = computed.transition + ', ';
         }
       }
-      // Create transition styles - without delay.
-      elem.styles.transition.instant = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ' +
-                                               'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' 0s, opacity ' + config.duration / 1000 + 's ' + config.easing + ' 0s; ';
-      // Create transition styles + with delay.
-      elem.styles.transition.delayed = '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ' +
-                                               'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + config.delay / 1000 + 's; ';
+
+      // Create transition styles
+      elem.styles.transition.instant = _generateTransition( elem, 0 );
+      elem.styles.transition.delayed = _generateTransition( elem, elem.config.delay );
 
       // Generate transform styles, first with the webkit prefix.
       elem.styles.transform.initial = ' -webkit-transform:';
       elem.styles.transform.target  = ' -webkit-transform:';
       _generateTransform( elem );
+
       // And again without any prefix.
       elem.styles.transform.initial += 'transform:';
       elem.styles.transform.target  += 'transform:';
       _generateTransform( elem );
 
+    }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    function _generateTransition( elem, delay ){
+      var config = elem.config;
+      return '-webkit-transition: ' + elem.styles.computed.transition + '-webkit-transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + delay / 1000 + 's; ' +
+                     'transition: ' + elem.styles.computed.transition + 'transform ' + config.duration / 1000 + 's ' + config.easing + ' ' + delay / 1000 + 's, opacity ' + config.duration / 1000 + 's ' + config.easing + ' ' + delay / 1000 + 's; ';
     }
 
 ////////////////////////////////////////////////////////////////////////////////
