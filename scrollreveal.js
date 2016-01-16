@@ -449,7 +449,7 @@ ______________________________________________________________________________*/
     }
 
     function _getScrolled( container ){
-      // Return the container scroll values, plus the offset values of it's
+      // Return the container scroll values, plus the offset values of its
       // position (since element offset is relevant to the document origin.)
       if ( container ){
         var offset = _getOffset( container );
@@ -473,8 +473,8 @@ ______________________________________________________________________________*/
       // Grab the element’s dimensions.
       var offsetHeight = domEl.offsetHeight;
       var offsetWidth  = domEl.offsetWidth;
-      // Now calculate the distance between the element and it's parent, then
-      // again for the parent to it's parent, and again etc... until we have the
+      // Now calculate the distance between the element and its parent, then
+      // again for the parent to its parent, and again etc... until we have the
       // total distance of the element to the document’s top and left origin.
       do {
         if ( !isNaN( domEl.offsetTop ) ){
