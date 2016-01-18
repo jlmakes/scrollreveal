@@ -602,6 +602,13 @@ ______________________________________________________________________________*/
       return object !== null && typeof object === 'object' && object.constructor == Object;
     };
 
+    Tools.prototype.isNode = function( object ) {
+      return (
+        typeof Node === "object" ? o instanceof Node :
+        o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+      );
+    };
+
     Tools.prototype.forOwn = function( object, callback ){
       if ( !this.isObject( object ) ){
         throw new TypeError('Expected \'object\', but received \'' + typeof object + '\'.');
