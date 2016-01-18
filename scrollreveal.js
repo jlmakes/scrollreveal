@@ -93,6 +93,7 @@ ______________________________________________________________________________*/
       sr = this;
       sr.tools = new Tools();
       sr.tools.extend( sr.defaults, config || {} );
+      _confirmContainer( sr.defaults );
 
       if ( !sr.supported() ){
         console.log('ScrollReveal is not supported in this browser.');
@@ -124,6 +125,7 @@ ______________________________________________________________________________*/
 
       // Deduce the correct container.
       if ( config && config.container ){
+        _confirmContainer( config );
         container = config.container;
       } else if ( sr.defaults.container ){
         container = sr.defaults.container;
@@ -233,6 +235,21 @@ ______________________________________________________________________________*/
     // Ah, the beauty of closures. These methods remain accessible ONLY to the
     // ScrollReveal instance, even though they technically only 'lived' during
     // it’s instantiation outside of the constructors scope.
+
+    function _confirmContainer( config ){
+      // Let’s check if our container is a selector.
+      var container = config.container;
+      if ( container && typeof container == 'string' ){
+        config.container = window.document.querySelector( config.container );
+      }
+      // Otherwise, let’s make sure it’s a node or use null and error silently.
+      else if ( !sr.tools.isNode( container ) ){
+        config.container = null;
+        console.log('ScrollReveal: Invalid container provided.');
+      }
+    }
+
+////////////////////////////////////////////////////////////////////////////////
 
     function _configure( elem, config ){
       // If the element hasn’t already been configured, let’s use a clone of the
