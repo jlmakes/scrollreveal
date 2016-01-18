@@ -135,7 +135,7 @@ ______________________________________________________________________________*/
 
       // Let’s check to see if a DOM node was passed in as the first argument,
       // otherwise query the container for all elements matching the selector.
-      if ( sr.tools.isNode( selector )){
+      if ( sr.tools.isNode( selector ) ){
         elements = [ selector ];
       } else {
         elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
@@ -237,12 +237,12 @@ ______________________________________________________________________________*/
     // it’s instantiation outside of the constructors scope.
 
     function _confirmContainer( config ){
-      // Let’s check if our container is a selector.
+      // Let’s check if our container is defined by a selector.
       var container = config.container;
       if ( container && typeof container == 'string' ){
         config.container = window.document.querySelector( config.container );
       }
-      // Otherwise, let’s make sure it’s a node or use null and error silently.
+      // Otherwise let’s make sure it’s a node, or use null and error silently.
       else if ( !sr.tools.isNode( container ) ){
         config.container = null;
         console.log('ScrollReveal: Invalid container provided.');
