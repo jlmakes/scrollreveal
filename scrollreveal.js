@@ -143,7 +143,7 @@ ______________________________________________________________________________*/
 
       // Confirm we found some elements.
       if ( !elements.length ){
-        console.log('reveal(\'' + selector + '\') failed: no elements found.');
+        console.log('ScrollReveal: reveal(\'' + selector + '\') failed, no elements found.');
         return sr;
       }
 
@@ -223,7 +223,7 @@ ______________________________________________________________________________*/
         // Now that we’re done, initialize the updates.
         _init();
       } else {
-        console.log('sync() failed: no reveals found.');
+        console.log('ScrollReveal: sync() failed, no reveals found.');
       }
       return sr;
     };
