@@ -131,8 +131,15 @@ ______________________________________________________________________________*/
         container = window.document.documentElement;
       }
 
-      // Query that container for all elements matching the selector argument.
-      elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
+      // Let’s check to see if a DOM node was passed in as the first argument,
+      // otherwise query the container for all elements matching the selector.
+      if ( sr.tools.isNode( selector )){
+        elements = [ selector ];
+      } else {
+        elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
+      }
+
+      // Confirm we found some elements.
       if ( !elements.length ){
         console.log('reveal(\'' + selector + '\') failed: no elements found.');
         return sr;
@@ -604,8 +611,11 @@ ______________________________________________________________________________*/
 
     Tools.prototype.isNode = function( object ) {
       return (
-        typeof Node === "object" ? o instanceof Node :
-        o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+        typeof Node === 'object'
+        ? object instanceof Node
+        : object && typeof object === 'object'
+                 && typeof object.nodeType === 'number'
+                 && typeof object.nodeName === 'string'
       );
     };
 
