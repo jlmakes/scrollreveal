@@ -22,7 +22,7 @@
     https://scrollrevealjs.org — https://github.com/jlmakes/scrollreveal.js
 ______________________________________________________________________________*/
 
-(function(){
+;(function(){
   var Tools, sr, _requestAnimationFrame;
   this.ScrollReveal = (function(){
 
@@ -327,7 +327,7 @@ ______________________________________________________________________________*/
       if ( container && sr.store.containers.indexOf( container ) == -1 ){
         sr.store.containers.push( elem.config.container );
       }
-      // Update the elemented stored with our new element.
+      // Update the element stored with our new element.
       sr.store.elements[ elem.id ] = elem;
     };
 

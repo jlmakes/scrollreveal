@@ -11,7 +11,7 @@
     https://scrollrevealjs.org — https://github.com/jlmakes/scrollreveal.js
 ______________________________________________________________________________*/
 
-(function(){
+;(function(){
   var Tools, sr, _requestAnimationFrame;
   this.ScrollReveal = (function(){
 
