@@ -8,7 +8,13 @@
 
 
 ;(function(){
-    var Tools, sr, _requestAnimationFrame;
+    'use strict';
+
+    var
+        Tools,
+        sr,
+        _requestAnimationFrame;
+
     this.ScrollReveal = (function(){
 
         ScrollReveal.prototype.defaults = {
@@ -16,7 +22,7 @@
             // Configuration
             // -------------
             // This object signature can be passed directly to the ScrollReveal
-            // constructor, or as the second argument of the reveal() method.
+            // constructor, or as the second argument of the `reveal()` method.
 
             //            'bottom', 'left', 'top', 'right'
             origin      : 'bottom',
@@ -81,18 +87,22 @@
         };
 
 
-        function ScrollReveal( config ){
-            if ( window == this ){
+        function ScrollReveal(config) {
+
+            // Support instantiation without the `new` keyword.
+            if (typeof this == 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
                 return new ScrollReveal( config );
             }
+
             sr = this;
             sr.tools = new Tools();
-            sr.tools.extend( sr.defaults, config || {} );
-            _confirmContainer( sr.defaults );
+            sr.tools.extend(sr.defaults, config || {});
 
-            if ( !sr.supported() ){
+            _confirmContainer(sr.defaults);
+
+            if (!sr.supported()) {
                 // IE9 only supports console if devtools are open.
-                if ( typeof console !== 'undefined' && console !== null ) {
+                if (typeof console !== 'undefined' && console !== null) {
                     console.log('ScrollReveal is not supported in this browser.');
                 }
             }
@@ -101,9 +111,11 @@
                 elements   : {},
                 containers : []
             };
+
             sr.history     = [];
             sr.counter     = 0;
             sr.initialized = false;
+
             return sr;
         }
 
