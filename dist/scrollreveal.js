@@ -22,7 +22,7 @@
     https://scrollrevealjs.org — https://github.com/jlmakes/scrollreveal.js
 ______________________________________________________________________________*/
 
-(function(){
+;(function(){
   var Tools, sr, _requestAnimationFrame;
   this.ScrollReveal = (function(){
 
@@ -104,7 +104,10 @@ ______________________________________________________________________________*/
       sr.tools.extend( sr.defaults, config || {} );
 
       if ( !sr.supported() ){
-        console.log('ScrollReveal is not supported in this browser.');
+        // IE9 only supports console if devtools are open.
+        if ( typeof console !== 'undefined' && console !== null ) {
+          console.log('ScrollReveal is not supported in this browser.');
+        }
       }
 
       sr.store = {
@@ -327,7 +330,7 @@ ______________________________________________________________________________*/
       if ( container && sr.store.containers.indexOf( container ) == -1 ){
         sr.store.containers.push( elem.config.container );
       }
-      // Update the elemented stored with our new element.
+      // Update the element stored with our new element.
       sr.store.elements[ elem.id ] = elem;
     };
 

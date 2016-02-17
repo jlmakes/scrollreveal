@@ -11,7 +11,7 @@
     https://scrollrevealjs.org — https://github.com/jlmakes/scrollreveal.js
 ______________________________________________________________________________*/
 
-(function(){
+;(function(){
   var Tools, sr, _requestAnimationFrame;
   this.ScrollReveal = (function(){
 
@@ -96,7 +96,10 @@ ______________________________________________________________________________*/
       _confirmContainer( sr.defaults );
 
       if ( !sr.supported() ){
-        console.log('ScrollReveal is not supported in this browser.');
+        // IE9 only supports console if devtools are open.
+        if ( typeof console !== 'undefined' && console !== null ) {
+          console.log('ScrollReveal is not supported in this browser.');
+        }
       }
 
       sr.store = {
