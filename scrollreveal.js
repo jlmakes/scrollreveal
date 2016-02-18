@@ -135,7 +135,7 @@
             sr.counter     = 0;
             sr.initialized = false;
 
-            return sr;
+            return sr
         }
 
 
