@@ -112,28 +112,31 @@
                 return new ScrollReveal(config)
             }
 
-            sr = this;
-            sr.tools = new Tools();
-            sr.tools.extend(sr.defaults, config || {});
+            sr = this; // Save reference to instance.
 
-            _resolveContainer(sr.defaults);
+            // Confirm CSS Transition and Transform are supported.
+            if (sr.supported()) {
 
-            if (!sr.supported()) {
-                // IE9 only supports console if devtools are open.
-                if (typeof console !== 'undefined' && console !== null) {
-                    console.log('ScrollReveal is not supported in this browser.');
-                }
+                sr.tools = new Tools();
+                sr.tools.extend(sr.defaults, config || {});
+
+                _resolveContainer(sr.defaults);
+
+                sr.store = {
+                    elements   : {},
+                    containers : []
+                };
+
+                sr.sequences   = {};
+                sr.history     = [];
+                sr.uid         = 0;
+                sr.initialized = false;
             }
 
-            sr.store = {
-                elements   : {},
-                containers : []
-            };
-
-            sr.sequences   = {};
-            sr.history     = [];
-            sr.uid         = 0;
-            sr.initialized = false;
+            // Note: IE9 only supports console if devtools are open.
+            else if (typeof console !== 'undefined' && console !== null) {
+                console.log('ScrollReveal is not supported in this browser.');
+            }
 
             return sr
         }
