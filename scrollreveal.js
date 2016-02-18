@@ -130,6 +130,7 @@
                 containers : []
             };
 
+            sr.sequences   = {};
             sr.history     = [];
             sr.counter     = 0;
             sr.initialized = false;
@@ -147,7 +148,7 @@
 
 
 
-        ScrollReveal.prototype.reveal = function(selector, config, sync) {
+        ScrollReveal.prototype.reveal = function(selector, config, interval, sync) {
 
             var
                 container,
@@ -250,7 +251,7 @@
                 // to make sure all elements in the DOM are properly recognized by ScrollReveal.
                 for (var i = 0; i < sr.history.length; i++) {
                     var record = sr.history[i];
-                    sr.reveal(record.selector, record.config, true);
+                    sr.reveal(record.selector, record.config, record.interval, true);
                 };
 
                 // Now that we’re done, initialize the updates.
@@ -437,13 +438,14 @@
 
 
 
-        function _record(selector, config) {
+        function _record(selector, config, interval) {
 
             // Save the `reveal()` arguments that triggered this `_record()` call, so we
             // can re-trace our steps when calling the `sync()` method.
             var record = {
                 selector : selector,
-                config   : config
+                config   : config,
+                interval : interval
             };
             sr.history.push(record);
         }
