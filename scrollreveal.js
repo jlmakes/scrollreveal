@@ -148,14 +148,12 @@
                 elem,
                 elemId;
 
-            // Deduce the correct container.
+            // Resolve container.
             if (config && config.container) {
                 _confirmContainer(config);
                 container = config.container;
-            } else if (sr.defaults.container) {
-                container = sr.defaults.container;
             } else {
-                container = window.document.documentElement;
+                container = sr.defaults.container;
             }
 
             // Let’s check to see if a DOM node was passed in as the first argument,
