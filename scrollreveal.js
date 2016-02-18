@@ -552,10 +552,12 @@
 
             // Check which callback we’re working with.
             switch (type) {
+
                 case 'reveal':
                     duration = elem.config.duration + elem.config.delay;
                     callback += 'Reveal';
                     break
+
                 case 'reset':
                     duration = elem.config.duration;
                     callback += 'Reset';
