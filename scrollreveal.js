@@ -100,6 +100,7 @@
         };
 
 
+
         function ScrollReveal(config) {
 
             // Support instantiation without the `new` keyword.
@@ -133,11 +134,13 @@
         }
 
 
+
         ScrollReveal.prototype.supported = function() {
             var style = document.documentElement.style;
             return 'WebkitTransition' in style && 'WebkitTransform' in style
                 || 'transition' in style && 'transform' in style
         };
+
 
 
         ScrollReveal.prototype.reveal = function(selector, config, sync) {
@@ -230,8 +233,10 @@
                 }
                 sr.initTimeout = window.setTimeout(_init, 0);
             }
+
             return sr
         };
+
 
 
         ScrollReveal.prototype.sync = function() {
@@ -247,7 +252,7 @@
                 // Now that we’re done, initialize the updates.
                 _init();
             } else {
-                console.log('ScrollReveal: sync() failed, no reveals found.');
+                console.log('ScrollReveal: sync failed, no previous reveals found.');
             }
             return sr
         };
@@ -314,6 +319,7 @@
         }
 
 
+
         function _style(elem) {
             var computed = window.getComputedStyle(elem.domEl);
 
@@ -359,6 +365,7 @@
         }
 
 
+
         function _generateTransition(elem, delay) {
             var config = elem.config;
 
@@ -378,6 +385,7 @@
                                           + config.easing + ' '
                                           + delay / 1000 + 's; '
         }
+
 
 
         function _generateTransform(elem) {
@@ -409,6 +417,7 @@
         }
 
 
+
         function _updateStore(elem) {
             var container = elem.config.container;
 
@@ -422,6 +431,7 @@
         };
 
 
+
         function _record(selector, config) {
 
             // Save the `reveal()` arguments that triggered this `_record()` call, so we
@@ -432,6 +442,7 @@
             };
             sr.history.push(record);
         }
+
 
 
         function _init() {
@@ -459,9 +470,11 @@
         }
 
 
+
         function _handler() {
             _requestAnimationFrame(_animate);
         }
+
 
 
         function _animate() {
@@ -475,15 +488,15 @@
                 if (_shouldReveal(elem)) {
                     if (_shouldUseDelay(elem)) {
                         elem.domEl.setAttribute('style',
-                                elem.styles.inline
-                            + elem.styles.transform.target
-                            + elem.styles.transition.delayed
+                            elem.styles.inline
+                          + elem.styles.transform.target
+                          + elem.styles.transition.delayed
                        );
                     } else {
                         elem.domEl.setAttribute('style',
-                                elem.styles.inline
-                            + elem.styles.transform.target
-                            + elem.styles.transition.instant
+                            elem.styles.inline
+                          + elem.styles.transform.target
+                          + elem.styles.transition.instant
                        );
                     }
 
@@ -504,6 +517,7 @@
                 }
             });
         }
+
 
 
         function _queueCallback(type, elem) {
@@ -548,12 +562,14 @@
         }
 
 
+
         function _shouldReveal(elem) {
             var visible = _isElemVisible(elem);
             return visible
                 && !elem.revealed
                 && !elem.disabled
         }
+
 
 
         function _shouldUseDelay(elem) {
@@ -564,10 +580,12 @@
         }
 
 
+
         function _shouldReset(elem) {
             var visible = _isElemVisible(elem);
             return !visible && elem.config.reset && elem.revealed && !elem.disabled
         }
+
 
 
         function _getContainer(container) {
@@ -576,6 +594,7 @@
                 height : container.clientHeight
             }
         }
+
 
 
         function _getScrolled(container) {
@@ -597,6 +616,7 @@
                 }
             }
         }
+
 
 
         function _getOffset(domEl) {
@@ -628,6 +648,7 @@
                 width  : offsetWidth
             }
         }
+
 
 
         function _isElemVisible(elem) {
