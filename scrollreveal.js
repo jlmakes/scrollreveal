@@ -672,13 +672,13 @@
             function confirmBounds() {
 
                 var
-                    // Define the element’s functional boundaries, including view factor.
+                    // Define the element’s functional boundaries using its view factor.
                     top        = elemTop    + elemHeight * vF,
                     left       = elemLeft   + elemWidth  * vF,
                     bottom     = elemBottom - elemHeight * vF,
                     right      = elemRight  - elemWidth  * vF,
 
-                    // Define the container boundaries.
+                    // Define the container functional boundaries using its view offset.
                     viewTop    = scrolled.y + elem.config.viewOffset.top,
                     viewLeft   = scrolled.x + elem.config.viewOffset.left,
                     viewBottom = scrolled.y - elem.config.viewOffset.bottom + container.height,
@@ -694,6 +694,8 @@
                 return (window.getComputedStyle(elem.domEl).position === 'fixed')
             }
         }
+
+
 
         return ScrollReveal
 
@@ -760,8 +762,12 @@
 
     })();
 
+
+
     _requestAnimationFrame = window.requestAnimationFrame       ||
                              window.webkitRequestAnimationFrame ||
                              window.mozRequestAnimationFrame;
+
+
 
 }).call(this);
