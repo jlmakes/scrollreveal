@@ -111,7 +111,7 @@
             sr.tools = new Tools();
             sr.tools.extend(sr.defaults, config || {});
 
-            _confirmContainer(sr.defaults);
+            _resolveContainer(sr.defaults);
 
             if (!sr.supported()) {
                 // IE9 only supports console if devtools are open.
@@ -150,7 +150,7 @@
 
             // Resolve container.
             if (config && config.container) {
-                _confirmContainer(config);
+                _resolveContainer(config);
                 container = config.container;
             } else {
                 container = sr.defaults.container;
@@ -263,7 +263,7 @@
          * http://stackoverflow.com/questions/111102/how-do-javascript-closures-work
          */
 
-        function _confirmContainer(config) {
+        function _resolveContainer(config) {
             var container = config.container;
 
             // Check if our container is defined by a selector.
