@@ -1,6 +1,4 @@
 
-
-
 /////    /////    /////    /////
 /////    /////    /////    /////
 /////    /////    /////    /////
@@ -15,8 +13,6 @@
 /////    /////    /////    /////
 /////    /////    /////    /////
 /////    /////    /////    /////
-
-
 
 /**
  * ScrollReveal
@@ -114,7 +110,6 @@
 
             sr = this; // Save reference to instance.
 
-            // Confirm CSS Transition and Transform are supported.
             if (sr.supported()) {
 
                 sr.tools = new Tools();
@@ -143,6 +138,11 @@
 
 
 
+        /**
+         * Check if client supports CSS Transform and CSS Transition.
+         *
+         * @return {boolean}
+         */
         ScrollReveal.prototype.supported = function() {
             var style = document.documentElement.style;
             return 'WebkitTransition' in style && 'WebkitTransform' in style
@@ -151,6 +151,18 @@
 
 
 
+        /**
+         * Creates a reveal set, a group of elements that will animate when they
+         * become visible. If [interval] is provided, a new sequence is created
+         * that will ensure elements reveal in th order they appear in the DOM.
+         *
+         * @param {string|node} [selector] The element (node) or elements (selector) to animate.
+         * @param {object}      [config]   Override the defaults for this reveal set.
+         * @param {number}      [interval] Time between sequenced element animations (milliseconds).
+         * @param {boolean}     [sync]     Used internally when updating reveals for async content.
+         *
+         * @return {object} The current ScrollReveal instance.
+         */
         ScrollReveal.prototype.reveal = function(selector, config, interval, sync) {
 
             var
@@ -247,20 +259,21 @@
 
 
 
+        /**
+         * Re-runs `reveal()` for each record stored in history, effectively capturing
+         * any content loaded asynchronously that matches existing reveal set selectors.
+         *
+         * @return {object} The current ScrollReveal instance.
+         */
         ScrollReveal.prototype.sync = function() {
             if (sr.history.length && sr.supported()) {
-
-                // Loop through all stored recorded `reveal()` calls, and run them again
-                // to make sure all elements in the DOM are properly recognized by ScrollReveal.
                 for (var i = 0; i < sr.history.length; i++) {
                     var record = sr.history[i];
                     sr.reveal(record.selector, record.config, record.interval, true);
                 };
-
-                // Now that we’re done, initialize the updates.
                 _init();
             } else {
-                console.log('ScrollReveal: sync failed, no previous reveals found.');
+                console.log('ScrollReveal: sync failed, no reveals found.');
             }
             return sr
         };
@@ -297,6 +310,7 @@
 
             return config.container
         }
+
 
 
         function _configure(elem, config) {
