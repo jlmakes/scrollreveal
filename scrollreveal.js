@@ -132,7 +132,7 @@
 
             sr.sequences   = {};
             sr.history     = [];
-            sr.counter     = 0;
+            sr.uid         = 0;
             sr.initialized = false;
 
             return sr
@@ -189,7 +189,7 @@
                 // Otherwise, let’s do some basic setup.
                 else {
                     elem = {
-                        id       : ++sr.counter,
+                        id       : ++sr.uid,
                         domEl    : elements[i],
                         seen     : false,
                         revealed : false
