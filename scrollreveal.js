@@ -17,7 +17,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.0.9
+ * Version : 3.1-RC (Supersonic Sequencer)
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -173,8 +173,7 @@
 
             // Resolve container.
             if (config && config.container) {
-                _resolveContainer(config);
-                container = config.container;
+                container = _resolveContainer(config);
             } else {
                 container = sr.defaults.container;
             }
@@ -228,8 +227,8 @@
                 // Otherwise, proceed normally.
                 else if (!elem.revealed) {
                     elem.domEl.setAttribute('style',
-                            elem.styles.inline
-                        + elem.styles.transform.initial
+                        elem.styles.inline
+                      + elem.styles.transform.initial
                    );
                 }
             }
@@ -533,9 +532,9 @@
                 // If we got this far our element shouldn’t reveal, but should it reset?
                 if (_shouldReset(elem)) {
                     elem.domEl.setAttribute('style',
-                            elem.styles.inline
-                        + elem.styles.transform.initial
-                        + elem.styles.transition.instant
+                        elem.styles.inline
+                      + elem.styles.transform.initial
+                      + elem.styles.transition.instant
                    );
                     _queueCallback('reset', elem);
                 }
