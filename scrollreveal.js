@@ -141,7 +141,12 @@
 
 
         ScrollReveal.prototype.reveal = function(selector, config, sync) {
-            var elements, container, elem, elemId;
+
+            var
+                container,
+                elements,
+                elem,
+                elemId;
 
             // Deduce the correct container.
             if (config && config.container) {
