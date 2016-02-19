@@ -156,12 +156,12 @@
          * become visible. If [interval] is provided, a new sequence is created
          * that will ensure elements reveal in the order they appear in the DOM.
          *
-         * @param {string|node} [selector] The element (node) or elements (selector) to animate.
-         * @param {object}      [config]   Override the defaults for this reveal set.
+         * @param {string|Node} [selector] The element (node) or elements (selector) to animate.
+         * @param {Object}      [config]   Override the defaults for this reveal set.
          * @param {number}      [interval] Time between sequenced element animations (milliseconds).
          * @param {boolean}     [sync]     Used internally when updating reveals for async content.
          *
-         * @return {object} The current ScrollReveal instance.
+         * @return {Object} The current ScrollReveal instance.
          */
         ScrollReveal.prototype.reveal = function(selector, config, interval, sync) {
 
@@ -262,7 +262,7 @@
          * Re-runs `reveal()` for each record stored in history, effectively capturing
          * any content loaded asynchronously that matches existing reveal set selectors.
          *
-         * @return {object} The current ScrollReveal instance.
+         * @return {Object} The current ScrollReveal instance.
          */
         ScrollReveal.prototype.sync = function() {
             if (sr.history.length && sr.supported()) {
