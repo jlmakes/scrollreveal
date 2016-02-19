@@ -154,7 +154,7 @@
         /**
          * Creates a reveal set, a group of elements that will animate when they
          * become visible. If [interval] is provided, a new sequence is created
-         * that will ensure elements reveal in th order they appear in the DOM.
+         * that will ensure elements reveal in the order they appear in the DOM.
          *
          * @param {string|node} [selector] The element (node) or elements (selector) to animate.
          * @param {object}      [config]   Override the defaults for this reveal set.
