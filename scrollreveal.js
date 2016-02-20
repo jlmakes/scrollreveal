@@ -557,31 +557,35 @@
 
 
         function _animate() {
-            var elem;
+            var
+                delayed,
+                elem;
 
             // Loop through all elements in the store
             sr.tools.forOwn(sr.store.elements, function(elemId) {
+
                 elem = sr.store.elements[elemId];
+                delayed = _shouldUseDelay(elem);
 
                 // Let’s see if we should reveal, and if so, whether to use delay.
                 if (_shouldReveal(elem)) {
-                    if (_shouldUseDelay(elem)) {
+                    if (delayed) {
                         elem.domEl.setAttribute('style',
                             elem.styles.inline
                           + elem.styles.transform.target
                           + elem.styles.transition.delayed
-                       );
+                        );
                     } else {
                         elem.domEl.setAttribute('style',
                             elem.styles.inline
                           + elem.styles.transform.target
                           + elem.styles.transition.instant
-                       );
+                        );
                     }
 
                     // The element revealed, so let’s queue the `afterReveal` callback, and mark
                     // it as `seen` for future reference.
-                    _queueCallback('reveal', elem);
+                    _queueCallback('reveal', elem, delayed);
                     return elem.seen = true
                 }
 
@@ -599,7 +603,7 @@
 
 
 
-        function _queueCallback(type, elem) {
+        function _queueCallback(type, elem, delayed) {
 
             var
                 elapsed  = 0,
@@ -610,7 +614,10 @@
             switch (type) {
 
                 case 'reveal':
-                    duration = elem.config.duration + elem.config.delay;
+                    duration = elem.config.duration;
+                    if (delayed) {
+                        duration += elem.config.delay;
+                    }
                     callback += 'Reveal';
                     break
 
