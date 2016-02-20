@@ -168,7 +168,9 @@
                 container,
                 elements,
                 elem,
-                elemId;
+                elemId,
+                sequence,
+                sequenceId;
 
             // Resolve container.
             if (config && config.container) {
@@ -190,6 +192,17 @@
                 return sr
             }
 
+            // Prepare a new sequence if an interval is passed.
+            if (interval && typeof interval == 'number') {
+                sequenceId = _nextUid();
+                sequence = sr.sequences[sequenceId] = {
+                    id         : sequenceId,
+                    interval   : interval,
+                    elementIds : [],
+                    nextIndex  : 0
+                }
+            }
+
             // Begin main loop to configure ScrollReveal elements.
             for (var i = 0; i < elements.length; i++) {
 
@@ -202,12 +215,20 @@
                 // Otherwise, let’s do some basic setup.
                 else {
                     elem = {
-                        id       : ++sr.uid,
+                        id       : _nextUid(),
                         domEl    : elements[i],
                         seen     : false,
                         revealed : false
                     };
                     elem.domEl.setAttribute('data-sr-id', elem.id);
+                }
+
+                if (sequence) {
+                    elem.sequence = {
+                        id    : sequence.id,
+                        index : sequence.elementIds.length
+                    };
+                    sequence.elementIds.push(elem.id);
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
