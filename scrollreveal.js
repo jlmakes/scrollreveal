@@ -196,10 +196,10 @@
             if (interval && typeof interval == 'number') {
                 sequenceId = _nextUid();
                 sequence = sr.sequences[sequenceId] = {
-                    id         : sequenceId,
-                    interval   : interval,
-                    elementIds : [],
-                    nextIndex  : 0
+                    id          : sequenceId,
+                    interval    : interval,
+                    elementIds  : [],
+                    lowestIndex : null
                 }
             }
 
@@ -526,6 +526,32 @@
 
         function _handler() {
             _requestAnimationFrame(_animate);
+        }
+
+
+
+        /**
+         * Finds the lowest visible element sequence index, and updates its sequence
+         * if it has a lower index than the previous low.
+         */
+        function _sequence() {
+            var
+                elem,
+                elemId,
+                sequence,
+                visible;
+
+            for (var i = 0; i < sr.sequences.length; i++) {
+                sequence = sr.sequences[i];
+                for (var i = 0; i < sequence.elementIds; j++) {
+                    elemId = sequence.elementIds[j]
+                    elem = sr.store.elements[elemId];
+                    visible = _isElemVisible(elem);
+                    if (elem.sequence && visible) {
+                        sequence.lowestIndex = Math.min(sequence.lowestIndex, elem.sequence.index);
+                    }
+                }
+            }
         }
 
 
