@@ -198,7 +198,7 @@
                 sequence = sr.sequences[sequenceId] = {
                     id          : sequenceId,
                     interval    : interval,
-                    elementIds  : [],
+                    elemIds     : [],
                     lowestIndex : null
                 }
             }
@@ -226,9 +226,9 @@
                 if (sequence) {
                     elem.sequence = {
                         id    : sequence.id,
-                        index : sequence.elementIds.length
+                        index : sequence.elemIds.length
                     };
-                    sequence.elementIds.push(elem.id);
+                    sequence.elemIds.push(elem.id);
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
@@ -541,17 +541,19 @@
                 sequence,
                 visible;
 
-            for (var i = 0; i < sr.sequences.length; i++) {
-                sequence = sr.sequences[i];
-                for (var i = 0; i < sequence.elementIds; j++) {
-                    elemId = sequence.elementIds[j]
+            // Loop through all sequenced elements
+            sr.tools.forOwn(sr.sequences, function(sequenceId){
+                sequence = sr.sequences[sequenceId];
+                for (var i = 0; i < sequence.elemIds.length; i++) {
+                    elemId = sequence.elemIds[i]
                     elem = sr.store.elements[elemId];
                     visible = _isElemVisible(elem);
-                    if (elem.sequence && visible) {
+                    if (visible) {
                         sequence.lowestIndex = Math.min(sequence.lowestIndex, elem.sequence.index);
+                        // console.log("sequence: " + sequence.id + " updated lowest: " + sequence.lowestIndex);
                     }
                 }
-            }
+            });
         }
 
 
@@ -560,6 +562,8 @@
             var
                 delayed,
                 elem;
+
+            _sequence();
 
             // Loop through all elements in the store
             sr.tools.forOwn(sr.store.elements, function(elemId) {
