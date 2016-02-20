@@ -312,6 +312,16 @@
 
 
 
+        /**
+         * A consistent way of creating unique IDs.
+         * @returns {number}
+         */
+        function _nextUid() {
+            return ++sr.uid;
+        }
+
+
+
         function _configure(elem, config) {
 
             // If the element hasn’t already been configured, let’s use a clone of the
