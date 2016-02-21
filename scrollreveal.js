@@ -226,7 +226,7 @@
                 if (sequence) {
                     elem.sequence = {
                         id    : sequence.id,
-                        index : _nextUid(),
+                        index : _nextUid()
                     };
                     sequence.elemIds.push(elem.id);
                 }
