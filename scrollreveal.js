@@ -215,10 +215,10 @@
                 // Otherwise, let’s do some basic setup.
                 else {
                     elem = {
-                        id       : _nextUid(),
-                        domEl    : elements[i],
-                        seen     : false,
-                        revealed : false
+                        id        : _nextUid(),
+                        domEl     : elements[i],
+                        seen      : false,
+                        revealing : false
                     };
                     elem.domEl.setAttribute('data-sr-id', elem.id);
                 }
@@ -226,7 +226,7 @@
                 if (sequence) {
                     elem.sequence = {
                         id    : sequence.id,
-                        index : sequence.elemIds.length
+                        index : _nextUid(),
                     };
                     sequence.elemIds.push(elem.id);
                 }
@@ -245,11 +245,11 @@
                 }
 
                 // Otherwise, proceed normally.
-                else if (!elem.revealed) {
+                else if (!elem.revealing) {
                     elem.domEl.setAttribute('style',
                         elem.styles.inline
                       + elem.styles.transform.initial
-                   );
+                    );
                 }
             }
 
@@ -531,13 +531,14 @@
 
 
         /**
-         * Finds the lowest visible element sequence index, and updates its sequence
-         * if it has a lower index than the previous low.
+         * Finds the lowest sequence index of visible non-revealing elements.
          */
-        function _sequence() {
+        function _prepareSequencer() {
+
             var
                 elem,
                 elemId,
+                lowest,
                 sequence,
                 visible;
 
@@ -545,25 +546,28 @@
             sr.tools.forOwn(sr.sequences, function(sequenceId){
                 sequence = sr.sequences[sequenceId];
                 for (var i = 0; i < sequence.elemIds.length; i++) {
+
                     elemId = sequence.elemIds[i]
                     elem = sr.store.elements[elemId];
                     visible = _isElemVisible(elem);
-                    if (visible) {
-                        sequence.lowestIndex = Math.min(sequence.lowestIndex, elem.sequence.index);
-                        // console.log("sequence: " + sequence.id + " updated lowest: " + sequence.lowestIndex);
+
+                    if (visible && !elem.revealing) {
+                        lowest = (lowest) ? Math.min(lowest, elem.sequence.index) : elem.sequence.index;
                     }
                 }
+                sequence.lowestIndex = lowest || Infinity;
             });
         }
 
 
 
         function _animate() {
+
             var
                 delayed,
                 elem;
 
-            _sequence();
+            _prepareSequencer();
 
             // Loop through all elements in the store
             sr.tools.forOwn(sr.store.elements, function(elemId) {
@@ -587,9 +591,14 @@
                         );
                     }
 
-                    // The element revealed, so let’s queue the `afterReveal` callback, and mark
+                    if (elem.sequence) {
+                        _sequenceHandler(elem);
+                    }
+
+                    // The element is revealing, so let’s queue the `afterReveal` callback, and mark
                     // it as `seen` for future reference.
                     _queueCallback('reveal', elem, delayed);
+
                     return elem.seen = true
                 }
 
@@ -599,10 +608,39 @@
                         elem.styles.inline
                       + elem.styles.transform.initial
                       + elem.styles.transition.instant
-                   );
+                    );
                     _queueCallback('reset', elem);
                 }
             });
+        }
+
+
+
+        function _sequenceHandler(elem) {
+
+            var
+                elapsed  = 0,
+                sequence = sr.sequences[elem.sequence.id];
+
+            // We’re processing a sequenced element, so let's block other elements in this sequence.
+            sequence.blocked = true;
+
+            // If a sequence timer is already running, capture the elapsed time and clear it.
+            if (elem.sequence.timer) {
+                elapsed = Math.abs(elem.sequence.timer.started - new Date());
+                window.clearTimeout(elem.sequence.timer);
+            }
+
+            // Start a new timer.
+            elem.sequence.timer = { started: new Date() };
+            elem.sequence.timer.clock = window.setTimeout(function() {
+
+                // Sequence interval has passed, so unblock the sequence and re-run the handler.
+                sequence.blocked = false;
+                elem.sequence.timer = null;
+                _handler();
+
+            }, sequence.interval - elapsed);
         }
 
 
@@ -631,7 +669,7 @@
                     break
             }
 
-            // If a countdown timer is already running, capture the elapsed time and clear it.
+            // If a timer is already running, capture the elapsed time and clear it.
             if (elem.timer) {
                 elapsed = Math.abs(elem.timer.started - new Date());
                 window.clearTimeout(elem.timer.clock);
@@ -649,16 +687,24 @@
 
             // Update element status for future animate loops.
             return type === 'reveal'
-                ? elem.revealed = true
-                : elem.revealed = false
+                ? elem.revealing = true
+                : elem.revealing = false
         }
 
 
 
         function _shouldReveal(elem) {
-            var visible = _isElemVisible(elem);
-            return visible
-                && !elem.revealed
+            if (elem.sequence) {
+                var sequence = sr.sequences[elem.sequence.id];
+
+                // There’s certainly no need to reveal if we’re a part of a sequence and
+                // the element is not the lowest index, or if the sequence is currently working.
+                if (sequence.lowestIndex !== elem.sequence.index || sequence.blocked ) {
+                    return false
+                }
+            }
+            return _isElemVisible(elem)
+                && !elem.revealing
                 && !elem.disabled
         }
 
@@ -675,7 +721,7 @@
 
         function _shouldReset(elem) {
             var visible = _isElemVisible(elem);
-            return !visible && elem.config.reset && elem.revealed && !elem.disabled
+            return !visible && elem.config.reset && elem.revealing && !elem.disabled
         }
 
 
