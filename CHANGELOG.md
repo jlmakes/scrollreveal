@@ -1,6 +1,61 @@
 
 # Changelog
 
+### 3.1.0 — _2016, February 22nd_
+
+Includes patchwork up to 3.0.9.
+
+
+#### Features
+
+- **Sequences**: New 3rd argument in `reveal()` to automate sequenced animation setup.
+```html
+<!-- example.html -->
+<div class="sequenced"> Foo </div>
+<div class="sequenced"> Bar </div>
+<div class="sequenced"> Bun </div>
+```
+```js
+// scripts.js
+ScrollReveal().reveal('.sequenced', { reset: false }, 1000);
+```
+
+- **Container Selectors**: Add support for `string` selectors to define `config.container`
+
+```js
+ScrollReveal({ container: '.fooContainer' });
+```
+
+- **Reveal Nodes**: Add support for `Node` objects as the first parameter of `reveal()`
+
+```js
+// What you’re used to...
+ScrollReveal().reveal('.myElem');
+
+// New! Pass a Node (works great with React!)
+var myElem = document.querySelector('.myElem');
+ScrollReveal().reveal(myElem);
+
+```
+
+
+#### Fixes
+
+- *Functionality*: Add missing support for `config.mobile` (Fixes [#216](https://github.com/jlmakes/scrollreveal.js/issues/216))
+- *Functionality*: Return correct value when checking element visibility. (Fixes [#193](https://github.com/jlmakes/scrollreveal.js/issues/193), [#196](https://github.com/jlmakes/scrollreveal.js/issues/196))
+- *Functionality*: Improve runtime for chained `reveal()` calls. (Fixes [#212](https://github.com/jlmakes/scrollreveal.js/issues/212))
+- *Compatibility*: Debug Internet Explorer 9. (Fixes [#230](https://github.com/jlmakes/scrollreveal.js/pull/230))
+- *Compatibility*: Debug Chrome on iOS. (Fixes [#196](https://github.com/jlmakes/scrollreveal.js/issues/196))
+- *Compatibility*: Explicitly reference `window` object.
+- *Compatibility*: Adjust AMD configuration for Webpack (Fixes [#209](https://github.com/jlmakes/scrollreveal.js/issues/209))
+
+#### Improvements
+
+- *Functionality*: Overwrite (instead of destroy) existing transition styles. (Resolves [#197](https://github.com/jlmakes/scrollreveal.js/issues/197))
+- *Functionality*: Fail silently with `console.log` instead of `console.warn`
+- *Performance*: Refactored initialization when using `sync()`
+- *Performance*: Improve accuracy of callback timers.
+
 ### 3.0.0 — _2015, December 15th_
 
 >**Note:** Version 3 is _not backwards compatible_ with version 2.
@@ -23,8 +78,9 @@ Reimagining ScrollReveal for vastly improved flexibility and maintainability! :b
     - `config.scale` expects value type `number` (instead of `Object`)
         - e.g. `config.scale = { direction: 'up', power: '10%' }` is now `config.scale = 0.9`
     - `config.rotation` axis values require `string` with unit type (instead of `number`)
-        - e.g. `config.rotation.x = 0` is now `config.rotation.x = "0deg"`
+        - e.g. `config.rotation.x = 10` is now `config.rotation.x = "10deg"`
 - ScrollReveal constructor is now capitalized.
+    - e.g. `window.sr = ScrollReveal();`
 - `data-sr` attribute and all **keywords are no longer used**. Instead, use classes and JavaScript.
 
 _Example using version 2.3.2 (deprecated)_
@@ -53,30 +109,50 @@ sr.reveal('.myReveal', { origin: 'bottom', duration: 2000, delay: 1000 });
 
 #### Features
 
-- **JavaScript API**: All new developer interface. (Resolves #1, #122)
-- **Horizontal Scrolling**: Add support for horizontal scrolling. (Resolves #184)
-- **New Callback**: `config.afterReset` — callback that fires when an element completely resets.
+- **JavaScript API**: All new developer interface. (Resolves [#1](https://github.com/jlmakes/scrollreveal.js/issues/1), [#122](https://github.com/jlmakes/scrollreveal.js/issues/122))
+    - Easily configure (and re-configure) multiple reveal sets
+    - Makes working with aysnchronous content a breeze
+    - Drastically cleaner markup
+- **Horizontal Scrolling**: Add support for horizontal scrolling. (Resolves [#184](https://github.com/jlmakes/scrollreveal.js/issues/184))
+- **New Callback**: `config.afterReset` — triggers when an element completely resets.
 
 #### Improvements
 
-- **Styles**: Overwrite (instead of destroy) existing transition styles. (Resolves #197)
-- **Styles**: Reveal animations now use the element’s computed opacity, instead of  `1`. (Resolves #185)
-- **Callbacks**: The reliability of the timers has been greatly improved.
+- *Performance*: 44% smaller, only 2.8KB minified and g-zipped.
+- *Functionality*: Reveals now resolve to the element’s computed opacity, instead of  `1`. (Resolves [#185](https://github.com/jlmakes/scrollreveal.js/issues/185))
+- *Functionality*: The reliability of callback timers has been greatly improved.
 
 ***
 
-### 2.3.2 — _2015, April 25th_
+### 2.3.2 — _2015, June 15th_
 
->**Note:** There were some issues with Bower and this version of ScrollReveal, so you will find `v2.3.3` only on Bower, which is merely a patched version of `2.3.2.`
+The latest stable build of version 2. See [Legacy Documentation (v2.x)](https://github.com/jlmakes/scrollreveal.js/wiki)
+
+>**Note:** There were some issues publishing this version on Bower, and so `v2.3.2` was patched to  `v2.3.3` to get it back on Bower. There is no meaningful difference between the two.
 
 #### Features
 
-- **New Keyword** `opacity` — control animation starting opacity. (e.g. `data-sr="opacity 0.5"`)  (Resolves #95)
-- **New Keywords** `vFactor`, `vF` — control element view factor. (e.g. `data-sr="vF 0.3"`) (Resolves #94, #142)
-- Support instantiation without the `new` keyword. (Pull request #148 by @bucaran)
+- Support instantiation without `new` keyword. (Pull request [#148](https://github.com/jlmakes/scrollreveal.js/pull/230))
+
+```js
+window.sr = new scrollReveal();
+// or...
+window.sr = scrollReveal();
+```
+
+***
+
+### 2.3.0 — _2015, April 25th_
+
+#### Features
+
+- **New Keyword** `opacity` — control animation starting opacity. (Resolves [#95](https://github.com/jlmakes/scrollreveal.js/issues/95))
+    - e.g. `data-sr="opacity 0.5"`
+- **New Keywords** `vFactor`, `vF` — control element view factor. (Resolves [#94](https://github.com/jlmakes/scrollreveal.js/issues/94), [#142](https://github.com/jlmakes/scrollreveal.js/issues/142))
+    - e.g. `data-sr="vF 0.3"`)
 
 #### _(Hardly) Breaking Changes!_
-- Remove `hustle` keyword. Admit it, you didn’t even know it existed.
+- Removed `hustle` keyword, admit it—you didn’t even know it existed.
 
 ***
 
@@ -84,25 +160,28 @@ sr.reveal('.myReveal', { origin: 'bottom', duration: 2000, delay: 1000 });
 
 #### Features
 
-- **New Keywords** `spin`, `roll`, `flip` control rotation during animation. (e.g. `data-sr="roll 20deg"`)
-    - Original pull request #138 but inspired by @satrun77 (#119)
+- **New Keywords** `spin`, `roll`, `flip` — control rotation during animation. ([#138](https://github.com/jlmakes/scrollreveal.js/pull/138))
+    - e.g. `data-sr="roll 20deg"`
+    - Special thanks to **[@satrun77](https://github.com/satrun77)** ([#119](https://github.com/jlmakes/scrollreveal.js/pull/119))
 
 ***
 
 ### 2.1.0 — _2014, November 25th_
 
+Includes patchwork up to 2.0.5.
+
 #### Fixes
-- Add missing custom viewport event bindings
-- Add tablets to mobile device user agent regex (Fixes #81)
-- Better handle previously initialized nodes (Fixes #98)
-- Refactor animator. (Fixes #96)
+- *Functionality*: Add missing custom viewport event bindings
+- *Functionality*: Add tablets to mobile device user agent regex (Fixes [#81](https://github.com/jlmakes/scrollreveal.js/issues/81))
+- *Functionality*: Better handle previously initialized nodes (Fixes [#98](https://github.com/jlmakes/scrollreveal.js/issues/98))
+- *Functionality*: Refactor animator. (Fixes [#96](https://github.com/jlmakes/scrollreveal.js/issues/96))
     - Bug source: [setTimeout in for-loop does not print consecutive values](http://stackoverflow.com/questions/5226285/settimeout-in-for-loop-does-not-print-consecutive-values)
-- Update Bower and NPM `/dist` paths
+- *Compatibility*: Update Bower and NPM `/dist` paths
 
 #### Improvements
 
-- Remove `data-sr` attributes from the DOM that have already registered (Resolves #100)
-- Requires CSS Transition support. (Resolves #109)
+- *Performance*: Remove `data-sr` attributes from the DOM that have already registered (Resolves [#100](https://github.com/jlmakes/scrollreveal.js/issues/100))
+- *Functionality*: Requires CSS Transition support. (Resolves [#109](https://github.com/jlmakes/scrollreveal.js/issues/109))
 
 ***
 
@@ -123,8 +202,10 @@ A significant re-write of the public beta, based on 8 months of feedback! :bow:
 ```
 
 #### Features
-- **New Keyword**: `scale` — control size during animation. (e.g. `data-sr="scale up 20%"`)
+- **New Keyword**: `scale` — control size during animation.
+    - e.g. `data-sr="scale up 20%"`
+- **Delay Types**: Control when elements will `wait` using `config.delay`
+    - e.g. `onload`, `once`, and `always`
 - **Mobile Support**:  `config.mobile` — easily enable/disable ScrollReveal on mobile devices.
 - **Custom Viewports**: `config.viewport` — accepts any DOM node as the parent container.
-- **Delay Types**: Control when elements will `wait` using `config.delay` (e.g. `onload`, `once`, and `always`)
-- **New Callback**: `config.complete` — a function called after an element completes its reveal.
+- **New Callback**: `config.complete` — triggers after an element completes its reveal.
