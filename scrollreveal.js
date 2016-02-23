@@ -119,10 +119,10 @@
 
                 sr.store = {
                     elements   : {},
-                    containers : []
+                    containers : {},
+                    sequences  : {}
                 };
 
-                sr.sequences   = {};
                 sr.history     = [];
                 sr.uid         = 0;
                 sr.initialized = false;
@@ -195,7 +195,7 @@
             // Prepare a new sequence if an interval is passed.
             if (interval && typeof interval == 'number') {
                 sequenceId = _nextUid();
-                sequence = sr.sequences[sequenceId] = {
+                sequence = sr.store.sequences[sequenceId] = {
                     id          : sequenceId,
                     interval    : interval,
                     elemIds     : [],
@@ -470,13 +470,35 @@
 
 
 
-        function _updateStore(elem) {
-            var container = elem.config.container;
-
-            // If this element’s container isn’t already in the store, let’s add it.
-            if (container && sr.store.containers.indexOf(container) == -1) {
-                sr.store.containers.push(elem.config.container);
+        /**
+         * Check if the container already exists within the store.
+         * @param  {Node} container The element’s `config.container` in question.
+         * @return {boolean}
+         */
+        function _containerIsUnique(container) {
+            if (sr.store.containers !== {}) {
+                sr.tools.forOwn(sr.store.containers, function(containerId) {
+                    if (container === sr.store.containers[containerId].node) {
+                        return false
+                    }
+                });
             }
+            return true
+        }
+
+
+
+        function _updateStore(elem) {
+
+        if (_containerIsUnique(elem.config.container)) {
+            var containerId = _nextUid();
+            sr.store.containers[containerId] = {
+                id       : containerId,
+                node     : elem.config.container,
+                scrolled : _getScrolled(elem.config.container),
+                vector   : [0,0]
+            }
+        }
 
             // Update the element stored with our new element.
             sr.store.elements[elem.id] = elem;
@@ -524,8 +546,16 @@
 
 
 
-        function _handler() {
-            _requestAnimationFrame(_animate);
+        function _handler(evt) {
+            _requestAnimationFrame(function() {
+                if (evt) {
+                    console.log(evt.target.scrollTop);
+                    // compare to previous stored container.scrolled
+                    // set container.direction
+                    // ...
+                }
+                _animate();
+            });
         }
 
 
@@ -543,8 +573,8 @@
                 visible;
 
             // Loop through all sequenced elements
-            sr.tools.forOwn(sr.sequences, function(sequenceId){
-                sequence = sr.sequences[sequenceId];
+            sr.tools.forOwn(sr.store.sequences, function(sequenceId){
+                sequence = sr.store.sequences[sequenceId];
                 for (var i = 0; i < sequence.elemIds.length; i++) {
 
                     elemId = sequence.elemIds[i]
@@ -620,7 +650,7 @@
 
             var
                 elapsed  = 0,
-                sequence = sr.sequences[elem.sequence.id];
+                sequence = sr.store.sequences[elem.sequence.id];
 
             // We’re processing a sequenced element, so let's block other elements in this sequence.
             sequence.blocked = true;
@@ -695,7 +725,7 @@
 
         function _shouldReveal(elem) {
             if (elem.sequence) {
-                var sequence = sr.sequences[elem.sequence.id];
+                var sequence = sr.store.sequences[elem.sequence.id];
 
                 // There’s certainly no need to reveal if we’re a part of a sequence and
                 // the element is not the lowest index, or if the sequence is currently working.
