@@ -196,10 +196,10 @@
             if (interval && typeof interval == 'number') {
                 sequenceId = _nextUid();
                 sequence = sr.store.sequences[sequenceId] = {
-                    id          : sequenceId,
-                    interval    : interval,
-                    elemIds     : [],
-                    lowestIndex : null
+                    id        : sequenceId,
+                    interval  : interval,
+                    elemIds   : [],
+                    nextIndex : null
                 }
             }
 
@@ -566,9 +566,10 @@
         function _prepareSequencer() {
 
             var
+                boundary,
                 elem,
                 elemId,
-                lowest,
+                next,
                 sequence,
                 visible;
 
@@ -582,10 +583,24 @@
                     visible = _isElemVisible(elem);
 
                     if (visible && !elem.revealing) {
-                        lowest = (lowest) ? Math.min(lowest, elem.sequence.index) : elem.sequence.index;
+
+                        // Positive intervals are first in, first out sequences (forwards)
+                        if (sequence.interval > 0) {
+                            console.log('positive');
+                            next = (next) ? Math.min(next, elem.sequence.index) : elem.sequence.index;
+                            boundary = Infinity;
+                        }
+
+                        // Negative intervals are first in, last out sequences (backwards)
+                        else if (sequence.interval < 0) {
+                            console.log('negative');
+                            next = (next) ? Math.max(next, elem.sequence.index) : elem.sequence.index;
+                            console.log(next);
+                            boundary = -Infinity;
+                        }
                     }
                 }
-                sequence.lowestIndex = lowest || Infinity;
+                sequence.nextIndex = (typeof next !== 'undefined') ? next : boundary;
             });
         }
 
@@ -670,7 +685,7 @@
                 elem.sequence.timer = null;
                 _handler();
 
-            }, sequence.interval - elapsed);
+            }, Math.abs(sequence.interval) - elapsed);
         }
 
 
@@ -729,7 +744,7 @@
 
                 // There’s certainly no need to reveal if we’re a part of a sequence and
                 // the element is not the lowest index, or if the sequence is currently working.
-                if (sequence.lowestIndex !== elem.sequence.index || sequence.blocked ) {
+                if (sequence.nextIndex !== elem.sequence.index || sequence.blocked ) {
                     return false
                 }
             }
