@@ -490,15 +490,15 @@
 
         function _updateStore(elem) {
 
-        if (_containerIsUnique(elem.config.container)) {
-            var containerId = _nextUid();
-            sr.store.containers[containerId] = {
-                id       : containerId,
-                node     : elem.config.container,
-                scrolled : _getScrolled(elem.config.container),
-                vector   : [0,0]
+            if (_containerIsUnique(elem.config.container)) {
+                var containerId = _nextUid();
+                sr.store.containers[containerId] = {
+                    id       : containerId,
+                    node     : elem.config.container,
+                    scrolled : _getScrolled(elem.config.container),
+                    vector   : [0,0]
+                }
             }
-        }
 
             // Update the element stored with our new element.
             sr.store.elements[elem.id] = elem;
@@ -529,9 +529,11 @@
 
                 // Then we loop through all container nodes in the store and bind event
                 // listeners to each.
-                for (var i = 0; i < sr.store.containers.length; i++) {
-                    sr.store.containers[i].addEventListener('scroll', _handler);
-                    sr.store.containers[i].addEventListener('resize', _handler);
+                if (sr.store.containers !== {}) {
+                    sr.tools.forOwn(sr.store.containers, function(containerId) {
+                        sr.store.containers[containerId].node.addEventListener('scroll', _handler);
+                        sr.store.containers[containerId].node.addEventListener('resize', _handler);
+                    });
                 }
 
                 // Let’s also do a one-time binding of window event listeners.
@@ -586,21 +588,20 @@
 
                         // Positive intervals are first in, first out sequences (forwards)
                         if (sequence.interval > 0) {
-                            console.log('positive');
                             next = (next) ? Math.min(next, elem.sequence.index) : elem.sequence.index;
+                            console.log('positive: ' + next);
                             boundary = Infinity;
                         }
 
                         // Negative intervals are first in, last out sequences (backwards)
                         else if (sequence.interval < 0) {
-                            console.log('negative');
                             next = (next) ? Math.max(next, elem.sequence.index) : elem.sequence.index;
-                            console.log(next);
+                            console.log('negative: ' + next);
                             boundary = -Infinity;
                         }
                     }
                 }
-                sequence.nextIndex = (typeof next !== 'undefined') ? next : boundary;
+                sequence.nextIndex = (next) ? next : boundary;
             });
         }
 
