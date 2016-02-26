@@ -199,7 +199,11 @@
                     id        : sequenceId,
                     interval  : interval,
                     elemIds   : [],
-                    nextIndex : null
+                    index     : {
+                        first : null,
+                        last  : null,
+                        next  : null
+                    }
                 }
             }
 
@@ -601,7 +605,7 @@
                         }
                     }
                 }
-                sequence.nextIndex = (next) ? next : boundary;
+                sequence.index.next = (next) ? next : boundary;
             });
         }
 
@@ -745,7 +749,7 @@
 
                 // There’s certainly no need to reveal if we’re a part of a sequence and
                 // the element is not the lowest index, or if the sequence is currently working.
-                if (sequence.nextIndex !== elem.sequence.index || sequence.blocked ) {
+                if (sequence.index.next !== elem.sequence.index || sequence.blocked ) {
                     return false
                 }
             }
