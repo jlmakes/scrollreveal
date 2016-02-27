@@ -237,6 +237,7 @@
 
                     sequence.elemIds.push(elem.id);
 
+                    // top left to bottom right sequence
                     if (interval > 0) {
                         if (i == 0) {
                             sequence.index.first = elem.id;
@@ -246,6 +247,7 @@
                         }
                     }
 
+                    // bottom right to top left sequence
                     if (interval < 0) {
                         if (i == 0) {
                             sequence.index.last = elem.id;
