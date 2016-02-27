@@ -771,7 +771,10 @@
 
         function _shouldReset(elem) {
             var visible = _isElemVisible(elem);
-            return !visible && elem.config.reset && elem.revealing && !elem.disabled
+            return !visible
+                && elem.config.reset
+                && elem.revealing
+                && !elem.disabled
         }
 
 
