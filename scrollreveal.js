@@ -227,12 +227,33 @@
                     elem.domEl.setAttribute('data-sr-id', elem.id);
                 }
 
+                // Sequence only setup
                 if (sequence) {
+
                     elem.sequence = {
                         id    : sequence.id,
                         index : _nextUid()
                     };
+
                     sequence.elemIds.push(elem.id);
+
+                    if (interval > 0) {
+                        if (i == 0) {
+                            sequence.index.first = elem.id;
+                        }
+                        if (i == elements.length - 1) {
+                            sequence.index.last = elem.id;
+                        }
+                    }
+
+                    if (interval < 0) {
+                        if (i == 0) {
+                            sequence.index.last = elem.id;
+                        }
+                        if (i == elements.length - 1) {
+                            sequence.index.first = elem.id;
+                        }
+                    }
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
