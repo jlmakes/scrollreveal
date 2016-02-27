@@ -109,10 +109,10 @@
             }
 
             sr = this; // Save reference to instance.
+            sr.tools = new Tools(); // *required utilities
 
             if (sr.supported()) {
 
-                sr.tools = new Tools();
                 sr.tools.extend(sr.defaults, config || {});
 
                 _resolveContainer(sr.defaults);
@@ -143,9 +143,7 @@
          * @return {boolean}
          */
         ScrollReveal.prototype.supported = function() {
-            var style = document.documentElement.style;
-            return 'WebkitTransition' in style && 'WebkitTransform' in style
-                || 'transition' in style && 'transform' in style
+            return sr.tools.testStyle('transition') && sr.tools.testStyle('transform');
         };
 
 
@@ -969,6 +967,22 @@
 
         Tools.prototype.isMobile = function() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        };
+
+        Tools.prototype.testStyle = function(style) {
+
+            var
+                sensor    = document.createElement('sensor'),
+                cssPrefix = 'Webkit,Moz,O,'.split(','),
+                tests     = ( style + cssPrefix.join( style + ',' ) ).split(',');
+
+            for (var i = 0; i < tests.length; i++) {
+                if (!sensor.style[tests[i]] === '') {
+                    return false
+                }
+            }
+
+            return true
         };
 
         function Tools() {};
