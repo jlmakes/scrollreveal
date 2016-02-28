@@ -119,10 +119,10 @@
 
                 sr.store = {
                     elements   : {},
-                    containers : {},
-                    sequences  : {}
+                    containers : []
                 };
 
+                sr.sequences   = {};
                 sr.history     = [];
                 sr.uid         = 0;
                 sr.initialized = false;
@@ -193,15 +193,12 @@
             // Prepare a new sequence if an interval is passed.
             if (interval && typeof interval == 'number') {
                 sequenceId = _nextUid();
-                sequence = sr.store.sequences[sequenceId] = {
-                    id        : sequenceId,
-                    interval  : interval,
-                    elemIds   : [],
-                    index     : {
-                        first : null,
-                        last  : null,
-                        next  : null
-                    }
+
+                sequence = sr.sequences[sequenceId] = {
+                    id       : sequenceId,
+                    interval : interval,
+                    elemIds  : [],
+                    next     : null
                 }
             }
 
@@ -234,26 +231,6 @@
                     };
 
                     sequence.elemIds.push(elem.id);
-
-                    // top left to bottom right sequence
-                    if (interval > 0) {
-                        if (i == 0) {
-                            sequence.index.first = elem.id;
-                        }
-                        if (i == elements.length - 1) {
-                            sequence.index.last = elem.id;
-                        }
-                    }
-
-                    // bottom right to top left sequence
-                    if (interval < 0) {
-                        if (i == 0) {
-                            sequence.index.last = elem.id;
-                        }
-                        if (i == elements.length - 1) {
-                            sequence.index.first = elem.id;
-                        }
-                    }
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
@@ -495,34 +472,12 @@
 
 
 
-        /**
-         * Check if the container already exists within the store.
-         * @param  {Node} container The element’s `config.container` in question.
-         * @return {boolean}
-         */
-        function _containerIsUnique(container) {
-            if (sr.store.containers !== {}) {
-                sr.tools.forOwn(sr.store.containers, function(containerId) {
-                    if (container === sr.store.containers[containerId].node) {
-                        return false
-                    }
-                });
-            }
-            return true
-        }
-
-
-
         function _updateStore(elem) {
+            var container = elem.config.container;
 
-            if (_containerIsUnique(elem.config.container)) {
-                var containerId = _nextUid();
-                sr.store.containers[containerId] = {
-                    id       : containerId,
-                    node     : elem.config.container,
-                    scrolled : _getScrolled(elem.config.container),
-                    vector   : [0,0]
-                }
+            // If this element’s container isn’t already in the store, let’s add it.
+            if (container && sr.store.containers.indexOf(container) == -1) {
+                sr.store.containers.push(elem.config.container);
             }
 
             // Update the element stored with our new element.
@@ -554,11 +509,9 @@
 
                 // Then we loop through all container nodes in the store and bind event
                 // listeners to each.
-                if (sr.store.containers !== {}) {
-                    sr.tools.forOwn(sr.store.containers, function(containerId) {
-                        sr.store.containers[containerId].node.addEventListener('scroll', _handler);
-                        sr.store.containers[containerId].node.addEventListener('resize', _handler);
-                    });
+                for (var i = 0; i < sr.store.containers.length; i++) {
+                    sr.store.containers[i].addEventListener('scroll', _handler);
+                    sr.store.containers[i].addEventListener('resize', _handler);
                 }
 
                 // Let’s also do a one-time binding of window event listeners.
@@ -573,16 +526,8 @@
 
 
 
-        function _handler(evt) {
-            _requestAnimationFrame(function() {
-                if (evt) {
-                    console.log(evt.target.scrollTop);
-                    // compare to previous stored container.scrolled
-                    // set container.direction
-                    // ...
-                }
-                _animate();
-            });
+        function _handler() {
+            _requestAnimationFrame(_animate);
         }
 
 
@@ -601,8 +546,8 @@
                 visible;
 
             // Loop through all sequenced elements
-            sr.tools.forOwn(sr.store.sequences, function(sequenceId){
-                sequence = sr.store.sequences[sequenceId];
+            sr.tools.forOwn(sr.sequences, function(sequenceId){
+                sequence = sr.sequences[sequenceId];
                 for (var i = 0; i < sequence.elemIds.length; i++) {
 
                     elemId = sequence.elemIds[i]
@@ -614,19 +559,17 @@
                         // Positive intervals are first in, first out sequences (forwards)
                         if (sequence.interval > 0) {
                             next = (next) ? Math.min(next, elem.sequence.index) : elem.sequence.index;
-                            console.log('positive: ' + next);
                             boundary = Infinity;
                         }
 
                         // Negative intervals are first in, last out sequences (backwards)
                         else if (sequence.interval < 0) {
                             next = (next) ? Math.max(next, elem.sequence.index) : elem.sequence.index;
-                            console.log('negative: ' + next);
                             boundary = -Infinity;
                         }
                     }
                 }
-                sequence.index.next = (next) ? next : boundary;
+                sequence.next = (next) ? next : boundary;
             });
         }
 
@@ -691,7 +634,7 @@
 
             var
                 elapsed  = 0,
-                sequence = sr.store.sequences[elem.sequence.id];
+                sequence = sr.sequences[elem.sequence.id];
 
             // We’re processing a sequenced element, so let's block other elements in this sequence.
             sequence.blocked = true;
@@ -766,11 +709,11 @@
 
         function _shouldReveal(elem) {
             if (elem.sequence) {
-                var sequence = sr.store.sequences[elem.sequence.id];
+                var sequence = sr.sequences[elem.sequence.id];
 
                 // There’s certainly no need to reveal if we’re a part of a sequence and
                 // the element is not the lowest index, or if the sequence is currently working.
-                if (sequence.index.next !== elem.sequence.index || sequence.blocked ) {
+                if (sequence.next !== elem.sequence.index || sequence.blocked ) {
                     return false
                 }
             }
