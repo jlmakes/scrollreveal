@@ -559,14 +559,14 @@
                         );
                     }
 
-                    // Let’s queue the `afterReveal` callback, and mark the element as `seen`.
+                    // Let’s queue the `afterReveal` callback and tag the element.
                     _queueCallback('reveal', elem, delayed);
                     elem.revealing = true;
-                    elem.seen = true
+                    elem.seen = true;
                 }
 
                 // If we got this far our element shouldn’t reveal, but should it reset?
-                if (_shouldReset(elem)) {
+                else if (_shouldReset(elem)) {
                     elem.domEl.setAttribute('style',
                         elem.styles.inline
                       + elem.styles.transform.initial
@@ -574,10 +574,6 @@
                     );
                     _queueCallback('reset', elem);
                     elem.revealing = false;
-                }
-
-                if (elem.sequence) {
-                    _queueSequence(elem);
                 }
             });
         }
