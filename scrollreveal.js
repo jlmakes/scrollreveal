@@ -561,6 +561,7 @@
 
                     // Let’s queue the `afterReveal` callback, and mark the element as `seen`.
                     _queueCallback('reveal', elem, delayed);
+                    elem.revealing = true;
                     elem.seen = true
                 }
 
@@ -572,6 +573,7 @@
                       + elem.styles.transition.instant
                     );
                     _queueCallback('reset', elem);
+                    elem.revealing = false;
                 }
 
                 if (elem.sequence) {
@@ -650,11 +652,6 @@
                 elem.timer = null;
 
             }, duration - elapsed);
-
-            // Update element status for future animate loops.
-            return type === 'reveal'
-                ? elem.revealing = true
-                : elem.revealing = false
         }
 
 
