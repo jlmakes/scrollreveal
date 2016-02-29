@@ -197,8 +197,7 @@
                 sequence = sr.sequences[sequenceId] = {
                     id       : sequenceId,
                     interval : interval,
-                    elemIds  : [],
-                    next     : null
+                    elems    : []
                 }
             }
 
@@ -227,10 +226,10 @@
 
                     elem.sequence = {
                         id    : sequence.id,
-                        index : _nextUid()
+                        index : sequence.elems.length
                     };
 
-                    sequence.elemIds.push(elem.id);
+                    sequence.elems.push(elem.id);
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
@@ -532,56 +531,11 @@
 
 
 
-        /**
-         * Finds the lowest sequence index of visible non-revealing elements.
-         */
-        function _prepareSequencer() {
-
-            var
-                boundary,
-                elem,
-                elemId,
-                next,
-                sequence,
-                visible;
-
-            // Loop through all sequenced elements
-            sr.tools.forOwn(sr.sequences, function(sequenceId){
-                sequence = sr.sequences[sequenceId];
-                for (var i = 0; i < sequence.elemIds.length; i++) {
-
-                    elemId = sequence.elemIds[i]
-                    elem = sr.store.elements[elemId];
-                    visible = _isElemVisible(elem);
-
-                    if (visible && !elem.revealing) {
-
-                        // Positive intervals are first in, first out sequences (forwards)
-                        if (sequence.interval > 0) {
-                            next = (next) ? Math.min(next, elem.sequence.index) : elem.sequence.index;
-                            boundary = Infinity;
-                        }
-
-                        // Negative intervals are first in, last out sequences (backwards)
-                        else if (sequence.interval < 0) {
-                            next = (next) ? Math.max(next, elem.sequence.index) : elem.sequence.index;
-                            boundary = -Infinity;
-                        }
-                    }
-                }
-                sequence.next = (next) ? next : boundary;
-            });
-        }
-
-
-
         function _animate() {
 
             var
                 delayed,
                 elem;
-
-            _prepareSequencer();
 
             // Loop through all elements in the store
             sr.tools.forOwn(sr.store.elements, function(elemId) {
@@ -605,15 +559,9 @@
                         );
                     }
 
-                    if (elem.sequence) {
-                        _sequenceHandler(elem);
-                    }
-
-                    // The element is revealing, so let’s queue the `afterReveal` callback, and mark
-                    // it as `seen` for future reference.
+                    // Let’s queue the `afterReveal` callback, and mark the element as `seen`.
                     _queueCallback('reveal', elem, delayed);
-
-                    return elem.seen = true
+                    elem.seen = true
                 }
 
                 // If we got this far our element shouldn’t reveal, but should it reset?
@@ -625,12 +573,16 @@
                     );
                     _queueCallback('reset', elem);
                 }
+
+                if (elem.sequence) {
+                    _queueSequence(elem);
+                }
             });
         }
 
 
 
-        function _sequenceHandler(elem) {
+        function _queueSequence(elem) {
 
             var
                 elapsed  = 0,
@@ -710,12 +662,6 @@
         function _shouldReveal(elem) {
             if (elem.sequence) {
                 var sequence = sr.sequences[elem.sequence.id];
-
-                // There’s certainly no need to reveal if we’re a part of a sequence and
-                // the element is not the lowest index, or if the sequence is currently working.
-                if (sequence.next !== elem.sequence.index || sequence.blocked ) {
-                    return false
-                }
             }
             return _isElemVisible(elem)
                 && !elem.revealing
