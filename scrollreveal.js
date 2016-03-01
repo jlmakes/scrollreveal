@@ -111,7 +111,7 @@
             sr = this; // Save reference to instance.
             sr.tools = new Tools(); // *required utilities
 
-            if (sr.supported()) {
+            if (sr.isSupported()) {
 
                 sr.tools.extend(sr.defaults, config || {});
 
@@ -142,8 +142,11 @@
          * Check if client supports CSS Transform and CSS Transition.
          * @return {boolean}
          */
-        ScrollReveal.prototype.supported = function() {
-            return sr.tools.testStyle('transition') && sr.tools.testStyle('transform');
+        ScrollReveal.prototype.isSupported = function() {
+            if (typeof sr.supported === 'undefined') {
+                return sr.supported = sr.tools.testStyle('transition') && sr.tools.testStyle('transform');
+            }
+            return sr.supported
         };
 
 
@@ -240,7 +243,7 @@
 
                 // We need to make sure elements are set to visibility: visibile, even when
                 // on mobile and `config.mobile == false`, or if unsupported.
-                if (sr.tools.isMobile() && !elem.config.mobile || !sr.supported()) {
+                if (sr.tools.isMobile() && !elem.config.mobile || !sr.isSupported()) {
                     elem.domEl.setAttribute('style', elem.styles.inline);
                     elem.disabled = true;
                 }
@@ -260,7 +263,7 @@
 
             // Since `reveal()` is called internally by `sync()`, we don’t want to
             // record or intiialize each reveal during syncing.
-            if (!sync && sr.supported()) {
+            if (!sync && sr.isSupported()) {
                 _record(selector, config);
 
                 // We push initialization to the event queue using setTimeout, so that we can
@@ -286,7 +289,7 @@
          * @return {Object} The current ScrollReveal instance.
          */
         ScrollReveal.prototype.sync = function() {
-            if (sr.history.length && sr.supported()) {
+            if (sr.history.length && sr.isSupported()) {
                 for (var i = 0; i < sr.history.length; i++) {
                     var record = sr.history[i];
                     sr.reveal(record.selector, record.config, record.interval, true);
@@ -500,7 +503,7 @@
 
 
         function _init() {
-            if (sr.supported()) {
+            if (sr.isSupported()) {
 
                 // Initial animate call triggers valid reveal animations on first load.
                 // Subsequent animate calls are made inside the event handler.
