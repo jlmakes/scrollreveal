@@ -128,8 +128,14 @@ ______________________________________________________________________________*/
         container = window.document.documentElement;
       }
 
-      // Query that container for all elements matching the selector argument.
-      elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
+      if (typeof selector === 'string') {
+          // Query that container for all elements matching the selector argument.
+          elements = Array.prototype.slice.call( container.querySelectorAll( selector ) );
+      } else if (typeof selector === 'object') {
+        // Support getting a DOM obj array here:
+          elements = selector;
+      }
+
       if ( !elements.length ){
         console.log('reveal(\'' + selector + '\') failed: no elements found.');
         return sr;
