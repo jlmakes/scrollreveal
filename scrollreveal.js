@@ -200,7 +200,8 @@
                 sequence = sr.sequences[sequenceId] = {
                     id       : sequenceId,
                     interval : interval,
-                    elems    : []
+                    elemIds  : [],
+                    active   : false
                 }
             }
 
@@ -229,10 +230,10 @@
 
                     elem.sequence = {
                         id    : sequence.id,
-                        index : sequence.elems.length
+                        index : sequence.elemIds.length
                     };
 
-                    sequence.elems.push(elem.id);
+                    sequence.elemIds.push(elem.id);
                 }
 
                 // New or existing element, it’s time to update its configuration, styles,
@@ -534,11 +535,42 @@
 
 
 
+        function _setActiveSequences() {
+
+            var
+                active,
+                elem,
+                elemId,
+                sequence;
+
+            // Loop through all sequences
+            sr.tools.forOwn(sr.sequences, function(sequenceId) {
+                sequence = sr.sequences[sequenceId];
+                active   = false;
+
+                // For each sequenced elemenet, let’s check visibility and if
+                // any are visible, set it’s sequence to active.
+                for (var i = 0; i < sequence.elemIds.length; i++) {
+                    elemId = sequence.elemIds[i]
+                    elem   = sr.store.elements[elemId];
+                    if (_isElemVisible(elem) && !active) {
+                        active = true;
+                    }
+                }
+
+                sequence.active = active;
+            });
+        }
+
+
+
         function _animate() {
 
             var
                 delayed,
                 elem;
+
+            _setActiveSequences();
 
             // Loop through all elements in the store
             sr.tools.forOwn(sr.store.elements, function(elemId) {
@@ -566,6 +598,10 @@
                     _queueCallback('reveal', elem, delayed);
                     elem.revealing = true;
                     elem.seen = true;
+
+                    if (elem.sequence) {
+                        _queueNextInSequence(elem);
+                    }
                 }
 
                 // If we got this far our element shouldn’t reveal, but should it reset?
@@ -583,7 +619,7 @@
 
 
 
-        function _queueSequence(elem) {
+        function _queueNextInSequence(elem) {
 
             var
                 elapsed  = 0,
@@ -658,6 +694,10 @@
         function _shouldReveal(elem) {
             if (elem.sequence) {
                 var sequence = sr.sequences[elem.sequence.id];
+                return sequence.active
+                    && !sequence.blocked
+                    && !elem.revealing
+                    && !elem.disabled
             }
             return _isElemVisible(elem)
                 && !elem.revealing
@@ -676,8 +716,14 @@
 
 
         function _shouldReset(elem) {
-            var visible = _isElemVisible(elem);
-            return !visible
+            if (elem.sequence) {
+                var sequence = sr.sequences[elem.sequence.id];
+                return !sequence.active
+                    && !sequence.blocked
+                    && elem.revealing
+                    && !elem.disabled
+            }
+            return !_isElemVisible(elem)
                 && elem.config.reset
                 && elem.revealing
                 && !elem.disabled
