@@ -67,7 +67,7 @@ Reimagining ScrollReveal for vastly improved flexibility and maintainability! :b
 - `config` object has been completely overhauled.
     - `config.enter` renamed `config.origin`
     - `config.wait` renamed `config.delay`
-    - `config.delay` renamed `config.delayType`
+    - `config.delay` renamed `config.useDelay`
     - `config.over` renamed `config.duration`
     - `config.move` renamed `config.distance`
     - `config.viewport` renamed `config.container`
