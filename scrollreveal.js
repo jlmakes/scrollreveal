@@ -193,6 +193,13 @@
                 return sr
             }
 
+            // No custom configuration was passed, but a sequence interval instead.
+            // let’s shuffle things around to make sure everything works.
+            if (config && typeof config == 'number') {
+                interval = config;
+                config = {};
+            }
+
             // Prepare a new sequence if an interval is passed.
             if (interval && typeof interval == 'number') {
                 sequenceId = _nextUid();
