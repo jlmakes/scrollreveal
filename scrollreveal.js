@@ -600,7 +600,7 @@
                     elem.seen = true;
 
                     if (elem.sequence) {
-                        _queueNextInSequence(elem);
+                        _queueNextInSequence(elem, delayed);
                     }
                 }
 
@@ -619,14 +619,21 @@
 
 
 
-        function _queueNextInSequence(elem) {
+        function _queueNextInSequence(elem, delayed) {
 
             var
                 elapsed  = 0,
+                delay    = 0,
                 sequence = sr.sequences[elem.sequence.id];
 
             // We’re processing a sequenced element, so let's block other elements in this sequence.
             sequence.blocked = true;
+
+            // Since we’re triggering animations a part of a sequence after animations on first load,
+            // we need to check for that condition and explicitly add the delay to our timer.
+            if (delayed && elem.config.useDelay == 'onload') {
+                delay = elem.config.delay;
+            }
 
             // If a sequence timer is already running, capture the elapsed time and clear it.
             if (elem.sequence.timer) {
@@ -643,7 +650,7 @@
                 elem.sequence.timer = null;
                 _handler();
 
-            }, Math.abs(sequence.interval) - elapsed);
+            }, Math.abs(sequence.interval) + delay - elapsed);
         }
 
 
