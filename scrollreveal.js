@@ -142,12 +142,11 @@
          * Check if client supports CSS Transform and CSS Transition.
          * @return {boolean}
          */
-        ScrollReveal.prototype.isSupported = function() {
-            if (typeof sr.supported === 'undefined') {
-                return sr.supported = sr.tools.testStyle('transition') && sr.tools.testStyle('transform');
-            }
-            return sr.supported
-        };
+        ScrollReveal.prototype.isSupported = function(){
+              var style = document.documentElement.style;
+              return 'WebkitTransition' in style && 'WebkitTransform' in style
+                || 'transition' in style && 'transform' in style
+            };
 
 
 
@@ -912,22 +911,6 @@
 
         Tools.prototype.isMobile = function() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-        };
-
-        Tools.prototype.testStyle = function(style) {
-
-            var
-                sensor    = document.createElement('sensor'),
-                cssPrefix = 'Webkit,Moz,O,'.split(','),
-                tests     = ( style + cssPrefix.join( style + ',' ) ).split(',');
-
-            for (var i = 0; i < tests.length; i++) {
-                if (!sensor.style[tests[i]] === '') {
-                    return false
-                }
-            }
-
-            return true
         };
 
         function Tools() {};
