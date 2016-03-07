@@ -250,6 +250,7 @@ _Example:_
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- load and instantiate ScrollReveal first -->
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
@@ -263,6 +264,7 @@ _Example:_
       <div class="fooReveal"> Foo </div>
     </div>
 
+    <!-- make reveal calls last -->
     <script>
       sr.reveal('.fooReveal', { container: '.fooContainer' });
     </script>
@@ -282,6 +284,7 @@ _Continuing our example from 4.1._
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- load and instantiate ScrollReveal first -->
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
@@ -307,6 +310,7 @@ _Continuing our example from 4.1._
       <div class="fooReveal"> Foo </div>
     </div>
 
+    <!-- make reveal calls last -->
     <script>
       sr.reveal('.fooReveal', { container: '.fooContainer' });
     </script>
@@ -323,17 +327,30 @@ ScrollReveal supports 3d rotation out of the box, but you may want to emphasize 
 _Continuing our example from 4.2._
 ```html
 <!DOCTYPE html>
-<html class="no-js">
+<html>
   <head>
+    <!-- load and instantiate ScrollReveal first -->
+    <script src="js/scrollreveal.min.js"></script>
     <script>
-      // Change <html> classes if JavaScript is enabled
-      document.documentElement.classList.remove('no-js');
-      document.documentElement.classList.add('js');
+      window.sr = ScrollReveal();
+
+      // Add class to <html> if ScrollReveal is supported
+      if (sr.isSupported()) {
+        document.documentElement.classList.add('sr');
+      }
+
     </script>
+
     <style>
-      .js .fooReveal { visibility: hidden; }
+
+      /* Ensure elements load hidden before ScrollReveal runs */
+      .sr .fooReveal { visibility: hidden; }
+
+      /* add perspective to your container */
       .fooContainer { perspective: 800px; }
+
     </style>
+
   </head>
   <body>
 
@@ -343,11 +360,12 @@ _Continuing our example from 4.2._
       <div class="fooReveal"> Foo </div>
     </div>
 
-    <script src="js/scrollreveal.min.js"></script>
+  <!-- make reveal calls last -->
     <script>
-      window.sr = ScrollReveal();
+      // use rotation in reveal configuration
       sr.reveal('.fooReveal', { container: '.fooContainer', rotate: {x: 65} });
-  </script>
+    </script>
+
   </body>
 </html>
 ```
