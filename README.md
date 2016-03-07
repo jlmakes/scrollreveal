@@ -169,7 +169,15 @@ sr.reveal('.foo', fooReveal);
 sr.reveal('#chocolate', { delay: 500, scale: 0.9 });
 ```
 
-#### 3.3. Custom/Multiple Containers
+#### 3.3. Working With DOM Nodes (e.g. React)
+
+You are not just limited to using selectors with `reveal()`, it also accepts a DOM node as the first argument.
+
+```js
+sr.reveal(document.getElementById('chocolate'));
+```
+
+#### 3.4. Custom/Multiple Containers
 
 The default container is the viewport, but you can assign any container to any reveal set.
 
@@ -199,7 +207,7 @@ sr.reveal('.foo', { container: fooContainer });
 sr.reveal('.bar', { container: '#barContainer' });
 ```
 
-#### 3.4. Asynchronous Content
+#### 3.5. Asynchronous Content
 
 The `sync()` method updates asynchronously loaded content with any existing reveal sets.
 
