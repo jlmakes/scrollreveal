@@ -189,7 +189,7 @@ _Example:_
 
 ```html
 <!-- index.html -->
-<div id="container">
+<div id="fooContainer">
   <div class="foo">foo</div>
   <div class="foo">foo</div>
   <div class="foo">foo</div>
