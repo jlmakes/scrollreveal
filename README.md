@@ -238,7 +238,7 @@ xmlhttp.send();
 
 #### 4.1. Order Matters
 
-It’s important that ScrollReveal be called (as close to) last in your page as possible, so that:
+It’s important that `reveal()` calls be made as close to last in your page as possible, so that:
 
 - Elements on the page have loaded
 - Any other 3rd party libraries have had a chance to run
@@ -249,14 +249,24 @@ _Example:_
 ```html
 <!DOCTYPE html>
 <html>
-  <body>
-
-    <!-- All the things... -->
-
+  <head>
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
     </script>
+  </head>
+  <body>
+
+    <div class="fooContainer">
+      <div class="fooReveal"> Foo </div>
+      <div class="fooReveal"> Foo </div>
+      <div class="fooReveal"> Foo </div>
+    </div>
+
+    <script>
+      sr.reveal('.fooReveal', { container: '.fooContainer' });
+    </script>
+
   </body>
 </html>
 ```
