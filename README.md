@@ -129,7 +129,25 @@ afterReset  : function(domEl) {}
 
 ## 3. Advanced
 
-#### 3.1. Override Configurations
+#### 3.1. Sequenced Animations
+
+You can pass a sequence interval (in milliseconds) to the `reveal()` method, making sequenced animations a breeze.
+
+```js
+// interval passed to reveal
+window.sr = ScrollReveal({ duration: 2000 });
+sr.reveal('.box', 50);
+
+// or...
+
+// interval and custom config passed to reveal
+window.sr = ScrollReveal();
+sr.reveal('.box', { duration: 2000 }, 50);
+```
+
+![sequencer](https://cloud.githubusercontent.com/assets/2044842/13556788/a7dda6c6-e3e2-11e5-93fa-d6a227cbb5dc.gif)
+
+#### 3.2. Override Configurations
 
 `reveal()` is equipped to handle calls on the same element, so it's easy to override element configuration.
 
@@ -151,7 +169,7 @@ sr.reveal('.foo', fooReveal);
 sr.reveal('#chocolate', { delay: 500, scale: 0.9 });
 ```
 
-#### 3.2. Custom/Multiple Containers
+#### 3.3. Custom/Multiple Containers
 
 The default container is the viewport, but you can assign any container to any reveal set.
 
@@ -181,7 +199,7 @@ sr.reveal('.foo', { container: fooContainer });
 sr.reveal('.bar', { container: '#barContainer' });
 ```
 
-#### 3.3. Asynchronous Content
+#### 3.4. Asynchronous Content
 
 The `sync()` method updates asynchronously loaded content with any existing reveal sets.
 
