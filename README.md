@@ -133,6 +133,8 @@ afterReset  : function(domEl) {}
 
 You can pass a sequence interval (in milliseconds) to the `reveal()` method, making sequenced animations a breeze.
 
+>**Note:** The interval is the time until the next element in the sequence begins its reveal, which is separate from the time until the element’s animation completes. In this example, the animation duration is 2 seconds, but the sequence interval is 50 milliseconds.
+
 ```js
 // interval passed to reveal
 window.sr = ScrollReveal({ duration: 2000 });
