@@ -280,17 +280,24 @@ The ideal solution is to **set your reveal elements visibility to hidden** in th
 _Continuing our example from 4.1._
 ```html
 <!DOCTYPE html>
-<html class="no-js">
+<html>
   <head>
+    <script src="js/scrollreveal.min.js"></script>
     <script>
-      // Change <html> classes if JavaScript is enabled
-      document.documentElement.classList.remove('no-js');
-      document.documentElement.classList.add('js');
+      window.sr = ScrollReveal();
+
+      // Add class to <html> if ScrollReveal is supported
+      if (sr.isSupported()) {
+        document.documentElement.classList.add('sr');
+      }
+
     </script>
+
     <style>
       /* Ensure elements load hidden before ScrollReveal runs */
-      .js .fooReveal { visibility: hidden; }
+      .sr .fooReveal { visibility: hidden; }
     </style>
+
   </head>
   <body>
 
@@ -300,11 +307,10 @@ _Continuing our example from 4.1._
       <div class="fooReveal"> Foo </div>
     </div>
 
-    <script src="js/scrollreveal.min.js"></script>
     <script>
-      window.sr = ScrollReveal();
       sr.reveal('.fooReveal', { container: '.fooContainer' });
     </script>
+
   </body>
 </html>
 ```
