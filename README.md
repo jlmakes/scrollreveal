@@ -323,8 +323,10 @@ _Continuing our example from 4.1._
     </script>
 
     <style>
+
       /* Ensure elements load hidden before ScrollReveal runs */
       .sr .fooReveal { visibility: hidden; }
+
     </style>
 
   </head>
