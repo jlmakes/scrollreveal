@@ -342,7 +342,7 @@ Open source under the [MIT License](http://img.shields.io/badge/License-MIT-1a24
 
 #### 5.1. Browser Compatibility
 
-ScrollReveal works on any JavaScript enabled browser that supports both [CSS Transform](http://caniuse.com/#search=transform) and [CSS Transition](http://caniuse.com/#search=transitions). This includes Internet Explorer 10, and most modern desktop and mobile browsers.
+ScrollReveal works on any JavaScript enabled browser that supports both [CSS Transform](http://caniuse.com/#search=transform) and [CSS Transition](http://caniuse.com/#search=transitions). This includes Internet Explorer 10+, and most modern desktop and mobile browsers.
 
 #### 5.2. Issues and Reporting Bugs
 
@@ -350,7 +350,7 @@ ScrollReveal works on any JavaScript enabled browser that supports both [CSS Tra
 
 If you cannot find your issue/bug in a previous ticket, please include details such as your browser, any other 3rd party JavaScript libraries you are using, and ideally a code sample demonstrating the problem. (Try [JSBin](http://jsbin.com/nuqapopefo/1/edit?html,output))
 
-#### 5.3. Contributing
+#### 5.3. Pull Requests
 
 Feeling inspired? Please contribute! Optimizations, compatibility and bug fixes are greatly preferred over new features, but don’t be shy. One thing sorely missing from ScrollReveal right now is a test suite.
 
