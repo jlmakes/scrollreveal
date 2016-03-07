@@ -625,6 +625,9 @@
 
 
 
+        /**
+         * Sequence callback that triggers the next element.
+         */
         function _queueNextInSequence(elem, delayed) {
 
             var
