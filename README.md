@@ -65,7 +65,7 @@ Passing a configuration object to `ScrollReveal()` changes the defaults for all 
 window.sr = ScrollReveal({ reset: true });
 
 // Customizing a reveal set
-sr.reveal( '.foo', { duration: 200 } );
+sr.reveal('.foo', { duration: 200 });
 ```
 
 #### 2.2. The Starting Defaults
@@ -147,13 +147,13 @@ var fooReveal = {
 };
 
 window.sr = ScrollReveal();
-sr.reveal( '.foo', fooReveal );
-sr.reveal( '#chocolate', { delay: 500, scale: 0.9 } );
+sr.reveal('.foo', fooReveal);
+sr.reveal('#chocolate', { delay: 500, scale: 0.9 });
 ```
 
 #### 3.2. Custom/Multiple Containers
 
-The default container is the viewport, but you assign any container to any reveal set.
+The default container is the viewport, but you can assign any container to any reveal set.
 
 >**Tip:** ScrollReveal works just as well with horizontally scrolling containers too!
 
@@ -171,12 +171,14 @@ The default container is the viewport, but you assign any container to any revea
 </div>
 ```
 ```js
-var fooContainer = document.getElementById('fooContainer');
-var barContainer = document.getElementById('barContainer');
-
 window.sr = ScrollReveal();
-sr.reveal( '.foo', { container: fooContainer } );
-sr.reveal( '.bar', { container: barContainer } );
+
+// as a DOM node...
+var fooContainer = document.getElementById('fooContainer');
+sr.reveal('.foo', { container: fooContainer });
+
+// as a selector...
+sr.reveal('.bar', { container: '#barContainer' });
 ```
 
 #### 3.3. Asynchronous Content
@@ -204,13 +206,13 @@ var fooContainer, content, sr, xmlhttp;
 fooContainer = document.getElementById('fooContainer');
 
 sr = ScrollReveal();
-sr.reveal( '.foo', { container: fooContainer } );
+sr.reveal('.foo', { container: fooContainer });
 
 // Setup a new asynchronous request...
 xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
-  if ( xmlhttp.readyState == XMLHttpRequest.DONE ) {
-    if ( xmlhttp.status == 200 ) {
+  if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+    if (xmlhttp.status == 200) {
 
       // Turn our response into HTML...
       var content = document.createElement('div');
@@ -218,8 +220,8 @@ xmlhttp.onreadystatechange = function() {
       content = content.childNodes;
 
       // Add each element to the DOM...
-      for ( var i = 0; i < content.length; i++ ) {
-        fooContainer.appendChild( content[ i ]);
+      for (var i = 0; i < content.length; i++) {
+        fooContainer.appendChild(content[ i ]);
       };
 
       // Finally!
@@ -324,7 +326,7 @@ _Continuing our example from 4.2._
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
-      sr.reveal( '.fooReveal', { rotate: {x: 65} } );
+      sr.reveal('.fooReveal', { rotate: {x: 65} });
   </script>
   </body>
 </html>
