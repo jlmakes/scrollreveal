@@ -284,12 +284,16 @@ _Continuing our example from 4.1._
   </head>
   <body>
 
-    <!-- All the things... -->
+    <div class="fooContainer">
+      <div class="fooReveal"> Foo </div>
+      <div class="fooReveal"> Foo </div>
+      <div class="fooReveal"> Foo </div>
+    </div>
 
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
-      sr.reveal('.fooReveal');
+      sr.reveal('.fooReveal', { container: '.fooContainer' });
     </script>
   </body>
 </html>
@@ -326,7 +330,7 @@ _Continuing our example from 4.2._
     <script src="js/scrollreveal.min.js"></script>
     <script>
       window.sr = ScrollReveal();
-      sr.reveal('.fooReveal', { rotate: {x: 65} });
+      sr.reveal('.fooReveal', { container: '.fooContainer', rotate: {x: 65} });
   </script>
   </body>
 </html>
