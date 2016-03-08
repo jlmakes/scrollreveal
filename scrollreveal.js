@@ -17,7 +17,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.1 (Supersonic Sequencer)
+ * Version : 3.1.1
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)

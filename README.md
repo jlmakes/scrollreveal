@@ -7,7 +7,7 @@
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 
-- 2.8KB minified and Gzipped
+- 3.3KB minified and Gzipped
 - No dependencies
 - From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)
 
@@ -20,7 +20,7 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
-<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.1.0/scrollreveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.1.1/scrollreveal.min.js"></script>
 ```
 
 But you can also:

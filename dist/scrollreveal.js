@@ -28,7 +28,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.1 (Supersonic Sequencer)
+ * Version : 3.1.1
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -746,7 +746,7 @@
             if (elem.sequence) {
                 var sequence = sr.sequences[elem.sequence.id];
                 return !sequence.active
-                    && !sequence.blocked
+                    && elem.config.reset
                     && elem.revealing
                     && !elem.disabled
             }
