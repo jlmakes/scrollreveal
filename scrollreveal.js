@@ -735,7 +735,7 @@
             if (elem.sequence) {
                 var sequence = sr.sequences[elem.sequence.id];
                 return !sequence.active
-                    && !sequence.blocked
+                    && elem.config.reset
                     && elem.revealing
                     && !elem.disabled
             }
