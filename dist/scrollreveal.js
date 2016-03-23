@@ -28,7 +28,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.1.1
+ * Version : 3.1.2
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -199,7 +199,7 @@
             }
 
             if (!elements.length) {
-                console.log('ScrollReveal: reveal on "'+ selector + '"" failed, no elements found.');
+                console.log('ScrollReveal: reveal on "'+ selector + '" failed, no elements found.');
                 return sr
             }
 
