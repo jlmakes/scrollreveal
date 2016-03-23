@@ -188,7 +188,7 @@
             }
 
             if (!elements.length) {
-                console.log('ScrollReveal: reveal on "'+ selector + '"" failed, no elements found.');
+                console.log('ScrollReveal: reveal on "'+ selector + '" failed, no elements found.');
                 return sr
             }
 
