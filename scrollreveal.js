@@ -143,10 +143,10 @@
          * @return {boolean}
          */
         ScrollReveal.prototype.isSupported = function(){
-              var style = document.documentElement.style;
-              return 'WebkitTransition' in style && 'WebkitTransform' in style
+            var style = document.documentElement.style;
+            return 'WebkitTransition' in style && 'WebkitTransform' in style
                 || 'transition' in style && 'transform' in style
-            };
+        };
 
 
 
