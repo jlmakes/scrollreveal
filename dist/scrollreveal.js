@@ -28,7 +28,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.1.2
+ * Version : 3.1.3
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -141,7 +141,7 @@
 
             // Note: IE9 only supports console if devtools are open.
             else if (typeof console !== 'undefined' && console !== null) {
-                console.log('ScrollReveal is not supported in this browser.');
+                void 0;
             }
 
             return sr
@@ -154,10 +154,10 @@
          * @return {boolean}
          */
         ScrollReveal.prototype.isSupported = function(){
-              var style = document.documentElement.style;
-              return 'WebkitTransition' in style && 'WebkitTransform' in style
+            var style = document.documentElement.style;
+            return 'WebkitTransition' in style && 'WebkitTransform' in style
                 || 'transition' in style && 'transform' in style
-            };
+        };
 
 
 
@@ -199,7 +199,7 @@
             }
 
             if (!elements.length) {
-                console.log('ScrollReveal: reveal on "'+ selector + '" failed, no elements found.');
+                void 0;
                 return sr
             }
 
@@ -259,7 +259,7 @@
                 _style(elem);
                 _updateStore(elem);
 
-                // We need to make sure elements are set to visibility: visibile, even when
+                // We need to make sure elements are set to visibility: visible, even when
                 // on mobile and `config.mobile == false`, or if unsupported.
                 if (sr.tools.isMobile() && !elem.config.mobile || !sr.isSupported()) {
                     elem.domEl.setAttribute('style', elem.styles.inline);
@@ -314,7 +314,7 @@
                 };
                 _init();
             } else {
-                console.log('ScrollReveal: sync failed, no reveals found.');
+                void 0;
             }
             return sr
         };
@@ -340,7 +340,7 @@
 
             // Check if our container is defined by a node.
             else if (container && !sr.tools.isNode(container)) {
-                console.log('ScrollReveal: Invalid container provided, using <html> instead.');
+                void 0;
                 config.container = null;
             }
 
