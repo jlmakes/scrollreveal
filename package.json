@@ -17,11 +17,12 @@
   },
 
   "devDependencies": {
-    "bower-json"    : "^0.6.0",
-    "browser-sync"  : "^2.10.0",
-    "gulp"          : "*",
-    "gulp-rename"   : "^1.2.2",
-    "gulp-uglify"   : "^1.5.1",
-    "gulp-wrap-umd" : "*"
+    "bower-json"       : "^0.6.0",
+    "browser-sync"     : "^2.10.0",
+    "gulp"             : "*",
+    "gulp-rename"      : "^1.2.2",
+    "gulp-strip-debug" : "^1.1.0",
+    "gulp-uglify"      : "^1.5.1",
+    "gulp-wrap-umd"    : "*"
   }
 }
