@@ -10,12 +10,12 @@ var umd        = require('gulp-wrap-umd');
  * Development Tasks
  */
 
-gulp.task('dev', function(){
+gulp.task('dev', function() {
     gulp.src('dist/scrollreveal.min.js')
 		.pipe(gulp.dest('dev'));
 });
 
-gulp.task('default', function(){
+gulp.task('default', function() {
 	browser.init({ server: { baseDir: './dev' }});
 	gulp.start(['dev']);
 	gulp.watch(['scrollreveal.js'], ['dev'])
@@ -26,7 +26,7 @@ gulp.task('default', function(){
  * Deployment Tasks
  */
 
-gulp.task('validate', function(){
+gulp.task('validate', function() {
 	bower.read('./bower.json', function(err, json){
 		if (err) {
 			console.error('There was an error reading the file:');
@@ -36,19 +36,19 @@ gulp.task('validate', function(){
 	});
 });
 
-gulp.task('dist', function(){
+gulp.task('dist', function() {
 	gulp.src('scrollreveal.js')
 		.pipe(umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }))
         .pipe(gulp.dest('dist'))
 });
 
-gulp.task('dist:minify', function(){
+gulp.task('dist:minify', function() {
 	gulp.src('scrollreveal.js')
 		.pipe(umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }))
 		.pipe(stripDebug())
         .pipe(uglify())
 		.pipe(rename('scrollreveal.min.js'))
 		.pipe(gulp.dest('dist'))
-})
+});
 
 gulp.task('build', ['validate', 'dist', 'dist:minify']);
