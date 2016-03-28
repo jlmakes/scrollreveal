@@ -248,7 +248,7 @@
                 _style(elem);
                 _updateStore(elem);
 
-                // We need to make sure elements are set to visibility: visibile, even when
+                // We need to make sure elements are set to visibility: visible, even when
                 // on mobile and `config.mobile == false`, or if unsupported.
                 if (sr.tools.isMobile() && !elem.config.mobile || !sr.isSupported()) {
                     elem.domEl.setAttribute('style', elem.styles.inline);
