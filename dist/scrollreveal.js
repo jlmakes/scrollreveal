@@ -28,7 +28,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.1.3
+ * Version : 3.1.4
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -141,7 +141,7 @@
 
             // Note: IE9 only supports console if devtools are open.
             else if (typeof console !== 'undefined' && console !== null) {
-                void 0;
+                console.log('ScrollReveal is not supported in this browser.');
             }
 
             return sr
@@ -153,7 +153,7 @@
          * Check if client supports CSS Transform and CSS Transition.
          * @return {boolean}
          */
-        ScrollReveal.prototype.isSupported = function(){
+        ScrollReveal.prototype.isSupported = function() {
             var style = document.documentElement.style;
             return 'WebkitTransition' in style && 'WebkitTransform' in style
                 || 'transition' in style && 'transform' in style
@@ -199,7 +199,7 @@
             }
 
             if (!elements.length) {
-                void 0;
+                console.log('ScrollReveal: reveal on "'+ selector + '" failed, no elements found.');
                 return sr
             }
 
@@ -314,7 +314,7 @@
                 };
                 _init();
             } else {
-                void 0;
+                console.log('ScrollReveal: sync failed, no reveals found.');
             }
             return sr
         };
@@ -340,7 +340,7 @@
 
             // Check if our container is defined by a node.
             else if (container && !sr.tools.isNode(container)) {
-                void 0;
+                console.log('ScrollReveal: Invalid container provided, using <html> instead.');
                 config.container = null;
             }
 
