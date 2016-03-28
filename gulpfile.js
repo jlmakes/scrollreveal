@@ -39,7 +39,6 @@ gulp.task('validate', function(){
 gulp.task('dist', function(){
 	gulp.src('scrollreveal.js')
 		.pipe(umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }))
-		.pipe(stripDebug())
         .pipe(gulp.dest('dist'))
 });
 
