@@ -142,7 +142,7 @@
          * Check if client supports CSS Transform and CSS Transition.
          * @return {boolean}
          */
-        ScrollReveal.prototype.isSupported = function(){
+        ScrollReveal.prototype.isSupported = function() {
             var style = document.documentElement.style;
             return 'WebkitTransition' in style && 'WebkitTransform' in style
                 || 'transition' in style && 'transform' in style
