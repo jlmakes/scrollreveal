@@ -9,7 +9,7 @@
 
 - 3.3KB minified and Gzipped
 - No dependencies
-- From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://jlmak.es)
+- From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://twitter.com/jlmakes)
 
 ***
 
