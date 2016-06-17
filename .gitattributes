@@ -3,6 +3,7 @@
 
 .gitattributes export-ignore
 .gitignore export-ignore
+.github/ export-ignore
 gulpfile.js export-ignore
 package.json export-ignore
 /scrollreveal.js export-ignore
