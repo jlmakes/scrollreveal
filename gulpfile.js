@@ -10,14 +10,14 @@ var uglify = require('gulp-uglify')
  */
 
 gulp.task('dev', function () {
-  gulp.src('dist/scrollreveal.min.js')
+  gulp.src('src/scrollreveal.js')
     .pipe(gulp.dest('dev'))
 })
 
 gulp.task('default', function () {
   browser.init({ server: { baseDir: './dev' } })
   gulp.start(['dev'])
-  gulp.watch(['scrollreveal.js'], ['dev'])
+  gulp.watch(['src/scrollreveal.js'], ['dev'])
   gulp.watch(['dev/*.*']).on('change', browser.reload)
 })
 
@@ -36,12 +36,12 @@ gulp.task('validate', function () {
 })
 
 gulp.task('dist', function () {
-  gulp.src('scrollreveal.js')
+  gulp.src('src/scrollreveal.js')
     .pipe(gulp.dest('dist'))
 })
 
 gulp.task('dist:minify', function () {
-  gulp.src('scrollreveal.js')
+  gulp.src('src/scrollreveal.js')
     .pipe(stripDebug())
     .pipe(uglify())
     .pipe(rename('scrollreveal.min.js'))
