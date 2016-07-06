@@ -776,6 +776,18 @@
         typeof object.nodeName === 'string'
   }
 
+  Tools.prototype.isNodeList = function (object) {
+    var prototypeToString = Object.prototype.toString.call(object)
+    var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/
+
+    return typeof window.NodeList === 'object'
+      ? object instanceof window.NodeList
+      : object && typeof object === 'object' &&
+        regex.test(prototypeToString) &&
+        typeof object.length === 'number' &&
+        (object.length === 0 || this.isNode(object[0]))
+  }
+
   Tools.prototype.forOwn = function (object, callback) {
     if (!this.isObject(object)) {
       throw new TypeError('Expected "object", but received "' + typeof object + '".')
