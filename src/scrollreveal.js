@@ -28,6 +28,38 @@
   var sr
   var _requestAnimationFrame
 
+  function ScrollReveal (config) {
+    // Support instantiation without the `new` keyword.
+    if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
+      return new ScrollReveal(config)
+    }
+
+    sr = this // Save reference to instance.
+    sr.version = '3.1.5'
+    sr.tools = new Tools() // *required utilities
+
+    if (sr.isSupported()) {
+      sr.tools.extend(sr.defaults, config || {})
+
+      _resolveContainer(sr.defaults)
+
+      sr.store = {
+        elements: {},
+        containers: []
+      }
+
+      sr.sequences = {}
+      sr.history = []
+      sr.uid = 0
+      sr.initialized = false
+    } else if (typeof console !== 'undefined' && console !== null) {
+      // Note: IE9 only supports console if devtools are open.
+      console.log('ScrollReveal is not supported in this browser.')
+    }
+
+    return sr
+  }
+
   /**
    * Configuration
    * -------------
@@ -91,37 +123,6 @@
     // it as the first argument.
     afterReveal: function (domEl) {},
     afterReset: function (domEl) {}
-  }
-
-  function ScrollReveal (config) {
-    // Support instantiation without the `new` keyword.
-    if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
-      return new ScrollReveal(config)
-    }
-
-    sr = this // Save reference to instance.
-    sr.tools = new Tools() // *required utilities
-
-    if (sr.isSupported()) {
-      sr.tools.extend(sr.defaults, config || {})
-
-      _resolveContainer(sr.defaults)
-
-      sr.store = {
-        elements: {},
-        containers: []
-      }
-
-      sr.sequences = {}
-      sr.history = []
-      sr.uid = 0
-      sr.initialized = false
-    } else if (typeof console !== 'undefined' && console !== null) {
-      // Note: IE9 only supports console if devtools are open.
-      console.log('ScrollReveal is not supported in this browser.')
-    }
-
-    return sr
   }
 
   /**
