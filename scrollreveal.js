@@ -271,7 +271,7 @@
             // Since `reveal()` is called internally by `sync()`, we don’t want to
             // record or intiialize each reveal during syncing.
             if (!sync && sr.isSupported()) {
-                _record(selector, config);
+                _record(selector, config, interval);
 
                 // We push initialization to the event queue using setTimeout, so that we can
                 // give ScrollReveal room to process all reveal calls before putting things into motion.
