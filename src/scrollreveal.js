@@ -812,7 +812,10 @@
 
   _requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame
+    window.mozRequestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60)
+    }
 
   if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
     define(function () {
