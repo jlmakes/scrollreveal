@@ -339,12 +339,6 @@
     } else {
       elem.config.axis = 'X'
     }
-
-    // Let’s make sure our our pixel distances are negative for top and left.
-    // e.g. config.origin = 'top' and config.distance = '25px' starts at `top: -25px` in CSS.
-    if (elem.config.origin === 'top' || elem.config.origin === 'left') {
-      elem.config.distance = '-' + elem.config.distance
-    }
   }
 
   function _style (elem) {
@@ -412,10 +406,21 @@
 
   function _generateTransform (elem) {
     var config = elem.config
+    var cssDistance
     var transform = elem.styles.transform
 
+    // Let’s make sure our our pixel distances are negative for top and left.
+    // e.g. origin = 'top' and distance = '25px' starts at `top: -25px` in CSS.
+    if (config.origin === 'top' || config.origin === 'left') {
+      cssDistance = /^-/.test(config.distance)
+        ? config.distance.substr(1)
+        : '-' + config.distance
+    } else {
+      cssDistance = config.distance
+    }
+
     if (parseInt(config.distance)) {
-      transform.initial += ' translate' + config.axis + '(' + config.distance + ')'
+      transform.initial += ' translate' + config.axis + '(' + cssDistance + ')'
       transform.target += ' translate' + config.axis + '(0)'
     }
     if (config.scale) {
