@@ -22,7 +22,6 @@
     "gulp"             : "*",
     "gulp-rename"      : "^1.2.2",
     "gulp-strip-debug" : "^1.1.0",
-    "gulp-uglify"      : "^1.5.1",
-    "gulp-wrap-umd"    : "*"
+    "gulp-uglify"      : "^1.5.1"
   }
 }

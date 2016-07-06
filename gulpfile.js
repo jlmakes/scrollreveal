@@ -4,7 +4,6 @@ var gulp       = require('gulp');
 var rename     = require('gulp-rename');
 var stripDebug = require('gulp-strip-debug');
 var uglify     = require('gulp-uglify');
-var umd        = require('gulp-wrap-umd');
 
 /**
  * Development Tasks
@@ -44,9 +43,8 @@ gulp.task('dist', function() {
 
 gulp.task('dist:minify', function() {
 	gulp.src('scrollreveal.js')
-		.pipe(umd({ namespace: 'ScrollReveal', exports: 'this.ScrollReveal' }))
 		.pipe(stripDebug())
-        .pipe(uglify())
+    .pipe(uglify())
 		.pipe(rename('scrollreveal.min.js'))
 		.pipe(gulp.dest('dist'))
 });
