@@ -139,14 +139,14 @@
    * become visible. If [interval] is provided, a new sequence is created
    * that will ensure elements reveal in the order they appear in the DOM.
    *
-   * @param {string|Node} [selector] The element (node) or elements (selector) to animate.
-   * @param {Object}      [config]   Override the defaults for this reveal set.
-   * @param {number}      [interval] Time between sequenced element animations (milliseconds).
-   * @param {boolean}     [sync]     Used internally when updating reveals for async content.
+   * @param {Node|NodeList|string} [target]   The node, node list or selector to use for animation.
+   * @param {Object}               [config]   Override the defaults for this reveal set.
+   * @param {number}               [interval] Time between sequenced element animations (milliseconds).
+   * @param {boolean}              [sync]     Used internally when updating reveals for async content.
    *
    * @return {Object} The current ScrollReveal instance.
    */
-  ScrollReveal.prototype.reveal = function (selector, config, interval, sync) {
+  ScrollReveal.prototype.reveal = function (target, config, interval, sync) {
     var container
     var elements
     var elem
@@ -161,16 +161,18 @@
       container = sr.defaults.container
     }
 
-    // Let’s check to see if a DOM node was passed in as the first argument,
-    // otherwise query the container for all elements matching the selector.
-    if (sr.tools.isNode(selector)) {
-      elements = [selector]
+    // Let’s check to see if a node or node list was passed in as the target,
+    // otherwise query the container using target as a selector.
+    if (sr.tools.isNode(target)) {
+      elements = [target]
+    } else if (sr.tools.isNodeList(target)) {
+      elements = Array.prototype.slice.call(target)
     } else {
-      elements = Array.prototype.slice.call(container.querySelectorAll(selector))
+      elements = Array.prototype.slice.call(container.querySelectorAll(target))
     }
 
     if (!elements.length) {
-      console.log('ScrollReveal: reveal on "' + selector + '" failed, no elements found.')
+      console.log('ScrollReveal: reveal on "' + target + '" failed, no elements found.')
       return sr
     }
 
@@ -247,7 +249,7 @@
     // Since `reveal()` is called internally by `sync()`, we don’t want to
     // record or intiialize each reveal during syncing.
     if (!sync && sr.isSupported()) {
-      _record(selector, config, interval)
+      _record(target, config, interval)
 
       // We push initialization to the event queue using setTimeout, so that we can
       // give ScrollReveal room to process all reveal calls before putting things into motion.
@@ -265,7 +267,7 @@
 
   /**
    * Re-runs `reveal()` for each record stored in history, effectively capturing
-   * any content loaded asynchronously that matches existing reveal set selectors.
+   * any content loaded asynchronously that matches existing reveal set targets.
    *
    * @return {Object} The current ScrollReveal instance.
    */
@@ -273,7 +275,7 @@
     if (sr.history.length && sr.isSupported()) {
       for (var i = 0; i < sr.history.length; i++) {
         var record = sr.history[i]
-        sr.reveal(record.selector, record.config, record.interval, true)
+        sr.reveal(record.target, record.config, record.interval, true)
       }
       _init()
     } else {
@@ -448,11 +450,11 @@
     sr.store.elements[elem.id] = elem
   }
 
-  function _record (selector, config, interval) {
+  function _record (target, config, interval) {
     // Save the `reveal()` arguments that triggered this `_record()` call, so we
     // can re-trace our steps when calling the `sync()` method.
     var record = {
-      selector: selector,
+      target: target,
       config: config,
       interval: interval
     }
