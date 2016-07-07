@@ -162,15 +162,7 @@
       container = sr.defaults.container
     }
 
-    // Let’s check to see if a node or node list was passed in as the target,
-    // otherwise query the container using target as a selector.
-    if (sr.tools.isNode(target)) {
-      elements = [target]
-    } else if (sr.tools.isNodeList(target)) {
-      elements = Array.prototype.slice.call(target)
-    } else {
-      elements = Array.prototype.slice.call(container.querySelectorAll(target))
-    }
+    elements = _getRevealElements(target, container)
 
     if (!elements.length) {
       console.log('ScrollReveal: reveal on "' + target + '" failed, no elements found.')
@@ -269,7 +261,6 @@
   /**
    * Re-runs `reveal()` for each record stored in history, effectively capturing
    * any content loaded asynchronously that matches existing reveal set targets.
-   *
    * @return {Object} The current ScrollReveal instance.
    */
   ScrollReveal.prototype.sync = function () {
@@ -313,6 +304,25 @@
     }
 
     return config.container
+  }
+
+  /**
+   * check to see if a node or node list was passed in as the target,
+   * otherwise query the container using target as a selector.
+   *
+   * @param {Node|NodeList|string} [target]    client input for reveal target.
+   * @param {Node}                 [container] parent element for selector queries.
+   *
+   * @return {array} elements to be revealed.
+   */
+  function _getRevealElements (target, container) {
+    if (sr.tools.isNode(target)) {
+      return [target]
+    } else if (sr.tools.isNodeList(target)) {
+      return Array.prototype.slice.call(target)
+    } else {
+      return Array.prototype.slice.call(container.querySelectorAll(target))
+    }
   }
 
   /**
