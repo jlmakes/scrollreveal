@@ -279,10 +279,6 @@
   /**
    * Private Methods
    * ---------------
-   * These methods remain accessible only to the ScrollReveal instance, even
-   * though they only "exist" during instantiation outside of the constructors scope.
-   * --
-   * http://stackoverflow.com/questions/111102/how-do-javascript-closures-work
    */
 
   function _resolveContainer (config) {
@@ -577,9 +573,6 @@
     })
   }
 
-  /**
-   * Sequence callback that triggers the next element.
-   */
   function _queueNextInSequence (elem, delayed) {
     var elapsed = 0
     var delay = 0
@@ -774,10 +767,8 @@
   }
 
   /**
-   * helper.tools.js
-   * ---------------
-   * Simple deep object extend, and a few other agnostic helper methods.
-   * gist: https://gist.github.com/jlmakes/9f104e3f1b4d86334987
+   * Utilities
+   * ---------
    */
 
   function Tools () {}
@@ -840,6 +831,11 @@
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   }
 
+  /**
+   * Polyfills
+   * --------
+   */
+
   _requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -847,6 +843,10 @@
       window.setTimeout(callback, 1000 / 60)
     }
 
+  /**
+   * Module Wrapper
+   * --------------
+   */
   if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
     define(function () {
       return ScrollReveal
