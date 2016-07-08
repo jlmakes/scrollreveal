@@ -90,10 +90,10 @@
     // Accepts any valid CSS easing, e.g. 'ease', 'ease-in-out', 'linear', etc.
     easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
 
-    // When null, `<html>` is assumed to be the reveal container. You can pass a
-    // DOM node as a custom container, e.g. document.querySelector('.fooContainer')
-    // or a selector, e.g. '.fooContainer'
-    container: null,
+    // `<html>` is the default reveal container. You can pass either:
+    // DOM Node, e.g. document.querySelector('.fooContainer')
+    // Selector, e.g. '.fooContainer'
+    container: window.document.documentElement,
 
     // true/false to control reveal animations on mobile.
     mobile: true,
@@ -155,25 +155,21 @@
     var sequence
     var sequenceId
 
-    // Resolve container.
-    if (config && config.container) {
-      container = _resolveContainer(config)
-    } else {
-      container = sr.defaults.container
+    // No custom configuration was passed, but a sequence interval instead.
+    // let’s shuffle things around to make sure everything works.
+    if (config !== undefined && typeof config === 'number') {
+      interval = config
+      config = {}
+    } else if (config === undefined || config === null) {
+      config = {}
     }
 
+    container = _resolveContainer(config)
     elements = _getRevealElements(target, container)
 
     if (!elements.length) {
       console.log('ScrollReveal: reveal on "' + target + '" failed, no elements found.')
       return sr
-    }
-
-    // No custom configuration was passed, but a sequence interval instead.
-    // let’s shuffle things around to make sure everything works.
-    if (config && typeof config === 'number') {
-      interval = config
-      config = {}
     }
 
     // Prepare a new sequence if an interval is passed.
@@ -217,7 +213,7 @@
 
       // New or existing element, it’s time to update its configuration, styles,
       // and send the updates to our store.
-      _configure(elem, config || {})
+      _configure(elem, config, container)
       _style(elem)
       _updateStore(elem)
 
@@ -282,24 +278,17 @@
    */
 
   function _resolveContainer (config) {
-    var container = config.container
-
-    // Check if our container is defined by a selector.
-    if (container && typeof container === 'string') {
-      config.container = window.document.querySelector(container)
-      return
-    } else if (container && !sr.tools.isNode(container)) {
-      // Check if our container is defined by a node.
-      console.log('ScrollReveal: Invalid container provided, using <html> instead.')
-      config.container = null
+    if (config && config.container) {
+      if (typeof config.container === 'string') {
+        return window.document.documentElement.querySelector(config.container)
+      } else if (sr.tools.isNode(config.container)) {
+        return config.container
+      } else {
+        console.log('ScrollReveal: invalid container "' + config.container + '" provided.')
+        console.log('ScrollReveal: falling back to default container.')
+      }
     }
-
-    // Otherwise use <html> by default.
-    if (container === null) {
-      config.container = window.document.documentElement
-    }
-
-    return config.container
+    return sr.defaults.container
   }
 
   /**
@@ -312,13 +301,14 @@
    * @return {array} elements to be revealed.
    */
   function _getRevealElements (target, container) {
-    if (sr.tools.isNode(target)) {
+    if (typeof target === 'string') {
+      return Array.prototype.slice.call(container.querySelectorAll(target))
+    } else if (sr.tools.isNode(target)) {
       return [target]
     } else if (sr.tools.isNodeList(target)) {
       return Array.prototype.slice.call(target)
-    } else {
-      return Array.prototype.slice.call(container.querySelectorAll(target))
     }
+    return []
   }
 
   /**
@@ -329,7 +319,10 @@
     return ++sr.uid
   }
 
-  function _configure (elem, config) {
+  function _configure (elem, config, container) {
+    // If a container was passed as a part of the config object,
+    // let’s overwrite it with the resolved container passed in.
+    if (config.container) config.container = container
     // If the element hasn’t already been configured, let’s use a clone of the
     // defaults extended by the configuration passed as the second argument.
     if (!elem.config) {
