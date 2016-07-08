@@ -4,6 +4,7 @@
 
 ***
 
+[![License][license-image]][license-url]
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 
@@ -402,7 +403,7 @@ _Continuing our example from 4.2._
 
 ## 5. Appendix
 
-Open source under the [MIT License](http://img.shields.io/badge/License-MIT-1a2434.svg). ©2014–2016 Julian Lloyd.
+Open source under the [MIT License](https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md). ©2014–2016 Julian Lloyd.
 
 #### 5.1. Browser Compatibility
 
@@ -433,6 +434,8 @@ Want to see your page here? Please send me your work (or of others) using Scroll
 
 ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crnacura) and her [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/).
 
+[license-image]: https://img.shields.io/badge/license-MIT-1283c3.svg
+[license-url]: https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md
 [npm-image]: https://img.shields.io/npm/v/scrollreveal.svg?style=flat
 [npm-url]: https://npmjs.org/package/scrollreveal
 [downloads-image]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
