@@ -1,51 +1,33 @@
-var bower = require('bower-json')
-var browser = require('browser-sync').create()
 var gulp = require('gulp')
-var rename = require('gulp-rename')
-var stripDebug = require('gulp-strip-debug')
-var uglify = require('gulp-uglify')
+var fs = require('fs')
+var run = require('run-sequence')
+var browser = require('browser-sync').create()
 
-/**
- * Development Tasks
- */
-
-gulp.task('dev', function () {
-  gulp.src('src/scrollreveal.js')
-    .pipe(gulp.dest('dev'))
+fs.readdirSync('lib/gulp').forEach(function (file) {
+  if (file.match(/.+\.js/g)) {
+    require(`./lib/gulp/${file}`)(gulp, browser)
+  }
 })
 
-gulp.task('default', function () {
-  browser.init({ server: { baseDir: './dev' } })
-  gulp.start(['dev'])
-  gulp.watch(['src/scrollreveal.js'], ['dev'])
-  gulp.watch(['dev/*.*']).on('change', browser.reload)
+gulp.task('build', function (done) {
+  run(
+    'validate-bower',
+    'clean',
+    [
+      'dist',
+      'dist-min'
+    ],
+    done
+  )
 })
 
-/**
- * Deployment Tasks
- */
-
-gulp.task('validate', function () {
-  bower.read('./bower.json', function (err, json) {
-    if (err) {
-      console.error('There was an error reading the file:')
-      console.error(err.message)
-      return
-    }
-  })
+gulp.task('default', function (done) {
+  run(
+    'dev',
+    [
+      'server',
+      'watch'
+    ],
+    done
+  )
 })
-
-gulp.task('dist', function () {
-  gulp.src('src/scrollreveal.js')
-    .pipe(gulp.dest('dist'))
-})
-
-gulp.task('dist:minify', function () {
-  gulp.src('src/scrollreveal.js')
-    .pipe(stripDebug())
-    .pipe(uglify())
-    .pipe(rename('scrollreveal.min.js'))
-    .pipe(gulp.dest('dist'))
-})
-
-gulp.task('build', ['validate', 'dist', 'dist:minify'])
