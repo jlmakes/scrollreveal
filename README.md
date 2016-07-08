@@ -21,7 +21,7 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
-<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.1.5/scrollreveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/scrollreveal.js/3.2.0/scrollreveal.min.js"></script>
 ```
 
 But you can also:
@@ -172,12 +172,13 @@ sr.reveal('.foo', fooReveal);
 sr.reveal('#chocolate', { delay: 500, scale: 0.9 });
 ```
 
-#### 3.3. Working With DOM Nodes (e.g. React)
+#### 3.3. Working With DOM Nodes
 
-You are not just limited to using selectors with `reveal()`, it also accepts a DOM node as the first argument.
+You are not just limited to using selectors with `reveal()`, it also accepts a Node or Node List as the first argument.
 
 ```js
-sr.reveal(document.getElementById('chocolate'));
+sr.reveal(document.getElementById('foo'));
+sr.reveal(document.querySelectorAll('.bar'));
 ```
 
 #### 3.4. Custom/Multiple Containers

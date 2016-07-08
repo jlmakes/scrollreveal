@@ -1,6 +1,35 @@
 
 # Changelog
 
+### 3.2.0 — _2016, July 8th_
+
+Includes patchwork up to 3.1.5.
+
+#### Features
+
+- **Reveal Node Lists**: Add support for `Node List` objects as the first parameter of `reveal()`
+```js
+var elemList = document.querySelectorAll('.selector');
+sr.reveal(elemList);
+```
+
+- **Version Check**: Easily check which version of ScrollReveal you’re running.
+```js
+sr.version // e.g. returns 3.2.0
+```
+
+#### Fixes
+
+- *Compatibility*: Replace automatic module wrapper with a manual solution (Fixes [#253](https://github.com/jlmakes/scrollreveal.js/issues/253))
+- *Functionality*: Fix  `config.distance` values when `config.origin` is `top` or `left`.(Fixes [#270](https://github.com/jlmakes/scrollreveal.js/issues/270))
+- *Functionality*: Correctly record the interval argument for  `sync()` (Fixes [#268](https://github.com/jlmakes/scrollreveal.js/issues/268))
+- *Functionality*: Fix animation sequence with `config.reset` (Fixes [#241](https://github.com/jlmakes/scrollreveal.js/issues/241))
+
+#### Improvements
+
+- *Compatibility*: Add `requestAnimationFrame` fallback. (Resolves [#267](https://github.com/jlmakes/scrollreveal.js/issues/267))
+- *Functionality*: Remove `console.log()` from minified distribution (Fixes [#235](https://github.com/jlmakes/scrollreveal.js/issues/235))
+
 ### 3.1.0 — _2016, February 22nd_
 
 Includes patchwork up to 3.0.9.
@@ -17,24 +46,26 @@ Includes patchwork up to 3.0.9.
 ```
 ```js
 // scripts.js
-ScrollReveal().reveal('.sequenced', { reset: false }, 1000);
+sr.reveal('.sequenced', { reset: false }, 1000);
 ```
 
 - **Container Selectors**: Add support for `string` selectors to define `config.container`
 
 ```js
-ScrollReveal({ container: '.fooContainer' });
+window sr = ScrollReveal({ container: '.container' });
+// or
+sr.reveal('.foo', { container: '.fooContainer' });
 ```
 
 - **Reveal Nodes**: Add support for `Node` objects as the first parameter of `reveal()`
 
 ```js
 // What you’re used to...
-ScrollReveal().reveal('.myElem');
+sr.reveal('.myElem');
 
 // New! Pass a Node (works great with React!)
 var myElem = document.querySelector('.myElem');
-ScrollReveal().reveal(myElem);
+sr.reveal(myElem);
 
 ```
 
