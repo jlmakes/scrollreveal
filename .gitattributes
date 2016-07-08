@@ -1,10 +1,10 @@
 # Ignore nonessential files and directories for releases
 # See: http://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes#Exporting-Your-Repository
 
+.github/ export-ignore
+lib/ export-ignore
+src/ export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
-.github/ export-ignore
 gulpfile.js export-ignore
-lib/ export-ignore
 package.json export-ignore
-src/ export-ignore
