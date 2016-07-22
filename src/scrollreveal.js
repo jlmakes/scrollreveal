@@ -117,13 +117,12 @@
     // Visual Aid: https://scrollrevealjs.org/assets/viewoffset.png
     viewOffset: { top: 0, right: 0, bottom: 0, left: 0 },
 
-    // Callbacks that fire for each completed element reveal, and if
-    // `config.reset = true`, for each completed element reset. When creating your
-    // callbacks, remember they are passed the element’s DOM node that triggered
-    // it as the first argument.
+    // Callbacks that fire for each triggered element reveal, and reset.
     beforeReveal: function (domEl) {},
-    afterReveal: function (domEl) {},
     beforeReset: function (domEl) {},
+
+    // Callbacks that fire for each completed element reveal, and reset.
+    afterReveal: function (domEl) {},
     afterReset: function (domEl) {}
   }
 
