@@ -1,6 +1,25 @@
 
 # Changelog
 
+### 3.3.0 — _2016, July 22nd_
+
+#### Features
+
+- **[#273](https://github.com/jlmakes/scrollreveal.js/issues/273) New Callbacks:** `beforeReveal(el)`
+- **[#273](https://github.com/jlmakes/scrollreveal.js/issues/273) New Callback:** `beforeReset(el)`
+
+_Example:_
+
+```js
+// Let’s see all 4 together now...
+sr.reveal('.foo', {
+  beforeReveal: (el) => console.log('Reveal started...'),
+  afterReveal: (el) => console.log('Reveal complete.'),
+  beforeReset: (el) => console.log('Reset triggered...'),
+  afterReset: (el) => console.log('Reset complete.')
+})
+```
+
 ### 3.2.0 — _2016, July 8th_
 
 Includes patchwork up to 3.1.5.

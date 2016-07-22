@@ -16,7 +16,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.2.0
+ * Version : 3.3.0
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
