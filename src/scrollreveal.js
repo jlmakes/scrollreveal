@@ -41,7 +41,7 @@
     if (sr.isSupported()) {
       sr.tools.extend(sr.defaults, config || {})
 
-      _resolveContainer(sr.defaults)
+      sr.defaults.container = _resolveContainer(sr.defaults)
 
       sr.store = {
         elements: {},
