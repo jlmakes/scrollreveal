@@ -282,7 +282,8 @@
   function _resolveContainer (config) {
     if (config && config.container) {
       if (typeof config.container === 'string') {
-        return window.document.documentElement.querySelector(config.container)
+        sr.defaults.container = window.document.documentElement.querySelector(config.container)
+        return sr.defaults.container
       } else if (sr.tools.isNode(config.container)) {
         return config.container
       } else {
