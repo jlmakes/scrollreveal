@@ -1,3 +1,4 @@
+
 /////    /////    /////    /////
 /////    /////    /////    /////
 /////    /////    /////    /////
@@ -22,13 +23,15 @@
  * Author  : Julian Lloyd (@jlmakes)
  */
 
+import requestAnimationFrame from './components/request-animation-frame'
+import Toolbelt from './components/toolbelt'
+
 ;(function () {
   'use strict'
 
   var sr
-  var _requestAnimationFrame
 
-  function ScrollReveal (config) {
+  function ScrollReveal (config = {}) {
     // Support instantiation without the `new` keyword.
     if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
       return new ScrollReveal(config)
@@ -36,10 +39,10 @@
 
     sr = this // Save reference to instance.
     sr.version = '3.3.2'
-    sr.tools = new Tools() // *required utilities
+    sr.tools = new Toolbelt() // *required utilities
 
     if (sr.isSupported()) {
-      sr.tools.extend(sr.defaults, config || {})
+      Object.assign(sr.defaults, config)
 
       sr.defaults.container = _resolveContainer(sr.defaults)
 
@@ -327,11 +330,13 @@
     // If the element hasn’t already been configured, let’s use a clone of the
     // defaults extended by the configuration passed as the second argument.
     if (!elem.config) {
-      elem.config = sr.tools.extendClone(sr.defaults, config)
+      elem.config = {};
+      Object.assign(elem.config, sr.defaults);
+      Object.assign(elem.config, config);
     } else {
       // Otherwise, let’s use a clone of the existing element configuration extended
       // by the configuration passed as the second argument.
-      elem.config = sr.tools.extendClone(elem.config, config)
+      Object.assign(elem.config, config);
     }
 
     // Infer CSS Transform axis from origin string.
@@ -491,7 +496,7 @@
   }
 
   function _handler () {
-    _requestAnimationFrame(_animate)
+    requestAnimationFrame(_animate)
   }
 
   function _setActiveSequences () {
@@ -766,83 +771,6 @@
       return (window.getComputedStyle(elem.domEl).position === 'fixed')
     }
   }
-
-  /**
-   * Utilities
-   * ---------
-   */
-
-  function Tools () {}
-
-  Tools.prototype.isObject = function (object) {
-    return object !== null && typeof object === 'object' && object.constructor === Object
-  }
-
-  Tools.prototype.isNode = function (object) {
-    return typeof window.Node === 'object'
-      ? object instanceof window.Node
-      : object && typeof object === 'object' &&
-        typeof object.nodeType === 'number' &&
-        typeof object.nodeName === 'string'
-  }
-
-  Tools.prototype.isNodeList = function (object) {
-    var prototypeToString = Object.prototype.toString.call(object)
-    var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/
-
-    return typeof window.NodeList === 'object'
-      ? object instanceof window.NodeList
-      : object && typeof object === 'object' &&
-        regex.test(prototypeToString) &&
-        typeof object.length === 'number' &&
-        (object.length === 0 || this.isNode(object[0]))
-  }
-
-  Tools.prototype.forOwn = function (object, callback) {
-    if (!this.isObject(object)) {
-      throw new TypeError('Expected "object", but received "' + typeof object + '".')
-    } else {
-      for (var property in object) {
-        if (object.hasOwnProperty(property)) {
-          callback(property)
-        }
-      }
-    }
-  }
-
-  Tools.prototype.extend = function (target, source) {
-    this.forOwn(source, function (property) {
-      if (this.isObject(source[property])) {
-        if (!target[property] || !this.isObject(target[property])) {
-          target[property] = {}
-        }
-        this.extend(target[property], source[property])
-      } else {
-        target[property] = source[property]
-      }
-    }.bind(this))
-    return target
-  }
-
-  Tools.prototype.extendClone = function (target, source) {
-    return this.extend(this.extend({}, target), source)
-  }
-
-  Tools.prototype.isMobile = function () {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  }
-
-  /**
-   * Polyfills
-   * --------
-   */
-
-  _requestAnimationFrame = window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60)
-    }
 
   /**
    * Module Wrapper
