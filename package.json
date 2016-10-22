@@ -14,15 +14,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jlmakes/scrollreveal.js.git"
+    "url": "https://github.com/jlmakes/scrollreveal.git"
   },
   "bugs": {
-    "url": "https://github.com/jlmakes/scrollreveal.js/issues"
+    "url": "https://github.com/jlmakes/scrollreveal/issues"
   },
   "devDependencies": {
     "bower-json": "^0.6.0",
     "browser-sync": "^2.12.8",
     "del": "^2.2.0",
+    "eslint": "^3.8.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "gulp-rollup": "^2.5.1",

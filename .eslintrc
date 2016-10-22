@@ -1,0 +1,21 @@
+{
+  "env": {
+    "es6": true,
+    "amd": true,
+    "browser": true,
+    "node": true,
+    "mocha": true,
+  },
+  "extends": "airbnb",
+  "rules": {
+    "no-unused-vars": [1, { "argsIgnorePattern": "res|next|^err" }],
+    "space-before-function-paren": [2, "always"],
+    "func-names": 0,
+    "no-use-before-define": 1,
+    "no-plusplus": 0,
+    "global-require": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-dynamic-require": 0,
+    "import/prefer-default-export": 1,
+  }
+}
