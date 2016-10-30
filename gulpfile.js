@@ -1,33 +1,38 @@
-var gulp = require('gulp')
-var fs = require('fs')
-var run = require('run-sequence')
-var browser = require('browser-sync').create()
 
-fs.readdirSync('lib/gulp').forEach(function (file) {
+
+const gulp = require('gulp');
+const fs = require('fs');
+const run = require('run-sequence');
+const browser = require('browser-sync').create();
+
+
+fs.readdirSync('lib/gulp').forEach((file) => {
   if (file.match(/.+\.js/g)) {
-    require(`./lib/gulp/${file}`)(gulp, browser)
+    require(`./lib/gulp/${file}`)(gulp, browser);
   }
-})
+});
 
-gulp.task('build', function (done) {
+
+gulp.task('build', (done) => {
   run(
     'validate-bower',
     'clean',
     [
       'dist',
-      'dist-min'
+      'dist-min',
     ],
     done
-  )
-})
+  );
+});
 
-gulp.task('default', function (done) {
+
+gulp.task('default', (done) => {
   run(
     'dev',
     [
       'server',
-      'watch'
+      'watch',
     ],
     done
-  )
-})
+  );
+});
