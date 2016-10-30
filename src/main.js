@@ -2,7 +2,7 @@
 
 /**
 * Version : 4.0.0-alpha.1
-* Website : scrollreveal.com
+* Website : scrollrevealjs.org
 * Repo    : github.com/jlmakes/scrollreveal
 * Author  : Julian Lloyd (@jlmakes)
 */
