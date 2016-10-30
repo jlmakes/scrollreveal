@@ -39,13 +39,13 @@ function ScrollReveal (config = {}) {
     });
 
     this.store = {
-      containers: new Set(),
-      elements: new Map(),
+      containers: [],
+      elements: [],
       history: [],
       sequences: [],
     };
 
-    this.store.containers.add(this.defaults.container);
+    this.store.containers.push(this.defaults.container);
   } else {
     return {};
   }
