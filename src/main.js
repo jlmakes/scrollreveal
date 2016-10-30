@@ -8,6 +8,12 @@
 */
 
 import defaults from './lib/defaults';
+
+import remove from './methods/remove';
+import reveal from './methods/reveal';
+import sync from './methods/sync';
+import watch from './methods/watch';
+
 import { transformSupported, transitionSupported } from './utils/browser';
 
 function ScrollReveal (config = {}) {
@@ -44,6 +50,11 @@ function ScrollReveal (config = {}) {
     return {};
   }
 }
+
+ScrollReveal.prototype.remove = remove;
+ScrollReveal.prototype.reveal = reveal;
+ScrollReveal.prototype.sync = sync;
+ScrollReveal.prototype.watch = watch;
 
 if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
   define(() => ScrollReveal);
