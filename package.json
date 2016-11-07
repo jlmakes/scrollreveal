@@ -6,12 +6,6 @@
   "main": "dist/scrollreveal.js",
   "author": "Julian Lloyd",
   "license": "MIT",
-  "standard": {
-    "globals": [
-      "ScrollReveal",
-      "define"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jlmakes/scrollreveal.git"
