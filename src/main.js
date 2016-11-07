@@ -7,7 +7,7 @@
 * Author  : Julian Lloyd (@jlmakes)
 */
 
-import defaults from './lib/defaults';
+import defaults from './core/defaults';
 
 import remove from './methods/remove';
 import reveal from './methods/reveal';

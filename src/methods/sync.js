@@ -1,6 +1,6 @@
 
 
-import { initialize } from '../lib/functions';
+import { initialize } from '../core/functions';
 import reveal from './reveal';
 
 /**
