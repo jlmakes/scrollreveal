@@ -1,5 +1,3 @@
-
-
 /**
 * Sequential number generator for unique IDs.
 * @return {number}

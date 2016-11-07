@@ -1,5 +1,3 @@
-
-
 /**
 * Compares the target against DOM Node characteristics.
 * @return {boolean}

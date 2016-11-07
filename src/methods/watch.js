@@ -1,5 +1,3 @@
-
-
 function watch () {
   // something...
 }

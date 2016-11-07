@@ -1,5 +1,3 @@
-
-
 const polyfill = (() => {
   let timeLast = 0;
 

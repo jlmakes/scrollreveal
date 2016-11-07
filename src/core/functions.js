@@ -1,5 +1,3 @@
-
-
 import requestAnimationFrame from '../polyfills/requestAnimationFrame';
 
 export function animate () {

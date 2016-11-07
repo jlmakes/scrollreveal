@@ -1,5 +1,3 @@
-
-
 import { initialize } from '../core/functions';
 import reveal from './reveal';
 

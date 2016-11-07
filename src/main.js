@@ -1,5 +1,3 @@
-
-
 /**
 * Version : 4.0.0-alpha.1
 * Website : scrollrevealjs.org

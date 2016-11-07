@@ -1,5 +1,3 @@
-
-
 import { handler } from '../core/functions';
 
 function remove () {

@@ -1,5 +1,3 @@
-
-
 export default {
   origin: 'bottom',
   distance: '0',
