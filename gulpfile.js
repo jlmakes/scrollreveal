@@ -1,5 +1,3 @@
-
-
 const gulp = require('gulp');
 const fs = require('fs');
 const run = require('run-sequence');
