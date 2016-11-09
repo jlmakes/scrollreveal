@@ -4,8 +4,6 @@
   "description": "Easy scroll animations for web and mobile browsers.",
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
-  "author": "Julian Lloyd",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/jlmakes/scrollreveal.git"
@@ -32,5 +30,7 @@
     "pump": "^1.0.1",
     "rollup-plugin-buble": "^0.14.0",
     "run-sequence": "^1.2.0"
-  }
+  },
+  "author": "Julian Lloyd",
+  "license": "MIT"
 }
