@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ScrollReveal Test Runner</title>
+    <!-- <link href="test.css" rel="stylesheet" /> -->
+    <link href="../node_modules/mocha/mocha.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+
+    <script>
+      mocha.setup('bdd');
+      window.expect = chai.expect;
+    </script>
+
+    <script src="test.js"></script>
+    <script>
+      onload = function () {
+        var runner = mocha.run();
+        var failedTests = [];
+
+        runner.on('fail', function (test, err) {
+          failedTests.push({
+            name: test.title,
+            result: false,
+            message: err.message,
+            stack: err.stack,
+            titles: flattenTitles(test),
+          });
+        });
+
+        runner.on('end', function () {
+          window.mochaResults = runner.stats;
+          window.mochaResults.reports = failedTests;
+        });
+
+        function flattenTitles (test) {
+          var titles = [];
+          while (test.parent.title) {
+            titles.push(test.parent.title);
+            test = test.parent;
+          }
+          return titles.reverse();
+        }
+      };
+    </script>
+  </body>
+</html>
