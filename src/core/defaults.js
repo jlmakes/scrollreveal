@@ -15,7 +15,7 @@ export default {
   mobile: true,
   reset: false,
   useDelay: 'always',
-  viewFactor: 0.2,
+  viewFactor: 0.0,
   viewOffset: {
     top: 0,
     right: 0,
