@@ -3,6 +3,7 @@
     "es6": true,
     "amd": true,
     "browser": true,
+    "mocha": true,
     "node": true,
   },
   "extends": "airbnb",
