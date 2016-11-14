@@ -4,7 +4,7 @@
 
 ***
 
-[![Travis CI][travis-image][travis-url]]
+[![Travis CI][travis-image]][travis-url]
 [![License][license-image]][license-url]
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
