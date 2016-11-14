@@ -1,12 +1,13 @@
 /* global describe, it, expect */
-import { isNode, isNodeList } from '../../../src/utils/browser';
+import 'babel-polyfill';
+import { isNode, isNodeList } from '../../src/utils/browser';
 
-export default describe.bind(null, 'Browser Utilities', () => {
+describe('Browser Utilities', () => {
 
   describe('isNode()', () => {
 
     it('should return true when passed a DOM node', () => {
-      const result = isNode(document.querySelector('#mocha'));
+      const result = isNode(document.querySelector('body'));
       expect(result).to.equal(true);
     });
 

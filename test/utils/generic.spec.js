@@ -1,7 +1,8 @@
 /* global describe, it, expect */
-import { nextUniqueId } from '../../../src/utils/generic';
+import 'babel-polyfill';
+import { nextUniqueId } from '../../src/utils/generic';
 
-export default describe.bind(null, 'Generic Utilities', () => {
+describe('Generic Utilities', () => {
 
   describe('nextUniqueId()', () => {
 

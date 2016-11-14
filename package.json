@@ -4,6 +4,11 @@
   "description": "Easy scroll animations for web and mobile browsers.",
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
+  "scripts": {
+    "sauce": "SAUCEY=true ./node_modules/karma/bin/karma start karma.conf.js",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "testing": "npm test -- --auto-watch"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jlmakes/scrollreveal.git"
@@ -12,8 +17,12 @@
     "url": "https://github.com/jlmakes/scrollreveal/issues"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
     "bower-json": "^0.6.0",
     "browser-sync": "^2.12.8",
+    "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "del": "^2.2.0",
     "eslint": "^3.8.0",
@@ -24,12 +33,19 @@
     "gulp": "^3.9.0",
     "gulp-strip-debug": "^1.1.0",
     "gulp-uglify": "^1.5.3",
+    "karma": "^1.3.0",
+    "karma-browserify": "^5.1.0",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-sauce-launcher": "^1.1.0",
     "mocha": "^3.1.2",
     "rollup-plugin-buble": "^0.14.0",
     "rollup-stream": "^1.14.0",
     "run-sequence": "^1.2.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
   },
   "author": "Julian Lloyd",
   "license": "MIT"
