@@ -1,9 +1,3 @@
 language: node_js
 node_js:
   - '6'
-script:
-  - if [[ $TRAVIS_PULL_REQUEST != 'false' ]]; then npm test; fi
-  - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then npm run sauce; fi
-notifications:
-  email:
-    - julianlloyd@gmail.com

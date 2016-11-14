@@ -31,7 +31,7 @@ module.exports = function (karma) {
     captureTimeout: 4 * 60 * 1000,
   });
 
-  if (process.env.SAUCEY) {
+  if (process.env.TRAVIS) {
 
     const customLaunchers = require('./saucelabs-browsers');
 

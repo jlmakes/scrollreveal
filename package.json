@@ -5,7 +5,6 @@
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
   "scripts": {
-    "sauce": "SAUCEY=true ./node_modules/karma/bin/karma start karma.conf.js",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --auto-watch"
   },
