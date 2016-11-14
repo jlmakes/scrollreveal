@@ -13,7 +13,7 @@
 - No dependencies
 - From the ![heart](http://i.imgur.com/oXJmdtz.gif) of [@jlmakes](https://twitter.com/jlmakes)
 
-***
+[![Build Status](https://saucelabs.com/browser-matrix/jlmakes.svg)](https://saucelabs.com/beta/builds/1180a4d52c2441a4b409ec688d8f596e)
 
 ## 1. Getting Started
 
