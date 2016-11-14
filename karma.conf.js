@@ -38,7 +38,7 @@ module.exports = function (karma) {
     karma.set({
       browsers: Object.keys(customLaunchers),
       customLaunchers,
-      reporters: ['dots', 'saucelabs'],
+      reporters: ['saucelabs'],
       sauceLabs: {
         testName: 'ScrollReveal',
         build: process.env.TRAVIS_BUILD_NUMBER || 'manual',
@@ -52,7 +52,6 @@ module.exports = function (karma) {
     process.env.PHANTOMJS_BIN = './node_modules/phantomjs-prebuilt/bin/phantomjs';
     karma.set({
       browsers: ['PhantomJS'],
-      reporters: ['dots'],
     });
   }
 };
