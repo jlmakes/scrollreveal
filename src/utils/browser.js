@@ -23,7 +23,7 @@ export function isNodeList (target) {
     : typeof target === 'object' &&
       typeof target.length === 'number' &&
       regex.test(prototypeToString) &&
-      (target.length === 0 || this.isNode(target[0]));
+      (target.length === 0 || isNode(target[0]));
 }
 
 /**
