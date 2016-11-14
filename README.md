@@ -4,6 +4,7 @@
 
 ***
 
+[![Travis CI][travis-image][travis-url]]
 [![License][license-image]][license-url]
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
@@ -436,6 +437,8 @@ Want to see your page here? Please send me your work (or of others) using Scroll
 
 ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crnacura) and her [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/).
 
+[travis-image]: https://travis-ci.org/jlmakes/scrollreveal.svg?branch=development
+[travis-url]: https://travis-ci.org/jlmakes/scrollreveal
 [license-image]: https://img.shields.io/badge/license-MIT-1283c3.svg
 [license-url]: https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md
 [npm-image]: https://img.shields.io/npm/v/scrollreveal.svg?style=flat
