@@ -31,6 +31,7 @@ module.exports = function (karma) {
     autoWatch: false,
     colors: true,
     concurrency: 5,
+    logLevel: karma.LOG_DISABLE,
     singleRun: true,
 
     browserDisconnectTimeout: 60 * 1000,
