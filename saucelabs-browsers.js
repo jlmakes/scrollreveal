@@ -9,13 +9,6 @@ module.exports = {
     version: '48',
   },
 
-  sl_linux_chrome_47: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    platform: 'linux',
-    version: '47',
-  },
-
   sl_windows_chrome_54: {
     base: 'SauceLabs',
     browserName: 'chrome',
@@ -23,39 +16,11 @@ module.exports = {
     version: '54',
   },
 
-  sl_windows_chrome_53: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    platform: 'Windows 8.1',
-    version: '53',
-  },
-
-  sl_windows_chrome_52: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    platform: 'Windows 8.1',
-    version: '52',
-  },
-
   sl_osx_chrome_54: {
     base: 'SauceLabs',
     browserName: 'chrome',
     platform: 'OS X 10.10',
     version: '54',
-  },
-
-  sl_osx_chrome_53: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    platform: 'OS X 10.10',
-    version: '53',
-  },
-
-  sl_osx_chrome_52: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    platform: 'OS X 10.10',
-    version: '52',
   },
 
   // Safari
@@ -95,20 +60,6 @@ module.exports = {
     browserName: 'firefox',
     platform: 'Windows 8.1',
     version: '49',
-  },
-
-  sl_osx_firefox_48: {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    platform: 'OS X 10.9',
-    version: '48',
-  },
-
-  sl_windows_firefox_48: {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    platform: 'Windows 8.1',
-    version: '48',
   },
 
   sl_linux_firefox_45: {
