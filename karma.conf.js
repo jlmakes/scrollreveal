@@ -48,7 +48,7 @@ module.exports = function (karma) {
         type: 'lcovonly',
       },
       customLaunchers,
-      reporters: ['saucelabs', 'coverage', 'coveralls'],
+      reporters: ['progress', 'saucelabs', 'coverage', 'coveralls'],
       sauceLabs: {
         testName: 'ScrollReveal',
         build: process.env.TRAVIS_BUILD_NUMBER || 'manual',
