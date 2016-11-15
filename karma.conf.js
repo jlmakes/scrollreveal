@@ -3,10 +3,12 @@ module.exports = function (karma) {
     frameworks: ['browserify', 'mocha', 'chai'],
 
     files: [
+      'src/**/*.js',
       'test/**/*.spec.js',
     ],
 
     preprocessors: {
+      'src/**/*.js': ['browserify'],
       'test/**/*.spec.js': ['browserify'],
     },
 
@@ -16,6 +18,12 @@ module.exports = function (karma) {
         ['babelify', {
           presets: ['es2015'],
           sourceMapsAbsolute: true,
+        }],
+        ['browserify-istanbul', {
+          ignore: ['test/**', '**/node_modules/**'],
+          instrumenterConfig: {
+            embedSource: true,
+          },
         }],
       ],
     },
@@ -32,13 +40,15 @@ module.exports = function (karma) {
   });
 
   if (process.env.TRAVIS) {
-
     const customLaunchers = require('./saucelabs-browsers');
 
     karma.set({
       browsers: Object.keys(customLaunchers),
+      coverageReporter: {
+        type: 'lcovonly',
+      },
       customLaunchers,
-      reporters: ['saucelabs'],
+      reporters: ['saucelabs', 'coverage', 'coveralls'],
       sauceLabs: {
         testName: 'ScrollReveal',
         build: process.env.TRAVIS_BUILD_NUMBER || 'manual',
@@ -48,10 +58,14 @@ module.exports = function (karma) {
     });
 
   } else {
-
     process.env.PHANTOMJS_BIN = './node_modules/phantomjs-prebuilt/bin/phantomjs';
     karma.set({
       browsers: ['PhantomJS'],
+      coverageReporter: {
+        type: 'lcov',
+        dir: 'coverage/',
+      },
+      reporters: ['progress', 'coverage'],
     });
   }
 };

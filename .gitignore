@@ -5,4 +5,5 @@
 *.sublime-project
 *.sublime-workspace
 node_modules
+coverage
 dev
