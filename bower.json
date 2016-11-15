@@ -20,7 +20,9 @@
     "src",
     "test",
     "gulpfile.js",
-    "package.json"
+    "karma.conf.js",
+    "package.json",
+    "saucelabs-browsers.js"
   ],
   "keywords": [
     "scroll",
