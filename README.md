@@ -4,10 +4,11 @@
 
 ***
 
-[![Travis CI][travis-image]][travis-url]
-[![License][license-image]][license-url]
-[![NPM version][npm-image]][npm-url]
-[![NPM downloads][downloads-image]][downloads-url]
+[![Travis CI][travis-badge]][travis-url]
+[![Coveralls][coveralls-badge]][coveralls-url]
+[![NPM downloads][downloads-badge]][downloads-url]
+[![NPM version][npm-badge]][npm-url]
+[![License][license-badge]][license-url]
 
 - 3.3KB minified and Gzipped
 - No dependencies
@@ -59,11 +60,13 @@ If you cannot find your issue/bug in a previous ticket, please include details s
 
 ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crnacura) and her [cbpScroller.js](http://tympanus.net/codrops/2013/07/18/on-scroll-effect-layout/).
 
-[travis-image]: https://travis-ci.org/jlmakes/scrollreveal.svg?branch=development
+[travis-badge]: https://travis-ci.org/jlmakes/scrollreveal.svg?branch=development
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
-[license-image]: https://img.shields.io/badge/license-MIT-1283c3.svg
-[license-url]: https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md
-[npm-image]: https://img.shields.io/npm/v/scrollreveal.svg?style=flat
-[npm-url]: https://npmjs.org/package/scrollreveal
-[downloads-image]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
+[coveralls-badge]: https://coveralls.io/repos/github/jlmakes/scrollreveal/badge.svg?branch=development
+[coveralls-url]: https://coveralls.io/github/jlmakes/scrollreveal?branch=development
+[downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
+[npm-badge]: https://img.shields.io/npm/v/scrollreveal.svg?style=flat
+[npm-url]: https://npmjs.org/package/scrollreveal
+[license-badge]: https://img.shields.io/badge/license-MIT-1283c3.svg
+[license-url]: https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md
