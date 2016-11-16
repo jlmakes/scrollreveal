@@ -50,5 +50,5 @@
     "watchify": "^3.7.0"
   },
   "author": "Julian Lloyd",
-  "license": "MIT"
+  "license": "GPL-3.0"
 }

@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/)
 
 ## [Unreleased]
 
-Details coming soon...
+### Changed
+- ScrollReveal is no longer open under the MIT license, but instead with both commercial and GPLv3 open source options.
 
 ## [3.3.2] - 2016-10-02
 
