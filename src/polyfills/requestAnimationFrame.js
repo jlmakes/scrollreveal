@@ -1,4 +1,4 @@
-const polyfill = (() => {
+export const polyfill = (() => {
   let timeLast = 0;
 
   return (callback) => {
