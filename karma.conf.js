@@ -66,7 +66,7 @@ module.exports = function (karma) {
         type: 'lcov',
         dir: 'coverage/',
       },
-      reporters: ['progress', 'coverage'],
+      reporters: ['mocha', 'coverage'],
     });
   }
 };
