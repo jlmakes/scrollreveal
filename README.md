@@ -8,8 +8,6 @@ Work in progress development branch.
 
 [![Build Status](https://saucelabs.com/browser-matrix/jlmakes.svg)](https://saucelabs.com/beta/builds/1180a4d52c2441a4b409ec688d8f596e)
 
-***
-
 ## License
 
 ### Commercial
