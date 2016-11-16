@@ -13,14 +13,14 @@ module.exports = {
     base: 'SauceLabs',
     browserName: 'chrome',
     platform: 'Windows 10',
-    version: '54',
+    version: '48',
   },
 
   sl_osx_chrome_54: {
     base: 'SauceLabs',
     browserName: 'chrome',
     platform: 'OS X 10.10',
-    version: '54',
+    version: '48',
   },
 
   // Safari
@@ -52,14 +52,14 @@ module.exports = {
     base: 'SauceLabs',
     browserName: 'firefox',
     platform: 'OS X 10.9',
-    version: '49',
+    version: '45',
   },
 
   sl_windows_firefox_49: {
     base: 'SauceLabs',
     browserName: 'firefox',
     platform: 'Windows 8.1',
-    version: '49',
+    version: '45',
   },
 
   sl_linux_firefox_45: {
@@ -70,13 +70,6 @@ module.exports = {
   },
 
   // Opera
-
-  sl_linux_opera_12: {
-    base: 'SauceLabs',
-    browserName: 'opera',
-    platform: 'Linux',
-    version: '12.15',
-  },
 
   sl_windows_opera_12: {
     base: 'SauceLabs',
@@ -126,13 +119,6 @@ module.exports = {
     version: '5.1',
   },
 
-  sl_android_5: {
-    base: 'SauceLabs',
-    browserName: 'android',
-    platform: 'Linux',
-    version: '5.0',
-  },
-
   sl_android_4: {
     base: 'SauceLabs',
     browserName: 'android',
@@ -142,14 +128,14 @@ module.exports = {
 
   // // iOS iPhone
 
-  sl_ios9_iphone: {
+  sl_ios_9_iphone: {
     base: 'SauceLabs',
     browserName: 'iphone',
     platform: 'OS X 10.10',
     version: '9.2',
   },
 
-  sl_ios8_iphone: {
+  sl_ios_8_iphone: {
     base: 'SauceLabs',
     browserName: 'iphone',
     platform: 'OS X 10.10',
