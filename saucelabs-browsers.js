@@ -18,13 +18,6 @@ module.exports = {
     version: '8',
   },
 
-  sl_osx_safari_10: {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'OS X 10.11',
-    version: '10',
-  },
-
   // Firefox
 
   sl_linux_firefox_45: {
@@ -34,48 +27,32 @@ module.exports = {
     version: '45',
   },
 
-  // Opera
-
-  sl_windows_opera_12: {
-    base: 'SauceLabs',
-    browserName: 'opera',
-    platform: 'Windows 7',
-    version: '12.12',
-  },
-
   // Internet explorer
 
-  sl_windows_ie_11: {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 8.1',
-    version: '11',
-  },
-
-  sl_windows_ie_10: {
+  sl_ie_10: {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     platform: 'Windows 7',
     version: '10',
   },
 
+  sl_ie_11: {
+    base: 'SauceLabs',
+    browserName: 'internet explorer',
+    platform: 'Windows 8.1',
+    version: '11',
+  },
+
   // MS Edge
 
-  sl_windows_edge_14: {
+  sl_edge_13: {
     base: 'SauceLabs',
     browserName: 'MicrosoftEdge',
     platform: 'Windows 10',
-    version: '14.14393',
+    version: '13.10586',
   },
 
   // // Android
-
-  sl_android_5: {
-    base: 'SauceLabs',
-    browserName: 'android',
-    platform: 'Linux',
-    version: '5.1',
-  },
 
   sl_android_4: {
     base: 'SauceLabs',
@@ -84,19 +61,33 @@ module.exports = {
     version: '4.2',
   },
 
-  // // iOS iPhone
-
-  sl_ios_9_iphone: {
+  sl_android_5: {
     base: 'SauceLabs',
-    browserName: 'iphone',
-    platform: 'OS X 10.11',
-    version: '10.0',
+    browserName: 'android',
+    platform: 'Linux',
+    version: '5.1',
   },
 
-  sl_ios_8_iphone: {
+  // // iOS iPhone
+
+  sl_ios_8: {
     base: 'SauceLabs',
     browserName: 'iphone',
     platform: 'OS X 10.10',
     version: '8.4',
+  },
+
+  l_ios_9: {
+    base: 'SauceLabs',
+    browserName: 'iphone',
+    platform: 'OS X 10.10',
+    version: '9.2',
+  },
+
+  sl_ios_10: {
+    base: 'SauceLabs',
+    browserName: 'iphone',
+    platform: 'OS X 10.11',
+    version: '10.0',
   },
 };
