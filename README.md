@@ -24,7 +24,7 @@ Ripped from the ![heart](http://i.imgur.com/oXJmdtz.gif) of [Julian Lloyd](https
 
 [travis-badge]: https://travis-ci.org/jlmakes/scrollreveal.svg?branch=development
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
-[coveralls-badge]: https://coveralls.io/repos/github/jlmakes/scrollreveal/badge.svg?branch=development&foo=21
+[coveralls-badge]: https://coveralls.io/repos/github/jlmakes/scrollreveal/badge.svg?branch=development&foo=23
 [coveralls-url]: https://coveralls.io/github/jlmakes/scrollreveal?branch=development
 [downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
