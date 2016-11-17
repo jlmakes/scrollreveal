@@ -6,7 +6,7 @@
   "main": "dist/scrollreveal.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "testing": "npm test -- --auto-watch"
+    "testing": "npm test -- --no-single-run"
   },
   "repository": {
     "type": "git",

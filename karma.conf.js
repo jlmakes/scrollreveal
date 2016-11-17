@@ -28,7 +28,6 @@ module.exports = function (karma) {
       ],
     },
 
-    autoWatch: false,
     colors: true,
     concurrency: 5,
     logLevel: karma.LOG_DISABLE,
@@ -44,6 +43,7 @@ module.exports = function (karma) {
     const customLaunchers = require('./saucelabs-browsers');
 
     karma.set({
+      autoWatch: false,
       browsers: Object.keys(customLaunchers),
       coverageReporter: {
         type: 'lcovonly',
