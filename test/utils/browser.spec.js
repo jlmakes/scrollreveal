@@ -30,6 +30,13 @@ describe('Browser Utilities', () => {
     });
   });
 
+  describe('isMobile()', () => {
+    it('should return true for mobile browsers', () => {
+      dump(navigator.userAgent);
+      expect(true).to.equal(true);
+    });
+  });
+
   describe('transformSupported()', () => {
     it('should return true', () => {
       expect(transformSupported()).to.equal(true);
