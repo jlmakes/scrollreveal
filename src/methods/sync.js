@@ -7,13 +7,13 @@ import reveal from './reveal';
  * @return {object} - The current ScrollReveal instance.
  */
 function sync () {
-  this.store.history.forEach((record) => {
-    reveal.call(this, record.target, record.config, record.interval, false);
-  });
-
-  initialize.call(this);
-
-  return this;
+  // this.store.history.forEach((record) => {
+  //   reveal.call(this, record.target, record.config, record.interval, false);
+  // });
+  //
+  // initialize.call(this);
+  //
+  // return this;
 }
 
 export default sync;
