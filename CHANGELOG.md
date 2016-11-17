@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/)
 ## [Unreleased]
 
 ### Changed
+- ScrollReveal now returns a non-operational instance when instantiated in unsupported browsers.
 - ScrollReveal is no longer open under the MIT license, but instead with both commercial and GPLv3 open source options.
+
+### Fixed
+- The `requestAnimationFrame` polyfill now reliably throttles callback invocations.
 
 ## [3.3.2] - 2016-10-02
 
