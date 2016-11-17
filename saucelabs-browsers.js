@@ -18,6 +18,13 @@ module.exports = {
     version: '8',
   },
 
+  sl_osx_safari_10: {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    platform: 'OS X 10.11',
+    version: '10',
+  },
+
   // Firefox
 
   sl_linux_firefox_45: {
@@ -74,7 +81,7 @@ module.exports = {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '4.4',
+    version: '4.2',
   },
 
   // // iOS iPhone
@@ -82,8 +89,8 @@ module.exports = {
   sl_ios_9_iphone: {
     base: 'SauceLabs',
     browserName: 'iphone',
-    platform: 'OS X 10.10',
-    version: '9.2',
+    platform: 'OS X 10.11',
+    version: '10.0',
   },
 
   sl_ios_8_iphone: {
