@@ -1,4 +1,4 @@
-/* global describe, it, expect */
+/* global describe, it, expect, sinon*/
 import ScrollReveal from '../src/main';
 
 describe('ScrollReveal', () => {
@@ -20,6 +20,14 @@ describe('ScrollReveal', () => {
       const result = document.documentElement.classList.contains('sr');
       expect(result).to.be.true;
     });
+
+    it('should return a noop instance when not supported', () => {
+      const stub = sinon.stub(ScrollReveal, 'isSupported');
+      const result = new ScrollReveal().initialized;
+      expect(result).to.not.exist;
+      stub.restore();
+    });
+
   });
 
   describe('Instance', () => {

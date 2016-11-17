@@ -1,10 +1,3 @@
-/**
-* Version : 4.0.0-alpha.1
-* Website : scrollrevealjs.org
-* Repo    : github.com/jlmakes/scrollreveal
-* Author  : Julian Lloyd (@jlmakes)
-*/
-
 import defaults from './core/defaults';
 
 import remove from './methods/remove';
@@ -20,7 +13,7 @@ function ScrollReveal (config = {}) {
    */
   if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
     return new ScrollReveal(config);
-  } else if (transformSupported() && transitionSupported()) {
+  } else if (ScrollReveal.isSupported()) {
     /**
      * Add CSS hook to `<html>` element for supported browsers.
      */
@@ -45,15 +38,23 @@ function ScrollReveal (config = {}) {
 
     this.store.containers.push(this.defaults.container);
   } else {
-    return {};
+    return {
+      remove () {},
+      reveal () {},
+      sync () {},
+      watch () {},
+    };
   }
 }
+
+ScrollReveal.isSupported = () => transformSupported() && transitionSupported();
 
 ScrollReveal.prototype.remove = remove;
 ScrollReveal.prototype.reveal = reveal;
 ScrollReveal.prototype.sync = sync;
 ScrollReveal.prototype.watch = watch;
 
+/* istanbul ignore next */
 if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
   define(() => ScrollReveal);
 } else if (typeof module !== 'undefined' && module.exports) {
