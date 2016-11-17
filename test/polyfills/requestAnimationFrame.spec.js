@@ -9,7 +9,7 @@ describe('Polyfills', () => {
       setTimeout(done, 24);
     });
 
-    it('should be function', () => {
+    it('should be a function', () => {
       expect(polyfill).to.be.a('function');
     });
 
