@@ -1,4 +1,6 @@
 import requestAnimationFrame from '../polyfills/requestAnimationFrame';
+import { isNode } from '../utils/browser';
+import { logger } from '../utils/generic';
 
 export function animate () {
   // ...
@@ -22,4 +24,19 @@ export function initialize () {
   // });
   //
   // animate.call(this);
+}
+
+export function getContainerElement (target) {
+  let container = null;
+  if (typeof target === 'string') {
+    try {
+      container = document.querySelector(target);
+      if (!container) {
+        logger(`Querying the selector "${target}" returned nothing.`);
+      }
+    } catch (err) {
+      logger(`"${target}" is not a valid selector.`);
+    }
+  }
+  return isNode(target) ? target : container;
 }
