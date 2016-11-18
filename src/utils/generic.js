@@ -1,3 +1,9 @@
+export function logger (message) {
+  if (console) {
+    console.log(`ScrollReveal: ${message}`);
+  }
+}
+
 /**
 * Sequential number generator for unique IDs.
 * @return {number}
