@@ -1,7 +1,8 @@
 export function isNode (target) {
   return typeof window.Node === 'object'
     ? target instanceof window.Node
-    : typeof target === 'object' &&
+    : target !== null &&
+      typeof target === 'object' &&
       typeof target.nodeType === 'number' &&
       typeof target.nodeName === 'string';
 }
