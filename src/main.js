@@ -1,49 +1,49 @@
 import defaults from './core/defaults';
-
 import remove from './methods/remove';
 import reveal from './methods/reveal';
 import sync from './methods/sync';
 import watch from './methods/watch';
-
+import noop from './core/noop';
+import { getContainerElement } from './core/functions';
 import { transformSupported, transitionSupported } from './utils/browser';
+import { logger } from './utils/generic';
 
 function ScrollReveal (config = {}) {
-  /**
-   * Support instantiation without the `new` keyword.
-   */
+
+  // Returns a new instance without `new` keyword.
   if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
     return new ScrollReveal(config);
-  } else if (ScrollReveal.isSupported()) {
-    /**
-     * Add CSS hook to `<html>` element for supported browsers.
-     */
-    document.documentElement.classList.add('sr');
+  }
 
-    this.initialized = false;
+  if (!ScrollReveal.isSupported()) {
+    logger('This browser is not supported.');
+    return noop;
+  }
 
-    Object.defineProperty(this, 'defaults', {
-      get: (() => {
-        const options = {};
-        Object.assign(options, defaults, config);
-        return () => options;
-      })(),
-    });
+  this.initialized = false;
+  document.documentElement.classList.add('sr');
 
-    this.store = {
-      containers: [],
-      elements: [],
-      history: [],
-      sequences: [],
-    };
+  Object.defineProperty(this, 'defaults', {
+    get: (() => {
+      const options = {};
+      Object.assign(options, defaults, config);
+      return () => options;
+    })(),
+  });
 
-    this.store.containers.push(this.defaults.container);
+  this.store = {
+    containers: [],
+    elements: [],
+    history: [],
+    sequences: [],
+  };
+
+  const container = getContainerElement(this.defaults.container);
+  if (container) {
+    this.store.containers.push(container);
   } else {
-    return {
-      remove () {},
-      reveal () {},
-      sync () {},
-      watch () {},
-    };
+    logger('Failed to instantiate due to missing container.');
+    return noop;
   }
 }
 

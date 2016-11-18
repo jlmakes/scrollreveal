@@ -22,10 +22,20 @@ describe('ScrollReveal', () => {
     });
 
     it('should return a noop instance when not supported', () => {
-      const stub = sinon.stub(ScrollReveal, 'isSupported');
-      const result = new ScrollReveal().initialized;
-      expect(result).to.not.exist;
+      const stubs = [
+        sinon.stub(console, 'log'),
+        sinon.stub(ScrollReveal, 'isSupported'),
+      ];
+      const result = new ScrollReveal().noop;
+      stubs.forEach(stub => stub.restore());
+      expect(result).to.be.true;
+    });
+
+    it('should return a noop instance when container is invalid', () => {
+      const stub = sinon.stub(console, 'log');
+      const result = new ScrollReveal({ container: null }).noop;
       stub.restore();
+      expect(result).to.be.true;
     });
 
   });
