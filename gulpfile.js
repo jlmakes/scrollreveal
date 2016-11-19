@@ -27,10 +27,7 @@ gulp.task('build', (done) => {
 gulp.task('default', (done) => {
   run(
     'dev',
-    [
-      'server',
-      'watch',
-    ],
+    'dev-server',
     done
   );
 });
