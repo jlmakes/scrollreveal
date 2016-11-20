@@ -21,14 +21,14 @@ describe('Core Functions', () => {
       const stub = sinon.stub(console, 'log');
       const result = getContainerElement('.foo');
       stub.restore();
-      expect(result).to.equal(null);
+      expect(result).to.be.null;
     });
 
     it('should return null when an invalid selector is passed', () => {
       const stub = sinon.stub(console, 'log');
       const result = getContainerElement('.foo!');
       stub.restore();
-      expect(result).to.equal(null);
+      expect(result).to.be.null;
     });
 
     it('should output to log when no element matches a valid selector', () => {
