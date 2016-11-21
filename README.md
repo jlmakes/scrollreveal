@@ -3,7 +3,7 @@
 Work in progress development branch.
 
 [![Travis CI][travis-badge]][travis-url]
-[![Coveralls][coveralls-badge]][coveralls-url]
+[![CodeCov][codecov-badge]][codecov-url]
 [![NPM downloads][downloads-badge]][downloads-url]
 ![Version][version-badge]
 [![License GPLv3][license-badge]][license-url]
@@ -18,16 +18,16 @@ If you want to use ScrollReveal to develop commercial sites, themes, projects, a
 Purchase a ScrollReveal Commercial License from [scrollrevealjs.org](scrollrevealjs.org)
 
 ### Open Source
-If you are creating an open source application under a license compatible with the [GNU&nbsp;GPL&nbsp;license&nbsp;v3][license-url], you may use ScrollReveal under the terms of the GPLv3.
+If you are creating an open source application under a license compatible with the [GNU&nbsp;General&nbsp;Public&nbsp;License&nbsp;3.0][license-url], you may use ScrollReveal under the terms of the GPLv3.
 
 ***
 
 Ripped from the ![heart](http://i.imgur.com/oXJmdtz.gif) of [Julian Lloyd](https://twitter.com/jlmakes). © 2014–2017.
 
-[travis-badge]: https://travis-ci.org/jlmakes/scrollreveal.svg?branch=development
+[travis-badge]: https://img.shields.io/travis/jlmakes/scrollreveal/development.svg
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
-[coveralls-badge]: https://coveralls.io/repos/github/jlmakes/scrollreveal/badge.svg?branch=development&foo=27
-[coveralls-url]: https://coveralls.io/github/jlmakes/scrollreveal?branch=development
+[codecov-badge]: https://img.shields.io/coveralls/jlmakes/scrollreveal/development.svg
+[codecov-url]: https://codecov.io/gh/jlmakes/scrollreveal/branch/development
 [downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
 [version-badge]: https://img.shields.io/badge/version-4.0.0_alpha-1283c3.svg
