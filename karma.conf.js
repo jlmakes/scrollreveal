@@ -47,9 +47,10 @@ module.exports = function (karma) {
       browsers: Object.keys(customLaunchers),
       coverageReporter: {
         type: 'lcovonly',
+        dir: 'coverage/',
       },
       customLaunchers,
-      reporters: ['dots', 'saucelabs', 'coverage', 'coveralls'],
+      reporters: ['dots', 'saucelabs', 'coverage'],
       sauceLabs: {
         testName: 'ScrollReveal',
         build: process.env.TRAVIS_BUILD_NUMBER || 'manual',
