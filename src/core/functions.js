@@ -26,17 +26,17 @@ export function initialize () {
   // animate.call(this);
 }
 
-export function getContainerElement (target) {
-  let container = null;
+export function getElement (target, container = document) {
+  let element = null;
   if (typeof target === 'string') {
     try {
-      container = document.querySelector(target);
-      if (!container) {
+      element = container.querySelector(target);
+      if (!element) {
         logger(`Querying the selector "${target}" returned nothing.`);
       }
     } catch (err) {
       logger(`"${target}" is not a valid selector.`);
     }
   }
-  return isNode(target) ? target : container;
+  return isNode(target) ? target : element;
 }

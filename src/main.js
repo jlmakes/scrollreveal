@@ -4,7 +4,7 @@ import reveal from './methods/reveal';
 import sync from './methods/sync';
 import watch from './methods/watch';
 import noop from './core/noop';
-import { getContainerElement } from './core/functions';
+import { getElement } from './core/functions';
 import { transformSupported, transitionSupported } from './utils/browser';
 import { logger } from './utils/generic';
 
@@ -38,7 +38,7 @@ function ScrollReveal (config = {}) {
     sequences: [],
   };
 
-  const container = getContainerElement(this.defaults.container);
+  const container = getElement(this.defaults.container);
   if (container) {
     this.store.containers.push(container);
   } else {
