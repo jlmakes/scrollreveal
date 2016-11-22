@@ -744,11 +744,41 @@
     return confirmBounds() || isPositionFixed()
 
     function confirmBounds () {
-      // Define the element’s functional boundaries using its view factor.
-      var top = elemTop + elemHeight * vF
-      var left = elemLeft + elemWidth * vF
-      var bottom = elemBottom - elemHeight * vF
-      var right = elemRight - elemWidth * vF
+      // Define the element’s functional boundaries using its view factor
+      var top, left, bottom, right
+	  
+	  // if viewFactor is defined as percentage
+      if ( vF > 0 && vF < 1 ) {
+	      
+	      top = elemTop + elemHeight * vF
+	      left = elemLeft + elemWidth * vF
+	      bottom = elemBottom - elemHeight * vF
+	      right = elemRight - elemWidth * vF
+	      
+      } else {
+	      
+	      if ( !(vF > elemHeight * 0.20) ) {
+		      // if viewFactor is not greater than the elements own 20% as set by defaults
+		      // then set the viewFactor boundary as a constant
+		      
+		      top = elemTop + vF
+		      left = elemLeft + vF
+		      bottom = elemBottom - vF
+		      right = elemRight - vF
+		  
+	      } else {
+		      // if viewFactor is greater than the elements
+			  // own 20% then fallback to defaults
+		      
+		      vF = ScrollReveal.prototype.defaults.viewFactor
+	      
+		      top = elemTop + elemHeight * vF
+		      left = elemLeft + elemWidth * vF
+		      bottom = elemBottom - elemHeight * vF
+		      right = elemRight - elemWidth * vF    		      
+
+	      }
+      }
 
       // Define the container functional boundaries using its view offset.
       var viewTop = scrolled.y + elem.config.viewOffset.top
