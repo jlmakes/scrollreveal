@@ -13,6 +13,7 @@ module.exports = function (karma) {
     },
 
     browserify: {
+      bundleDelay: 800,
       debug: true,
       transform: [
         ['babelify', {
