@@ -8,11 +8,11 @@ import { getElement } from './core/functions';
 import { transformSupported, transitionSupported } from './utils/browser';
 import { logger } from './utils/generic';
 
-function ScrollReveal (config = {}) {
+function ScrollReveal (options = {}) {
 
   // Returns a new instance without `new` keyword.
   if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
-    return new ScrollReveal(config);
+    return new ScrollReveal(options);
   }
 
   if (!ScrollReveal.isSupported()) {
@@ -25,9 +25,9 @@ function ScrollReveal (config = {}) {
 
   Object.defineProperty(this, 'defaults', {
     get: (() => {
-      const options = {};
-      Object.assign(options, defaults, config);
-      return () => options;
+      const config = {};
+      Object.assign(config, defaults, options);
+      return () => config;
     })(),
   });
 
