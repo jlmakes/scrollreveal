@@ -1,5 +1,5 @@
 import requestAnimationFrame from '../polyfills/requestAnimationFrame';
-import { isNode } from '../utils/browser';
+import { isNode, isNodeList } from '../utils/browser';
 import { logger } from '../utils/generic';
 
 export function animate () {
@@ -39,4 +39,22 @@ export function getElement (target, container = document) {
     }
   }
   return isNode(target) ? target : element;
+}
+
+
+export function getElements (target, container = document) {
+  let elements = [];
+  if (typeof target === 'string') {
+    try {
+      elements = [...container.querySelectorAll(target)];
+      if (!elements.length) {
+        logger(`Querying the selector "${target}" returned nothing.`);
+      }
+    } catch (err) {
+      logger(`"${target}" is not a valid selector.`);
+    }
+  } else if (isNode(target)) {
+    elements.push(target);
+  }
+  return isNodeList(target) ? [...target] : elements;
 }
