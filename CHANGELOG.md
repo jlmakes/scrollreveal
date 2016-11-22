@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/)
 ## [Unreleased]
 
 ### Changed
+- **Breaking:** `isSupported()` is now a static method.
 - ScrollReveal now returns a non-operational instance when instantiated in unsupported browsers.
-- `isSupported()` is now a static method.
 - ScrollReveal is no longer open under the MIT license, but instead with both commercial and GPLv3 open source options.
 
 ### Fixed
