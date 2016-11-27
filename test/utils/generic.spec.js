@@ -1,23 +1,28 @@
 /* global describe, it, expect, sinon */
-import { logger, nextUniqueId } from '../../src/utils/generic';
+import { isObject, logger, nextUniqueId } from '../../src/utils/generic';
 
 describe('Generic Utilities', () => {
 
-	describe('nextUniqueId()', () => {
+	describe('isObject()', () => {
 
-		it('should start at 0', () => {
-			const result = nextUniqueId();
-			expect(result).to.equal(0);
+		it('should return true when passed an object literal', () => {
+			const result = isObject({});
+			expect(result).to.be.true;
 		});
 
-		it('should increment by 1', () => {
-			const result = nextUniqueId();
-			expect(result).to.equal(1);
+		it('should return false when passed a function', () => {
+			const result = isObject(function(){});
+			expect(result).to.be.false;
 		});
 
-		it('should return a number', () => {
-			const result = nextUniqueId();
-			expect(result).to.be.a('number');
+		it('should return false when passed an array', () => {
+			const result = isObject([]);
+			expect(result).to.be.false;
+		});
+
+		it('should return false when passed null', () => {
+			const result = isObject(null);
+			expect(result).to.be.false;
 		});
 	});
 
@@ -43,6 +48,24 @@ describe('Generic Utilities', () => {
 
 		after('restore console log', () => {
 			stub.restore();
+		});
+	});
+
+	describe('nextUniqueId()', () => {
+
+		it('should start at 0', () => {
+			const result = nextUniqueId();
+			expect(result).to.equal(0);
+		});
+
+		it('should increment by 1', () => {
+			const result = nextUniqueId();
+			expect(result).to.equal(1);
+		});
+
+		it('should return a number', () => {
+			const result = nextUniqueId();
+			expect(result).to.be.a('number');
 		});
 	});
 });
