@@ -1,5 +1,5 @@
 function reveal () {
-  // something...
+	// something...
 }
 
 export default reveal;

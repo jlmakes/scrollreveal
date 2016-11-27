@@ -1,7 +1,7 @@
 export function logger (message) {
-  if (console) {
-    console.log(`ScrollReveal: ${message}`);
-  }
+	if (console) {
+		console.log(`ScrollReveal: ${message}`);
+	}
 }
 
 /**
@@ -9,6 +9,6 @@ export function logger (message) {
 * @return {number}
 */
 export const nextUniqueId = (() => {
-  let uid = 0;
-  return () => uid++;
+	let uid = 0;
+	return () => uid++;
 })();

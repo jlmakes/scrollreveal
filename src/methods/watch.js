@@ -1,5 +1,5 @@
 function watch () {
-  // something...
+	// something...
 }
 
 export default watch;
