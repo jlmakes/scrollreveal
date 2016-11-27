@@ -1,6 +1,6 @@
 export function logger (message) {
 	if (console) {
-		console.log(`ScrollReveal: ${message}`);
+		console.log(`ScrollReveal: ${message}`); // eslint-disable-line no-console
 	}
 }
 
