@@ -19,11 +19,6 @@ export function isNodeList (target) {
       (target.length === 0 || isNode(target[0]));
 }
 
-/* istanbul ignore next */
-export function isMobile () {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
 export function transformSupported () {
   const style = document.documentElement.style;
   return 'transform' in style || 'WebkitTransform' in style;
@@ -33,3 +28,8 @@ export function transitionSupported () {
   const style = document.documentElement.style;
   return 'transition' in style || 'WebkitTransition' in style;
 }
+
+/* istanbul ignore next */
+export const isMobile = function () {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+};

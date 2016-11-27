@@ -1,4 +1,4 @@
-import requestAnimationFrame from '../polyfills/requestAnimationFrame';
+import { requestAnimationFrame } from '../polyfills/requestAnimationFrame';
 import { isNode, isNodeList } from '../utils/browser';
 import { logger } from '../utils/generic';
 
@@ -46,7 +46,8 @@ export function getElements (target, container = document) {
   let elements = [];
   if (typeof target === 'string') {
     try {
-      elements = [...container.querySelectorAll(target)];
+      const query = container.querySelectorAll(target);
+      elements = Array.prototype.slice.call(query);
       if (!elements.length) {
         logger(`Querying the selector "${target}" returned nothing.`);
       }
@@ -56,5 +57,5 @@ export function getElements (target, container = document) {
   } else if (isNode(target)) {
     elements.push(target);
   }
-  return isNodeList(target) ? [...target] : elements;
+  return isNodeList(target) ? Array.prototype.slice.call(target) : elements;
 }

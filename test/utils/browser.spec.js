@@ -1,5 +1,4 @@
 /* global describe, it, expect */
-import 'babel-polyfill';
 import { isNode, isNodeList, transformSupported, transitionSupported } from '../../src/utils/browser';
 
 describe('Browser Utilities', () => {
@@ -25,7 +24,8 @@ describe('Browser Utilities', () => {
     });
 
     it('should return false when passed an array of HTML elements', () => {
-      const result = isNodeList([...document.querySelectorAll('script')]);
+      const elements = document.querySelectorAll('body');
+      const result = isNodeList(Array.prototype.slice.call(elements));
       expect(result).to.be.false;
     });
   });

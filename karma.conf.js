@@ -1,37 +1,42 @@
+const buble = require('rollup-plugin-buble');
+const istanbul = require('rollup-plugin-istanbul');
+
 module.exports = function (karma) {
   karma.set({
-    frameworks: ['browserify', 'mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai'],
+
+    preprocessors: {
+      'src/**/*.js': ['rollup'],
+      'test/**/*.spec.js': ['rollup'],
+    },
 
     files: [
-      'src/**/*.js',
+      { pattern: 'src/**/*.js', included: false },
       'test/**/*.spec.js',
     ],
 
-    preprocessors: {
-      'src/**/*.js': ['browserify'],
-      'test/**/*.spec.js': ['browserify'],
-    },
-
-    browserify: {
-      bundleDelay: 800,
-      debug: true,
-      transform: [
-        ['babelify', {
-          presets: ['es2015'],
-          sourceMapsAbsolute: true,
-        }],
-        ['browserify-istanbul', {
-          ignore: ['test/**', '**/node_modules/**'],
-          instrumenterConfig: {
-            embedSource: true,
-          },
-        }],
-      ],
+    rollupPreprocessor: {
+      rollup: {
+        plugins: [
+          buble(),
+          istanbul({
+            exclude: ['test/**', '**/node_modules/**'],
+            instrumenterConfig: {
+              embedSource: true,
+            },
+          }),
+        ],
+      },
+      bundle: {
+        sourceMap: 'inline',
+        format: 'iife',
+        moduleName: 'scrollreveal',
+      },
     },
 
     colors: true,
     concurrency: 5,
-    logLevel: karma.LOG_DISABLE,
+    logLevel: karma.LOG_WARN,
     singleRun: true,
 
     browserDisconnectTimeout: 60 * 1000,

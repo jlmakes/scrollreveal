@@ -1,5 +1,4 @@
 /* global describe, it, expect, sinon */
-import 'babel-polyfill';
 import { getElement, getElements } from '../../src/core/functions';
 
 describe('Core Functions', () => {
@@ -60,7 +59,7 @@ describe('Core Functions', () => {
 
     it('should return an array of nodes when passed a node list', () => {
       const elements = document.querySelectorAll('body');
-      const actual = [...elements];
+      const actual = Array.prototype.slice.call(elements);
       const result = getElements(elements);
       expect(result).to.deep.equal(actual);
     });

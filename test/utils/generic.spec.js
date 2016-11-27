@@ -1,5 +1,4 @@
 /* global describe, it, expect, sinon */
-import 'babel-polyfill';
 import { logger, nextUniqueId } from '../../src/utils/generic';
 
 describe('Generic Utilities', () => {

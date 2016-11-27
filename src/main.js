@@ -62,3 +62,5 @@ if (typeof define === 'function' && typeof define.amd === 'object' && define.amd
 } else {
   window.ScrollReveal = ScrollReveal;
 }
+
+export default ScrollReveal;
