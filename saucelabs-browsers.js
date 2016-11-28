@@ -18,13 +18,41 @@ module.exports = {
 		version: '45',
 	},
 
+	sl_osx_firefox_45: {
+		base: 'SauceLabs',
+		browserName: 'firefox',
+		platform: 'OS X 10.10',
+		version: '45',
+	},
+
+	sl_windows_firefox_45: {
+		base: 'SauceLabs',
+		browserName: 'firefox',
+		platform: 'Windows 7',
+		version: '45',
+	},
+
 	// Chrome
 
-	sl_windows_chrome_54: {
+	sl_linux_chrome_48: {
+		base: 'SauceLabs',
+		browserName: 'chrome',
+		platform: 'linux',
+		version: '48',
+	},
+
+	sl_osx_chrome_48: {
+		base: 'SauceLabs',
+		browserName: 'chrome',
+		platform: 'OS X 10.10',
+		version: '48',
+	},
+
+	sl_windows_chrome_48: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
 		platform: 'Windows 7',
-		version: '50',
+		version: '48',
 	},
 
 	// Internet explorer
@@ -36,13 +64,27 @@ module.exports = {
 		version: '10',
 	},
 
+	sl_ie_11: {
+		base: 'SauceLabs',
+		browserName: 'internet explorer',
+		platform: 'Windows 8.1',
+		version: '11',
+	},
+
 	// iOS iPhone
 
 	sl_ios_8: {
 		base: 'SauceLabs',
 		browserName: 'iphone',
 		platform: 'OS X 10.10',
-		version: '8.1',
+		version: '8.4',
+	},
+
+	sl_ios_9: {
+		base: 'SauceLabs',
+		browserName: 'iphone',
+		platform: 'OS X 10.10',
+		version: '9.3',
 	},
 
 	// MS Edge
@@ -70,5 +112,19 @@ module.exports = {
 		browserName: 'safari',
 		platform: 'OS X 10.10',
 		version: '8',
+	},
+
+	sl_osx_safari_9: {
+		base: 'SauceLabs',
+		browserName: 'safari',
+		platform: 'OS X 10.11',
+		version: '9',
+	},
+
+	sl_osx_safari_10: {
+		base: 'SauceLabs',
+		browserName: 'safari',
+		platform: 'OS X 10.11',
+		version: '10',
 	},
 };
