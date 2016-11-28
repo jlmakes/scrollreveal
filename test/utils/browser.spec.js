@@ -1,4 +1,3 @@
-/* global describe, it, expect */
 import { isNode, isNodeList, transformSupported, transitionSupported } from '../../src/utils/browser';
 
 describe('Browser Utilities', () => {

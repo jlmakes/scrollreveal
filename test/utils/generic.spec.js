@@ -1,4 +1,3 @@
-/* global describe, it, expect, sinon */
 import { isObject, forOwn, logger, nextUniqueId } from '../../src/utils/generic';
 
 describe('Generic Utilities', () => {

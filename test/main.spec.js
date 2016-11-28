@@ -1,4 +1,3 @@
-/* global describe, it, expect, sinon*/
 import ScrollReveal from '../src/main';
 
 describe('ScrollReveal', () => {

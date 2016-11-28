@@ -1,4 +1,3 @@
-/* global describe, it, expect, sinon */
 import { getElement, getElements } from '../../src/core/functions';
 
 describe('Core Functions', () => {

@@ -1,4 +1,3 @@
-/* global describe, it, expect, sinon */
 import { polyfill } from '../../src/polyfills/requestAnimationFrame';
 
 describe('Polyfills', () => {

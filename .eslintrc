@@ -10,6 +10,12 @@
   "parserOptions": {
     "sourceType": "module",
   },
+  "globals": {
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "sinon": true,
+  },
   "rules": {
     "arrow-spacing": 2,
     "block-spacing": 2,
