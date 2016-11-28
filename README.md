@@ -8,7 +8,7 @@ Work in progress development branch.
 ![Version][version-badge]
 [![License GPLv3][license-badge]][license-url]
 
-[![Build Status](https://saucelabs.com/browser-matrix/jlmakes.svg)](https://saucelabs.com/beta/builds/1180a4d52c2441a4b409ec688d8f596e)
+[![Build Status][saucelabs-matrix]][saucelabs-url]
 
 ## License
 
@@ -33,3 +33,5 @@ Ripped from the ![heart](http://i.imgur.com/oXJmdtz.gif) of [Julian Lloyd](https
 [version-badge]: https://img.shields.io/badge/version-4.0.0_alpha-1283c3.svg
 [license-badge]: https://img.shields.io/badge/license-GPL_v3-1283c3.svg
 [license-url]: https://opensource.org/licenses/GPL-3.0
+[saucelabs-matrix]: https://saucelabs.com/browser-matrix/jlmakes.svg
+[saucelabs-url]: https://saucelabs.com/u/jlmakes
