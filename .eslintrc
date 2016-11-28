@@ -17,6 +17,7 @@
     "sinon": true,
   },
   "rules": {
+    "array-bracket-spacing": [2, "never", { "arraysInArrays": true }],
     "arrow-spacing": 2,
     "block-spacing": 2,
     "comma-dangle": [2, "always-multiline"],
@@ -35,7 +36,6 @@
     "object-curly-spacing": [2, "always", { "objectsInObjects": false, "arraysInObjects": false }],
     "object-shorthand":  [2, "always" ],
     "semi": [ 2, "always" ],
-    "array-bracket-spacing": [2, "always", { "arraysInArrays": false }],
     "space-in-parens": [2, "never"],
     "quote-props": [ 2, "as-needed" ],
     "quotes": [ 2, "single" ],
