@@ -14,6 +14,6 @@ export const polyfill = (() => {
 })();
 
 export const requestAnimationFrame = window.requestAnimationFrame ||
-															window.webkitRequestAnimationFrame ||
-															window.mozRequestAnimationFrame ||
-															polyfill;
+																		 window.webkitRequestAnimationFrame ||
+																		 window.mozRequestAnimationFrame ||
+																		 polyfill;
