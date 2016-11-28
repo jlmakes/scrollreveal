@@ -4,17 +4,17 @@
     "amd": true,
     "browser": true,
     "mocha": true,
-    "node": true,
+    "node": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
-    "sourceType": "module",
+    "sourceType": "module"
   },
   "globals": {
     "describe": true,
     "it": true,
     "expect": true,
-    "sinon": true,
+    "sinon": true
   },
   "rules": {
     "array-bracket-spacing": [2, "never", { "arraysInArrays": true }],
@@ -38,6 +38,6 @@
     "semi": [ 2, "always" ],
     "space-in-parens": [2, "never"],
     "quote-props": [ 2, "as-needed" ],
-    "quotes": [ 2, "single" ],
-  },
+    "quotes": [ 2, "single" ]
+  }
 }
