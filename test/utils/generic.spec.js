@@ -1,6 +1,26 @@
-import { isObject, forOwn, logger, nextUniqueId } from '../../src/utils/generic';
+import { deepAssign, isObject, forOwn, logger, nextUniqueId } from '../../src/utils/generic';
 
 describe('Generic Utilities', () => {
+
+	describe('deepAssign()', () => {
+
+		it('should assign source values to target object', () => {
+			const target = { foo: 'bar', bun: 'baz' };
+			const source = { foo: 'bonk!', bif: 'baff' };
+			const goal = { foo: 'bonk!', bun: 'baz', bif: 'baff' };
+			deepAssign(target, source);
+			expect(target).to.deep.equal(goal);
+		});
+
+		it('should accept multiple sources', () => {
+			const target = { foo: 'bar', bun: 'baz' };
+			const source1 = { foo: 'bonk!', bif: 'baff' };
+			const source2 = { foo: 'pow!' };
+			const goal = { foo: 'pow!', bun: 'baz', bif: 'baff' };
+			deepAssign(target, source1, source2);
+			expect(target).to.deep.equal(goal);
+		});
+	});
 
 	describe('isObject()', () => {
 

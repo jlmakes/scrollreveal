@@ -1,3 +1,19 @@
+export function deepAssign (target, ...sources) {
+	sources.forEach((source) => {
+		forOwn(source, function (property) {
+			if (isObject(source[property])) {
+				if (!target[property] || !isObject(target[property])) {
+					target[property] = {};
+				}
+				deepAssign(target[property], source[property]);
+			} else {
+				target[property] = source[property];
+			}
+		});
+	});
+	return target;
+}
+
 export function isObject (object) {
 	return object !== null && typeof object === 'object' &&
 		(object.constructor === Object || Object.prototype.toString.call(object) === '[object Object]');

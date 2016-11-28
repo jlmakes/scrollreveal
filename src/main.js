@@ -6,7 +6,7 @@ import watch from './methods/watch';
 import noop from './core/noop';
 import { getElement } from './core/functions';
 import { transformSupported, transitionSupported } from './utils/browser';
-import { logger } from './utils/generic';
+import { deepAssign, logger } from './utils/generic';
 
 function ScrollReveal (options = {}) {
 
@@ -26,7 +26,7 @@ function ScrollReveal (options = {}) {
 	Object.defineProperty(this, 'defaults', {
 		get: (() => {
 			const config = {};
-			Object.assign(config, defaults, options);
+			deepAssign(config, defaults, options);
 			return () => config;
 		})(),
 	});
