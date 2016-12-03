@@ -11,27 +11,23 @@ module.exports = function (karma) {
 		},
 
 		files: [
-			{ pattern: 'src/**/*.js', included: false },
+			'src/**/*.js',
 			'test/**/*.spec.js',
 		],
 
 		rollupPreprocessor: {
-			rollup: {
-				plugins: [
-					buble(),
-					istanbul({
-						exclude: ['test/**', '**/node_modules/**'],
-						instrumenterConfig: {
-							embedSource: true,
-						},
-					}),
-				],
-			},
-			bundle: {
-				sourceMap: 'inline',
-				format: 'iife',
-				moduleName: 'scrollreveal',
-			},
+			plugins: [
+				buble(),
+				istanbul({
+					exclude: ['test/**', '**/node_modules/**'],
+					instrumenterConfig: {
+						embedSource: true,
+					},
+				}),
+			],
+			sourceMap: 'inline',
+			format: 'iife',
+			moduleName: 'scrollreveal',
 		},
 
 		colors: true,
