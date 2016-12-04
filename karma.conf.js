@@ -11,7 +11,7 @@ module.exports = function (karma) {
 		},
 
 		files: [
-			'src/**/*.js',
+			{ pattern: 'src/**/*.js', included: false },
 			'test/**/*.spec.js',
 		],
 
