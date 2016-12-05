@@ -12,6 +12,14 @@ describe('Generic Utilities', () => {
 			expect(target).to.deep.equal(goal);
 		});
 
+		it('should assign nested source values to target object', () => {
+			const target = { foo: 'bar', bun: { baz: 'tan' } };
+			const source = { foo: 'bonk!', bun: { baz: 'baff', pew: 'pow' } };
+			const goal = { foo: 'bonk!', bun: { baz: 'baff', pew: 'pow' } };
+			deepAssign(target, source);
+			expect(target).to.deep.equal(goal);
+		});
+
 		it('should accept multiple sources', () => {
 			const target = { foo: 'bar', bun: 'baz' };
 			const source1 = { foo: 'bonk!', bif: 'baff' };
