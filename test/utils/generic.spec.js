@@ -38,7 +38,7 @@ describe('Generic Utilities', () => {
 		});
 
 		it('should return false when passed a function', () => {
-			const result = isObject(function(){});
+			const result = isObject(() => {});
 			expect(result).to.be.false;
 		});
 
