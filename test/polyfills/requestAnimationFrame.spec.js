@@ -21,9 +21,7 @@ describe('Polyfills', () => {
 		it('should throttle callback invocations', () => {
 			const spy = sinon.spy();
 			const start = Date.now();
-			// Should attempt to invoke callback 60 times
-			// a second, or at most 6 times in 100ms.
-			do { polyfill(spy); } while (Date.now() - start < 100);
+			do { polyfill(spy); } while (Date.now() - start < 96);
 			expect(spy.callCount).to.be.at.most(6);
 		});
 	});
