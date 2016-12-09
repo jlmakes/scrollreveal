@@ -1,12 +1,12 @@
-import defaults from './core/defaults';
-import remove from './methods/remove';
-import reveal from './methods/reveal';
-import sync from './methods/sync';
-import watch from './methods/watch';
-import noop from './core/noop';
-import { getElement } from './core/functions';
-import { transformSupported, transitionSupported } from './utils/browser';
-import { deepAssign, logger } from './utils/generic';
+import defaults from './defaults';
+import remove from '../methods/remove';
+import reveal from '../methods/reveal';
+import sync from '../methods/sync';
+import watch from '../methods/watch';
+import noop from './noop';
+import { getElement } from './functions';
+import { transformSupported, transitionSupported } from '../utils/browser';
+import { deepAssign, logger } from '../utils/generic';
 
 function ScrollReveal (options = {}) {
 
