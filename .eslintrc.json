@@ -32,6 +32,7 @@
     "no-class-assign": 2,
     "no-this-before-super": 2,
     "no-trailing-spaces": 2,
+    "no-unused-vars": 1,
     "no-var": 2,
     "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
     "object-curly-spacing": [2, "always"],
