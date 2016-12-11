@@ -4,7 +4,7 @@ import reveal from '../methods/reveal';
 import sync from '../methods/sync';
 import watch from '../methods/watch';
 import noop from './noop';
-import { getNode } from './functions';
+import { getNode } from '../utils/core';
 import { transformSupported, transitionSupported } from '../utils/browser';
 import { deepAssign, logger } from '../utils/generic';
 

@@ -1,6 +1,6 @@
-import { getNode, getNodes } from '../../src/core/functions';
+import { getNode, getNodes } from '../../src/utils/core';
 
-describe('Core Functions', () => {
+describe('Core Utilities', () => {
 
 	describe('getNode()', () => {
 
