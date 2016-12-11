@@ -6,8 +6,7 @@ describe('ScrollReveal', () => {
 	describe('Output Test', () => {
 		it('should show computed style defaults', () => {
 			const computed = window.getComputedStyle(document.documentElement);
-			console.log(`transition is: ${computed.transition}`);
-			console.log(`transform is: ${computed.transform}`);
+			console.log(`transition property is: ${computed.transitionProperty}`);
 			expect(true).to.be.true;
 		})
 	});
