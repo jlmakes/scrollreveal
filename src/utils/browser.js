@@ -7,6 +7,7 @@ export function isNode (target) {
 			typeof target.nodeName === 'string';
 }
 
+
 export function isNodeList (target) {
 	const prototypeToString = Object.prototype.toString.call(target);
 	const regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
@@ -19,15 +20,18 @@ export function isNodeList (target) {
 			(target.length === 0 || isNode(target[0]));
 }
 
+
 export function transformSupported () {
 	const style = document.documentElement.style;
 	return 'transform' in style || 'WebkitTransform' in style;
 }
 
+
 export function transitionSupported () {
 	const style = document.documentElement.style;
 	return 'transition' in style || 'WebkitTransition' in style;
 }
+
 
 /* istanbul ignore next */
 export const isMobile = function () {

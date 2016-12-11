@@ -1,5 +1,6 @@
 import { handler } from '../core/functions';
 
+
 function remove () {
 	// this.initialized = false;
 	//
@@ -13,5 +14,6 @@ function remove () {
 	//   }
 	// });
 }
+
 
 export default remove;

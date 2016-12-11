@@ -1,5 +1,6 @@
 import ScrollReveal from '../../src/core/constructor';
 
+
 describe('ScrollReveal', () => {
 
 	describe('Constructor', () => {

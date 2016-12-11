@@ -1,5 +1,6 @@
 import { isNode, isNodeList, transformSupported, transitionSupported } from '../../src/utils/browser';
 
+
 describe('Browser Utilities', () => {
 
 	describe('isNode()', () => {

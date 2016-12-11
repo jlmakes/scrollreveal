@@ -1,5 +1,6 @@
 import { polyfill } from '../../src/polyfills/requestAnimationFrame';
 
+
 describe('Polyfills', () => {
 
 	describe('requestAnimationFrame()', () => {

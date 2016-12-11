@@ -1,5 +1,6 @@
 import { initialize } from '../core/functions';
-import reveal from './reveal';
+import reveal from '../methods/reveal';
+
 
 /**
  * Re-runs `reveal()` for each record stored in history, effectively capturing
@@ -15,5 +16,6 @@ function sync () {
 	//
 	// return this;
 }
+
 
 export default sync;

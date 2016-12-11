@@ -1,9 +1,9 @@
-import defaults from './defaults';
+import defaults from '../core/defaults';
 import remove from '../methods/remove';
 import reveal from '../methods/reveal';
 import sync from '../methods/sync';
 import watch from '../methods/watch';
-import noop from './noop';
+import noop from '../core/noop';
 import { getNode, logger } from '../utils/core';
 import { transformSupported, transitionSupported } from '../utils/browser';
 import { deepAssign } from '../utils/generic';
