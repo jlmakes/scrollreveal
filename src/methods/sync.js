@@ -1,4 +1,4 @@
-import { initialize } from '../core/functions';
+import { initialize } from '../instance/functions';
 import reveal from '../methods/reveal';
 
 

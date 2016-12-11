@@ -1,1 +1,1 @@
-import ScrollReveal from './core/constructor';
+import ScrollReveal from './instance/constructor';

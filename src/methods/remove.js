@@ -1,4 +1,4 @@
-import { handler } from '../core/functions';
+import { handler } from '../instance/functions';
 
 
 function remove () {
