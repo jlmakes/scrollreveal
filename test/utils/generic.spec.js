@@ -1,4 +1,4 @@
-import { deepAssign, isObject, forOwn, logger, nextUniqueId } from '../../src/utils/generic';
+import { deepAssign, isObject, forOwn, nextUniqueId } from '../../src/utils/generic';
 
 describe('Generic Utilities', () => {
 
@@ -81,31 +81,6 @@ describe('Generic Utilities', () => {
 			} catch (error) {
 				expect(error).to.be.an.instanceof(TypeError);
 			}
-		});
-	});
-
-	describe('logger()', () => {
-
-		let spy;
-		let stub;
-
-		before('stub console log', () => {
-			spy = sinon.spy();
-			stub = sinon.stub(console, 'log', spy);
-		});
-
-		it('should invoke console.log', () => {
-			logger();
-			expect(spy).to.have.been.called;
-		});
-
-		it('should prepend output with `ScrollReveal: `', () => {
-			logger('test');
-			expect(spy).to.have.been.calledWith('ScrollReveal: test');
-		});
-
-		after('restore console log', () => {
-			stub.restore();
 		});
 	});
 

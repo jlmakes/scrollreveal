@@ -1,4 +1,3 @@
-import { logger } from '../utils/generic';
 import { isNode, isNodeList } from '../utils/browser';
 
 
@@ -34,4 +33,11 @@ export function getNodes (target, container = document) {
 		elements.push(target);
 	}
 	return isNodeList(target) ? Array.prototype.slice.call(target) : elements;
+}
+
+
+export function logger (message) {
+	if (console) {
+		console.log(`ScrollReveal: ${message}`); // eslint-disable-line no-console
+	}
 }

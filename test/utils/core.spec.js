@@ -1,4 +1,4 @@
-import { getNode, getNodes } from '../../src/utils/core';
+import { getNode, getNodes, logger } from '../../src/utils/core';
 
 describe('Core Utilities', () => {
 
@@ -97,6 +97,31 @@ describe('Core Utilities', () => {
 			getNodes('.foo!');
 			stub.restore();
 			expect(spy).to.have.been.called;
+		});
+	});
+
+	describe('logger()', () => {
+
+		let spy;
+		let stub;
+
+		before('stub console log', () => {
+			spy = sinon.spy();
+			stub = sinon.stub(console, 'log', spy);
+		});
+
+		it('should invoke console.log', () => {
+			logger();
+			expect(spy).to.have.been.called;
+		});
+
+		it('should prepend output with `ScrollReveal: `', () => {
+			logger('test');
+			expect(spy).to.have.been.calledWith('ScrollReveal: test');
+		});
+
+		after('restore console log', () => {
+			stub.restore();
 		});
 	});
 });

@@ -4,9 +4,10 @@ import reveal from '../methods/reveal';
 import sync from '../methods/sync';
 import watch from '../methods/watch';
 import noop from './noop';
-import { getNode } from '../utils/core';
+import { getNode, logger } from '../utils/core';
 import { transformSupported, transitionSupported } from '../utils/browser';
-import { deepAssign, logger } from '../utils/generic';
+import { deepAssign } from '../utils/generic';
+
 
 function ScrollReveal (options = {}) {
 
@@ -62,5 +63,6 @@ if (typeof define === 'function' && typeof define.amd === 'object' && define.amd
 } else {
 	window.ScrollReveal = ScrollReveal;
 }
+
 
 export default ScrollReveal;
