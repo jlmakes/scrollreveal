@@ -3,8 +3,17 @@ import ScrollReveal from '../../src/instance/constructor';
 
 describe('ScrollReveal', () => {
 
-	describe('Constructor', () => {
+	describe('Output Test', () => {
+		it('should show computed style defaults', () => {
+			const computed = window.getComputedStyle(document.documentElement);
+			console.log(`transition is: ${computed.transition}`);
+			console.log(`transform is: ${computed.transform}`);
+			expect(true).to.be.true;
+		})
+	});
 
+	describe('Constructor', () => {
+		
 		it('should return a new instance with `new` keyword', () => {
 			const result = new ScrollReveal();
 			expect(result).to.exist;
