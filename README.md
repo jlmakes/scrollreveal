@@ -26,7 +26,7 @@ Ripped from the ![heart](http://i.imgur.com/oXJmdtz.gif) of [Julian Lloyd](https
 
 [travis-badge]: https://img.shields.io/travis/jlmakes/scrollreveal/development.svg
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
-[codecov-badge]: https://img.shields.io/coveralls/jlmakes/scrollreveal/development.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/jlmakes/scrollreveal/development.svg
 [codecov-url]: https://codecov.io/gh/jlmakes/scrollreveal/branch/development
 [downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
