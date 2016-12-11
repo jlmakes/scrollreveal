@@ -75,12 +75,12 @@ describe('Generic Utilities', () => {
 			expect(spy).to.have.been.calledTwice;
 		});
 
-		it('should output to log when not passed an object literal', () => {
-			const spy = sinon.spy();
-			const stub = sinon.stub(console, 'log', spy);
-			forOwn(null, () => {});
-			stub.restore();
-			expect(spy).to.have.been.called;
+		it('should throw a type error when not passed an object literal', () => {
+			try {
+				forOwn(null, () => {});
+			} catch (error) {
+				expect(error).to.be.an.instanceof(TypeError);
+			}
 		});
 	});
 

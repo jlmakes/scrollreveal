@@ -14,28 +14,32 @@ export function deepAssign (target, ...sources) {
 	return target;
 }
 
+
 export function isObject (object) {
 	return object !== null && typeof object === 'object' &&
 		(object.constructor === Object || Object.prototype.toString.call(object) === '[object Object]');
 }
 
+
 export function forOwn (object, callback) {
-	if (!isObject(object)) {
-		logger(`Expected "object", but received "${typeof object}".`);
-	} else {
+	if (isObject(object)) {
 		for (const property in object) {
 			if (object.hasOwnProperty(property)) {
 				callback(property);
 			}
 		}
+	} else {
+		throw new TypeError('Expected an object literal.');
 	}
 }
+
 
 export function logger (message) {
 	if (console) {
 		console.log(`ScrollReveal: ${message}`); // eslint-disable-line no-console
 	}
 }
+
 
 export const nextUniqueId = (() => {
 	let uid = 0;
