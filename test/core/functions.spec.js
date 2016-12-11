@@ -1,31 +1,31 @@
-import { getElement, getElements } from '../../src/core/functions';
+import { getNode, getNodes } from '../../src/core/functions';
 
 describe('Core Functions', () => {
 
-	describe('getElement()', () => {
+	describe('getNode()', () => {
 
 		it('should return the same node when passed a node', () => {
 			const actual = document.documentElement;
-			const result = getElement(actual);
+			const result = getNode(actual);
 			expect(result).to.equal(actual);
 		});
 
 		it('should return a node when passed a valid selector', () => {
 			const actual = document.documentElement;
-			const result = getElement('html');
+			const result = getNode('html');
 			expect(result).to.equal(actual);
 		});
 
 		it('should return null when no element matches a valid selector', () => {
 			const stub = sinon.stub(console, 'log');
-			const result = getElement('.foo');
+			const result = getNode('.foo');
 			stub.restore();
 			expect(result).to.be.null;
 		});
 
 		it('should return null when an invalid selector is passed', () => {
 			const stub = sinon.stub(console, 'log');
-			const result = getElement('.foo!');
+			const result = getNode('.foo!');
 			stub.restore();
 			expect(result).to.be.null;
 		});
@@ -33,7 +33,7 @@ describe('Core Functions', () => {
 		it('should output to log when no element matches a valid selector', () => {
 			const spy = sinon.spy();
 			const stub = sinon.stub(console, 'log', spy);
-			getElement('.foo');
+			getNode('.foo');
 			stub.restore();
 			expect(spy).to.have.been.called;
 		});
@@ -41,44 +41,44 @@ describe('Core Functions', () => {
 		it('should output to log when an invalid selector is passed', () => {
 			const spy = sinon.spy();
 			const stub = sinon.stub(console, 'log', spy);
-			getElement('.foo!');
+			getNode('.foo!');
 			stub.restore();
 			expect(spy).to.have.been.called;
 		});
 	});
 
-	describe('getElements()', () => {
+	describe('getNodes()', () => {
 
 		it('should return an array containing the same node when passed a node', () => {
 			const element = document.documentElement;
 			const actual = [element];
-			const result = getElements(element);
+			const result = getNodes(element);
 			expect(result).to.deep.equal(actual);
 		});
 
 		it('should return an array of nodes when passed a node list', () => {
 			const elements = document.querySelectorAll('body');
 			const actual = Array.prototype.slice.call(elements);
-			const result = getElements(elements);
+			const result = getNodes(elements);
 			expect(result).to.deep.equal(actual);
 		});
 
 		it('should return an array of nodes when passed a valid selector', () => {
 			const actual = [document.documentElement];
-			const result = getElements('html');
+			const result = getNodes('html');
 			expect(result).to.deep.equal(actual);
 		});
 
 		it('should return an empty array when no element matches a valid selector', () => {
 			const stub = sinon.stub(console, 'log');
-			const result = getElements('.foo');
+			const result = getNodes('.foo');
 			stub.restore();
 			expect(result).to.deep.equal([]);
 		});
 
 		it('should return an empty array when an invalid selector is passed', () => {
 			const stub = sinon.stub(console, 'log');
-			const result = getElements('.foo!');
+			const result = getNodes('.foo!');
 			stub.restore();
 			expect(result).to.deep.equal([]);
 		});
@@ -86,7 +86,7 @@ describe('Core Functions', () => {
 		it('should output to log when no element matches a valid selector', () => {
 			const spy = sinon.spy();
 			const stub = sinon.stub(console, 'log', spy);
-			getElements('.foo');
+			getNodes('.foo');
 			stub.restore();
 			expect(spy).to.have.been.called;
 		});
@@ -94,7 +94,7 @@ describe('Core Functions', () => {
 		it('should output to log when an invalid selector is passed', () => {
 			const spy = sinon.spy();
 			const stub = sinon.stub(console, 'log', spy);
-			getElements('.foo!');
+			getNodes('.foo!');
 			stub.restore();
 			expect(spy).to.have.been.called;
 		});

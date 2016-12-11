@@ -26,7 +26,7 @@ export function initialize () {
 	// animate.call(this);
 }
 
-export function getElement (target, container = document) {
+export function getNode (target, container = document) {
 	let element = null;
 	if (typeof target === 'string') {
 		try {
@@ -42,7 +42,7 @@ export function getElement (target, container = document) {
 }
 
 
-export function getElements (target, container = document) {
+export function getNodes (target, container = document) {
 	let elements = [];
 	if (typeof target === 'string') {
 		try {
