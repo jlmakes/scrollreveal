@@ -1,5 +1,5 @@
-import { initialize } from '../../instance/functions';
-import reveal from '../methods/reveal';
+import initialize from '../functions/initialize';
+import reveal from './reveal';
 
 
 /**

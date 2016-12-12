@@ -1,17 +1,4 @@
-import { requestAnimationFrame } from '../polyfills/requestAnimationFrame';
-
-
-export function animate () {
-	// ...
-}
-
-
-export function handler () {
-	// requestAnimationFrame(animate.bind(this));
-}
-
-
-export function initialize () {
+function initialize () {
 	// this.initialized = true;
 	//
 	// this.store.containers.forEach((container) => {
@@ -26,3 +13,6 @@ export function initialize () {
 	//
 	// animate.call(this);
 }
+
+
+export default initialize;
