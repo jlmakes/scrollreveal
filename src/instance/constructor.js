@@ -1,10 +1,10 @@
-import defaults from '../instance/defaults';
-import noop from '../instance/noop';
+import defaults from './defaults';
+import noop from './noop';
 
-import remove from '../methods/remove';
-import reveal from '../methods/reveal';
-import sync from '../methods/sync';
-import watch from '../methods/watch';
+import remove from './methods/remove';
+import reveal from './methods/reveal';
+import sync from './methods/sync';
+import watch from './methods/watch';
 
 import { transformSupported, transitionSupported } from '../utils/browser';
 import { getNode, logger } from '../utils/core';
