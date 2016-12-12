@@ -3,16 +3,6 @@ import ScrollReveal from '../../src/instance/constructor';
 
 describe('ScrollReveal', () => {
 
-	describe('Output Test', () => {
-		it('should show computed style defaults', () => {
-			document.body.setAttribute('style', '-webkit-transform: rotateX(45deg); transform: rotateX(45deg)');
-			const computed = window.getComputedStyle(document.body);
-			console.log(`transform property is: ${computed.transform}`);
-			console.log(`webkitTransform property is: ${computed.webkitTransform}`);
-			expect(true).to.be.true;
-		});
-	});
-
 	describe('Constructor', () => {
 
 		it('should return a new instance with `new` keyword', () => {
