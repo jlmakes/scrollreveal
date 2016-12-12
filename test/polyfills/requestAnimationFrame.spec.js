@@ -23,7 +23,7 @@ describe('Polyfills', () => {
 			const spy = sinon.spy();
 			const start = Date.now();
 			do { polyfill(spy); } while (Date.now() - start < 96);
-			expect(spy.callCount).to.be.at.most(6);
+			expect(spy.callCount).to.be.at.most(7);
 		});
 	});
 });
