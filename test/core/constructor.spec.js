@@ -5,14 +5,16 @@ describe('ScrollReveal', () => {
 
 	describe('Output Test', () => {
 		it('should show computed style defaults', () => {
-			const computed = window.getComputedStyle(document.documentElement);
-			console.log(`transition property is: ${computed.transitionProperty}`);
+			document.body.setAttribute('style', '-webkit-transform: rotateX(45deg); transform: rotateX(45deg)');
+			const computed = window.getComputedStyle(document.body);
+			console.log(`transform property is: ${computed.transform}`);
+			console.log(`webkitTransform property is: ${computed.webkitTransform}`);
 			expect(true).to.be.true;
-		})
+		});
 	});
 
 	describe('Constructor', () => {
-		
+
 		it('should return a new instance with `new` keyword', () => {
 			const result = new ScrollReveal();
 			expect(result).to.exist;
