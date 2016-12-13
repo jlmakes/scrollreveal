@@ -82,6 +82,36 @@ function identityMatrix () {
 }
 
 
+function rotateXMatrix (theta) {
+	const angle = Math.PI / 180 * theta;
+	const matrix = new identityMatrix();
+	matrix[5] = matrix[10] = Math.cos(angle);
+	matrix[6] = Math.sin(angle);
+	matrix[9] = Math.sin(angle) * -1;
+	return matrix;
+}
+
+
+function rotateYMatrix (theta) {
+	const angle = Math.PI / 180 * theta;
+	const matrix = new identityMatrix();
+	matrix[0] = matrix[10] = Math.cos(angle);
+	matrix[8] = Math.sin(angle);
+	matrix[2] = Math.sin(angle) * -1;
+	return matrix;
+}
+
+
+function rotateZMatrix (theta) {
+	const angle = Math.PI / 180 * theta;
+	const matrix = new identityMatrix();
+	matrix[0] = matrix[5] = Math.cos(angle);
+	matrix[1] = Math.sin(angle);
+	matrix[4] = Math.sin(angle) * -1;
+	return matrix;
+}
+
+
 function matrixMultiply (first, second) {
 	const result = [];
 
