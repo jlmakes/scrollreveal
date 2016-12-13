@@ -1,6 +1,3 @@
-function watch () {
+export default function watch () {
 	// something...
 }
-
-
-export default watch;

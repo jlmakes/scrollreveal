@@ -1,7 +1,7 @@
 import handler from '../functions/handler';
 
 
-function remove () {
+export default function remove () {
 	// this.initialized = false;
 	//
 	// this.store.containers.forEach((container) => {
@@ -14,6 +14,3 @@ function remove () {
 	//   }
 	// });
 }
-
-
-export default remove;

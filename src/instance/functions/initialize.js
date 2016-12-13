@@ -1,4 +1,4 @@
-function initialize () {
+export default function initialize () {
 	// this.initialized = true;
 	//
 	// this.store.containers.forEach((container) => {
@@ -13,6 +13,3 @@ function initialize () {
 	//
 	// animate.call(this);
 }
-
-
-export default initialize;

@@ -7,7 +7,7 @@ import reveal from './reveal';
  * any content loaded asynchronously that matches existing reveal set targets.
  * @return {object} - The current ScrollReveal instance.
  */
-function sync () {
+export default function sync () {
 	// this.store.history.forEach((record) => {
 	//   reveal.call(this, record.target, record.config, record.interval, false);
 	// });
@@ -16,6 +16,3 @@ function sync () {
 	//
 	// return this;
 }
-
-
-export default sync;

@@ -3,7 +3,7 @@ import { deepAssign, nextUniqueId } from '../../utils/generic';
 import generateStyles from '../functions/generateStyles';
 
 
-function reveal (target, options /*, interval */) {
+export default function reveal (target, options /*, interval */) {
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
@@ -59,6 +59,3 @@ function reveal (target, options /*, interval */) {
 
 	return this;
 }
-
-
-export default reveal;

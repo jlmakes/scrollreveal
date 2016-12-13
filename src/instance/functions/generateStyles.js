@@ -1,6 +1,6 @@
 import matrix from '../../utils/matrix';
 
-function generateStyles (element) {
+export default function generateStyles (element) {
 	const computed = window.getComputedStyle(element.node);
 
 	const styles = {
@@ -73,6 +73,3 @@ function generateStyles (element) {
 
 	return styles;
 }
-
-
-export default generateStyles;

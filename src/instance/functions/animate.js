@@ -1,6 +1,3 @@
-function animate () {
+export default function animate () {
 	// ...
 }
-
-
-export default animate;

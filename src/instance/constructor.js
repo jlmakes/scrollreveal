@@ -11,7 +11,7 @@ import { getNode, logger } from '../utils/core';
 import { deepAssign } from '../utils/generic';
 
 
-function ScrollReveal (options = {}) {
+export default function ScrollReveal (options = {}) {
 
 	// Returns a new instance without `new` keyword.
 	if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
@@ -65,6 +65,3 @@ if (typeof define === 'function' && typeof define.amd === 'object' && define.amd
 } else {
 	window.ScrollReveal = ScrollReveal;
 }
-
-
-export default ScrollReveal;
