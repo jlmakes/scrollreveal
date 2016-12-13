@@ -60,17 +60,16 @@ export default {
 	},
 
 
-	multiply (first, second) {
+	multiply (m, x) {
 		const result = [];
-
 		for (let i = 0; i < 4; i++) {
-			const row = [first[i], first[i+4], first[i+8], first[i+12]];
+			const r = [m[i], m[i + 4], m[i + 8], m[i + 12]];
 			for (let j = 0; j < 4; j++) {
-				const col = [second[j], second[j+1], second[j+2], second[j+3]];
-				result[i + j * 4] = row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3];
+				const k = j * 4;
+				const c = [x[k], x[k + 1], x[k + 2], x[k + 3]];
+				result[i + k] = r[0] * c[0] + r[1] * c[1] + r[2] * c[2] + r[3] * c[3];
 			}
 		}
-
 		return result;
 	},
 };
