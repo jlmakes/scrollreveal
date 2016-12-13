@@ -74,8 +74,22 @@ function generateStyles (element) {
 		}
 	}
 
-
 	return styles;
+}
+
+
+function matrixMultiply (first, second) {
+	const result = [];
+
+	for (let i = 0; i < 4; i++) {
+		const row = [first[i], first[i+4], first[i+8], first[i+12]];
+		for (let j = 0; j < 4; j++) {
+			const col = [second[j], second[j+1], second[j+2], second[j+3]];
+			result[i + j * 4] = row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3];
+		}
+	}
+
+	return result;
 }
 
 
