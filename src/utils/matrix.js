@@ -72,4 +72,25 @@ export default {
 		matrix[10] = scalar;
 		return matrix;
 	},
+
+
+	translateX (distance) {
+		const matrix = this.identity();
+		matrix[12] = distance;
+		return matrix;
+	},
+
+
+	translateY (distance) {
+		const matrix = this.identity();
+		matrix[13] = distance;
+		return matrix;
+	},
+
+
+	translateZ (distance) {
+		const matrix = this.identity();
+		matrix[14] = distance;
+		return matrix;
+	},
 };
