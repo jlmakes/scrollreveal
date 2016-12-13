@@ -58,23 +58,27 @@ function generateStyles (element) {
 			if (values.length === 16) {
 				styles.transform.computed.matrix = values;
 			} else {
-				styles.transform.computed.matrix = [];
-				for (let i = 0; i < 16; i++) {
-					styles.transform.computed.matrix.push(0);
-				}
+				styles.transform.computed.matrix = new identityMatrix();
 				styles.transform.computed.matrix[0] = values[0];
 				styles.transform.computed.matrix[1] = values[1];
 				styles.transform.computed.matrix[4] = values[2];
 				styles.transform.computed.matrix[5] = values[3];
-				styles.transform.computed.matrix[10] = 1;
 				styles.transform.computed.matrix[12] = values[4];
 				styles.transform.computed.matrix[13] = values[5];
-				styles.transform.computed.matrix[15] = 1;
 			}
 		}
 	}
 
 	return styles;
+}
+
+
+function identityMatrix () {
+	const matrix = [];
+	for (let i = 0; i < 16; i++) {
+		i % 5 == 0 ? matrix.push(1) : matrix.push(0);
+	}
+	return matrix;
 }
 
 
