@@ -1,14 +1,12 @@
 export const polyfill = (() => {
 	let clock = Date.now();
-	let deltaTime;
 
 	return (callback) => {
 
 		const currentTime = Date.now();
-		deltaTime = currentTime - clock;
 
-		if (deltaTime > 16) {
-			clock += deltaTime;
+		if (currentTime - clock > 16) {
+			clock = currentTime;
 			callback(currentTime);
 		} else {
 			setTimeout(() => {
