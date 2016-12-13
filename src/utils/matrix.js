@@ -39,6 +39,27 @@ export default {
 	},
 
 
+	scaleX (scalar) {
+		const matrix = this.identity();
+		matrix[0] = scalar;
+		return matrix;
+	},
+
+
+	scaleY (scalar) {
+		const matrix = this.identity();
+		matrix[5] = scalar;
+		return matrix;
+	},
+
+
+	scaleZ (scalar) {
+		const matrix = this.identity();
+		matrix[10] = scalar;
+		return matrix;
+	},
+
+
 	multiply (first, second) {
 		const result = [];
 
