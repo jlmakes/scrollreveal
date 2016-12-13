@@ -3,17 +3,15 @@ import matrix from '../../utils/matrix';
 export default function generateStyles (element) {
 	const computed = window.getComputedStyle(element.node);
 
-	const styles = {
-		opacity: {
-			computed: computed.opacity,
-			generated: element.config.opacity,
-		},
-		transform: {},
-		transition: {},
+	const opacity = {
+		computed: computed.opacity,
+		generated: element.config.opacity,
 	};
 
+	let transform;
+
 	/**
-	 * The transform property should be one of 4 values:
+	 * The computed transform property should be one of:
 	 *
 	 *  - undefined
 	 *  - 'none'
@@ -25,7 +23,7 @@ export default function generateStyles (element) {
 	 */
 	if (typeof computed.transform === 'string') {
 
-		styles.transform = {
+		transform = {
 			computed: {
 				raw: computed.transform,
 			},
@@ -34,7 +32,7 @@ export default function generateStyles (element) {
 
 	} else if (typeof computed.webkitTransform === 'string') {
 
-		styles.transform = {
+		transform = {
 			computed: {
 				raw: computed.webkitTransform,
 			},
@@ -53,23 +51,26 @@ export default function generateStyles (element) {
 	 *
 	 * Guidelines for conversion: https://goo.gl/EJlUQ1
 	 */
-	if (styles.transform.computed.raw) {
-		const match = styles.transform.computed.raw.match(/\(([^)]+)\)/);
+	if (transform.computed) {
+		const match = transform.computed.raw.match(/\(([^)]+)\)/);
 		if (match) {
 			let values = match[1].split(', ').map(value => parseFloat(value));
 			if (values.length === 16) {
-				styles.transform.computed.matrix = values;
+				transform.computed.matrix = values;
 			} else {
-				styles.transform.computed.matrix = matrix.identity();
-				styles.transform.computed.matrix[0] = values[0];
-				styles.transform.computed.matrix[1] = values[1];
-				styles.transform.computed.matrix[4] = values[2];
-				styles.transform.computed.matrix[5] = values[3];
-				styles.transform.computed.matrix[12] = values[4];
-				styles.transform.computed.matrix[13] = values[5];
+				transform.computed.matrix = matrix.identity();
+				transform.computed.matrix[0] = values[0];
+				transform.computed.matrix[1] = values[1];
+				transform.computed.matrix[4] = values[2];
+				transform.computed.matrix[5] = values[3];
+				transform.computed.matrix[12] = values[4];
+				transform.computed.matrix[13] = values[5];
 			}
 		}
 	}
 
-	return styles;
+	return {
+		opacity,
+		transform,
+	};
 }
