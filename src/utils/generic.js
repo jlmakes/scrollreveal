@@ -1,6 +1,6 @@
 export function deepAssign (target, ...sources) {
 	sources.forEach((source) => {
-		forOwn(source, function (property) {
+		forOwn(source, (property) => {
 			if (isObject(source[property])) {
 				if (!target[property] || !isObject(target[property])) {
 					target[property] = {};
