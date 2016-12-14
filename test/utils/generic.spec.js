@@ -1,4 +1,4 @@
-import { deepAssign, isObject, forOwn, nextUniqueId } from '../../src/utils/generic';
+import { deepAssign, deepEqual, isObject, forOwn, nextUniqueId } from '../../src/utils/generic';
 
 
 describe('Generic Utilities', () => {
@@ -28,6 +28,30 @@ describe('Generic Utilities', () => {
 			const goal = { foo: 'pow!', bun: 'baz', bif: 'baff' };
 			deepAssign(target, source1, source2);
 			expect(target).to.deep.equal(goal);
+		});
+	});
+
+	describe('deepEqual()', () => {
+
+		it('should return true when passed like nested objects', () => {
+			const first = { foo: 'bar', bun: { baz: 10 } };
+			const second = { foo: 'bar', bun: { baz: 10 } };
+			const result = deepEqual(first, second);
+			expect(result).to.be.true;
+		});
+
+		it('should return false when strict comparison fails', () => {
+			const first = { foo: 'bar', bun: { baz: 10 } };
+			const second = { foo: 'bar', bun: { baz: '10' } };
+			const result = deepEqual(first, second);
+			expect(result).to.be.false;
+		});
+
+		it('should return false when passed unlike nested objects', () => {
+			const first = { foo: 'bar', bun: { baz: 'biff!' } };
+			const second = { foo: 'bar', bun: { biff: 'baz!' } };
+			const result = deepEqual(first, second);
+			expect(result).to.be.false;
 		});
 	});
 
