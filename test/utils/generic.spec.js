@@ -48,8 +48,8 @@ describe('Generic Utilities', () => {
 		});
 
 		it('should return false when passed unlike nested objects', () => {
-			const first = { foo: 'bar', bun: { baz: 'biff!' } };
-			const second = { foo: 'bar', bun: { biff: 'baz!' } };
+			const first = { foo: 'bar', bam: 'wonk!', bun: { baz: 'biff!' } };
+			const second = { foo: 'bar', bam: 'pow!', bun: { baz: 'biff!' } };
 			const result = deepEqual(first, second);
 			expect(result).to.be.false;
 		});
