@@ -22,7 +22,7 @@ If you are creating an open source application under a license compatible with t
 
 ***
 
-Ripped from the ![heart](http://i.imgur.com/oXJmdtz.gif) of [Julian Lloyd](https://twitter.com/jlmakes). © 2014–2017.
+ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rights reserved.
 
 [travis-badge]: https://img.shields.io/travis/jlmakes/scrollreveal/development.svg
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
