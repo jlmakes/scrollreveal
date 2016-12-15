@@ -26,9 +26,9 @@ export default {
 	rotateX (theta) {
 		const angle = Math.PI / 180 * theta;
 		const matrix = this.identity();
-		matrix[5] = matrix[10] = Math.cos(angle);
-		matrix[6] = Math.sin(angle);
-		matrix[9] = Math.sin(angle) * -1;
+		matrix[5] = matrix[10] = parseFloat(Math.cos(angle).toFixed(6));
+		matrix[6] = parseFloat(Math.sin(angle).toFixed(6));
+		matrix[9] = parseFloat(Math.sin(angle).toFixed(6)) * -1;
 		return matrix;
 	},
 
@@ -36,9 +36,9 @@ export default {
 	rotateY (theta) {
 		const angle = Math.PI / 180 * theta;
 		const matrix = this.identity();
-		matrix[0] = matrix[10] = Math.cos(angle);
-		matrix[8] = Math.sin(angle);
-		matrix[2] = Math.sin(angle) * -1;
+		matrix[0] = matrix[10] = parseFloat(Math.cos(angle).toFixed(6));
+		matrix[8] = parseFloat(Math.sin(angle).toFixed(6));
+		matrix[2] = parseFloat(Math.sin(angle).toFixed(6)) * -1;
 		return matrix;
 	},
 
@@ -46,30 +46,16 @@ export default {
 	rotateZ (theta) {
 		const angle = Math.PI / 180 * theta;
 		const matrix = this.identity();
-		matrix[0] = matrix[5] = Math.cos(angle);
-		matrix[1] = Math.sin(angle);
-		matrix[4] = Math.sin(angle) * -1;
+		matrix[0] = matrix[5] = parseFloat(Math.cos(angle).toFixed(6));
+		matrix[1] = parseFloat(Math.sin(angle).toFixed(6));
+		matrix[4] = parseFloat(Math.sin(angle).toFixed(6)) * -1;
 		return matrix;
 	},
 
 
-	scaleX (scalar) {
+	scale (scalar) {
 		const matrix = this.identity();
-		matrix[0] = scalar;
-		return matrix;
-	},
-
-
-	scaleY (scalar) {
-		const matrix = this.identity();
-		matrix[5] = scalar;
-		return matrix;
-	},
-
-
-	scaleZ (scalar) {
-		const matrix = this.identity();
-		matrix[10] = scalar;
+		matrix[0] = matrix[5] = scalar;
 		return matrix;
 	},
 
@@ -84,13 +70,6 @@ export default {
 	translateY (distance) {
 		const matrix = this.identity();
 		matrix[13] = distance;
-		return matrix;
-	},
-
-
-	translateZ (distance) {
-		const matrix = this.identity();
-		matrix[14] = distance;
 		return matrix;
 	},
 };
