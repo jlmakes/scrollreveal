@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Changed
 - **Breaking:** `isSupported()` is now a static method.
+- **Breaking:** `config.distance` now supports only `em` `px` and `%` values.
+- ScrollReveal now retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
+- ScrollReveal now uses a single `matrix3d()` property, with the correct prefix and only when neccesary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal now returns a non-operational instance when instantiated in unsupported browsers.
 - ScrollReveal is no longer open under the MIT license, but instead with both commercial and GPLv3 open source options.
 
