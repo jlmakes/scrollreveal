@@ -9,11 +9,6 @@ export default function generateStyles (element) {
 	let opacity;
 	let transform;
 
-	/**
-	 * We want to generate (and use) as few styles as
-	 * possible, so we go through a series of checks
-	 * to determine which styles our config needs.
-	 */
 	if (config.opacity < 1) {
 		opacity = {
 			computed: computed.opacity,
@@ -23,12 +18,17 @@ export default function generateStyles (element) {
 
 	if (parseFloat(config.distance)) {
 		const axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X';
-		let distance = config.distance;
 
+		let distance;
+
+		/**
+		 * Let’s make sure our our pixel distances are negative for top and left.
+		 * e.g. { origin: 'top', distance: '25px' } starts at `top: -25px` in CSS.
+    	 */
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = /^-/.test(distance)
-				? distance.substr(1)
-				: `-${distance}`;
+			distance = /^-/.test(config.distance)
+				? config.distance.substr(1)
+				: `-${config.distance}`;
 		}
 
 		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g);
@@ -65,47 +65,40 @@ export default function generateStyles (element) {
 		 *  - 'none'
 		 *  - 'matrix()'
 		 *  - 'matrix3d()'
-		 *
-		 * So we first go through looking for strings, and mark
-		 * whether or not it was found on the prefixed property.
 		 */
 		if (typeof computed.transform === 'string') {
-
 			transform = {
 				computed: {
 					raw: computed.transform,
 				},
 				prefixed: false,
 			};
-
 		} else if (typeof computed.webkitTransform === 'string') {
-
 			transform = {
 				computed: {
 					raw: computed.webkitTransform,
 				},
 				prefixed: true,
 			};
-		}
+		} else throw new Error('Missing computed transform property.');
 
-		/**
-		 * The transformation matrix as mentioned above, can come
-		 * in two flavors: 'matrix3d()' with 16 values, and the
-		 * shorthand version 'matrix()' with 6 values.
-		 *
-		 * If we get a `matrix3d()`, we just save its 16 values,
-		 * but if we get the shorthand `matrix()`, we must convert
-		 * its 6 values into the full 16 value representation.
-		 *
-		 * Guidelines for conversion: https://goo.gl/EJlUQ1
-		 */
-		if (transform.computed.raw !== 'none') {
+		if (transform.computed.raw === 'none') {
+			transform.computed.matrix = matrix.identity();
+		} else {
+			/**
+			 * If we get a `matrix3d()`, we just save its 16 values,
+			 * but if we get the shorthand `matrix()`, we must convert
+			 * its 6 values into the full 16 value representation.
+			 */
 			const match = transform.computed.raw.match(/\(([^)]+)\)/);
 			if (match) {
 				let values = match[1].split(', ').map(value => parseFloat(value));
 				if (values.length === 16) {
 					transform.computed.matrix = values;
 				} else {
+					/**
+					 * Conversion Guide: https://goo.gl/EJlUQ1
+					 */
 					transform.computed.matrix = matrix.identity();
 					transform.computed.matrix[0] = values[0];
 					transform.computed.matrix[1] = values[1];
@@ -114,17 +107,17 @@ export default function generateStyles (element) {
 					transform.computed.matrix[12] = values[4];
 					transform.computed.matrix[13] = values[5];
 				}
-			}
-		} else transform.computed.matrix = matrix.identity();
+			} else throw new Error('Unrecognized computed transform property value.');
+		}
 	}
 
 	transformations.unshift(transform.computed.matrix);
-	const generated = transformations.reduce((m, x) => matrix.multiply(m, x));
+	const sum = transformations.reduce((m, x) => matrix.multiply(m, x));
 
 	transform.generated = {
 		initial: (transform.prefixed)
-			? `-webkit-transform: matrix3d(${generated.join(', ')})`
-			: `transform: matrix3d(${generated.join(', ')})`,
+			? `-webkit-transform: matrix3d(${sum.join(', ')})`
+			: `transform: matrix3d(${sum.join(', ')})`,
 		final: (transform.prefixed)
 			? `-webkit-transform: matrix3d(${transform.computed.matrix.join(', ')})`
 			: `transform: matrix3d(${transform.computed.matrix.join(', ')})`,
