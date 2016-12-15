@@ -18,9 +18,11 @@ export function deepAssign (target, ...sources) {
 export function deepEqual (first, second) {
 	let bool = true;
 	forOwn(second, (property) => {
-		if (isObject(second[property])) {
-			bool = deepEqual(first[property], second[property]);
-		} else if (first[property] !== second[property]) bool = false;
+		if (bool) {
+			if (isObject(second[property])) {
+				bool = deepEqual(first[property], second[property]);
+			} else if (first[property] !== second[property]) bool = false;
+		}
 	});
 	return bool;
 }
