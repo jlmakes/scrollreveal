@@ -19,16 +19,16 @@ export default function generateStyles (element) {
 	if (parseFloat(config.distance)) {
 		const axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X';
 
-		let distance;
+		let distance = config.distance;
 
 		/**
 		 * Let’s make sure our our pixel distances are negative for top and left.
 		 * e.g. { origin: 'top', distance: '25px' } starts at `top: -25px` in CSS.
     	 */
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = /^-/.test(config.distance)
-				? config.distance.substr(1)
-				: `-${config.distance}`;
+			distance = /^-/.test(distance)
+				? distance.substr(1)
+				: `-${distance}`;
 		}
 
 		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g);
