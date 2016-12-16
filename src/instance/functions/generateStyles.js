@@ -8,6 +8,7 @@ export default function generateStyles (element) {
 
 	let opacity;
 	let transform;
+	let transition;
 
 	if (config.opacity < 1) {
 		opacity = {
@@ -123,8 +124,31 @@ export default function generateStyles (element) {
 			: `transform: matrix3d(${transform.computed.matrix.join(', ')})`,
 	};
 
+	if (opacity || transform) {
+		/**
+		 * The default computed transition property should be one of:
+		 *
+		 *  - undefined
+		 *  - ''
+		 *  - 'all 0s ease 0s'
+		 *  - 'all 0s 0s cubic-bezier()'
+		 */
+		if (typeof computed.transition === 'string') {
+			transition = {
+				computed: computed.transition,
+				prefixed: false,
+			};
+		} else if (typeof computed.webkitTransition === 'string') {
+			transition = {
+				computed: computed.webkitTransition,
+				prefixed: true,
+			};
+		} else throw new Error('Missing computed transition property.');
+	}
+
 	return {
 		opacity,
 		transform,
+		transition,
 	};
 }
