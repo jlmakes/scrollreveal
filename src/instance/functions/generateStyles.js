@@ -4,11 +4,19 @@ import matrix from '../../utils/matrix';
 export default function generateStyles (element) {
 	const computed = window.getComputedStyle(element.node);
 	const config = element.config;
+	const styleAttribute = /(.+[^;]);?$/g.exec(element.node.getAttribute('style'))[1];
 	const transformations = [];
 
 	let opacity;
 	let transform;
 	let transition;
+
+	const inline = {
+		computed: styleAttribute,
+		generated: (styleAttribute)
+			? `${styleAttribute}; visibility: visible;`
+			: 'visibility: visible;',
+	};
 
 	if (config.opacity < 1) {
 		opacity = {
@@ -147,6 +155,7 @@ export default function generateStyles (element) {
 	}
 
 	return {
+		inline,
 		opacity,
 		transform,
 		transition,
