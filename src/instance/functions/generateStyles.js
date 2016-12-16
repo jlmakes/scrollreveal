@@ -12,8 +12,8 @@ export default function generateStyles (element) {
 
 	if (config.opacity < 1) {
 		opacity = {
-			computed: computed.opacity,
-			generated: config.opacity,
+			computed: parseFloat(computed.opacity),
+			generated: parseFloat(config.opacity),
 		};
 	}
 
