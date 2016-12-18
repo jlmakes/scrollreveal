@@ -158,7 +158,9 @@ export default function generateStyles (element) {
 				computed: computed.webkitTransition,
 				prefixed: true,
 			};
-		} else throw new Error('Missing computed transition property.');
+		} else {
+			throw new Error('Missing computed transition property.');
+		}
 
 		let { delay, duration, easing } = config;
 
