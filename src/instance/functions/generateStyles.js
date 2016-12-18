@@ -89,7 +89,9 @@ export default function generateStyles (element) {
 				},
 				prefixed: true,
 			};
-		} else throw new Error('Missing computed transform property.');
+		} else {
+			throw new Error('Missing computed transform property.');
+		}
 
 		if (transform.computed.raw === 'none') {
 			transform.computed.matrix = matrix.identity();
@@ -116,21 +118,24 @@ export default function generateStyles (element) {
 					transform.computed.matrix[12] = values[4];
 					transform.computed.matrix[13] = values[5];
 				}
-			} else throw new Error('Unrecognized computed transform property value.');
+			} else {
+				throw new Error('Unrecognized computed transform property value.');
+			}
 		}
+
+		transformations.unshift(transform.computed.matrix);
+		const sum = transformations.reduce((m, x) => matrix.multiply(m, x));
+
+		transform.generated = {
+			initial: (transform.prefixed)
+				? `-webkit-transform: matrix3d(${sum.join(', ')})`
+				: `transform: matrix3d(${sum.join(', ')})`,
+			final: (transform.prefixed)
+				? `-webkit-transform: matrix3d(${transform.computed.matrix.join(', ')})`
+				: `transform: matrix3d(${transform.computed.matrix.join(', ')})`,
+		};
 	}
 
-	transformations.unshift(transform.computed.matrix);
-	const sum = transformations.reduce((m, x) => matrix.multiply(m, x));
-
-	transform.generated = {
-		initial: (transform.prefixed)
-			? `-webkit-transform: matrix3d(${sum.join(', ')})`
-			: `transform: matrix3d(${sum.join(', ')})`,
-		final: (transform.prefixed)
-			? `-webkit-transform: matrix3d(${transform.computed.matrix.join(', ')})`
-			: `transform: matrix3d(${transform.computed.matrix.join(', ')})`,
-	};
 
 	if (opacity || transform) {
 		/**
