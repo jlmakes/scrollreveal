@@ -148,15 +148,61 @@ export default function generateStyles (element) {
 		 */
 		if (typeof computed.transition === 'string') {
 			transition = {
+				fragments: [],
 				computed: computed.transition,
 				prefixed: false,
 			};
 		} else if (typeof computed.webkitTransition === 'string') {
 			transition = {
+				fragments: [],
 				computed: computed.webkitTransition,
 				prefixed: true,
 			};
 		} else throw new Error('Missing computed transition property.');
+
+		let { delay, duration, easing } = config;
+
+		if (opacity) {
+			transition.fragments.push({
+				delayed: `opacity ${duration / 1000}s ${easing} ${delay / 1000}s`,
+				instant: `opacity ${duration / 1000}s ${easing} 0s`,
+			});
+		}
+
+		if (transform) {
+			transition.fragments.push({
+				delayed: (transform.prefixed)
+					? `-webkit-transform ${duration / 1000}s ${easing} ${delay / 1000}s`
+					: `transform ${duration / 1000}s ${easing} ${delay / 1000}s`,
+				instant: (transform.prefixed)
+					? `-webkit-transform ${duration / 1000}s ${easing} 0s`
+					: `transform ${duration / 1000}s ${easing} 0s`,
+			});
+		}
+	}
+
+	if (transition) {
+		const composed = transition.fragments.reduce((composition, fragment, i) => {
+			composition.delayed += i
+				? `, ${fragment.delayed}`
+				: `${transition.computed}, ${fragment.delayed}`;
+			composition.instant += i
+				? `, ${fragment.instant}`
+				: `${transition.computed}, ${fragment.instant}`;
+			return composition;
+		}, {
+			delayed: '',
+			instant: '',
+		});
+
+		transition.generated = {
+			delayed: (transition.prefixed)
+				? `-webkit-transition: ${composed.delayed}`
+				: `transition: ${composed.delayed}`,
+			instant: (transition.prefixed)
+				? `-webkit-transition: ${composed.instant}`
+				: `transition: ${composed.instant}`,
+		};
 	}
 
 	return {
