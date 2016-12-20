@@ -7,10 +7,6 @@ export default function generateStyles (element) {
 	const styleAttribute = /(.+[^;]);?$/g.exec(element.node.getAttribute('style'))[1];
 	const transformations = [];
 
-	let opacity;
-	let transform;
-	let transition;
-
 	const inline = {
 		computed: styleAttribute,
 		generated: (styleAttribute)
@@ -18,6 +14,7 @@ export default function generateStyles (element) {
 			: 'visibility: visible;',
 	};
 
+	let opacity;
 	if (config.opacity < 1) {
 		opacity = {
 			computed: parseFloat(computed.opacity),
@@ -66,6 +63,7 @@ export default function generateStyles (element) {
 	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z));
 	if (config.scale !== 1) transformations.push(matrix.scale(config.scale));
 
+	let transform;
 	if (transformations.length) {
 		/**
 		 * The computed transform property should be one of:
@@ -137,6 +135,7 @@ export default function generateStyles (element) {
 	}
 
 
+	let transition;
 	if (opacity || transform) {
 		/**
 		 * The default computed transition property should be one of:
@@ -162,6 +161,9 @@ export default function generateStyles (element) {
 			throw new Error('Missing computed transition property.');
 		}
 
+	}
+
+	if (transition) {
 		let { delay, duration, easing } = config;
 
 		if (opacity) {
@@ -181,21 +183,24 @@ export default function generateStyles (element) {
 					: `transform ${duration / 1000}s ${easing} 0s`,
 			});
 		}
-	}
 
-	if (transition) {
-		const composed = transition.fragments.reduce((composition, fragment, i) => {
-			composition.delayed += i
-				? `, ${fragment.delayed}`
-				: `${transition.computed}, ${fragment.delayed}`;
-			composition.instant += i
-				? `, ${fragment.instant}`
-				: `${transition.computed}, ${fragment.instant}`;
-			return composition;
-		}, {
+		if (!transition.computed.match(/all 0s/)) {
+			transition.fragments.unshift({
+				delayed: transition.computed,
+				instant: transition.computed,
+			});
+		}
+
+		const composed = {
 			delayed: '',
 			instant: '',
-		});
+		};
+
+		transition.fragments.reduce((composition, fragment, i) => {
+			composition.delayed += (i === 0) ? fragment.delayed : `, ${fragment.delayed}`;
+			composition.instant += (i === 0) ? fragment.instant : `, ${fragment.instant}`;
+			return composition;
+		}, composed);
 
 		transition.generated = {
 			delayed: (transition.prefixed)
