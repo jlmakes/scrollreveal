@@ -47,9 +47,9 @@ export default function generateStyles (element) {
 				distance = value;
 				break;
 			case '%':
-				distance = (axis == 'Y')
-					? element.node.offsetHeight * value / 100
-					: element.node.offsetWidth * value / 100;
+				distance = (axis === 'Y')
+					? element.node.getBoundingClientRect().height * value / 100
+					: element.node.getBoundingClientRect().width * value / 100;
 				break;
 			default:
 				throw new Error('Unrecognized or missing distance unit.');
