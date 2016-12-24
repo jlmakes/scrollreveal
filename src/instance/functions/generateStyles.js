@@ -80,7 +80,7 @@ export default function generateStyles (element) {
 					: element.node.getBoundingClientRect().width * value / 100;
 				break;
 			default:
-				throw new Error('Unrecognized or missing distance unit.');
+				throw new RangeError('Unrecognized or missing distance unit.');
 		}
 
 		transformations.push(matrix[`translate${axis}`](distance));
@@ -145,7 +145,7 @@ export default function generateStyles (element) {
 					transform.computed.matrix[13] = values[5];
 				}
 			} else {
-				throw new Error('Unrecognized computed transform property value.');
+				throw new RangeError('Unrecognized computed transform property value.');
 			}
 		}
 
