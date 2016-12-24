@@ -37,24 +37,29 @@ export default function reveal (target, options /*, interval */) {
 		const element = {};
 		const existingId = node.getAttribute('data-sr-id');
 
-		if (existingId) {
-			deepAssign(element, this.store.elements[existingId]);
-		} else {
-			deepAssign(element, {
-				id: nextUniqueId(),
-				config: {},
-				node,
-			});
-			node.setAttribute('data-sr-id', element.id);
-		}
+		try {
+			if (existingId) {
+				deepAssign(element, this.store.elements[existingId]);
+			} else {
+				deepAssign(element, {
+					id: nextUniqueId(),
+					config: {},
+					node,
+				});
+			}
 
-		element.config = deepAssign({}, this.defaults, element.config, options);
-		element.styles = generateStyles(element);
+			element.config = deepAssign({}, this.defaults, element.config, options);
+			element.styles = generateStyles(element);
+
+		} catch (error) {
+			logger(error.message);
+		}
 
 		if (this.store.containers.indexOf(container) === -1) {
 			this.store.containers.push(container);
 		}
 		this.store.elements[element.id] = element;
+		node.setAttribute('data-sr-id', element.id);
 	});
 
 	return this;
