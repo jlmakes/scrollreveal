@@ -1,5 +1,5 @@
-import initialize from '../functions/initialize';
-import reveal from './reveal';
+import initialize from '../functions/initialize'
+import reveal from './reveal'
 
 
 /**
@@ -8,11 +8,11 @@ import reveal from './reveal';
  * @return {object} - The current ScrollReveal instance.
  */
 export default function sync () {
-	// this.store.history.forEach((record) => {
-	//   reveal.call(this, record.target, record.config, record.interval, false);
-	// });
+	// this.store.history.forEach(record => {
+	//   reveal.call(this, record.target, record.config, record.interval, false)
+	// })
 	//
-	// initialize.call(this);
+	// initialize.call(this)
 	//
-	// return this;
+	// return this
 }

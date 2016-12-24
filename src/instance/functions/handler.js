@@ -1,7 +1,7 @@
-import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame';
-import animate from './animate';
+import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame'
+import animate from './animate'
 
 
 export default function handler () {
-	// requestAnimationFrame(animate.bind(this));
+	// requestAnimationFrame(animate.bind(this))
 }

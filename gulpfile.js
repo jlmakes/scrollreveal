@@ -1,14 +1,14 @@
-const gulp = require('gulp');
-const fs = require('fs');
-const run = require('run-sequence');
-const browser = require('browser-sync').create();
+const gulp = require('gulp')
+const fs = require('fs')
+const run = require('run-sequence')
+const browser = require('browser-sync').create()
 
 
 fs.readdirSync('lib/gulp').forEach((file) => {
 	if (file.match(/.+\.js/g)) {
-		require(`./lib/gulp/${file}`)(gulp, browser);
+		require(`./lib/gulp/${file}`)(gulp, browser)
 	}
-});
+})
 
 
 gulp.task('build', (done) => {
@@ -20,8 +20,8 @@ gulp.task('build', (done) => {
 			'dist-min',
 		],
 		done
-	);
-});
+	)
+})
 
 
 gulp.task('default', (done) => {
@@ -29,5 +29,5 @@ gulp.task('default', (done) => {
 		'dev',
 		'dev-server',
 		done
-	);
-});
+	)
+})

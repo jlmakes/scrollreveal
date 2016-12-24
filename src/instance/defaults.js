@@ -26,4 +26,4 @@ export default {
 	beforeReset () {},
 	afterReveal () {},
 	afterReset () {},
-};
+}
