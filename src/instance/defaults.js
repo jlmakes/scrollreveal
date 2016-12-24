@@ -1,4 +1,4 @@
-export default {
+export const defaults = (() => ({
 	origin: 'bottom',
 	distance: '0',
 	duration: 300,
@@ -26,4 +26,4 @@ export default {
 	beforeReset () {},
 	afterReveal () {},
 	afterReset () {},
-}
+}))()

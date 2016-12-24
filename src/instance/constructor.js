@@ -1,5 +1,5 @@
-import defaults from './defaults'
-import noop from './noop'
+import { defaults } from './defaults'
+import { noop } from './noop'
 
 import remove from './methods/remove'
 import reveal from './methods/reveal'
