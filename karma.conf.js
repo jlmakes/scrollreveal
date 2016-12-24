@@ -51,7 +51,7 @@ module.exports = function (karma) {
 				dir: 'coverage/',
 			},
 			customLaunchers,
-			logLevel: karma.LOG_DISABLE,
+			logLevel: karma.LOG_ERROR,
 			reporters: ['dots', 'saucelabs', 'coverage'],
 			sauceLabs: {
 				testName: 'ScrollReveal',
