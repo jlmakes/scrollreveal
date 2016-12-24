@@ -23,9 +23,6 @@ export default function ScrollReveal (options = {}) {
 		return noop;
 	}
 
-	this.initialized = false;
-	document.documentElement.classList.add('sr');
-
 	try {
 		Object.defineProperty(this, 'defaults', {
 			get: (() => {
@@ -39,6 +36,14 @@ export default function ScrollReveal (options = {}) {
 		return noop;
 	}
 
+	const container = getNode(this.defaults.container);
+	if (!container) {
+		logger('Failed to instantiate due to missing container.');
+		return noop;
+	}
+
+	document.documentElement.classList.add('sr');
+
 	this.store = {
 		containers: [],
 		elements: [],
@@ -46,13 +51,8 @@ export default function ScrollReveal (options = {}) {
 		sequences: [],
 	};
 
-	const container = getNode(this.defaults.container);
-	if (container) {
-		this.store.containers.push(container);
-	} else {
-		logger('Failed to instantiate due to missing container.');
-		return noop;
-	}
+	this.store.containers.push(container);
+	this.initialized = false;
 }
 
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported();
