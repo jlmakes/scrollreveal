@@ -26,13 +26,18 @@ export default function ScrollReveal (options = {}) {
 	this.initialized = false;
 	document.documentElement.classList.add('sr');
 
-	Object.defineProperty(this, 'defaults', {
-		get: (() => {
-			const config = {};
-			deepAssign(config, defaults, options);
-			return () => config;
-		})(),
-	});
+	try {
+		Object.defineProperty(this, 'defaults', {
+			get: (() => {
+				const config = {};
+				deepAssign(config, defaults, options);
+				return () => config;
+			})(),
+		});
+	} catch (error) {
+		logger(error.message);
+		return noop;
+	}
 
 	this.store = {
 		containers: [],
