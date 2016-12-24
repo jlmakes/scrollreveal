@@ -1,7 +1,7 @@
 export function deepAssign (target, ...sources) {
 	if (isObject(target)) {
-		sources.forEach((source) => {
-			forOwn(source, (property) => {
+		sources.forEach(source => {
+			forOwn(source, property => {
 				if (isObject(source[property])) {
 					if (!target[property] || !isObject(target[property])) {
 						target[property] = {};
@@ -22,7 +22,7 @@ export function deepAssign (target, ...sources) {
 export function deepEqual (first, second) {
 	if (isObject(first)) {
 		let bool = true;
-		forOwn(second, (property) => {
+		forOwn(second, property => {
 			if (bool) {
 				if (isObject(second[property])) {
 					bool = deepEqual(first[property], second[property]);
