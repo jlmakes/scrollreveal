@@ -38,6 +38,15 @@ describe('ScrollReveal', () => {
 			expect(result).to.be.true
 		})
 
+		it('should return a noop instance when passed non-object options', () => {
+			const stub = sinon.stub(console, 'log')
+			const result1 = new ScrollReveal(null).noop
+			const result2 = new ScrollReveal('foo').noop
+			// const result3 = new ScrollReveal(undefined).noop // does not return noop
+			stub.restore()
+			expect(result1).to.be.true
+			expect(result2).to.be.true
+		})
 	})
 
 	describe('Instance', () => {
