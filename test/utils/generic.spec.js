@@ -61,6 +61,14 @@ describe('Generic Utilities', () => {
 			const result = deepEqual(first, second)
 			expect(result).to.be.false
 		})
+
+		it('should throw a type error when not passed an object literal', () => {
+			try {
+				deepEqual(null, null)
+			} catch (error) {
+				expect(error).to.be.an.instanceof(TypeError)
+			}
+		})
 	})
 
 	describe('isObject()', () => {
