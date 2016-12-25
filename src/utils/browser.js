@@ -1,3 +1,8 @@
+export function isMobile (agent = navigator.userAgent) {
+	return /Android|iPhone|iPad|iPod/i.test(agent)
+}
+
+
 export function isNode (target) {
 	return typeof window.Node === 'object'
 		? target instanceof window.Node
@@ -30,10 +35,4 @@ export function transformSupported () {
 export function transitionSupported () {
 	const style = document.documentElement.style
 	return 'transition' in style || 'WebkitTransition' in style
-}
-
-
-/* istanbul ignore next */
-export function isMobile () {
-	return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
 }
