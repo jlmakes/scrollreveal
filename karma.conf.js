@@ -19,7 +19,12 @@ module.exports = function (karma) {
 			plugins: [
 				buble(),
 				istanbul({
-					exclude: ['test/**', '**/node_modules/**'],
+					exclude: [
+						'src/index.js',
+						'src/instance/defaults.js',
+						'test/**',
+						'**/node_modules/**',
+					],
 					instrumenterConfig: {
 						embedSource: true,
 					},
