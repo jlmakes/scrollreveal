@@ -14,5 +14,5 @@ export default function sync () {
 	//
 	// initialize.call(this)
 	//
-	// return this
+	return this
 }

@@ -78,5 +78,12 @@ describe('ScrollReveal', () => {
 			expect(result).to.exist
 			expect(result).to.be.a('function')
 		})
+
+		it('should support method chaining', () => {
+			const stub = sinon.stub(console, 'log')
+			const sr = new ScrollReveal()
+			expect(sr.remove().reveal().sync().watch()).to.equal(sr)
+			stub.restore()
+		})
 	})
 })

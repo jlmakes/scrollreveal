@@ -1,3 +1,3 @@
 export default function watch () {
-	// something...
+	return this
 }

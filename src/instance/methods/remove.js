@@ -13,4 +13,5 @@ export default function remove () {
 	//     container.removeEventListener('resize', handler)
 	//   }
 	// })
+	return this
 }
