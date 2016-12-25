@@ -61,12 +61,3 @@ ScrollReveal.prototype.remove = remove
 ScrollReveal.prototype.reveal = reveal
 ScrollReveal.prototype.sync = sync
 ScrollReveal.prototype.watch = watch
-
-/* istanbul ignore next */
-if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-	define(() => ScrollReveal)
-} else if (typeof module !== 'undefined' && module.exports) {
-	module.exports = ScrollReveal
-} else {
-	window.ScrollReveal = ScrollReveal
-}
