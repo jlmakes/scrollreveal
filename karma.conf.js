@@ -32,6 +32,7 @@ module.exports = function (karma) {
 
 		colors: true,
 		concurrency: 5,
+		logLevel: karma.LOG_ERROR,
 		singleRun: true,
 
 		browserDisconnectTimeout: 60 * 1000,
@@ -51,7 +52,6 @@ module.exports = function (karma) {
 				dir: 'coverage/',
 			},
 			customLaunchers,
-			logLevel: karma.LOG_ERROR,
 			reporters: ['dots', 'saucelabs', 'coverage'],
 			sauceLabs: {
 				testName: 'ScrollReveal',
@@ -69,7 +69,6 @@ module.exports = function (karma) {
 				type: 'lcov',
 				dir: 'coverage/',
 			},
-			logLevel: karma.LOG_ERROR,
 			reporters: ['mocha', 'coverage'],
 		})
 	}
