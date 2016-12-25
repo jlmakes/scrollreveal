@@ -24,9 +24,10 @@ export function deepEqual (first, second) {
 		let bool = true
 		forOwn(second, property => {
 			if (bool) {
-				if (isObject(second[property])) {
-					bool = deepEqual(first[property], second[property])
-				} else if (first[property] !== second[property]) bool = false
+				if (isObject(second[property]))
+					return bool = deepEqual(first[property], second[property])
+				if (first[property] !== second[property])
+					return bool = false
 			}
 		})
 		return bool
