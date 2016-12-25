@@ -31,11 +31,14 @@ describe('Generic Utilities', () => {
 		})
 
 		it('should throw a type error when not passed an object literal', () => {
+			let caught
 			try {
 				deepAssign(null, null)
 			} catch (error) {
-				expect(error).to.be.an.instanceof(TypeError)
+				caught = error
 			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(TypeError)
 		})
 	})
 
@@ -63,11 +66,14 @@ describe('Generic Utilities', () => {
 		})
 
 		it('should throw a type error when not passed an object literal', () => {
+			let caught
 			try {
 				deepEqual(null, null)
 			} catch (error) {
-				expect(error).to.be.an.instanceof(TypeError)
+				caught = error
 			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(TypeError)
 		})
 	})
 
@@ -122,11 +128,14 @@ describe('Generic Utilities', () => {
 		})
 
 		it('should throw a type error when not passed an object literal', () => {
+			let caught
 			try {
 				forOwn(null, () => {})
 			} catch (error) {
-				expect(error).to.be.an.instanceof(TypeError)
+				caught = error
 			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(TypeError)
 		})
 	})
 
