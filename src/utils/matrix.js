@@ -7,13 +7,16 @@ export function identity () {
 }
 
 
-export function multiply (matrixA, matrixB) {
+export function multiply (m, x) {
+	if (m.length !== 16 || x.length !== 16)
+		throw new RangeError('Expected arrays with 16 values.')
+
 	const sum = []
 	for (let i = 0; i < 4; i++) {
-		const row = [matrixA[i], matrixA[i + 4], matrixA[i + 8], matrixA[i + 12]]
+		const row = [m[i], m[i + 4], m[i + 8], m[i + 12]]
 		for (let j = 0; j < 4; j++) {
 			const k = j * 4
-			const col = [matrixB[k], matrixB[k + 1], matrixB[k + 2], matrixB[k + 3]]
+			const col = [x[k], x[k + 1], x[k + 2], x[k + 3]]
 			let result = row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3]
 			sum[i + k] = parseFloat(result.toPrecision(6))
 		}
