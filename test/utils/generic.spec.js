@@ -29,6 +29,14 @@ describe('Generic Utilities', () => {
 			deepAssign(target, source1, source2)
 			expect(target).to.deep.equal(goal)
 		})
+
+		it('should throw a type error when not passed an object literal', () => {
+			try {
+				deepAssign(null, null)
+			} catch (error) {
+				expect(error).to.be.an.instanceof(TypeError)
+			}
+		})
 	})
 
 	describe('deepEqual()', () => {
