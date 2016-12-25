@@ -92,6 +92,11 @@ describe('Generic Utilities', () => {
 			const result = isObject(null)
 			expect(result).to.be.false
 		})
+
+		it('should return false when passed undefined', () => {
+			const result = isObject(undefined)
+			expect(result).to.be.false
+		})
 	})
 
 	describe('forOwn()', () => {
