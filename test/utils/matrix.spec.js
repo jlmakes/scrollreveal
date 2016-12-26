@@ -72,4 +72,92 @@ describe('Matrix Utilities', () => {
 			expect(caught).to.be.an.instanceOf(RangeError)
 		})
 	})
+
+	describe('Transformation', () => {
+
+		let dummy
+		let transformProperty
+
+
+		before('create dummy object', () => {
+			dummy = document.createElement('div')
+			document.body.appendChild(dummy)
+
+			const computed = window.getComputedStyle(dummy)
+
+			if (typeof computed['transform'] === 'string')
+				return transformProperty = 'transform'
+			if (typeof computed['-webkit-transform'] === 'string')
+				return transformProperty = '-webkit-transform'
+		})
+
+		beforeEach('clean dummy object', () => {
+			dummy.removeAttribute('style')
+		})
+
+		function getTransformAsArray (node) {
+			const computedTransform = window.getComputedStyle(node)[transformProperty]
+			const match = computedTransform.match(/\(([^)]+)\)/)[1]
+			const values = match.split(', ').map(value => parseFloat(value))
+			return matrix.format(values)
+		}
+
+		describe('rotateX()', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform rotateX', () => {
+				dummy.setAttribute('style', `${transformProperty}: rotateX(45deg)`)
+				const result = matrix.rotateX(45)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		describe('rotateY()', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform rotateY', () => {
+				dummy.setAttribute('style', `${transformProperty}: rotateY(45deg)`)
+				const result = matrix.rotateY(45)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		describe('rotateZ()', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform rotateZ', () => {
+				dummy.setAttribute('style', `${transformProperty}: rotateZ(45deg)`)
+				const result = matrix.rotateZ(45)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		describe('scale()', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform scale', () => {
+				dummy.setAttribute('style', `${transformProperty}: scale(2)`)
+				const result = matrix.scale(2)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		describe('translateX', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform translateX', () => {
+				dummy.setAttribute('style', `${transformProperty}: translateX(20px)`)
+				const result = matrix.translateX(20)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		describe('translateY', () => {
+			it('should generate an equivalent 4x4 matrix to CSS transform translateY', () => {
+				dummy.setAttribute('style', `${transformProperty}: translateY(20px)`)
+				const result = matrix.translateY(20)
+				const answer = getTransformAsArray(dummy)
+				expect(result).to.be.eql(answer)
+			})
+		})
+
+		after('remove dummy object', () => {
+			document.body.removeChild(dummy)
+		})
+	})
 })
