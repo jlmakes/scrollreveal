@@ -5,10 +5,6 @@ export default function generateStyles (element) {
 	const computed = window.getComputedStyle(element.node)
 	const config = element.config
 
-	/**
-	 * We'll either end up with `null` or a string of the
-	 * inline styles (without any trailing semi-colon).
-	 */
 	const inlineRegex = /(.+[^])?$/g
 	const inlineStyle = element.node.getAttribute('style')
 	const inlineMatch = inlineRegex.exec(inlineStyle)[1]
@@ -20,14 +16,6 @@ export default function generateStyles (element) {
 			: 'visibility: visible',
 	}
 
-	/**
-	 * From here, we progressively build up the
-	 * necessary styles by comparing configuration
-	 * against noop values.
-	 *
-	 * In this instance, if the configured opacity
-	 * is 1, then no opacity transition is needed.
-	 */
 	let opacity
 	if (config.opacity < 1) {
 		opacity = {
@@ -36,10 +24,6 @@ export default function generateStyles (element) {
 		}
 	}
 
-	/**
-	 * The next phase is building up this array
-	 * with all necessary transforms styles.
-	 */
 	const transformations = []
 
 	if (config.rotate.x) transformations.push(matrix.rotateX(config.rotate.x))
@@ -47,10 +31,6 @@ export default function generateStyles (element) {
 	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z))
 	if (config.scale !== 1) transformations.push(matrix.scale(config.scale))
 
-	/**
-	 * Distance requires a little extra work in order to parse the unit
-	 * type, and convert it to pixels for the transformation matrix.
-	 */
 	if (parseFloat(config.distance)) {
 		const axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X'
 
@@ -86,11 +66,6 @@ export default function generateStyles (element) {
 		transformations.push(matrix[`translate${axis}`](distance))
 	}
 
-	/**
-	 * If any transformations have been stored, we have to
-	 * capture any existing transformations, to add them to
-	 * our collection before reducing it.
-	 */
 	let transform
 	if (transformations.length) {
 		/**
@@ -122,38 +97,15 @@ export default function generateStyles (element) {
 		if (transform.computed.raw === 'none') {
 			transform.computed.matrix = matrix.identity()
 		} else {
-			/**
-			 * If we get a `matrix3d()`, we just save its 16 values,
-			 * but if we get the shorthand `matrix()`, we must convert
-			 * its 6 values into the full 16 value representation.
-			 */
 			const match = transform.computed.raw.match(/\(([^)]+)\)/)
 			if (match) {
-				let values = match[1].split(', ').map(value => parseFloat(value))
-				if (values.length === 16) {
-					transform.computed.matrix = values
-				} else {
-					/**
-					 * Conversion Guide: https://goo.gl/EJlUQ1
-					 */
-					transform.computed.matrix = matrix.identity()
-					transform.computed.matrix[0] = values[0]
-					transform.computed.matrix[1] = values[1]
-					transform.computed.matrix[4] = values[2]
-					transform.computed.matrix[5] = values[3]
-					transform.computed.matrix[12] = values[4]
-					transform.computed.matrix[13] = values[5]
-				}
+				const values = match[1].split(', ').map(value => parseFloat(value))
+				transform.computed.matrix = matrix.format(values)
 			} else {
 				throw new RangeError('Unrecognized computed transform property value.')
 			}
 		}
 
-		/**
-		 * We push either a transformation matrix identity,
-		 * or the computed transform styles, and reduce our
-		 * collection into the final generated transformations.
-		 */
 		transformations.unshift(transform.computed.matrix)
 		const sum = transformations.reduce((m, x) => matrix.multiply(m, x))
 
@@ -167,12 +119,6 @@ export default function generateStyles (element) {
 		}
 	}
 
-	/**
-	 * The final step is to generate transition styles for whatever
-	 * opacity or transform styles we've generated thus far, which
-	 * similar to transforms, requires we start by capturing the
-	 * existing transition styles to preserve as much as possible.
-	 */
 	let transition
 	if (opacity || transform) {
 		/**
@@ -201,15 +147,6 @@ export default function generateStyles (element) {
 
 	}
 
-	/**
-	 * We have everything in place to generate style fragments
-	 * for each transition required by our configuration.
-	 *
-	 * Note: ScrollReveal ignores user-specified delay for reset
-	 * animations and various `option.delayType` values, so we
-	 * need to generate both a delayed and instant variation of
-	 * our transition styles.
-	 */
 	if (transition) {
 		let { delay, duration, easing } = config
 
@@ -231,11 +168,6 @@ export default function generateStyles (element) {
 			})
 		}
 
-		/**
-		 * If we find a computed transition that doesn't match the defaults,
-		 * let's insert it at the beginning of our transition fragments to
-		 * ensure we preserve as many styles as possible.
-		 */
 		if (transition.computed && !transition.computed.match(/all 0s/)) {
 			transition.fragments.unshift({
 				delayed: transition.computed,
@@ -243,11 +175,6 @@ export default function generateStyles (element) {
 			})
 		}
 
-		/**
-		 * Finally, we can combined all of our transition style
-		 * fragments into the final strings that will serve as the
-		 * property values for our generated transition styles.
-		 */
 		const composed = {
 			delayed: '',
 			instant: '',
