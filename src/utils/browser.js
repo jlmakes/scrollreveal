@@ -26,6 +26,26 @@ export function isNodeList (target) {
 }
 
 
+// export const getComputedProperty = (name => {
+// 	const properties = {}
+//
+// 	return () => {
+// 		if (properties[name]) return properties[name]
+//
+// 		if (typeof name === 'string') {
+// 			const computed = window.getComputedStyle()
+// 			if (typeof computed[name] === 'string')
+// 				return properties[name] = name
+// 			if (typeof computed[`-webkit-${name}`] === 'string')
+// 				return properties[name] = `-webkit-${name}`
+//
+// 			throw new RangeError(`Unable to find "${name}" in computed style properties.`)
+// 		}
+// 		throw new Error('Expected a string.')
+// 	}
+// })()
+
+
 export function transformSupported () {
 	const style = document.documentElement.style
 	return 'transform' in style || 'WebkitTransform' in style
