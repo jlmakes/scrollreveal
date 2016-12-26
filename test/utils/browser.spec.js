@@ -23,11 +23,11 @@ describe('Browser Utilities', () => {
 			const chrome = `Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
 				(KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36`
 
-			const firefox = `Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1;
+			const ie10 = `Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1;
 				WOW64; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET4.0C; .NET4.0E)`
 
 			expect(isMobile(chrome)).to.be.false
-			expect(isMobile(firefox)).to.be.false
+			expect(isMobile(ie10)).to.be.false
 		})
 
 		it('should work when not passed an explicit user agent', () => {
