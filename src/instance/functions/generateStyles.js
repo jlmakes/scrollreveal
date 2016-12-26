@@ -70,24 +70,16 @@ export default function generateStyles (element) {
 	if (transformations.length) {
 		/**
 		 * The computed transform property should be one of:
-		 *
-		 *  - undefined
-		 *  - 'none'
-		 *  - 'matrix()'
-		 *  - 'matrix3d()'
+		 * undefined || 'none' || 'matrix()' || 'matrix3d()'
 		 */
 		if (typeof computed.transform === 'string') {
 			transform = {
-				computed: {
-					raw: computed.transform,
-				},
+				computed: { raw: computed.transform },
 				prefixed: false,
 			}
 		} else if (typeof computed.webkitTransform === 'string') {
 			transform = {
-				computed: {
-					raw: computed.webkitTransform,
-				},
+				computed: { raw: computed.webkitTransform },
 				prefixed: true,
 			}
 		} else {
@@ -123,11 +115,7 @@ export default function generateStyles (element) {
 	if (opacity || transform) {
 		/**
 		 * The default computed transition property should be one of:
-		 *
-		 *  - undefined
-		 *  - ''
-		 *  - 'all 0s ease 0s'
-		 *  - 'all 0s 0s cubic-bezier()'
+		 * undefined || '' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
 		 */
 		if (typeof computed.transition === 'string') {
 			transition = {
@@ -148,7 +136,7 @@ export default function generateStyles (element) {
 	}
 
 	if (transition) {
-		let { delay, duration, easing } = config
+		const { delay, duration, easing } = config
 
 		if (opacity) {
 			transition.fragments.push({
@@ -175,16 +163,14 @@ export default function generateStyles (element) {
 			})
 		}
 
-		const composed = {
-			delayed: '',
-			instant: '',
-		}
-
-		transition.fragments.reduce((composition, fragment, i) => {
+		const composed = transition.fragments.reduce((composition, fragment, i) => {
 			composition.delayed += (i === 0) ? fragment.delayed : `, ${fragment.delayed}`
 			composition.instant += (i === 0) ? fragment.instant : `, ${fragment.instant}`
 			return composition
-		}, composed)
+		}, {
+			delayed: '',
+			instant: '',
+		})
 
 		transition.generated = {
 			delayed: (transition.prefixed)
