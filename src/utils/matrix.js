@@ -1,3 +1,32 @@
+/**
+* Transformation matrices in the browser come in two flavors:
+*
+*  - Long (3D) transformation matrix with 16 values
+*  - Short (2D) transformation matrix with 6 values
+*
+*  This utility follows this conversion Guide: https://goo.gl/EJlUQ1
+*  to expand short form matrices to their equivalent long form.
+*
+* @param  {array} source
+* @return {array}
+*/
+export function format (source) {
+	if (source.constructor !== Array) throw new TypeError('Expected array.')
+	if (source.length === 16) return source
+	if (source.length === 6) {
+		const matrix = identity()
+		matrix[0] = source[0]
+		matrix[1] = source[1]
+		matrix[4] = source[2]
+		matrix[5] = source[3]
+		matrix[12] = source[4]
+		matrix[13] = source[5]
+		return matrix
+	}
+	throw new RangeError('Expected array with either 6 or 16 values.')
+}
+
+
 export function identity () {
 	const matrix = []
 	for (let i = 0; i < 16; i++) {
@@ -5,7 +34,6 @@ export function identity () {
 	}
 	return matrix
 }
-
 
 export function multiply (m, x) {
 	if (m.length !== 16 || x.length !== 16)
