@@ -52,7 +52,7 @@ describe('Matrix Utilities', () => {
 
 	describe('multiply()', () => {
 
-		it('should return a 4x4 matrix equal to the sum of its two 4x4 matrix args', () => {
+		it('should return a 4x4 matrix equal to the product of both arguments', () => {
 			const first = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 			const second = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 			const answer = [386, 444, 502, 560, 274, 316, 358, 400, 162, 188, 214, 240, 50, 60, 70, 80]
