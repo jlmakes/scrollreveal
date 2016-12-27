@@ -102,13 +102,22 @@ describe('Matrix Utilities', () => {
 			return matrix.format(values)
 		}
 
+		/**
+		 * To account for rounding differences of Sin and Cos,
+		 * all outputs will be rounded to 6 significant digits.
+		 */
+
 		describe('rotateX()', () => {
 			it('should generate an equivalent 4x4 matrix to CSS transform rotateX', () => {
 				dummy.setAttribute('style', `${transformProperty}: rotateX(45deg)`)
-				const result = matrix.rotateX(45)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
+				const result = matrix.rotateX(45)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
 				expect(result).to.be.eql(answer)
 			})
 		})
@@ -116,10 +125,14 @@ describe('Matrix Utilities', () => {
 		describe('rotateY()', () => {
 			it('should generate an equivalent 4x4 matrix to CSS transform rotateY', () => {
 				dummy.setAttribute('style', `${transformProperty}: rotateY(45deg)`)
-				const result = matrix.rotateY(45)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
+				const result = matrix.rotateY(45)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
 				expect(result).to.be.eql(answer)
 			})
 		})
@@ -127,10 +140,14 @@ describe('Matrix Utilities', () => {
 		describe('rotateZ()', () => {
 			it('should generate an equivalent 4x4 matrix to CSS transform rotateZ', () => {
 				dummy.setAttribute('style', `${transformProperty}: rotateZ(45deg)`)
-				const result = matrix.rotateZ(45)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
+				const result = matrix.rotateZ(45)
+					.map(value => value.toPrecision(6))
+					.map(value => parseFloat(value))
+
 				expect(result).to.be.eql(answer)
 			})
 		})
@@ -140,8 +157,6 @@ describe('Matrix Utilities', () => {
 				dummy.setAttribute('style', `${transformProperty}: scale(2)`)
 				const result = matrix.scale(2)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
 				expect(result).to.be.eql(answer)
 			})
 		})
@@ -151,8 +166,6 @@ describe('Matrix Utilities', () => {
 				dummy.setAttribute('style', `${transformProperty}: translateX(20px)`)
 				const result = matrix.translateX(20)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
 				expect(result).to.be.eql(answer)
 			})
 		})
@@ -162,8 +175,6 @@ describe('Matrix Utilities', () => {
 				dummy.setAttribute('style', `${transformProperty}: translateY(20px)`)
 				const result = matrix.translateY(20)
 				const answer = getTransformAsArray(dummy)
-				console.log(`result: ${result}`)
-				console.log(`answer: ${answer}`)
 				expect(result).to.be.eql(answer)
 			})
 		})
