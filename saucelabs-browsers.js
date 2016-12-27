@@ -96,15 +96,6 @@ module.exports = {
 		version: '13.10586',
 	},
 
-	// Opera
-	//
-	sl_windows_opera_12: {
-		base: 'SauceLabs',
-		browserName: 'opera',
-		platform: 'Windows 7',
-		version: '12.12',
-	},
-
 	// Safari
 
 	sl_osx_safari_8: {
