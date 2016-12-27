@@ -34,11 +34,12 @@ export function isNodeList (target) {
 //
 // 		if (typeof name === 'string') {
 // 			const computed = window.getComputedStyle()
-// 			if (typeof computed[name] === 'string')
+// 			if (typeof computed[name] === 'string') {
 // 				return properties[name] = name
-// 			if (typeof computed[`-webkit-${name}`] === 'string')
+// 			}
+// 			if (typeof computed[`-webkit-${name}`] === 'string') {
 // 				return properties[name] = `-webkit-${name}`
-//
+// 			}
 // 			throw new RangeError(`Unable to find "${name}" in computed style properties.`)
 // 		}
 // 		throw new Error('Expected a string.')

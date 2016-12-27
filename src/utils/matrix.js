@@ -36,9 +36,9 @@ export function identity () {
 }
 
 export function multiply (m, x) {
-	if (m.length !== 16 || x.length !== 16)
+	if (m.length !== 16 || x.length !== 16) {
 		throw new RangeError('Expected arrays with 16 values.')
-
+	}
 	const sum = []
 	for (let i = 0; i < 4; i++) {
 		const row = [m[i], m[i + 4], m[i + 8], m[i + 12]]
