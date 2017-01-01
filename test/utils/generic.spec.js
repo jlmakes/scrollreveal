@@ -42,41 +42,6 @@ describe('Generic Utilities', () => {
 		})
 	})
 
-	describe('deepEqual()', () => {
-
-		it('should return true when passed like nested objects', () => {
-			const first = { foo: 'bar', bun: { baz: 10 } }
-			const second = { foo: 'bar', bun: { baz: 10 } }
-			const result = deepEqual(first, second)
-			expect(result).to.be.true
-		})
-
-		it('should return false when strict comparison fails', () => {
-			const first = { foo: 'bar', bun: { baz: 10 } }
-			const second = { foo: 'bar', bun: { baz: '10' } }
-			const result = deepEqual(first, second)
-			expect(result).to.be.false
-		})
-
-		it('should return false when passed unlike nested objects', () => {
-			const first = { foo: 'bar', bam: 'wonk!', bun: { baz: 'biff!' } }
-			const second = { foo: 'bar', bam: 'pow!', bun: { baz: 'biff!' } }
-			const result = deepEqual(first, second)
-			expect(result).to.be.false
-		})
-
-		it('should throw a type error when not passed an object literal', () => {
-			let caught
-			try {
-				deepEqual(null, null)
-			} catch (error) {
-				caught = error
-			}
-			expect(caught).to.exist
-			expect(caught).to.be.an.instanceof(TypeError)
-		})
-	})
-
 	describe('isObject()', () => {
 
 		it('should return true when passed an object literal', () => {

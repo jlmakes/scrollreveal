@@ -19,24 +19,6 @@ export function deepAssign (target, ...sources) {
 }
 
 
-export function deepEqual (first, second) {
-	if (isObject(first)) {
-		let bool = true
-		forOwn(second, property => {
-			if (bool) {
-				if (isObject(second[property]))
-					return bool = deepEqual(first[property], second[property])
-				if (first[property] !== second[property])
-					return bool = false
-			}
-		})
-		return bool
-	} else {
-		throw new TypeError('Expected an object literal.')
-	}
-}
-
-
 export function isObject (object) {
 	return object !== null && typeof object === 'object'
 		&& (object.constructor === Object || Object.prototype.toString.call(object) === '[object Object]')
