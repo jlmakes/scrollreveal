@@ -33,5 +33,5 @@ ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rig
 [version-badge]: https://img.shields.io/badge/version-4.0.0_alpha-1283c3.svg
 [license-badge]: https://img.shields.io/badge/license-GPL_v3-1283c3.svg
 [license-url]: https://opensource.org/licenses/GPL-3.0
-[saucelabs-matrix]: https://saucelabs.com/browser-matrix/jlmakes.svg
-[saucelabs-url]: https://saucelabs.com/u/jlmakes
+[saucelabs-matrix]: https://saucelabs.com/browser-matrix/scrollreveal.svg
+[saucelabs-url]: https://saucelabs.com/u/scrollreveal
