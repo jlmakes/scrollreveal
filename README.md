@@ -7,6 +7,7 @@
 [![License][license-image]][license-url]
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
+[![unheap][unheap-image]][unheap-url]
 
 - 3.3KB minified and Gzipped
 - No dependencies
@@ -442,3 +443,5 @@ ScrollReveal was inspired by the talented [Manoela Ilic](https://twitter.com/crn
 [npm-url]: https://npmjs.org/package/scrollreveal
 [downloads-image]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
+[unheap-image]: https://img.shields.io/badge/Featured%20on-Unheap-orange.svg
+[unheap-url]: http://www.unheap.com/user-interface/scrolling/scrollreveal-easy-scroll-animations-web-mobile-browsers/
