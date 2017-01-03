@@ -1,4 +1,4 @@
-import { noop } from '../../src/instance/noop'
+import noop from '../../src/instance/noop'
 
 
 describe('ScrollReveal', () => {

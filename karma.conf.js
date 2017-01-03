@@ -21,7 +21,6 @@ module.exports = function (karma) {
 				istanbul({
 					exclude: [
 						'src/index.js',
-						'src/instance/defaults.js',
 						'test/**',
 						'**/node_modules/**',
 					],
