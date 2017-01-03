@@ -5,6 +5,10 @@
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
   "scripts": {
+    "prebuild": "rm -rf dist/*",
+    "build": "npm run bundle && npm run bundle:min",
+    "bundle": "rollup -c rollup.conf.js",
+    "bundle:min": "rollup -c rollup.conf.min.js",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --no-single-run",
     "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov/bin/codecov"
@@ -29,8 +33,10 @@
     "karma-sauce-launcher": "^1.1.0",
     "karma-sinon-chai": "^1.2.4",
     "mocha": "^3.1.2",
-    "rollup-plugin-buble": "^0.14.0",
+    "rollup-plugin-buble": "^0.x",
     "rollup-plugin-istanbul": "^1.1.0",
+    "rollup-plugin-strip": "^1.1.1",
+    "rollup-plugin-uglify": "^1.0.1",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0"
   },
