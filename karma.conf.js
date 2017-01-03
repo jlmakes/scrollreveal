@@ -32,7 +32,7 @@ module.exports = function (karma) {
 			],
 			sourceMap: 'inline',
 			format: 'iife',
-			moduleName: 'scrollreveal',
+			moduleName: 'ScrollReveal',
 		},
 
 		colors: true,
