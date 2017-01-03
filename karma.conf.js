@@ -47,7 +47,7 @@ module.exports = function (karma) {
 	})
 
 	if (process.env.TRAVIS) {
-		const customLaunchers = require('./saucelabs-browsers')
+		const customLaunchers = require('./sauce.conf')
 
 		karma.set({
 			autoWatch: false,
