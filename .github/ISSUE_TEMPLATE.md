@@ -1,11 +1,16 @@
-Before submitting a new issue, **please search existing issues.**
+<!--
 
-If you cannot find an existing discussion to join, please make sure to include the following with your new issue:
+Thanks for raising an issue! To help us help you, if you've found a bug please consider the following:
 
-- What operating system you are using
-- What browser (and version) you are using
-- What ScrollReveal version you are using
-- Detailed description of the problem
-- Code sample demonstrating the problem (recommended)
+* If you can demonstrate the bug using JSBin: https://goo.gl/6b4OeX — please do.
+* If that's not possible, perhaps because your bug involves plugins, we recommend creating a small repo that illustrates the problem.
 
-Thanks!
+And please, search existing issues before creating a new one.
+
+-->
+
+### Environment
+
+* Operating System:
+* Browser Version:
+* ScrollReveal Version:
