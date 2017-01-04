@@ -1,4 +1,4 @@
-import { deepAssign, deepEqual, isObject, forOwn, nextUniqueId } from '../../src/utils/generic'
+import { deepAssign, isObject, forOwn, nextUniqueId } from '../../src/utils/generic'
 
 
 describe('Generic Utilities', () => {
