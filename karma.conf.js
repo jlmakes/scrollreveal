@@ -70,7 +70,7 @@ module.exports = function (karma) {
 			browsers: ['PhantomJS'],
 			coverageReporter: {
 				type: 'lcov',
-				dir: 'coverage/',
+				dir: '.ignore/coverage/',
 			},
 			reporters: ['mocha', 'coverage'],
 		})

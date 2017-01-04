@@ -1,6 +1,3 @@
-*.DS_Store
-*.sublime-project
-*.sublime-workspace
-node_modules
-coverage
-dev
+.DS_Store
+.ignore/
+node_modules/
