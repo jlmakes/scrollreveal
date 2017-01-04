@@ -9,9 +9,11 @@
     "build": "npm run bundle && npm run bundle:min",
     "bundle": "rollup -c rollup.conf.js",
     "bundle:min": "rollup -c rollup.conf.min.js",
+    "pretest": "rm -rf .ignore/coverage/* && npm run lint",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --no-single-run",
-    "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov/bin/codecov"
+    "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov/bin/codecov",
+    "lint": "./node_modules/eslint/bin/eslint.js src test"
   },
   "repository": {
     "type": "git",
