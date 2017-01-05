@@ -55,11 +55,11 @@ module.exports = {
 		version: '9.3',
 	},
 
-	sl_android_4: {
-		base: 'SauceLabs',
-		browserName: 'android',
-		version: '4.2',
-	},
+	// sl_android_4: {
+	// 	base: 'SauceLabs',
+	// 	browserName: 'android',
+	// 	version: '4.2',
+	// },
 
 	sl_android_5: {
 		base: 'SauceLabs',
