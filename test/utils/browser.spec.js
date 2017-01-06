@@ -1,4 +1,4 @@
-import { isMobile, isNode, isNodeList, transformSupported, transitionSupported } from '../../src/utils/browser'
+import * as browser from '../../src/utils/browser'
 
 
 describe('Browser Utilities', () => {
@@ -14,8 +14,8 @@ describe('Browser Utilities', () => {
 			const iPhone = `Mozilla/5.0 (iPhone; CPU iPhone OS 10_10_5 like Mac OS X)
 				AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B411 Safari/600.1.4`
 
-			expect(isMobile(android)).to.be.true
-			expect(isMobile(iPhone)).to.be.true
+			expect(browser.isMobile(android)).to.be.true
+			expect(browser.isMobile(iPhone)).to.be.true
 		})
 
 		it('should return false when passed a desktop user agent', () => {
@@ -28,25 +28,25 @@ describe('Browser Utilities', () => {
 			const ie10 = `Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1;
 				WOW64; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET4.0C; .NET4.0E)`
 
-			expect(isMobile(chrome)).to.be.false
-			expect(isMobile(firefox)).to.be.false
-			expect(isMobile(ie10)).to.be.false
+			expect(browser.isMobile(chrome)).to.be.false
+			expect(browser.isMobile(firefox)).to.be.false
+			expect(browser.isMobile(ie10)).to.be.false
 		})
 
 		it('should work when not passed an explicit user agent', () => {
-			expect(isMobile()).to.be.a('boolean')
+			expect(browser.isMobile()).to.be.a('boolean')
 		})
 	})
 
 	describe('isNode()', () => {
 
 		it('should return true when passed a DOM node', () => {
-			const result = isNode(document.querySelector('body'))
+			const result = browser.isNode(document.querySelector('body'))
 			expect(result).to.be.true
 		})
 
 		it('should return false when passed HTML as a string', () => {
-			const result = isNode('<div class="foo"></div>')
+			const result = browser.isNode('<div class="foo"></div>')
 			expect(result).to.be.false
 		})
 	})
@@ -54,26 +54,26 @@ describe('Browser Utilities', () => {
 	describe('isNodeList()', () => {
 
 		it('should return true when passed a DOM node list', () => {
-			const result = isNodeList(document.querySelectorAll('script'))
+			const result = browser.isNodeList(document.querySelectorAll('script'))
 			expect(result).to.be.true
 		})
 
 		it('should return false when passed an array of HTML elements', () => {
 			const elements = document.querySelectorAll('body')
-			const result = isNodeList(Array.prototype.slice.call(elements))
+			const result = browser.isNodeList(Array.prototype.slice.call(elements))
 			expect(result).to.be.false
 		})
 	})
 
 	describe('transformSupported()', () => {
 		it('should return true', () => {
-			expect(transformSupported()).to.be.true
+			expect(browser.transformSupported()).to.be.true
 		})
 	})
 
 	describe('transitionSupported()', () => {
 		it('should return true', () => {
-			expect(transitionSupported()).to.be.true
+			expect(browser.transitionSupported()).to.be.true
 		})
 	})
 })
