@@ -57,8 +57,11 @@ module.exports = {
 
 	// sl_android_4: {
 	// 	base: 'SauceLabs',
-	// 	browserName: 'android',
-	// 	version: '4.2',
+	// 	browserName: 'Browser',
+	// 	platform: 'Android',
+	// 	version: '4.4',
+	// 	device: 'Android Emulator',
+	// 	'device-orientation': 'portrait',
 	// },
 
 	sl_android_5: {
