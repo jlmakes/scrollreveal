@@ -9,11 +9,14 @@
     "build": "npm run bundle && npm run bundle:min",
     "bundle": "./node_modules/rollup/bin/rollup -c rollup.conf.js",
     "bundle:min": "./node_modules/rollup/bin/rollup -c rollup.conf.min.js",
-    "pretest": "rm -rf .ignore/coverage/* && npm run lint",
+    "lint": "./node_modules/eslint/bin/eslint.js src test",
+    "pretest": "rm -rf .ignore/coverage/**/ && npm run lint",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --no-single-run",
     "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov/bin/codecov",
-    "lint": "./node_modules/eslint/bin/eslint.js src test"
+    "sandbox:watch": "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
+    "sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
+    "coverage:server": "node ./.ignore/coverage/server.coverage.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,7 @@
     "karma-rollup-preprocessor": "^3.0.0",
     "karma-sauce-launcher": "^1.1.0",
     "karma-sinon-chai": "^1.2.4",
+    "live-server": "^1.1.0",
     "mocha": "^3.1.2",
     "rollup": "^0.x",
     "rollup-plugin-buble": "^0.x",
