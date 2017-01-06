@@ -14,7 +14,7 @@
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --no-single-run",
     "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov/bin/codecov",
-    "sandbox:watch": "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
+    "sandbox:bundle": "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
     "sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
     "coverage:server": "node ./.ignore/coverage/server.coverage.js"
   },
