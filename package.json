@@ -37,7 +37,7 @@
     "karma-rollup-preprocessor": "^3.0.0",
     "karma-sauce-launcher": "^1.1.0",
     "karma-sinon-chai": "^1.2.4",
-    "live-server": "^1.1.0",
+    "live-server": "jlmakes/live-server",
     "mocha": "^3.1.2",
     "rollup": "^0.x",
     "rollup-plugin-buble": "^0.x",
