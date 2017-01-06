@@ -7,8 +7,8 @@
   "scripts": {
     "prebuild": "rm -rf dist/*",
     "build": "npm run bundle && npm run bundle:min",
-    "bundle": "rollup -c rollup.conf.js",
-    "bundle:min": "rollup -c rollup.conf.min.js",
+    "bundle": "./node_modules/rollup/bin/rollup -c rollup.conf.js",
+    "bundle:min": "./node_modules/rollup/bin/rollup -c rollup.conf.min.js",
     "pretest": "rm -rf .ignore/coverage/* && npm run lint",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "testing": "npm test -- --no-single-run",
@@ -35,10 +35,12 @@
     "karma-sauce-launcher": "^1.1.0",
     "karma-sinon-chai": "^1.2.4",
     "mocha": "^3.1.2",
+    "rollup": "^0.x",
     "rollup-plugin-buble": "^0.x",
     "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
+    "rollup-watch": "^3.2.2",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0"
   },
