@@ -46,7 +46,7 @@ export default function ScrollReveal (options = {}) {
 
 	this.store = {
 		containers: [],
-		elements: [],
+		elements: {},
 		history: [],
 		sequences: [],
 	}
