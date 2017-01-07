@@ -11,8 +11,8 @@ export default function generateStyles (element) {
 	const inlineMatch = inlineRegex.exec(inlineStyle)[0]
 
 	const inline = {
-		computed: inlineMatch,
-		generated: (inlineMatch)
+		computed: (inlineMatch !== 'null') ? inlineMatch : null,
+		generated: (inlineMatch !== 'null')
 			? `${inlineMatch}; visibility: visible;`
 			: 'visibility: visible;',
 	}
@@ -78,10 +78,11 @@ export default function generateStyles (element) {
 			computed: {
 				raw: computed[transformProperty],
 			},
+			property: transformProperty,
 		}
 
 		/**
-		* The computed transform property should be one of:
+		* The default computed transform value should be one of:
 		* undefined || 'none' || 'matrix()' || 'matrix3d()'
 		*/
 		if (transform.computed.raw === 'none') {
@@ -100,36 +101,21 @@ export default function generateStyles (element) {
 		const product = transformations.reduce((m, x) => matrix.multiply(m, x))
 
 		transform.generated = {
-			initial: `${transformProperty}: matrix3d(${product.join(', ')});`,
-			final: `${transformProperty}: matrix3d(${transform.computed.matrix.join(', ')});`,
+			initial: `${transform.property}: matrix3d(${product.join(', ')});`,
+			final: `${transform.property}: matrix3d(${transform.computed.matrix.join(', ')});`,
 		}
 	}
 
 	let transition
 	if (opacity || transform) {
-		/**
-		 * The default computed transition property should be one of:
-		 * undefined || '' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
-		 */
-		if (typeof computed.transition === 'string') {
-			transition = {
-				fragments: [],
-				computed: computed.transition,
-				prefixed: false,
-			}
-		} else if (typeof computed.webkitTransition === 'string') {
-			transition = {
-				fragments: [],
-				computed: computed.webkitTransition,
-				prefixed: true,
-			}
-		} else {
-			throw new Error('Missing computed transition property.')
+
+		const transitionProperty = getPrefixedStyleProperty('transition')
+		transition = {
+			computed: computed[transitionProperty],
+			fragments: [],
+			property: transitionProperty,
 		}
 
-	}
-
-	if (transition) {
 		const { delay, duration, easing } = config
 
 		if (opacity) {
@@ -141,12 +127,8 @@ export default function generateStyles (element) {
 
 		if (transform) {
 			transition.fragments.push({
-				delayed: (transform.prefixed)
-					? `-webkit-transform ${duration / 1000}s ${easing} ${delay / 1000}s`
-					: `transform ${duration / 1000}s ${easing} ${delay / 1000}s`,
-				instant: (transform.prefixed)
-					? `-webkit-transform ${duration / 1000}s ${easing} 0s`
-					: `transform ${duration / 1000}s ${easing} 0s`,
+				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay / 1000}s`,
+				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`,
 			})
 		}
 
@@ -167,12 +149,8 @@ export default function generateStyles (element) {
 		})
 
 		transition.generated = {
-			delayed: (transition.prefixed)
-				? `-webkit-transition: ${composed.delayed}`
-				: `transition: ${composed.delayed}`,
-			instant: (transition.prefixed)
-				? `-webkit-transition: ${composed.instant}`
-				: `transition: ${composed.instant}`,
+			delayed: `${transition.property}: ${composed.delayed};`,
+			instant: `${transition.property}: ${composed.instant};`,
 		}
 	}
 
