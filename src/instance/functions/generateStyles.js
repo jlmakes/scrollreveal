@@ -1,4 +1,5 @@
 import * as matrix from 'redpill'
+import { getPrefixedStyleProperty } from '../../utils/browser'
 
 
 export default function generateStyles (element) {
@@ -71,24 +72,18 @@ export default function generateStyles (element) {
 
 	let transform
 	if (transformations.length) {
-		/**
-		 * The computed transform property should be one of:
-		 * undefined || 'none' || 'matrix()' || 'matrix3d()'
-		 */
-		if (typeof computed.transform === 'string') {
-			transform = {
-				computed: { raw: computed.transform },
-				prefixed: false,
-			}
-		} else if (typeof computed.webkitTransform === 'string') {
-			transform = {
-				computed: { raw: computed.webkitTransform },
-				prefixed: true,
-			}
-		} else {
-			throw new Error('Missing computed transform property.')
+
+		const transformProperty = getPrefixedStyleProperty('transform')
+		transform = {
+			computed: {
+				raw: computed[transformProperty],
+			},
 		}
 
+		/**
+		* The computed transform property should be one of:
+		* undefined || 'none' || 'matrix()' || 'matrix3d()'
+		*/
 		if (transform.computed.raw === 'none') {
 			transform.computed.matrix = matrix.identity()
 		} else {
@@ -102,15 +97,11 @@ export default function generateStyles (element) {
 		}
 
 		transformations.unshift(transform.computed.matrix)
-		const sum = transformations.reduce((m, x) => matrix.multiply(m, x))
+		const product = transformations.reduce((m, x) => matrix.multiply(m, x))
 
 		transform.generated = {
-			initial: (transform.prefixed)
-				? `-webkit-transform: matrix3d(${sum.join(', ')})`
-				: `transform: matrix3d(${sum.join(', ')})`,
-			final: (transform.prefixed)
-				? `-webkit-transform: matrix3d(${transform.computed.matrix.join(', ')})`
-				: `transform: matrix3d(${transform.computed.matrix.join(', ')})`,
+			initial: `${transformProperty}: matrix3d(${product.join(', ')});`,
+			final: `${transformProperty}: matrix3d(${transform.computed.matrix.join(', ')});`,
 		}
 	}
 
