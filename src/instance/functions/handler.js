@@ -3,5 +3,5 @@ import animate from './animate'
 
 
 export default function handler () {
-	// requestAnimationFrame(animate.bind(this))
+	requestAnimationFrame(animate.bind(this))
 }
