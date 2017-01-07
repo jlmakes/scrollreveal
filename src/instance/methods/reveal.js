@@ -3,7 +3,7 @@ import { deepAssign, nextUniqueId } from '../../utils/generic'
 import generateStyles from '../functions/generateStyles'
 
 
-export default function reveal (target, options /*, interval */) {
+export default function reveal (target, options /*, interval */, sync) {
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
@@ -60,6 +60,22 @@ export default function reveal (target, options /*, interval */) {
 		}
 		this.store.elements[element.id] = element
 		node.setAttribute('data-sr-id', element.id)
+
+		/**
+		 * All reveal calls are tracked in case they need be
+		 * re-run by the sync method after DOM mutations.
+		 *
+		 * If we weren't invoked by sync, we want to make sure
+		 * to add this call to the history.
+		 */
+		if (!sync) {
+			const record = {
+				target,
+				options,
+				// interval,
+			}
+			this.store.history.push(record)
+		}
 	})
 
 	return this
