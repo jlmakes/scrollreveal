@@ -15,7 +15,7 @@ export default function reveal (target, options /*, interval */, sync) {
 	// 	interval = options
 	// 	options = {}
 	// } else {
-	// 	options = options || {}
+	// 	options = options || {} // replaces line 21
 	// }
 
 	options = options || {}
@@ -28,10 +28,14 @@ export default function reveal (target, options /*, interval */, sync) {
 		return this
 	}
 
-	// let sequenceId
-	//
-	// if (typeof interval === 'number') {
-	// 	sequenceId = nextUniqueId()
+	// let sequence
+	// if (typeof interval === 'number' && interval > 0) {
+	// 	const sequenceId = nextUniqueId()
+	// 	sequence = this.store.sequences[sequenceId] = {
+	// 		id: sequenceId,
+	// 		interval,
+	// 		elementIds: [],
+	// 	}
 	// }
 
 	targets.forEach((node) => {
@@ -48,6 +52,16 @@ export default function reveal (target, options /*, interval */, sync) {
 					node,
 				})
 			}
+
+			// if (sequence) {
+			// 	element.sequence = {
+			// 		id: sequence.id,
+			// 		index: sequence.elemIds.length,
+			// 		first: 0,
+			// 		last: 0,
+			// 	}
+			// 	sequence.elememtIds.push(element.id)
+			// }
 
 			element.config = deepAssign({}, this.defaults, element.config, options)
 			element.styles = generateStyles(element)
