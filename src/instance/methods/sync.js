@@ -3,16 +3,17 @@ import reveal from './reveal'
 
 
 /**
- * Re-runs `reveal()` for each record stored in history, effectively capturing
- * any content loaded asynchronously that matches existing reveal set targets.
+ * Re-runs the reveal method for each record stored in history, useful
+ * for capturing new content asynchronously loaded into the DOM.
+ *
  * @return {object} - The current ScrollReveal instance.
  */
 export default function sync () {
-	// this.store.history.forEach(record => {
-	//   reveal.call(this, record.target, record.config, record.interval, false)
-	// })
-	//
-	// initialize.call(this)
-	//
+	this.store.history.forEach(record => {
+	  reveal.call(this, record.target, record.options, /*record.interval,*/ true)
+	})
+
+	initialize.call(this)
+
 	return this
 }
