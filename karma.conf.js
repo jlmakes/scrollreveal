@@ -1,5 +1,6 @@
 const buble = require('rollup-plugin-buble')
 const istanbul = require('rollup-plugin-istanbul')
+const nodeResolve = require('rollup-plugin-node-resolve')
 
 module.exports = function (karma) {
 	karma.set({
@@ -17,6 +18,7 @@ module.exports = function (karma) {
 
 		rollupPreprocessor: {
 			plugins: [
+				nodeResolve({ jsnext: true, main: true }),
 				buble(),
 				istanbul({
 					exclude: [
