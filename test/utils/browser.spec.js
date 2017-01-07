@@ -3,6 +3,57 @@ import * as browser from '../../src/utils/browser'
 
 describe('Browser Utilities', () => {
 
+	describe('getPrefixedStyleProperty()', () => {
+
+		beforeEach('clear cache', () => {
+			browser.getPrefixedStyleProperty.clearCache()
+		})
+
+		it('should return unprefixed properties before prefixed', () => {
+			const source = {
+				transform: '',
+				'-webkit-transform': '',
+			}
+			const result = browser.getPrefixedStyleProperty('transform', source)
+			expect(result).to.equal('transform')
+		})
+
+		it('should return prefixed property names', () => {
+			const source = { '-webkit-transform': '' }
+			const result = browser.getPrefixedStyleProperty('transform', source)
+			expect(result).to.equal('-webkit-transform')
+		})
+
+		it('should return property names from cache when available', () => {
+			const source = { '-webkit-transform': '' }
+			browser.getPrefixedStyleProperty('transform', source)
+			const result = browser.getPrefixedStyleProperty('transform', {})
+			expect(result).to.equal('-webkit-transform')
+		})
+
+		it('should throw a range error when no property is found', () => {
+			let caught
+			try {
+				browser.getPrefixedStyleProperty('transform', {})
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(RangeError)
+		})
+
+		it('should throw a type error if not passed a string', () => {
+			let caught
+			try {
+				browser.getPrefixedStyleProperty(null)
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(TypeError)
+		})
+	})
+
 	describe('isMobile()', () => {
 
 		it('should return true when passed a mobile user agent', () => {
