@@ -1,7 +1,7 @@
 export default {
 	noop: true,
-	remove () { return this },
+	destroy () { return this },
 	reveal () { return this },
-	sync   () { return this },
-	watch  () { return this },
+	sync () { return this },
+	watch () { return this },
 }

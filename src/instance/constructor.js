@@ -1,7 +1,7 @@
 import defaults from './defaults'
 import noop from './noop'
 
-import remove from './methods/remove'
+import destroy from './methods/destroy'
 import reveal from './methods/reveal'
 import sync from './methods/sync'
 import watch from './methods/watch'
@@ -57,7 +57,7 @@ export default function ScrollReveal (options = {}) {
 
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
-ScrollReveal.prototype.remove = remove
+ScrollReveal.prototype.destroy = destroy
 ScrollReveal.prototype.reveal = reveal
 ScrollReveal.prototype.sync = sync
 ScrollReveal.prototype.watch = watch

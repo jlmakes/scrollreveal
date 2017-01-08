@@ -52,8 +52,8 @@ describe('ScrollReveal', () => {
 
 		const sr = new ScrollReveal()
 
-		it('should have a `remove` method', () => {
-			const result = sr.remove
+		it('should have a `destroy` method', () => {
+			const result = sr.destroy
 			expect(result).to.exist
 			expect(result).to.be.a('function')
 		})
@@ -78,7 +78,7 @@ describe('ScrollReveal', () => {
 
 		it('should support method chaining', () => {
 			const stub = sinon.stub(console, 'log')
-			expect(sr.remove().reveal().sync().watch()).to.equal(sr)
+			expect(sr.destroy().reveal().sync().watch()).to.equal(sr)
 			stub.restore()
 		})
 	})
@@ -97,9 +97,9 @@ describe('ScrollReveal', () => {
 			expect(noop.noop).to.be.true
 		})
 
-		it('should have a `remove` method', () => {
-			expect(noop.remove).to.exist
-			expect(noop.remove).to.be.a('function')
+		it('should have a `destroy` method', () => {
+			expect(noop.destroy).to.exist
+			expect(noop.destroy).to.be.a('function')
 		})
 
 		it('should have a `reveal` method', () => {
@@ -118,7 +118,7 @@ describe('ScrollReveal', () => {
 		})
 
 		it('should support method chaining', () => {
-			expect(noop.remove().reveal().sync().watch()).to.equal(noop)
+			expect(noop.destroy().reveal().sync().watch()).to.equal(noop)
 		})
 	})
 })

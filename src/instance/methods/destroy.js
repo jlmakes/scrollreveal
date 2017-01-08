@@ -1,7 +1,7 @@
 // import handler from '../functions/handler'
 
 
-export default function remove () {
+export default function destroy () {
 	// this.initialized = false
 	//
 	// this.store.containers.forEach(container => {
