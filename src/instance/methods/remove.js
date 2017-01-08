@@ -1,4 +1,4 @@
-import handler from '../functions/handler'
+// import handler from '../functions/handler'
 
 
 export default function remove () {
