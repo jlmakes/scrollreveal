@@ -132,6 +132,10 @@ export default function generateStyles (element) {
 			})
 		}
 
+		/**
+		 * The default computed transition property should be one of:
+		 * undefined || '' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
+		 */
 		if (transition.computed && !transition.computed.match(/all 0s/)) {
 			transition.fragments.unshift({
 				delayed: transition.computed,
