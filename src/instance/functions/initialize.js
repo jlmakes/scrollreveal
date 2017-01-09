@@ -3,7 +3,8 @@ import animate from './animate'
 
 
 export default function initialize () {
-	this.store.containers.forEach(container => {
+	Object.keys(this.store.containers).forEach(id => {
+		const container = this.store.containers[id].node
 		if (container === document.documentElement) {
 			window.addEventListener('scroll', handler.bind(this))
 			window.addEventListener('resize', handler.bind(this))

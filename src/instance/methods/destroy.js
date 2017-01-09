@@ -2,16 +2,16 @@
 
 
 export default function destroy () {
-	// this.initialized = false
-	//
-	// this.store.containers.forEach(container => {
-	//   if (container === document.documentElement) {
-	//     window.removeEventListener('scroll', handler)
-	//     window.removeEventListener('resize', handler)
-	//   } else {
-	//     container.removeEventListener('scroll', handler)
-	//     container.removeEventListener('resize', handler)
-	//   }
+	// Object.keys(this.store.containers).forEach(id => {
+	// 	const container = this.store.containers[id].node
+	// 	if (container === document.documentElement) {
+	// 		window.removeEventListener('scroll', handler.bind(this))
+	// 		window.removeEventListener('resize', handler.bind(this))
+	// 	} else {
+	// 		container.removeEventListener('scroll', handler.bind(this))
+	// 		container.removeEventListener('resize', handler.bind(this))
+	// 	}
 	// })
-	return this
+	//
+	// this.initialized = false
 }

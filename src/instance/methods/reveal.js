@@ -20,6 +20,7 @@ export default function reveal (target, options /*, interval */, sync) {
 
 	options = options || {}
 
+	const containers = this.store.containers
 	const container = getNode(options.container || this.defaults.container)
 	const targets = getNodes(target, container)
 
@@ -38,6 +39,18 @@ export default function reveal (target, options /*, interval */, sync) {
 	// 	}
 	// }
 
+
+	let containerId
+	Object.keys(containers).forEach(id => {
+		if (containers[id] === container) {
+			containerId = parseInt(id)
+		}
+	})
+
+	if (containerId === undefined) {
+		containerId = nextUniqueId()
+	}
+
 	targets.forEach((node) => {
 		const element = {}
 		const existingId = node.getAttribute('data-sr-id')
@@ -49,6 +62,7 @@ export default function reveal (target, options /*, interval */, sync) {
 				deepAssign(element, {
 					id: nextUniqueId(),
 					config: {},
+					containerId,
 					node,
 				})
 			}
@@ -70,12 +84,13 @@ export default function reveal (target, options /*, interval */, sync) {
 			logger(error.message)
 		}
 
-		if (this.store.containers.indexOf(container) === -1) {
-			this.store.containers.push(container)
-		}
 		this.store.elements[element.id] = element
 		node.setAttribute('data-sr-id', element.id)
 	})
+
+	containers[containerId] = {
+		node: container,
+	}
 
 	/**
 	* All reveal calls are tracked in case they need be

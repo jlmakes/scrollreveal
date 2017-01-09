@@ -8,7 +8,7 @@ import watch from './methods/watch'
 
 import { transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
-import { deepAssign } from '../utils/generic'
+import { deepAssign, nextUniqueId } from '../utils/generic'
 
 
 export default function ScrollReveal (options = {}) {
@@ -45,13 +45,16 @@ export default function ScrollReveal (options = {}) {
 	document.documentElement.classList.add('sr')
 
 	this.store = {
-		containers: [],
+		containers: {},
 		elements: {},
 		history: [],
 		sequences: {},
 	}
 
-	this.store.containers.push(container)
+	this.store.containers[ nextUniqueId() ] = {
+		node: container,
+	}
+
 	this.initialized = false
 }
 
