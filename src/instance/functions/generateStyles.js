@@ -4,6 +4,7 @@ import { getPrefixedStyleProperty } from '../../utils/browser'
 
 export default function generateStyles (element) {
 	const computed = window.getComputedStyle(element.node)
+	const position = computed.position
 	const config = element.config
 
 	const inlineRegex = /.+[^;]/g
@@ -161,6 +162,7 @@ export default function generateStyles (element) {
 	return {
 		inline,
 		opacity,
+		position,
 		transform,
 		transition,
 	}
