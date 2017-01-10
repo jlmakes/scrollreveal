@@ -51,7 +51,7 @@ export default function reveal (target, options /*, interval */, sync) {
 		containerId = nextUniqueId()
 	}
 
-	targets.forEach((node) => {
+	targets.forEach(node => {
 		const element = {}
 		const existingId = node.getAttribute('data-sr-id')
 
