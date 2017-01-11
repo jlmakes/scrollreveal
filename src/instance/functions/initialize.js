@@ -1,5 +1,4 @@
 import handler from './handler'
-import animate from './animate'
 import { each } from '../../utils/generic'
 
 
@@ -17,5 +16,5 @@ export default function initialize () {
 	this.initTimeout = null
 	this.initialized = true
 
-	animate.call(this)
+	handler.call(this)
 }
