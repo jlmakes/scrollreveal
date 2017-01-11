@@ -1,14 +1,14 @@
 export function deepAssign (target, ...sources) {
 	if (isObject(target)) {
-		sources.forEach(source => {
-			forOwn(source, property => {
-				if (isObject(source[property])) {
-					if (!target[property] || !isObject(target[property])) {
-						target[property] = {}
+		each(sources, source => {
+			each(source, (data, key) => {
+				if (isObject(data)) {
+					if (!target[key] || !isObject(target[key])) {
+						target[key] = {}
 					}
-					deepAssign(target[property], source[property])
+					deepAssign(target[key], data)
 				} else {
-					target[property] = source[property]
+					target[key] = data
 				}
 			})
 		})
@@ -25,13 +25,18 @@ export function isObject (object) {
 }
 
 
-export function forOwn (object, callback) {
-	if (isObject(object)) {
-		for (const property in object) {
-			if (object.hasOwnProperty(property)) callback(property)
+export function each (collection, callback) {
+	if (isObject(collection)) {
+		const keys = Object.keys(collection)
+		for (let i = 0; i < keys.length; i++) {
+			callback(collection[ keys[i] ], keys[i], collection)
+		}
+	} else if (Array.isArray(collection)) {
+		for (let i = 0; i < collection.length; i++) {
+			callback(collection[i], i, collection)
 		}
 	} else {
-		throw new TypeError('Expected an object literal.')
+		throw new TypeError('Expected either an array or object literal.')
 	}
 }
 

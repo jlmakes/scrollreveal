@@ -1,16 +1,16 @@
 import handler from './handler'
 import animate from './animate'
+import { each } from '../../utils/generic'
 
 
 export default function initialize () {
-	Object.keys(this.store.containers).forEach(id => {
-		const container = this.store.containers[id].node
-		if (container === document.documentElement) {
+	each(this.store.containers, container => {
+		if (container.node === document.documentElement) {
 			window.addEventListener('scroll', handler.bind(this))
 			window.addEventListener('resize', handler.bind(this))
 		} else {
-			container.addEventListener('scroll', handler.bind(this))
-			container.addEventListener('resize', handler.bind(this))
+			container.node.addEventListener('scroll', handler.bind(this))
+			container.node.addEventListener('resize', handler.bind(this))
 		}
 	})
 

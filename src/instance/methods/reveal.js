@@ -1,5 +1,5 @@
 import { getNode, getNodes, logger } from '../../utils/core'
-import { deepAssign, nextUniqueId } from '../../utils/generic'
+import { deepAssign, each, nextUniqueId } from '../../utils/generic'
 import generateStyles from '../functions/generateStyles'
 import initialize from '../functions/initialize'
 
@@ -41,8 +41,8 @@ export default function reveal (target, options /*, interval */, sync) {
 
 
 	let containerId
-	Object.keys(containers).forEach(id => {
-		if (containers[id] === container) {
+	each(containers, (storedContainer, id) => {
+		if (storedContainer.node === container) {
 			containerId = parseInt(id)
 		}
 	})
@@ -51,7 +51,7 @@ export default function reveal (target, options /*, interval */, sync) {
 		containerId = nextUniqueId()
 	}
 
-	targets.forEach(node => {
+	each(targets, node => {
 		const element = {}
 		const existingId = node.getAttribute('data-sr-id')
 
