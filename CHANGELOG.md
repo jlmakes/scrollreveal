@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/)
 ## [Unreleased]
 
 ### Added
+- ScrollReveal can now be enabled/disabled on desktops using `config.desktop` (default `true`)
 - ScrollReveal now adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
 
 ### Changed
