@@ -54,11 +54,11 @@ export default function reveal (target, options, interval, sync) {
 		containerId = nextUniqueId()
 	}
 
-	each(targets, node => {
-		const element = {}
-		const existingId = node.getAttribute('data-sr-id')
+	try {
+		const elements = targets.map(node => {
+			const element = {}
+			const existingId = node.getAttribute('data-sr-id')
 
-		try {
 			if (existingId) {
 				deepAssign(element, this.store.elements[existingId])
 			} else {
@@ -81,16 +81,26 @@ export default function reveal (target, options, interval, sync) {
 			element.config = deepAssign({}, this.defaults, element.config, options)
 			element.styles = generateStyles(element)
 
-		} catch (error) {
-			logger(error.message)
-		}
+			return element
+		})
 
-		this.store.elements[element.id] = element
-		node.setAttribute('data-sr-id', element.id)
-	})
+		/**
+		* Modifying the DOM via setAttribute needs to be handled
+		* separately from reading computed styles in the map above
+		* for the browser to batch DOM changes (limiting reflows)
+		*/
+		each(elements, element => {
+			this.store.elements[element.id] = element
+			element.node.setAttribute('data-sr-id', element.id)
+		})
 
-	containers[containerId] = {
-		node: container,
+	} catch (error) {
+		logger(error.message)
+		return this
+	}
+
+	if (!containers[containerId]) {
+		containers[containerId] = { node: container }
 	}
 
 	/**
@@ -104,7 +114,9 @@ export default function reveal (target, options, interval, sync) {
 		* Push initialization to the event queue, giving chained
 		* reveal calls time to be interpretted.
 		*/
-		if (this.initTimeout) window.clearTimeout(this.initTimeout)
+		if (this.initTimeout) {
+			window.clearTimeout(this.initTimeout)
+		}
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0)
 	}
 
