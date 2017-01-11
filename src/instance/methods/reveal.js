@@ -27,6 +27,10 @@ export default function reveal (target, options, interval, sync) {
 		return this
 	}
 
+	/**
+	 * Sequence intervals must be at least 16ms (60fps)
+	 * but can be negative for sequencing in reverse.
+	 */
 	let sequence
 	if (typeof interval === 'number' && Math.abs(interval) > 15) {
 		const sequenceId = nextUniqueId()
@@ -90,32 +94,17 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	* All reveal calls are tracked in case they need be
-	* re-run by the sync method after DOM mutations.
-	*
-	* If we weren't invoked by sync, we want to make sure
-	* to add this call to the history.
+	* If reveal wasn't invoked by sync, we want to make
+	* sure to add this call to the history.
 	*/
 	if (!sync) {
-		const record = {
-			target,
-			options,
-			interval,
-		}
-		this.store.history.push(record)
+		this.store.history.push({ target, options, interval })
 
 		/**
-		* The last step is to initialize everything that
-		* was just setup, but we push initialization to the
-		* event queue, giving chained reveal calls time to
-		* be interpretted.
-		*
-		* But first we have to clear any outstanding timers:
+		* Push initialization to the event queue, giving chained
+		* reveal calls time to be interpretted.
 		*/
 		if (this.initTimeout) window.clearTimeout(this.initTimeout)
-		/**
-		* Now create the initialization timer:
-		*/
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0)
 	}
 
