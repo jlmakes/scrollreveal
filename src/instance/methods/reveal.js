@@ -4,21 +4,19 @@ import generateStyles from '../functions/generateStyles'
 import initialize from '../functions/initialize'
 
 
-export default function reveal (target, options /*, interval */, sync) {
+export default function reveal (target, options, interval, sync) {
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
 	 * so here we just shuffle things around to accept
 	 * the interval being passed as the 2nd argument.
 	 */
-	// if (typeof options === 'number') {
-	// 	interval = options
-	// 	options = {}
-	// } else {
-	// 	options = options || {} // replaces line 21
-	// }
-
-	options = options || {}
+	if (typeof options === 'number') {
+		interval = parseInt(options)
+		options = {}
+	} else {
+		options = options || {}
+	}
 
 	const containers = this.store.containers
 	const container = getNode(options.container || this.defaults.container)
@@ -29,16 +27,17 @@ export default function reveal (target, options /*, interval */, sync) {
 		return this
 	}
 
-	// let sequence
-	// if (typeof interval === 'number' && interval > 0) {
-	// 	const sequenceId = nextUniqueId()
-	// 	sequence = this.store.sequences[sequenceId] = {
-	// 		id: sequenceId,
-	// 		interval,
-	// 		elementIds: [],
-	// 	}
-	// }
-
+	let sequence
+	if (typeof interval === 'number' && Math.abs(interval) > 15) {
+		const sequenceId = nextUniqueId()
+		sequence = this.store.sequences[sequenceId] = {
+			elementIds: [],
+			firstActiveIndex: 0,
+			id: sequenceId,
+			interval,
+			lastActiveIndex: 0,
+		}
+	}
 
 	let containerId
 	each(containers, (storedContainer, id) => {
@@ -67,15 +66,13 @@ export default function reveal (target, options /*, interval */, sync) {
 				})
 			}
 
-			// if (sequence) {
-			// 	element.sequence = {
-			// 		id: sequence.id,
-			// 		index: sequence.elemIds.length,
-			// 		first: 0,
-			// 		last: 0,
-			// 	}
-			// 	sequence.elememtIds.push(element.id)
-			// }
+			if (sequence) {
+				element.sequence = {
+					id: sequence.id,
+					index: sequence.elementIds.length,
+				}
+				sequence.elementIds.push(element.id)
+			}
 
 			element.config = deepAssign({}, this.defaults, element.config, options)
 			element.styles = generateStyles(element)
@@ -103,7 +100,7 @@ export default function reveal (target, options /*, interval */, sync) {
 		const record = {
 			target,
 			options,
-			// interval,
+			interval,
 		}
 		this.store.history.push(record)
 

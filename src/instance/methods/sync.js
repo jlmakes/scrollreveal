@@ -11,7 +11,7 @@ import { each } from '../../utils/generic'
  */
 export default function sync () {
 	each(this.store.history, record => {
-	  reveal.call(this, record.target, record.options, /*record.interval,*/ true)
+	  reveal.call(this, record.target, record.options, record.interval, true)
 	})
 
 	initialize.call(this)
