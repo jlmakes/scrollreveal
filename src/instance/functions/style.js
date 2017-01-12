@@ -2,7 +2,7 @@ import * as matrix from 'redpill'
 import { getPrefixedStyleProperty } from '../../utils/browser'
 
 
-export default function generateStyles (element) {
+export default function style (element) {
 	const computed = window.getComputedStyle(element.node)
 	const position = computed.position
 	const config = element.config

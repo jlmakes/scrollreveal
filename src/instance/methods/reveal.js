@@ -1,6 +1,6 @@
 import { getNode, getNodes, logger } from '../../utils/core'
 import { deepAssign, each, nextUniqueId } from '../../utils/generic'
-import generateStyles from '../functions/generateStyles'
+import style from '../functions/style'
 import initialize from '../functions/initialize'
 
 
@@ -79,7 +79,7 @@ export default function reveal (target, options, interval, sync) {
 			}
 
 			element.config = deepAssign({}, this.defaults, element.config, options)
-			element.styles = generateStyles(element)
+			element.styles = style(element)
 
 			return element
 		})
