@@ -65,10 +65,15 @@ export default function reveal (target, options, interval, sync) {
 				deepAssign(element, {
 					id: nextUniqueId(),
 					config: {},
-					containerId,
 					node,
 				})
 			}
+
+			/**
+			 * Both existing elements and new elements
+			 * need a reference to the latest container.
+			 */
+			element.containerId = containerId
 
 			if (sequence) {
 				element.sequence = {
