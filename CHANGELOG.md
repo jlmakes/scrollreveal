@@ -1,23 +1,21 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/)
+All notable changes to this project will be documented in this file,  
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
 ### Added
-- ScrollReveal can now be enabled/disabled on desktops using `config.desktop` (default `true`)
-- ScrollReveal now adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
+- ScrollReveal can be enabled/disabled on desktops using `config.desktop`.
+- ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 
 ### Changed
-- **Breaking:** `isSupported()` is now a static method.
-- **Breaking:** `config.distance` now supports only `em` `px` and `%` values.
-- **Breaking:** ScrollReveal now requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.
-- ScrollReveal now retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
-- ScrollReveal now uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
-- ScrollReveal now returns a non-operational instance when instantiated in unsupported browsers.
+- **Breaking:** The instance method `isSupported()` is now static.
+- **Breaking:** `config.distance` supports only `em` `px` and `%` values.
+- **Breaking:** ScrollReveal requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.
+- ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
+- ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
+- ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
 
 ### Fixed
 - The `requestAnimationFrame` polyfill now reliably throttles callback invocations.
