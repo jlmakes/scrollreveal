@@ -111,14 +111,19 @@ describe('Core Utilities', () => {
 			stub = sinon.stub(console, 'log', spy)
 		})
 
-		it('should invoke console.log', () => {
+		it('invokes console.log', () => {
 			logger()
 			expect(spy).to.have.been.called
 		})
 
-		it('should prepend output with `ScrollReveal: `', () => {
+		it('prepends output with `ScrollReveal: `', () => {
 			logger('test')
 			expect(spy).to.have.been.calledWith('ScrollReveal: test')
+		})
+
+		it('accepts multiple arguments as message details', () => {
+			logger('message', 'detail one', 'detail two')
+			expect(spy).to.have.been.calledWith('ScrollReveal: message\n  - detail one\n  - detail two')
 		})
 
 		after('restore console log', () => {

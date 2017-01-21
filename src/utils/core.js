@@ -117,6 +117,10 @@ export function getScrolled (container) {
 }
 
 
-export function logger (message) {
-	if (console) console.log(`ScrollReveal: ${message}`) // eslint-disable-line no-console
+export function logger (message, ...details) {
+	if (console) {
+		let report = `ScrollReveal: ${message}`
+		details.forEach(detail => report += `\n  - ${detail}`)
+		console.log(report) // eslint-disable-line no-console
+	}
 }
