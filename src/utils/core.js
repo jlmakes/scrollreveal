@@ -39,8 +39,14 @@ export function isElementVisible (element) {
 }
 
 
-export function getGeometry (target) {
-	const { offsetHeight, offsetWidth } = target.node
+export function getGeometry (target, isContainer) {
+	/**
+	 * We want to ignore padding and scrollbars for container elements.
+	 * More information here: https://goo.gl/vOZpbz
+	 */
+	const height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight
+	const width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth
+
 	let offsetTop = 0
 	let offsetLeft = 0
 	let node = target.node
@@ -58,12 +64,12 @@ export function getGeometry (target) {
 	return {
 		bounds: {
 			top: offsetTop,
-			right: offsetLeft + offsetWidth,
-			bottom: offsetTop + offsetHeight,
+			right: offsetLeft + width,
+			bottom: offsetTop + height,
 			left: offsetLeft,
 		},
-		height: offsetHeight,
-		width: offsetWidth,
+		height,
+		width,
 	}
 }
 

@@ -17,7 +17,7 @@ export default function delegate (event = {}) {
 			case 'resize':
 			default:
 				each(containers, container => {
-					container.geometry = getGeometry.call(this, container)
+					container.geometry = getGeometry.call(this, container, /* isContainer: */ true)
 					container.scroll = getScrolled.call(this, container)
 				})
 				each(elements, element => element.geometry = getGeometry.call(this, element))
