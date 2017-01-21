@@ -36,7 +36,7 @@ export default function reveal (target, options, interval, sync) {
 	if (!isNaN(interval)) {
 		if (Math.abs(interval) >= 16) {
 			const sequenceId = nextUniqueId()
-			sequence = this.store.sequences[sequenceId] = {
+			sequence = {
 				elementIds: [],
 				firstActiveIndex: 0,
 				id: sequenceId,
@@ -99,6 +99,10 @@ export default function reveal (target, options, interval, sync) {
 
 	if (!containers[containerId]) {
 		containers[containerId] = { node: container }
+	}
+
+	if (sequence) {
+		this.store.sequences[sequence.id] = sequence
 	}
 
 	/**
