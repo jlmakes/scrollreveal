@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ScrollReveal can be enabled/disabled on desktops using `config.desktop`.
 - ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
+- The `reveal()` method now accepts negative sequence intervals to describe reverse sequences.
 
 ### Changed
+- **Breaking:** The `reveal()` method does not accept sequence intervals between -16 and 16 milliseconds.
 - **Breaking:** The `reveal()` method ignores existing element configuration.
 - **Breaking:** The instance method `isSupported()` is now static.
 - **Breaking:** `config.distance` supports only `em` `px` and `%` values.

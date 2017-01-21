@@ -32,14 +32,18 @@ export default function reveal (target, options, interval, sync) {
 	 * but can be negative for sequencing in reverse.
 	 */
 	let sequence
-	if (typeof interval === 'number' && Math.abs(interval) > 15) {
-		const sequenceId = nextUniqueId()
-		sequence = this.store.sequences[sequenceId] = {
-			elementIds: [],
-			firstActiveIndex: 0,
-			id: sequenceId,
-			interval,
-			lastActiveIndex: 0,
+	if (!isNaN(interval)) {
+		if (Math.abs(interval) >= 16) {
+			const sequenceId = nextUniqueId()
+			sequence = this.store.sequences[sequenceId] = {
+				elementIds: [],
+				firstActiveIndex: 0,
+				id: sequenceId,
+				interval,
+				lastActiveIndex: 0,
+			}
+		} else {
+			logger('Sequence intervals can not be between -16 and 16.')
 		}
 	}
 
