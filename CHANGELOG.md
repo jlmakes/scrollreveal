@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 
 ### Changed
+- **Breaking:** The `reveal()` method ignores existing element configuration.
 - **Breaking:** The instance method `isSupported()` is now static.
 - **Breaking:** `config.distance` supports only `em` `px` and `%` values.
 - **Breaking:** ScrollReveal requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.

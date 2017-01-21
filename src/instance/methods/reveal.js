@@ -50,30 +50,19 @@ export default function reveal (target, options, interval, sync) {
 		}
 	})
 
-	if (containerId === undefined) {
+	if (isNaN(containerId)) {
 		containerId = nextUniqueId()
 	}
 
 	try {
 		const elements = targets.map(node => {
-			const element = {}
-			const existingId = node.getAttribute('data-sr-id')
-
-			if (existingId) {
-				deepAssign(element, this.store.elements[existingId])
-			} else {
-				deepAssign(element, {
-					id: nextUniqueId(),
-					config: {},
-					node,
-				})
+			const elementId = node.getAttribute('data-sr-id') || nextUniqueId()
+			const element = {
+				id: elementId,
+				config: {},
+				containerId,
+				node,
 			}
-
-			/**
-			 * Both existing elements and new elements
-			 * need a reference to the latest container.
-			 */
-			element.containerId = containerId
 
 			if (sequence) {
 				element.sequence = {
@@ -83,7 +72,7 @@ export default function reveal (target, options, interval, sync) {
 				sequence.elementIds.push(element.id)
 			}
 
-			element.config = deepAssign({}, this.defaults, element.config, options)
+			element.config = deepAssign({}, this.defaults, options)
 			element.styles = style(element)
 
 			return element
