@@ -1,6 +1,35 @@
 import { isNode, isNodeList } from '../utils/browser'
 
 
+export function getGeometry (target) {
+	const { offsetHeight, offsetWidth } = target.node
+	let offsetTop = 0
+	let offsetLeft = 0
+	let node = target.node
+
+	do {
+		if (!isNaN(node.offsetTop)) {
+			offsetTop += node.offsetTop
+		}
+		if (!isNaN(node.offsetLeft)) {
+			offsetLeft += node.offsetLeft
+		}
+		node = node.offsetParent
+	} while (node)
+
+	return {
+		bounds: {
+			top: offsetTop,
+			right: offsetLeft + offsetWidth,
+			bottom: offsetTop + offsetHeight,
+			left: offsetLeft,
+		},
+		height: offsetHeight,
+		width: offsetWidth,
+	}
+}
+
+
 export function getNode (target, container = document) {
 	let node = null
 	if (typeof target === 'string') {
