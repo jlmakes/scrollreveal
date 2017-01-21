@@ -18,8 +18,9 @@ export default function reveal (target, options, interval, sync) {
 		options = options || {}
 	}
 
+	const config = deepAssign({}, this.defaults, options)
 	const containers = this.store.containers
-	const container = getNode(options.container || this.defaults.container)
+	const container = getNode(config.container)
 	const targets = getNodes(target, container)
 
 	if (!targets.length) {
@@ -63,7 +64,7 @@ export default function reveal (target, options, interval, sync) {
 			const elementId = node.getAttribute('data-sr-id') || nextUniqueId()
 			const element = {
 				id: elementId,
-				config: {},
+				config,
 				containerId,
 				node,
 			}
@@ -76,7 +77,6 @@ export default function reveal (target, options, interval, sync) {
 				sequence.elementIds.push(element.id)
 			}
 
-			element.config = deepAssign({}, this.defaults, options)
 			element.styles = style(element)
 
 			return element
