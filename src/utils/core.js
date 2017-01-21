@@ -61,6 +61,18 @@ export function getNodes (target, container = document) {
 }
 
 
+export function getScrolled (container) {
+	return (container.node === document.documentElement)
+		? {
+			top: window.pageYOffset,
+			left: window.pageXOffset,
+		} : {
+			top: container.node.scrollTop,
+			left: container.node.scrollLeft,
+		}
+}
+
+
 export function logger (message) {
 	if (console) console.log(`ScrollReveal: ${message}`) // eslint-disable-line no-console
 }
