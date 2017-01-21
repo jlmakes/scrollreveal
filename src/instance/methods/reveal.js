@@ -1,5 +1,6 @@
 import { getNode, getNodes, logger } from '../../utils/core'
 import { deepAssign, each, nextUniqueId } from '../../utils/generic'
+import { isMobile } from '../../utils/browser'
 import style from '../functions/style'
 import initialize from '../functions/initialize'
 
@@ -25,6 +26,14 @@ export default function reveal (target, options, interval, sync) {
 
 	if (!targets.length) {
 		logger('Reveal cannot be performed on 0 elements.')
+		return this
+	}
+
+	/**
+	 * Verify our platform matches our platform configuration.
+	 */
+	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
+		logger('Reveal aborted on disabled platform.')
 		return this
 	}
 
