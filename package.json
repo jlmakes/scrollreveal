@@ -26,7 +26,7 @@
     "url": "https://github.com/jlmakes/scrollreveal/issues"
   },
   "dependencies": {
-      "redpill": "^0.1.3"
+    "redpill": "^0.1.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -45,6 +45,7 @@
     "rollup": "^0.x",
     "rollup-plugin-buble": "^0.x",
     "rollup-plugin-istanbul": "^1.1.0",
+    "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
