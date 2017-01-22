@@ -5,9 +5,20 @@ import { each } from '../../utils/generic'
 export default function initialize () {
 
 	let activeContainerIds = []
+	let activeSequenceIds = []
+
 	each(this.store.elements, element => {
 		if (activeContainerIds.indexOf(element.containerId) === -1) {
 			activeContainerIds.push(element.containerId)
+		}
+		if (activeSequenceIds.indexOf(element.sequence.id) === -1) {
+			activeSequenceIds.push(element.sequence.id)
+		}
+	})
+
+	each(this.store.sequences, sequence => {
+		if (activeSequenceIds.indexOf(sequence.id) === -1) {
+			delete this.store.sequences[sequence.id]
 		}
 	})
 
