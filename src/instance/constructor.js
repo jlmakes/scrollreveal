@@ -9,6 +9,7 @@ import watch from './methods/watch'
 import { transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
 import { deepAssign, nextUniqueId } from '../utils/generic'
+import { version } from '../../package.json'
 
 
 export default function ScrollReveal (options = {}) {
@@ -58,6 +59,10 @@ export default function ScrollReveal (options = {}) {
 	}
 
 	this.initialized = false
+
+	Object.defineProperty(this, 'version', {
+		get: () => version,
+	})
 }
 
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()

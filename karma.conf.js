@@ -1,5 +1,6 @@
 const buble = require('rollup-plugin-buble')
 const istanbul = require('rollup-plugin-istanbul')
+const json = require('rollup-plugin-json')
 const nodeResolve = require('rollup-plugin-node-resolve')
 
 module.exports = function (karma) {
@@ -18,6 +19,7 @@ module.exports = function (karma) {
 
 		rollupPreprocessor: {
 			plugins: [
+				json(),
 				nodeResolve({ jsnext: true, main: true }),
 				buble(),
 				istanbul({
