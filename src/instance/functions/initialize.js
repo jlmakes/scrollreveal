@@ -8,8 +8,8 @@ export default function initialize () {
 	 * Let's take stock of which containers and sequences
 	 * our current store of elements is actively using.
 	 */
-	let activeContainerIds = []
-	let activeSequenceIds = []
+	const activeContainerIds = []
+	const activeSequenceIds = []
 
 	each(this.store.elements, element => {
 		if (activeContainerIds.indexOf(element.containerId) === -1) {
