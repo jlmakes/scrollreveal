@@ -28,11 +28,6 @@ export default function style (element) {
 
 	const transformations = []
 
-	if (config.rotate.x) transformations.push(matrix.rotateX(config.rotate.x))
-	if (config.rotate.y) transformations.push(matrix.rotateY(config.rotate.y))
-	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z))
-	if (config.scale !== 1) transformations.push(matrix.scale(config.scale))
-
 	if (parseFloat(config.distance)) {
 		const axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X'
 
@@ -67,6 +62,11 @@ export default function style (element) {
 
 		transformations.push(matrix[`translate${axis}`](distance))
 	}
+
+	if (config.rotate.x) transformations.push(matrix.rotateX(config.rotate.x))
+	if (config.rotate.y) transformations.push(matrix.rotateY(config.rotate.y))
+	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z))
+	if (config.scale !== 1) transformations.push(matrix.scale(config.scale))
 
 	let transform
 	if (transformations.length) {
