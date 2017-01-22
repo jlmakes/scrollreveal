@@ -1,3 +1,3 @@
-export default function animate () {
+export default function animate (element) {
 	// things...
 }
