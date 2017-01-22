@@ -21,12 +21,9 @@ export default function style (element) {
 	const computedOpacity = parseFloat(computed.opacity)
 	const configOpacity = parseFloat(config.opacity)
 
-	let opacity
-	if (computedOpacity !== configOpacity) {
-		opacity = {
-			computed: computedOpacity,
-			generated: configOpacity,
-		}
+	const opacity = {
+		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : '',
+		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : '',
 	}
 
 	const transformations = []
@@ -108,7 +105,7 @@ export default function style (element) {
 	}
 
 	let transition
-	if (opacity || transform) {
+	if (opacity.generated || transform.generated) {
 
 		const transitionProperty = getPrefixedStyleProperty('transition')
 		transition = {
