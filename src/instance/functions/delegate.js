@@ -12,6 +12,7 @@ export default function delegate (event = {}) {
 
 			case 'scroll':
 				each(containers, container => container.scroll = getScrolled.call(this, container))
+				each(elements, element => animate.call(this, element))
 				break
 
 			case 'resize':
@@ -20,9 +21,10 @@ export default function delegate (event = {}) {
 					container.geometry = getGeometry.call(this, container, /* isContainer: */ true)
 					container.scroll = getScrolled.call(this, container)
 				})
-				each(elements, element => element.geometry = getGeometry.call(this, element))
+				each(elements, element => {
+					element.geometry = getGeometry.call(this, element)
+					animate.call(this, element)
+				})
 		}
-
-		animate.call(this)
 	})
 }
