@@ -6,7 +6,8 @@ export default function initialize () {
 
 	/**
 	 * Let's take stock of which containers and sequences
-	 * our current store of elements is actively using.
+	 * our current store of elements is actively using,
+	 * and add each elements initial styles.
 	 */
 	const activeContainerIds = []
 	const activeSequenceIds = []
@@ -18,6 +19,12 @@ export default function initialize () {
 		if (activeSequenceIds.indexOf(element.sequence.id) === -1) {
 			activeSequenceIds.push(element.sequence.id)
 		}
+
+		element.node.setAttribute('style',
+			element.styles.inline.generated +
+			element.styles.opacity.generated +
+			element.styles.transform.generated.initial
+		)
 	})
 
 	/**
