@@ -39,8 +39,17 @@ export default function initialize () {
 		}
 	})
 
+	/**
+	 * Manually invoke delegate once to capture
+	 * element and container dimensions, container
+	 * scroll position, and trigger any valid reveals
+	 */
+	delegate.call(this)
+
+	/**
+	 * And with that, initialization is complete so
+	 * let's update our initialization timeout and state.
+	 */
 	this.initTimeout = null
 	this.initialized = true
-
-	delegate.call(this)
 }
