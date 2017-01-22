@@ -19,7 +19,7 @@ export default function ScrollReveal (options = {}) {
 	}
 
 	if (!ScrollReveal.isSupported()) {
-		logger('This browser is not supported.')
+		logger('Instantiation aborted.', 'This browser is not supported.')
 		return noop
 	}
 
@@ -32,13 +32,13 @@ export default function ScrollReveal (options = {}) {
 			})(),
 		})
 	} catch (error) {
-		logger(error.message)
+		logger('Instantiation failed.', 'Invalid configuration provided.', error.message)
 		return noop
 	}
 
 	const container = getNode(this.defaults.container)
 	if (!container) {
-		logger('Failed to instantiate due to missing container.')
+		logger('Instantiation failed.', 'Invalid or missing container.')
 		return noop
 	}
 

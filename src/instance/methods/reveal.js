@@ -25,7 +25,7 @@ export default function reveal (target, options, interval, sync) {
 	const targets = getNodes(target, container)
 
 	if (!targets.length) {
-		logger('Reveal cannot be performed on 0 elements.')
+		logger('Reveal aborted.', 'Reveal cannot be performed on 0 elements.')
 		return this
 	}
 
@@ -33,7 +33,7 @@ export default function reveal (target, options, interval, sync) {
 	 * Verify our platform matches our platform configuration.
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		logger('Reveal aborted on disabled platform.')
+		logger('Reveal aborted.', 'This platform has been disabled.')
 		return this
 	}
 
@@ -53,7 +53,8 @@ export default function reveal (target, options, interval, sync) {
 				lastActiveIndex: 0,
 			}
 		} else {
-			logger('Sequence intervals can not be between -16 and 16.')
+			logger('Reveal failed.', 'Sequence intervals can not be between -16 and 16.')
+			return this
 		}
 	}
 
@@ -102,7 +103,7 @@ export default function reveal (target, options, interval, sync) {
 		})
 
 	} catch (error) {
-		logger(error.message)
+		logger('Reveal failed.', error.message)
 		return this
 	}
 
