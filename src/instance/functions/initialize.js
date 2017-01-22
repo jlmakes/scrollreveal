@@ -11,13 +11,12 @@ export default function initialize () {
 		}
 	})
 
-	each(this.store.containers, (container, id, containers) => {
+	each(this.store.containers, container => {
 
-		let containerId = parseInt(id)
-		if (activeContainerIds.indexOf(containerId) === -1) {
+		if (activeContainerIds.indexOf(container.id) === -1) {
 			container.node.removeEventListener('scroll', delegate)
 			container.node.removeEventListener('resize', delegate)
-			delete containers[id]
+			delete this.store.containers[container.id]
 
 		} else if (container.node === document.documentElement) {
 			window.addEventListener('scroll', delegate.bind(this))

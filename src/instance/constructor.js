@@ -51,7 +51,9 @@ export default function ScrollReveal (options = {}) {
 		sequences: {},
 	}
 
-	this.store.containers[ nextUniqueId() ] = {
+	const containerId = nextUniqueId()
+	this.store.containers[containerId] = {
+		id: containerId,
 		node: container,
 	}
 

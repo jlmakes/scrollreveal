@@ -107,8 +107,9 @@ export default function reveal (target, options, interval, sync) {
 		return this
 	}
 
-	if (!containers[containerId]) {
-		containers[containerId] = { node: container }
+	containers[containerId] = containers[containerId] || {
+		id: containerId,
+		node: container,
 	}
 
 	if (sequence) {
