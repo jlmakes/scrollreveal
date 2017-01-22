@@ -6,36 +6,25 @@ export function isElementVisible (element) {
 	const viewFactor = element.config.viewFactor
 	const viewOffset = element.config.viewOffset
 
-	return isElementInBounds() || element.styles.position === 'fixed'
-
-	function isElementInBounds () {
-
-		/**
-		 * Define the element's active boundaries using its view factor.
-		 */
-		const activeElementBounds = {
-			top: element.geometry.bounds.top + element.geometry.height * viewFactor,
-			right: element.geometry.bounds.right - element.geometry.width * viewFactor,
-			bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
-			left: element.geometry.bounds.left + element.geometry.width * viewFactor,
-		}
-
-		/**
-		 * Define the container's active boundaries using its view offset,
-		 * and current scroll position.
-		 */
-		const activeContainerBounds = {
-			top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
-			right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
-			bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
-			left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
-		}
-
-		return activeElementBounds.top < activeContainerBounds.bottom
-			&& activeElementBounds.right > activeContainerBounds.left
-			&& activeElementBounds.bottom > activeContainerBounds.top
-			&& activeElementBounds.left < activeContainerBounds.right
+	const elementBounds = {
+		top: element.geometry.bounds.top + element.geometry.height * viewFactor,
+		right: element.geometry.bounds.right - element.geometry.width * viewFactor,
+		bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
+		left: element.geometry.bounds.left + element.geometry.width * viewFactor,
 	}
+
+	const containerBounds = {
+		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
+		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
+		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
+		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
+	}
+
+	return elementBounds.top < containerBounds.bottom
+		&& elementBounds.right > containerBounds.left
+		&& elementBounds.bottom > containerBounds.top
+		&& elementBounds.left < containerBounds.right
+		|| element.styles.position === 'fixed'
 }
 
 
