@@ -3,6 +3,7 @@ import { getGeometry, getScrolled } from '../../utils/core'
 import { each } from '../../utils/generic'
 import animate from './animate'
 
+
 export default function delegate (event = {}) {
 	requestAnimationFrame(() => {
 		const containers = this.store.containers
