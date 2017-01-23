@@ -14,6 +14,7 @@ export default function animate (element) {
 		].join(' ')
 
 		element.seen = true
+		element.visible = true
 
 	} else {
 		styles = [
@@ -22,6 +23,8 @@ export default function animate (element) {
 			element.styles.transform.generated.initial,
 			element.styles.transition.generated.instant,
 		].join(' ')
+
+		element.visible = false
 	}
 
 	element.node.setAttribute('style', styles)
