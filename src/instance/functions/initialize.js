@@ -20,11 +20,19 @@ export default function initialize () {
 			activeSequenceIds.push(element.sequence.id)
 		}
 
-		element.node.setAttribute('style',
-			element.styles.inline.generated +
-			element.styles.opacity.generated +
-			element.styles.transform.generated.initial
-		)
+		// check the element status before choosing which
+		// styles to initialize with; e.g. after a sync() call,
+		// elements will be visible and will need their
+		// final styles applied alongwith transition.
+		let styles
+
+		styles = [
+			element.styles.inline.generated,
+			element.styles.opacity.generated,
+			element.styles.transform.generated.initial,
+		].join(' ')
+
+		element.node.setAttribute('style', styles)
 	})
 
 	/**
