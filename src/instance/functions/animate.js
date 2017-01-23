@@ -13,6 +13,8 @@ export default function animate (element) {
 			element.styles.transition.generated.instant,
 		].join(' ')
 
+		element.seen = true
+
 	} else {
 		styles = [
 			element.styles.inline.generated,

@@ -87,6 +87,7 @@ export default function reveal (target, options, interval, sync) {
 			} else {
 				element.id = nextUniqueId()
 				element.node = node
+				element.seen = false
 			}
 
 			element.config = config
