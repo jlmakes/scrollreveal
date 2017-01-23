@@ -71,13 +71,27 @@ export default function reveal (target, options, interval, sync) {
 
 	try {
 		const elements = targets.map(node => {
-			const elementId = node.getAttribute('data-sr-id') || nextUniqueId()
-			const element = {
-				id: elementId,
-				config,
-				containerId,
-				node,
+			const element = {}
+			const existingId = node.getAttribute('data-sr-id')
+
+			if (existingId) {
+				deepAssign(element, this.store.elements[existingId])
+
+				/**
+				 * In order to prevent previously generated styles
+				 * frin throwing off the new styles, the style tag
+				 * has to be reverted to it's pre-reveal state.
+				 */
+				element.node.setAttribute('style', element.styles.inline.computed || '')
+
+			} else {
+				element.id = nextUniqueId()
+				element.node = node
 			}
+
+			element.config = config
+			element.containerId = containerId
+			element.styles = style(element)
 
 			if (sequence) {
 				element.sequence = {
@@ -86,8 +100,6 @@ export default function reveal (target, options, interval, sync) {
 				}
 				sequence.elementIds.push(element.id)
 			}
-
-			element.styles = style(element)
 
 			return element
 		})
