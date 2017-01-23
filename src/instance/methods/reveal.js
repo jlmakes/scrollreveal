@@ -59,9 +59,9 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	let containerId
-	each(containers, (storedContainer, id) => {
-		if (storedContainer.node === container) {
-			containerId = parseInt(id)
+	each(containers, storedContainer => {
+		if (!containerId && storedContainer.node === container) {
+			containerId = storedContainer.id
 		}
 	})
 
