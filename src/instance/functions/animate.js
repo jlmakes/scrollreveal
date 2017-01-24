@@ -20,6 +20,7 @@ export default function animate (element) {
 			styles.push(element.styles.transition.generated.instant)
 		}
 
+		element.config.beforeReveal(element.node)
 		element.seen = true
 		element.visible = true
 		element.node.setAttribute('style', styles.join(' '))
@@ -30,8 +31,8 @@ export default function animate (element) {
 		styles.push(element.styles.transform.generated.initial)
 		styles.push(element.styles.transition.generated.instant)
 
+		element.config.beforeReset(element.node)
 		element.visible = false
 		element.node.setAttribute('style', styles.join(' '))
 	}
-
 }
