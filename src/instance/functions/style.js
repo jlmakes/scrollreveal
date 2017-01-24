@@ -7,11 +7,22 @@ export default function style (element) {
 	const position = computed.position
 	const config = element.config
 
+	/**
+	 * Generate inline styles
+	 */
 	const inlineRegex = /.+[^;]/g
 	const inlineStyle = element.node.getAttribute('style') || ''
 	const inlineMatch = inlineRegex.exec(inlineStyle)
-	const inline = (inlineMatch) ? `${inlineMatch[0]}; visibility: visible;` : 'visibility: visible;'
 
+	let inline = (inlineMatch) ? `${inlineMatch[0]};` : ''
+	if (inline.indexOf('visibility: visible') === -1) {
+		inline += (inline.length) ? ' ' : ''
+		inline += 'visibility: visible;'
+	}
+
+	/**
+	 * Generate opacity styles
+	 */
 	const computedOpacity = parseFloat(computed.opacity)
 	const configOpacity = parseFloat(config.opacity)
 	const opacity = {
@@ -19,6 +30,9 @@ export default function style (element) {
 		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : '',
 	}
 
+	/**
+	 * Generate transformation styles
+	 */
 	const transformations = []
 
 	if (parseFloat(config.distance)) {
@@ -97,6 +111,9 @@ export default function style (element) {
 		}
 	}
 
+	/**
+	 * Generate transition styles
+	 */
 	let transition
 	if (opacity.generated || transform.generated) {
 
