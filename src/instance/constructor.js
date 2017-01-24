@@ -57,12 +57,6 @@ export default function ScrollReveal (options = {}) {
 		sequences: {},
 	}
 
-	const containerId = nextUniqueId()
-	this.store.containers[containerId] = {
-		id: containerId,
-		node: container,
-	}
-
 	this.initialized = false
 	this.delegate = delegate.bind(this)
 
