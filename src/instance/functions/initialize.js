@@ -14,28 +14,17 @@ export default function initialize () {
 			activeSequenceIds.push(element.sequence.id)
 		}
 
-		/**
-		 * Since we may be initializing elements that have
-		 * already been revealed, e.g. invoking sync(),
-		 * discern whether to use initial or final styles.
-		 */
-		let styles
+		let styles = [element.styles.inline]
 
 		if (element.visible) {
-			styles = [
-				element.styles.inline,
-				element.styles.opacity.computed,
-				element.styles.transform.generated.final,
-			].join(' ')
+			styles.push(element.styles.opacity.computed)
+			styles.push(element.styles.transform.generated.final)
 		} else {
-			styles = [
-				element.styles.inline,
-				element.styles.opacity.generated,
-				element.styles.transform.generated.initial,
-			].join(' ')
+			styles.push(element.styles.opacity.generated)
+			styles.push(element.styles.transform.generated.initial)
 		}
 
-		element.node.setAttribute('style', styles)
+		element.node.setAttribute('style', styles.join(' '))
 	})
 
 	/**
