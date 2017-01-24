@@ -28,5 +28,7 @@ export default function delegate (event = {}) {
 					animate.call(this, element)
 				})
 		}
+
+		this.pristine = false
 	})
 }

@@ -57,7 +57,7 @@ export default function ScrollReveal (options = {}) {
 		sequences: {},
 	}
 
-	this.initialized = false
+	this.pristine = true
 	this.delegate = delegate.bind(this)
 
 	Object.defineProperty(this, 'version', {

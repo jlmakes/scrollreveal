@@ -77,5 +77,4 @@ export default function initialize () {
 	this.delegate()
 
 	this.initTimeout = null
-	this.initialized = true
 }
