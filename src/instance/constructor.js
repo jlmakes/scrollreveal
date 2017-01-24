@@ -5,6 +5,7 @@ import destroy from './methods/destroy'
 import reveal from './methods/reveal'
 import sync from './methods/sync'
 import watch from './methods/watch'
+import delegate from './functions/delegate'
 
 import { transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
@@ -59,6 +60,7 @@ export default function ScrollReveal (options = {}) {
 	}
 
 	this.initialized = false
+	this.delegate = delegate.bind(this)
 
 	Object.defineProperty(this, 'version', {
 		get: () => version,
