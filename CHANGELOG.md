@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 - The `reveal()` method now accepts negative sequence intervals to describe reverse sequences.
+- The `destroy()` method removes generated styles and event listeners.
 
 ### Changed
 - **Breaking:** The `reveal()` method does not accept sequence intervals between -16 and 16 milliseconds.

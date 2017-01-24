@@ -1,18 +1,27 @@
-// import handler from '../functions/handler'
-// import { each } from '../../utils/generic'
+import { each } from '../../utils/generic'
 
 
 export default function destroy () {
-	// each(this.store.containers, container => {
-	// 	if (container.node === document.documentElement) {
-	// 		window.removeEventListener('scroll', handler.bind(this))
-	// 		window.removeEventListener('resize', handler.bind(this))
-	// 	} else {
-	// 		container.node.removeEventListener('scroll', handler.bind(this))
-	// 		container.node.removeEventListener('resize', handler.bind(this))
-	// 	}
-	// })
-	//
-	// this.initialized = false
+
+	/**
+	 * Remove all generated styles.
+	 */
+	each(this.store.elements, element => {
+		element.node.setAttribute('style', element.styles.inline)
+	})
+
+	/**
+	 * Remove all event listeners.
+	 */
+	each(this.store.containers, container => {
+		if (container.node === document.documentElement) {
+			window.removeEventListener('scroll', this.delegate)
+			window.removeEventListener('resize', this.delegate)
+		} else {
+			container.node.removeEventListener('scroll', this.delegate)
+			container.node.removeEventListener('resize', this.delegate)
+		}
+	})
+
 	return this
 }
