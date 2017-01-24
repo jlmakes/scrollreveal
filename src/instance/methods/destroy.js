@@ -24,5 +24,15 @@ export default function destroy () {
 		}
 	})
 
+	/**
+	 * Clear all data from the store
+	 */
+	this.store = {
+		containers: {},
+		elements: {},
+		history: [],
+		sequences: {},
+	}
+
 	return this
 }
