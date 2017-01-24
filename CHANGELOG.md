@@ -1,6 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file,  
-and this project adheres to [Semantic Versioning](http://semver.org/).
+and this project tries its best to use [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 - The `reveal()` method now accepts negative sequence intervals to describe reverse sequences.
 - The `destroy()` method removes generated styles and event listeners.
+- ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
 
 ### Changed
 - **Breaking:** The `reveal()` method does not accept sequence intervals between -16 and 16 milliseconds.
@@ -17,7 +18,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - **Breaking:** The instance method `isSupported()` is now static.
 - **Breaking:** `config.distance` supports only `em` `px` and `%` values.
 - **Breaking:** ScrollReveal requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.
-- ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
 - ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
 - Library version is now a read-only instance member.

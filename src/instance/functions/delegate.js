@@ -1,7 +1,8 @@
+import animate from './animate'
+
 import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame'
 import { getGeometry, getScrolled } from '../../utils/core'
 import { each } from '../../utils/generic'
-import animate from './animate'
 
 
 export default function delegate (event = {}) {

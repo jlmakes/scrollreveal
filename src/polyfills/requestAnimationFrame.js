@@ -1,7 +1,7 @@
 export const polyfill = (() => {
 	let clock = Date.now()
 
-	return (callback) => {
+	return callback => {
 		const currentTime = Date.now()
 		if (currentTime - clock > 16) {
 			clock = currentTime

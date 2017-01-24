@@ -1,8 +1,9 @@
+import style from '../functions/style'
+import initialize from '../functions/initialize'
+
 import { getNode, getNodes, logger } from '../../utils/core'
 import { deepAssign, each, nextUniqueId } from '../../utils/generic'
 import { isMobile } from '../../utils/browser'
-import style from '../functions/style'
-import initialize from '../functions/initialize'
 
 
 export default function reveal (target, options, interval, sync) {
@@ -131,15 +132,15 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	* If reveal wasn't invoked by sync, we want to make
-	* sure to add this call to the history.
+	* If reveal wasn't invoked by sync, we want to
+	* make sure to add this call to the history.
 	*/
 	if (!sync) {
 		this.store.history.push({ target, options, interval })
 
 		/**
-		* Push initialization to the event queue, giving chained
-		* reveal calls time to be interpretted.
+		* Push initialization to the event queue, giving
+		* multiple reveal calls time to be interpretted.
 		*/
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout)

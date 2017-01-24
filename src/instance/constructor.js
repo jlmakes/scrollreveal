@@ -5,17 +5,21 @@ import destroy from './methods/destroy'
 import reveal from './methods/reveal'
 import sync from './methods/sync'
 import watch from './methods/watch'
+
 import delegate from './functions/delegate'
 
 import { transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
 import { deepAssign, nextUniqueId } from '../utils/generic'
+
 import { version } from '../../package.json'
 
 
 export default function ScrollReveal (options = {}) {
 
-	// Returns a new instance without `new` keyword.
+	/**
+	 * Support instantiation without the `new` keyword.
+	 */
 	if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
 		return new ScrollReveal(options)
 	}
