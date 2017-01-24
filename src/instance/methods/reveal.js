@@ -79,10 +79,10 @@ export default function reveal (target, options, interval, sync) {
 
 				/**
 				 * In order to prevent previously generated styles
-				 * frin throwing off the new styles, the style tag
+				 * from throwing off the new styles, the style tag
 				 * has to be reverted to it's pre-reveal state.
 				 */
-				element.node.setAttribute('style', element.styles.inline.computed || '')
+				element.node.setAttribute('style', element.styles.inline)
 
 			} else {
 				element.id = nextUniqueId()

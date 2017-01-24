@@ -29,13 +29,13 @@ export default function initialize () {
 
 		if (element.visible) {
 			styles = [
-				element.styles.inline.generated,
+				element.styles.inline,
 				element.styles.opacity.computed,
 				element.styles.transform.generated.final,
 			].join(' ')
 		} else {
 			styles = [
-				element.styles.inline.generated,
+				element.styles.inline,
 				element.styles.opacity.generated,
 				element.styles.transform.generated.initial,
 			].join(' ')

@@ -10,15 +10,10 @@ export default function style (element) {
 	const inlineRegex = /.+[^;]/g
 	const inlineStyle = element.node.getAttribute('style') || ''
 	const inlineMatch = inlineRegex.exec(inlineStyle)
-
-	const inline = {
-		computed: (inlineMatch) ? inlineMatch[0] : '',
-		generated: (inlineMatch) ? `${inlineMatch[0]}; visibility: visible;` : 'visibility: visible;',
-	}
+	const inline = (inlineMatch) ? `${inlineMatch[0]}; visibility: visible;` : 'visibility: visible;'
 
 	const computedOpacity = parseFloat(computed.opacity)
 	const configOpacity = parseFloat(config.opacity)
-
 	const opacity = {
 		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : '',
 		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : '',

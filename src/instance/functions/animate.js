@@ -7,7 +7,7 @@ export default function animate (element) {
 
 	if (isElementVisible.call(this, element)) {
 		styles = [
-			element.styles.inline.generated,
+			element.styles.inline,
 			element.styles.opacity.computed,
 			element.styles.transform.generated.final,
 			element.styles.transition.generated.instant,
@@ -18,7 +18,7 @@ export default function animate (element) {
 
 	} else {
 		styles = [
-			element.styles.inline.generated,
+			element.styles.inline,
 			element.styles.opacity.generated,
 			element.styles.transform.generated.initial,
 			element.styles.transition.generated.instant,
