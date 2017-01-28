@@ -10,7 +10,7 @@ import delegate from './functions/delegate'
 
 import { transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
-import { deepAssign, nextUniqueId } from '../utils/generic'
+import { deepAssign } from '../utils/generic'
 
 import { version } from '../../package.json'
 
