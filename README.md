@@ -6,6 +6,7 @@ Work in progress development branch.
 [![CodeCov][codecov-badge]][codecov-url]
 [![NPM downloads][downloads-badge]][downloads-url]
 ![Version][version-badge]
+![Library Size][size-badge]
 [![License GPLv3][license-badge]][license-url]
 
 [![Build Status][saucelabs-matrix]][saucelabs-url]
@@ -26,12 +27,19 @@ ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rig
 
 [travis-badge]: https://img.shields.io/travis/jlmakes/scrollreveal/development.svg
 [travis-url]: https://travis-ci.org/jlmakes/scrollreveal
+
 [codecov-badge]: https://img.shields.io/codecov/c/github/jlmakes/scrollreveal/development.svg
 [codecov-url]: https://codecov.io/gh/jlmakes/scrollreveal/branch/development
+
 [downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
+
 [version-badge]: https://img.shields.io/badge/version-4.0.0_alpha-1283c3.svg
+
+[size-badge]: https://img.shields.io/badge/min+gzip-4.37KB-blue.svg
+
 [license-badge]: https://img.shields.io/badge/license-GPL_v3-1283c3.svg
 [license-url]: https://opensource.org/licenses/GPL-3.0
+
 [saucelabs-matrix]: https://saucelabs.com/browser-matrix/scrollreveal.svg
 [saucelabs-url]: https://saucelabs.com/u/scrollreveal
