@@ -43,19 +43,14 @@ export default function reveal (target, options, interval, sync) {
 	 * but can be negative for sequencing in reverse.
 	 */
 	let sequence
-	if (!isNaN(interval)) {
-		if (Math.abs(interval) >= 16) {
-			const sequenceId = nextUniqueId()
-			sequence = {
-				elementIds: [],
-				firstActiveIndex: 0,
-				id: sequenceId,
-				interval,
-				lastActiveIndex: 0,
-			}
-		} else {
-			logger('Reveal failed.', 'Sequence intervals can not be between -16 and 16.')
-			return this
+	if (typeof interval == 'number' && Math.abs(interval) >= 16) {
+		const sequenceId = nextUniqueId()
+		sequence = {
+			elementIds: [],
+			head: { index: null, blocked: false },
+			tail: { index: null, blocked: false },
+			id: sequenceId,
+			interval: Math.abs(interval),
 		}
 	}
 

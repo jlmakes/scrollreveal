@@ -7,9 +7,44 @@ export default function animate (element) {
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
 
-	let styles = [element.styles.inline]
+	const sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null
+	const styles = [element.styles.inline]
 
 	if (isElementVisible.call(this, element) && !element.visible) {
+
+		if (sequence) {
+			if (sequence.head.index === null && sequence.tail.index === null) {
+				sequence.head.index = sequence.tail.index = element.sequence.index
+				sequence.head.blocked = sequence.tail.blocked = true
+				window.setTimeout(() => {
+					sequence.head.blocked = false
+					sequence.tail.blocked = false
+					this.delegate()
+				}, Math.abs(sequence.interval))
+
+			} else if (sequence.head.index - 1 === element.sequence.index && !sequence.head.blocked) {
+				sequence.head.index--
+				sequence.head.blocked = true
+				window.setTimeout(() => {
+					sequence.head.blocked = false
+					this.delegate()
+				}, Math.abs(sequence.interval))
+
+			} else if (sequence.tail.index + 1 === element.sequence.index && !sequence.tail.blocked) {
+				sequence.tail.index++
+				sequence.tail.blocked = true
+				window.setTimeout(() => {
+					sequence.tail.blocked = false
+					this.delegate()
+				}, Math.abs(sequence.interval))
+
+			} else return
+
+			window.setTimeout(() => {
+				sequence.head.blocked = sequence.tail.blocked = false
+				this.delegate()
+			}, sequence.interval)
+		}
 
 		styles.push(element.styles.opacity.computed)
 		styles.push(element.styles.transform.generated.final)
@@ -25,15 +60,25 @@ export default function animate (element) {
 		registerCallbacks(element, isDelayed)
 		element.node.setAttribute('style', styles.join(' '))
 
-	} else if (!isElementVisible.call(this, element) && element.visible) {
+	} else {
+		if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
 
-		styles.push(element.styles.opacity.generated)
-		styles.push(element.styles.transform.generated.initial)
-		styles.push(element.styles.transition.generated.instant)
+			if (sequence) {
+				if (sequence.head.index === element.sequence.index) {
+					sequence.head.index++
+				} else if (sequence.tail.index === element.sequence.index) {
+					sequence.tail.index--
+				} else return
+			}
 
-		element.visible = false
-		registerCallbacks(element)
-		element.node.setAttribute('style', styles.join(' '))
+			styles.push(element.styles.opacity.generated)
+			styles.push(element.styles.transform.generated.initial)
+			styles.push(element.styles.transition.generated.instant)
+
+			element.visible = false
+			registerCallbacks(element)
+			element.node.setAttribute('style', styles.join(' '))
+		}
 	}
 }
 
