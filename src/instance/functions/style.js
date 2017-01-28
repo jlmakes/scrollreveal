@@ -24,7 +24,10 @@ export default function style (element) {
 	 * Generate opacity styles
 	 */
 	const computedOpacity = parseFloat(computed.opacity)
-	const configOpacity = parseFloat(config.opacity)
+	const configOpacity = (!isNaN(parseFloat(config.opacity)))
+		? parseFloat(config.opacity)
+		: computedOpacity
+
 	const opacity = {
 		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : '',
 		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : '',
