@@ -14,7 +14,7 @@ export default function reveal (target, options, interval, sync) {
 	 * the interval being passed as the 2nd argument.
 	 */
 	if (typeof options === 'number') {
-		interval = parseInt(options)
+		interval = Math.abs(parseInt(options))
 		options = {}
 	} else {
 		options = options || {}
@@ -39,8 +39,7 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	 * Sequence intervals must be at least 16ms (60fps)
-	 * but can be negative for sequencing in reverse.
+	 * Sequence intervals must be at least 16ms (60fps).
 	 */
 	let sequence
 	if (typeof interval == 'number' && Math.abs(interval) >= 16) {
@@ -52,6 +51,9 @@ export default function reveal (target, options, interval, sync) {
 			id: sequenceId,
 			interval: Math.abs(interval),
 		}
+	} else {
+		logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.')
+		return this
 	}
 
 	let containerId
