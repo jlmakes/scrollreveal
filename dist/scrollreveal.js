@@ -99,10 +99,11 @@ function destroy () {
 
 
 	/**
-	 * Remove all generated styles.
+	 * Remove all generated styles and element ids
 	 */
 	each(this.store.elements, function (element) {
 		element.node.setAttribute('style', element.styles.inline);
+		element.node.removeAttribute('data-sr-id');
 	});
 
 	/**
@@ -118,196 +119,17 @@ function destroy () {
 		}
 	});
 
-	return this
-}
-
-var getPrefixedStyleProperty = (function () {
-	var properties = {};
-	var style = document.documentElement.style;
-
-	function getPrefixedStyleProperty (name, source) {
-		if ( source === void 0 ) source = style;
-
-		if (name && typeof name === 'string') {
-			if (properties[name]) {
-				return properties[name]
-			}
-			if (typeof source[name] === 'string') {
-				return properties[name] = name
-			}
-			if (typeof source[("-webkit-" + name)] === 'string') {
-				return properties[name] = "-webkit-" + name
-			}
-			throw new RangeError(("Unable to find \"" + name + "\" style property."))
-		}
-		throw new TypeError('Expected a string.')
-	}
-
-	getPrefixedStyleProperty.clearCache = function () { return properties = {}; };
-
-	return getPrefixedStyleProperty
-})();
-
-
-function isMobile (agent) {
-	if ( agent === void 0 ) agent = navigator.userAgent;
-
-	return /Android|iPhone|iPad|iPod/i.test(agent)
-}
-
-
-function isNode (target) {
-	return typeof window.Node === 'object'
-		? target instanceof window.Node
-		: target !== null
-			&& typeof target === 'object'
-			&& typeof target.nodeType === 'number'
-			&& typeof target.nodeName === 'string'
-}
-
-
-function isNodeList (target) {
-	var prototypeToString = Object.prototype.toString.call(target);
-	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
-
-	return typeof window.NodeList === 'object'
-		? target instanceof window.NodeList
-		: typeof target === 'object'
-			&& typeof target.length === 'number'
-			&& regex.test(prototypeToString)
-			&& (target.length === 0 || isNode(target[0]))
-}
-
-
-function transformSupported () {
-	var style = document.documentElement.style;
-	return 'transform' in style || 'WebkitTransform' in style
-}
-
-
-function transitionSupported () {
-	var style = document.documentElement.style;
-	return 'transition' in style || 'WebkitTransition' in style
-}
-
-function isElementVisible (element) {
-	var container = this.store.containers[element.containerId];
-	var viewFactor = element.config.viewFactor;
-	var viewOffset = element.config.viewOffset;
-
-	var elementBounds = {
-		top: element.geometry.bounds.top + element.geometry.height * viewFactor,
-		right: element.geometry.bounds.right - element.geometry.width * viewFactor,
-		bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
-		left: element.geometry.bounds.left + element.geometry.width * viewFactor,
-	};
-
-	var containerBounds = {
-		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
-		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
-		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
-		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
-	};
-
-	return elementBounds.top < containerBounds.bottom
-		&& elementBounds.right > containerBounds.left
-		&& elementBounds.bottom > containerBounds.top
-		&& elementBounds.left < containerBounds.right
-		|| element.styles.position === 'fixed'
-}
-
-
-function getGeometry (target, isContainer) {
 	/**
-	 * We want to ignore padding and scrollbars for container elements.
-	 * More information here: https://goo.gl/vOZpbz
+	 * Clear all data from the store
 	 */
-	var height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight;
-	var width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth;
+	this.store = {
+		containers: {},
+		elements: {},
+		history: [],
+		sequences: {},
+	};
 
-	var offsetTop = 0;
-	var offsetLeft = 0;
-	var node = target.node;
-
-	do {
-		if (!isNaN(node.offsetTop)) {
-			offsetTop += node.offsetTop;
-		}
-		if (!isNaN(node.offsetLeft)) {
-			offsetLeft += node.offsetLeft;
-		}
-		node = node.offsetParent;
-	} while (node)
-
-	return {
-		bounds: {
-			top: offsetTop,
-			right: offsetLeft + width,
-			bottom: offsetTop + height,
-			left: offsetLeft,
-		},
-		height: height,
-		width: width,
-	}
-}
-
-
-function getNode (target, container) {
-	if ( container === void 0 ) container = document;
-
-	var node = null;
-	if (typeof target === 'string') {
-		try {
-			node = container.querySelector(target);
-			if (!node) { logger(("Querying the selector \"" + target + "\" returned nothing.")); }
-		} catch (err) {
-			logger(("\"" + target + "\" is not a valid selector."));
-		}
-	}
-	return isNode(target) ? target : node
-}
-
-
-function getNodes (target, container) {
-	if ( container === void 0 ) container = document;
-
-	if (isNode(target)) { return [target] }
-	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
-	if (typeof target === 'string') {
-		try {
-			var query = container.querySelectorAll(target);
-			var nodes = Array.prototype.slice.call(query);
-			if (nodes.length) { return nodes }
-			logger(("Querying the selector \"" + target + "\" returned nothing."));
-		} catch (error) {
-			logger(("\"" + target + "\" is not a valid selector."));
-		}
-	}
-	return []
-}
-
-
-function getScrolled (container) {
-	return (container.node === document.documentElement)
-		? {
-			top: window.pageYOffset,
-			left: window.pageXOffset,
-		} : {
-			top: container.node.scrollTop,
-			left: container.node.scrollLeft,
-		}
-}
-
-
-function logger (message) {
-	var details = [], len = arguments.length - 1;
-	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
-
-	if (console) {
-		var report = "ScrollReveal: " + message;
-		details.forEach(function (detail) { return report += "\n  - " + detail; });
-		console.log(report); // eslint-disable-line no-console
-	}
+	return this
 }
 
 /**
@@ -436,16 +258,96 @@ var matrix = Object.freeze({
 	translateY: translateY
 });
 
+var getPrefixedStyleProperty = (function () {
+	var properties = {};
+	var style = document.documentElement.style;
+
+	function getPrefixedStyleProperty (name, source) {
+		if ( source === void 0 ) source = style;
+
+		if (name && typeof name === 'string') {
+			if (properties[name]) {
+				return properties[name]
+			}
+			if (typeof source[name] === 'string') {
+				return properties[name] = name
+			}
+			if (typeof source[("-webkit-" + name)] === 'string') {
+				return properties[name] = "-webkit-" + name
+			}
+			throw new RangeError(("Unable to find \"" + name + "\" style property."))
+		}
+		throw new TypeError('Expected a string.')
+	}
+
+	getPrefixedStyleProperty.clearCache = function () { return properties = {}; };
+
+	return getPrefixedStyleProperty
+})();
+
+
+function isMobile (agent) {
+	if ( agent === void 0 ) agent = navigator.userAgent;
+
+	return /Android|iPhone|iPad|iPod/i.test(agent)
+}
+
+
+function isNode (target) {
+	return typeof window.Node === 'object'
+		? target instanceof window.Node
+		: target !== null
+			&& typeof target === 'object'
+			&& typeof target.nodeType === 'number'
+			&& typeof target.nodeName === 'string'
+}
+
+
+function isNodeList (target) {
+	var prototypeToString = Object.prototype.toString.call(target);
+	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
+
+	return typeof window.NodeList === 'object'
+		? target instanceof window.NodeList
+		: typeof target === 'object'
+			&& typeof target.length === 'number'
+			&& regex.test(prototypeToString)
+			&& (target.length === 0 || isNode(target[0]))
+}
+
+
+function transformSupported () {
+	var style = document.documentElement.style;
+	return 'transform' in style || 'WebkitTransform' in style
+}
+
+
+function transitionSupported () {
+	var style = document.documentElement.style;
+	return 'transition' in style || 'WebkitTransition' in style
+}
+
 function style (element) {
 	var computed = window.getComputedStyle(element.node);
 	var position = computed.position;
 	var config = element.config;
 
+	/**
+	 * Generate inline styles
+	 */
 	var inlineRegex = /.+[^;]/g;
 	var inlineStyle = element.node.getAttribute('style') || '';
 	var inlineMatch = inlineRegex.exec(inlineStyle);
-	var inline = (inlineMatch) ? ((inlineMatch[0]) + "; visibility: visible;") : 'visibility: visible;';
 
+	var inline = (inlineMatch) ? ((inlineMatch[0]) + ";") : '';
+	if (inline.indexOf('visibility: visible') === -1) {
+		inline += (inline.length) ? ' ' : '';
+		inline += 'visibility: visible;';
+	}
+
+	/**
+	 * Generate opacity styles
+	 */
 	var computedOpacity = parseFloat(computed.opacity);
 	var configOpacity = parseFloat(config.opacity);
 	var opacity = {
@@ -453,6 +355,9 @@ function style (element) {
 		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + "; ") : '',
 	};
 
+	/**
+	 * Generate transformation styles
+	 */
 	var transformations = [];
 
 	if (parseFloat(config.distance)) {
@@ -533,6 +438,9 @@ function style (element) {
 		};
 	}
 
+	/**
+	 * Generate transition styles
+	 */
 	var transition;
 	if (opacity.generated || transform.generated) {
 
@@ -611,26 +519,17 @@ function initialize () {
 			activeSequenceIds.push(element.sequence.id);
 		}
 
-		/**
-		 * Since we may be initializing elements that have
-		 * already been revealed, e.g. invoking sync(),
-		 * discern whether to use initial or final styles.
-		 */
-		var styles;
+		var styles = [element.styles.inline];
 
 		if (element.visible) {
-			styles = [
-				element.styles.inline,
-				element.styles.opacity.computed,
-				element.styles.transform.generated.final ].join(' ');
+			styles.push(element.styles.opacity.computed);
+			styles.push(element.styles.transform.generated.final);
 		} else {
-			styles = [
-				element.styles.inline,
-				element.styles.opacity.generated,
-				element.styles.transform.generated.initial ].join(' ');
+			styles.push(element.styles.opacity.generated);
+			styles.push(element.styles.transform.generated.initial);
 		}
 
-		element.node.setAttribute('style', styles);
+		element.node.setAttribute('style', styles.join(' '));
 	});
 
 	/**
@@ -672,7 +571,126 @@ function initialize () {
 	this.delegate();
 
 	this.initTimeout = null;
-	this.initialized = true;
+}
+
+function isElementVisible (element) {
+	var container = this.store.containers[element.containerId];
+	var viewFactor = element.config.viewFactor;
+	var viewOffset = element.config.viewOffset;
+
+	var elementBounds = {
+		top: element.geometry.bounds.top + element.geometry.height * viewFactor,
+		right: element.geometry.bounds.right - element.geometry.width * viewFactor,
+		bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
+		left: element.geometry.bounds.left + element.geometry.width * viewFactor,
+	};
+
+	var containerBounds = {
+		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
+		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
+		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
+		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
+	};
+
+	return elementBounds.top < containerBounds.bottom
+		&& elementBounds.right > containerBounds.left
+		&& elementBounds.bottom > containerBounds.top
+		&& elementBounds.left < containerBounds.right
+		|| element.styles.position === 'fixed'
+}
+
+
+function getGeometry (target, isContainer) {
+	/**
+	 * We want to ignore padding and scrollbars for container elements.
+	 * More information here: https://goo.gl/vOZpbz
+	 */
+	var height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight;
+	var width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth;
+
+	var offsetTop = 0;
+	var offsetLeft = 0;
+	var node = target.node;
+
+	do {
+		if (!isNaN(node.offsetTop)) {
+			offsetTop += node.offsetTop;
+		}
+		if (!isNaN(node.offsetLeft)) {
+			offsetLeft += node.offsetLeft;
+		}
+		node = node.offsetParent;
+	} while (node)
+
+	return {
+		bounds: {
+			top: offsetTop,
+			right: offsetLeft + width,
+			bottom: offsetTop + height,
+			left: offsetLeft,
+		},
+		height: height,
+		width: width,
+	}
+}
+
+
+function getNode (target, container) {
+	if ( container === void 0 ) container = document;
+
+	var node = null;
+	if (typeof target === 'string') {
+		try {
+			node = container.querySelector(target);
+			if (!node) { logger(("Querying the selector \"" + target + "\" returned nothing.")); }
+		} catch (err) {
+			logger(("\"" + target + "\" is not a valid selector."));
+		}
+	}
+	return isNode(target) ? target : node
+}
+
+
+function getNodes (target, container) {
+	if ( container === void 0 ) container = document;
+
+	if (isNode(target)) { return [target] }
+	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
+	if (typeof target === 'string') {
+		try {
+			var query = container.querySelectorAll(target);
+			var nodes = Array.prototype.slice.call(query);
+			if (nodes.length) { return nodes }
+			logger(("Querying the selector \"" + target + "\" returned nothing."));
+		} catch (error) {
+			logger(("\"" + target + "\" is not a valid selector."));
+		}
+	}
+	return []
+}
+
+
+function getScrolled (container) {
+	return (container.node === document.documentElement)
+		? {
+			top: window.pageYOffset,
+			left: window.pageXOffset,
+		} : {
+			top: container.node.scrollTop,
+			left: container.node.scrollLeft,
+		}
+}
+
+
+function logger (message) {
+	var details = [], len = arguments.length - 1;
+	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
+
+	if (console) {
+		var report = "ScrollReveal: " + message;
+		details.forEach(function (detail) { return report += "\n  - " + detail; });
+		console.log(report); // eslint-disable-line no-console
+	}
 }
 
 function reveal (target, options, interval, sync) {
@@ -685,7 +703,7 @@ function reveal (target, options, interval, sync) {
 	 * the interval being passed as the 2nd argument.
 	 */
 	if (typeof options === 'number') {
-		interval = parseInt(options);
+		interval = Math.abs(parseInt(options));
 		options = {};
 	} else {
 		options = options || {};
@@ -710,24 +728,21 @@ function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	 * Sequence intervals must be at least 16ms (60fps)
-	 * but can be negative for sequencing in reverse.
+	 * Sequence intervals must be at least 16ms (60fps).
 	 */
 	var sequence;
-	if (!isNaN(interval)) {
-		if (Math.abs(interval) >= 16) {
-			var sequenceId = nextUniqueId();
-			sequence = {
-				elementIds: [],
-				firstActiveIndex: 0,
-				id: sequenceId,
-				interval: interval,
-				lastActiveIndex: 0,
-			};
-		} else {
-			logger('Reveal failed.', 'Sequence intervals can not be between -16 and 16.');
-			return this
-		}
+	if (typeof interval == 'number' && Math.abs(interval) >= 16) {
+		var sequenceId = nextUniqueId();
+		sequence = {
+			elementIds: [],
+			head: { index: null, blocked: false },
+			tail: { index: null, blocked: false },
+			id: sequenceId,
+			interval: Math.abs(interval),
+		};
+	} else {
+		logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.');
+		return this
 	}
 
 	var containerId;
@@ -803,15 +818,15 @@ function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	* If reveal wasn't invoked by sync, we want to make
-	* sure to add this call to the history.
+	* If reveal wasn't invoked by sync, we want to
+	* make sure to add this call to the history.
 	*/
 	if (!sync) {
 		this.store.history.push({ target: target, options: options, interval: interval });
 
 		/**
-		* Push initialization to the event queue, giving chained
-		* reveal calls time to be interpretted.
+		* Push initialization to the event queue, giving
+		* multiple reveal calls time to be interpretted.
 		*/
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout);
@@ -823,16 +838,14 @@ function reveal (target, options, interval, sync) {
 }
 
 /**
- * Re-runs the reveal method for each record stored in history, useful
+ * Re-runs the reveal method for each record stored in history,
  * for capturing new content asynchronously loaded into the DOM.
- *
- * @return {object} - The current ScrollReveal instance.
  */
 function sync () {
 	var this$1 = this;
 
 	each(this.store.history, function (record) {
-	  reveal.call(this$1, record.target, record.options, record.interval, true);
+		reveal.call(this$1, record.target, record.options, record.interval, true);
 	});
 
 	initialize.call(this);
@@ -842,6 +855,116 @@ function sync () {
 
 function watch () {
 	return this
+}
+
+function animate (element) {
+	var this$1 = this;
+
+
+	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null;
+
+	var isDelayed = element.config.useDelay === 'always'
+		|| element.config.useDelay === 'onload' && this.pristine
+		|| element.config.useDelay === 'once' && !element.seen;
+
+	if (isElementVisible.call(this, element) && !element.visible) {
+
+		if (sequence) {
+			if (sequence.head.index === null && sequence.tail.index === null) {
+				sequence.head.index = sequence.tail.index = element.sequence.index;
+				sequence.head.blocked = sequence.tail.blocked = true;
+				window.setTimeout(function () {
+					sequence.head.blocked = false;
+					sequence.tail.blocked = false;
+					this$1.delegate();
+				}, Math.abs(sequence.interval));
+
+			} else if (sequence.head.index - 1 === element.sequence.index && !sequence.head.blocked) {
+				sequence.head.index = element.sequence.index;
+				sequence.head.blocked = true;
+				window.setTimeout(function () {
+					sequence.head.blocked = false;
+					this$1.delegate();
+				}, Math.abs(sequence.interval));
+
+			} else if (sequence.tail.index + 1 === element.sequence.index && !sequence.tail.blocked) {
+				sequence.tail.index = element.sequence.index;
+				sequence.tail.blocked = true;
+				window.setTimeout(function () {
+					sequence.tail.blocked = false;
+					this$1.delegate();
+				}, Math.abs(sequence.interval));
+
+			} else { return }
+		}
+
+		var styles = [
+			element.styles.inline,
+			element.styles.opacity.computed,
+			element.styles.transform.generated.final ];
+
+		if (isDelayed) {
+			styles.push(element.styles.transition.generated.delayed);
+		} else {
+			styles.push(element.styles.transition.generated.instant);
+		}
+
+		element.seen = true;
+		element.visible = true;
+		registerCallbacks(element, isDelayed);
+		element.node.setAttribute('style', styles.join(' '));
+
+	} else if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
+
+		if (sequence) {
+			if (sequence.head.index === element.sequence.index) {
+				sequence.head.index++;
+			} else if (sequence.tail.index === element.sequence.index) {
+				sequence.tail.index--;
+			}
+		}
+
+		var styles$1 = [
+			element.styles.inline,
+			element.styles.opacity.generated,
+			element.styles.transform.generated.initial,
+			element.styles.transition.generated.instant ];
+
+		element.visible = false;
+		registerCallbacks(element);
+		element.node.setAttribute('style', styles$1.join(' '));
+	}
+}
+
+
+function registerCallbacks (element, isDelayed) {
+
+	var duration = (isDelayed)
+		? element.config.duration + element.config.delay
+		: element.config.duration;
+
+	var afterCallback;
+	if (element.visible) {
+		element.config.beforeReveal(element.node);
+		afterCallback = element.config.afterReveal;
+	} else {
+		element.config.beforeReset(element.node);
+		afterCallback = element.config.afterReset;
+	}
+
+	var elapsed = 0;
+	if (element.callbackTimer) {
+		elapsed = Date.now() - element.callbackTimer.start;
+		window.clearTimeout(element.callbackTimer.clock);
+	}
+
+	element.callbackTimer = {
+		start: Date.now(),
+		clock: window.setTimeout(function () {
+			afterCallback(element.node);
+			element.callbackTimer = null;
+		}, duration - elapsed),
+	};
 }
 
 var polyfill = (function () {
@@ -863,33 +986,6 @@ var requestAnimationFrame = window.requestAnimationFrame
 	|| window.webkitRequestAnimationFrame
 	|| window.mozRequestAnimationFrame
 	|| polyfill;
-
-function animate (element) {
-
-	var styles;
-
-	if (isElementVisible.call(this, element)) {
-		styles = [
-			element.styles.inline,
-			element.styles.opacity.computed,
-			element.styles.transform.generated.final,
-			element.styles.transition.generated.instant ].join(' ');
-
-		element.seen = true;
-		element.visible = true;
-
-	} else {
-		styles = [
-			element.styles.inline,
-			element.styles.opacity.generated,
-			element.styles.transform.generated.initial,
-			element.styles.transition.generated.instant ].join(' ');
-
-		element.visible = false;
-	}
-
-	element.node.setAttribute('style', styles);
-}
 
 function delegate (event) {
 	var this$1 = this;
@@ -917,6 +1013,8 @@ function delegate (event) {
 					animate.call(this$1, element);
 				});
 		}
+
+		this$1.pristine = false;
 	});
 }
 
@@ -926,7 +1024,9 @@ function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
 
 
-	// Returns a new instance without `new` keyword.
+	/**
+	 * Support instantiation without the `new` keyword.
+	 */
 	if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
 		return new ScrollReveal(options)
 	}
@@ -964,13 +1064,7 @@ function ScrollReveal (options) {
 		sequences: {},
 	};
 
-	var containerId = nextUniqueId();
-	this.store.containers[containerId] = {
-		id: containerId,
-		node: container,
-	};
-
-	this.initialized = false;
+	this.pristine = true;
 	this.delegate = delegate.bind(this);
 
 	Object.defineProperty(this, 'version', {
