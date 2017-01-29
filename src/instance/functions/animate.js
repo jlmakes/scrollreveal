@@ -16,27 +16,14 @@ export default function animate (element) {
 			if (sequence.head.index === null && sequence.tail.index === null) {
 				sequence.head.index = sequence.tail.index = element.sequence.index
 				sequence.head.blocked = sequence.tail.blocked = true
-				window.setTimeout(() => {
-					sequence.head.blocked = false
-					sequence.tail.blocked = false
-					this.delegate()
-				}, Math.abs(sequence.interval))
 
 			} else if (sequence.head.index - 1 === element.sequence.index && !sequence.head.blocked) {
 				sequence.head.index--
 				sequence.head.blocked = true
-				window.setTimeout(() => {
-					sequence.head.blocked = false
-					this.delegate()
-				}, Math.abs(sequence.interval))
 
 			} else if (sequence.tail.index + 1 === element.sequence.index && !sequence.tail.blocked) {
 				sequence.tail.index++
 				sequence.tail.blocked = true
-				window.setTimeout(() => {
-					sequence.tail.blocked = false
-					this.delegate()
-				}, Math.abs(sequence.interval))
 
 			} else return
 
