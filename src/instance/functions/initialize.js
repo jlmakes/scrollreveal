@@ -10,7 +10,7 @@ export default function initialize () {
 		if (activeContainerIds.indexOf(element.containerId) === -1) {
 			activeContainerIds.push(element.containerId)
 		}
-		if (activeSequenceIds.indexOf(element.sequence.id) === -1) {
+		if (element.sequence && activeSequenceIds.indexOf(element.sequence.id) === -1) {
 			activeSequenceIds.push(element.sequence.id)
 		}
 
