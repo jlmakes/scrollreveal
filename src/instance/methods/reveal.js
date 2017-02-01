@@ -17,6 +17,7 @@ export default function reveal (target, options, interval, sync) {
 		interval = Math.abs(parseInt(options))
 		options = {}
 	} else {
+		interval = Math.abs(parseInt(interval))
 		options = options || {}
 	}
 
@@ -42,18 +43,20 @@ export default function reveal (target, options, interval, sync) {
 	 * Sequence intervals must be at least 16ms (60fps).
 	 */
 	let sequence
-	if (typeof interval == 'number' && Math.abs(interval) >= 16) {
-		const sequenceId = nextUniqueId()
-		sequence = {
-			elementIds: [],
-			head: { index: null, blocked: false },
-			tail: { index: null, blocked: false },
-			id: sequenceId,
-			interval: Math.abs(interval),
+	if (interval) {
+		if (interval >= 16) {
+			const sequenceId = nextUniqueId()
+			sequence = {
+				elementIds: [],
+				head: { index: null, blocked: false },
+				tail: { index: null, blocked: false },
+				id: sequenceId,
+				interval: Math.abs(interval),
+			}
+		} else {
+			logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.')
+			return this
 		}
-	} else {
-		logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.')
-		return this
 	}
 
 	let containerId
