@@ -28,7 +28,7 @@ export default function reveal (target, options, interval, sync) {
 
 	if (!targets.length) {
 		logger('Reveal aborted.', 'Reveal cannot be performed on 0 elements.')
-		return this
+		return
 	}
 
 	/**
@@ -36,7 +36,7 @@ export default function reveal (target, options, interval, sync) {
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
 		logger('Reveal aborted.', 'This platform has been disabled.')
-		return this
+		return
 	}
 
 	/**
@@ -55,7 +55,7 @@ export default function reveal (target, options, interval, sync) {
 			}
 		} else {
 			logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.')
-			return this
+			return
 		}
 	}
 
@@ -119,7 +119,7 @@ export default function reveal (target, options, interval, sync) {
 
 	} catch (error) {
 		logger('Reveal failed.', error.message)
-		return this
+		return
 	}
 
 	containers[containerId] = containers[containerId] || {
@@ -147,6 +147,4 @@ export default function reveal (target, options, interval, sync) {
 		}
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0)
 	}
-
-	return this
 }

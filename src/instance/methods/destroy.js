@@ -33,6 +33,4 @@ export default function destroy () {
 		history: [],
 		sequences: {},
 	}
-
-	return this
 }
