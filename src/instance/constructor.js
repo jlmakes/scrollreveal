@@ -7,7 +7,7 @@ import sync from './methods/sync'
 
 import delegate from './functions/delegate'
 
-import { transformSupported, transitionSupported } from '../utils/browser'
+import { isMobile, transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
 import { deepAssign } from '../utils/generic'
 
@@ -47,7 +47,9 @@ export default function ScrollReveal (options = {}) {
 		return noop
 	}
 
-	document.documentElement.classList.add('sr')
+	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
+		document.documentElement.classList.add('sr')
+	}
 
 	this.store = {
 		containers: {},
