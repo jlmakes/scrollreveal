@@ -70,12 +70,6 @@ describe('ScrollReveal', () => {
 			expect(result).to.be.a('function')
 		})
 
-		it('should have a `watch` method', () => {
-			const result = sr.watch
-			expect(result).to.exist
-			expect(result).to.be.a('function')
-		})
-
 		it('should support method chaining', () => {
 			const stub = sinon.stub(console, 'log')
 			expect(sr.destroy().reveal().sync().watch()).to.equal(sr)
@@ -110,11 +104,6 @@ describe('ScrollReveal', () => {
 		it('should have a `sync` method', () => {
 			expect(noop.sync).to.exist
 			expect(noop.sync).to.be.a('function')
-		})
-
-		it('should have a `watch` method', () => {
-			expect(noop.watch).to.exist
-			expect(noop.watch).to.be.a('function')
 		})
 
 		it('should support method chaining', () => {

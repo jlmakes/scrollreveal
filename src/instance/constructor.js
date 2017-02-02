@@ -4,7 +4,6 @@ import noop from './noop'
 import destroy from './methods/destroy'
 import reveal from './methods/reveal'
 import sync from './methods/sync'
-import watch from './methods/watch'
 
 import delegate from './functions/delegate'
 
@@ -70,4 +69,3 @@ ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 ScrollReveal.prototype.destroy = destroy
 ScrollReveal.prototype.reveal = reveal
 ScrollReveal.prototype.sync = sync
-ScrollReveal.prototype.watch = watch
