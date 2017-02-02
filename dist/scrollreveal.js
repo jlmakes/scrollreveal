@@ -1,7 +1,7 @@
 (function (global, factory) {
-         typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-         typeof define === 'function' && define.amd ? define(factory) :
-         (global.ScrollReveal = factory());
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.ScrollReveal = factory());
 }(this, (function () { 'use strict';
 
 var defaults = {
@@ -37,10 +37,9 @@ var defaults = {
 
 var noop = {
 	noop: true,
-	destroy: function destroy () { return this },
-	reveal: function reveal () { return this },
-	sync: function sync () { return this },
-	watch: function watch () { return this },
+	destroy: function destroy () {},
+	reveal: function reveal () {},
+	sync: function sync () {},
 };
 
 function deepAssign (target) {
@@ -128,8 +127,6 @@ function destroy () {
 		history: [],
 		sequences: {},
 	};
-
-	return this
 }
 
 /**
@@ -349,10 +346,13 @@ function style (element) {
 	 * Generate opacity styles
 	 */
 	var computedOpacity = parseFloat(computed.opacity);
-	var configOpacity = parseFloat(config.opacity);
+	var configOpacity = (!isNaN(parseFloat(config.opacity)))
+		? parseFloat(config.opacity)
+		: computedOpacity;
+
 	var opacity = {
-		computed: (computedOpacity !== configOpacity) ? ("opacity: " + computedOpacity + "; ") : '',
-		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + "; ") : '',
+		computed: (computedOpacity !== configOpacity) ? ("opacity: " + computedOpacity + "; ") : null,
+		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + "; ") : null,
 	};
 
 	/**
@@ -455,14 +455,14 @@ function style (element) {
 		var duration = config.duration;
 		var easing = config.easing;
 
-		if (opacity) {
+		if (opacity.generated) {
 			transition.fragments.push({
 				delayed: ("opacity " + (duration / 1000) + "s " + easing + " " + (delay / 1000) + "s"),
 				instant: ("opacity " + (duration / 1000) + "s " + easing + " 0s"),
 			});
 		}
 
-		if (transform) {
+		if (transform.generated) {
 			transition.fragments.push({
 				delayed: ((transform.property) + " " + (duration / 1000) + "s " + easing + " " + (delay / 1000) + "s"),
 				instant: ((transform.property) + " " + (duration / 1000) + "s " + easing + " 0s"),
@@ -515,7 +515,7 @@ function initialize () {
 		if (activeContainerIds.indexOf(element.containerId) === -1) {
 			activeContainerIds.push(element.containerId);
 		}
-		if (activeSequenceIds.indexOf(element.sequence.id) === -1) {
+		if (element.sequence && activeSequenceIds.indexOf(element.sequence.id) === -1) {
 			activeSequenceIds.push(element.sequence.id);
 		}
 
@@ -706,6 +706,7 @@ function reveal (target, options, interval, sync) {
 		interval = Math.abs(parseInt(options));
 		options = {};
 	} else {
+		interval = Math.abs(parseInt(interval));
 		options = options || {};
 	}
 
@@ -716,7 +717,7 @@ function reveal (target, options, interval, sync) {
 
 	if (!targets.length) {
 		logger('Reveal aborted.', 'Reveal cannot be performed on 0 elements.');
-		return this
+		return
 	}
 
 	/**
@@ -724,25 +725,27 @@ function reveal (target, options, interval, sync) {
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
 		logger('Reveal aborted.', 'This platform has been disabled.');
-		return this
+		return
 	}
 
 	/**
 	 * Sequence intervals must be at least 16ms (60fps).
 	 */
 	var sequence;
-	if (typeof interval == 'number' && Math.abs(interval) >= 16) {
-		var sequenceId = nextUniqueId();
-		sequence = {
-			elementIds: [],
-			head: { index: null, blocked: false },
-			tail: { index: null, blocked: false },
-			id: sequenceId,
-			interval: Math.abs(interval),
-		};
-	} else {
-		logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.');
-		return this
+	if (interval) {
+		if (interval >= 16) {
+			var sequenceId = nextUniqueId();
+			sequence = {
+				elementIds: [],
+				head: { index: null, blocked: false },
+				tail: { index: null, blocked: false },
+				id: sequenceId,
+				interval: Math.abs(interval),
+			};
+		} else {
+			logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.');
+			return
+		}
 	}
 
 	var containerId;
@@ -805,7 +808,7 @@ function reveal (target, options, interval, sync) {
 
 	} catch (error) {
 		logger('Reveal failed.', error.message);
-		return this
+		return
 	}
 
 	containers[containerId] = containers[containerId] || {
@@ -833,8 +836,6 @@ function reveal (target, options, interval, sync) {
 		}
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0);
 	}
-
-	return this
 }
 
 /**
@@ -849,23 +850,18 @@ function sync () {
 	});
 
 	initialize.call(this);
-
-	return this
-}
-
-function watch () {
-	return this
 }
 
 function animate (element) {
 	var this$1 = this;
 
 
-	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null;
-
 	var isDelayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen;
+
+	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null;
+	var styles = [element.styles.inline];
 
 	if (isElementVisible.call(this, element) && !element.visible) {
 
@@ -873,35 +869,25 @@ function animate (element) {
 			if (sequence.head.index === null && sequence.tail.index === null) {
 				sequence.head.index = sequence.tail.index = element.sequence.index;
 				sequence.head.blocked = sequence.tail.blocked = true;
-				window.setTimeout(function () {
-					sequence.head.blocked = false;
-					sequence.tail.blocked = false;
-					this$1.delegate();
-				}, Math.abs(sequence.interval));
 
 			} else if (sequence.head.index - 1 === element.sequence.index && !sequence.head.blocked) {
-				sequence.head.index = element.sequence.index;
+				sequence.head.index--;
 				sequence.head.blocked = true;
-				window.setTimeout(function () {
-					sequence.head.blocked = false;
-					this$1.delegate();
-				}, Math.abs(sequence.interval));
 
 			} else if (sequence.tail.index + 1 === element.sequence.index && !sequence.tail.blocked) {
-				sequence.tail.index = element.sequence.index;
+				sequence.tail.index++;
 				sequence.tail.blocked = true;
-				window.setTimeout(function () {
-					sequence.tail.blocked = false;
-					this$1.delegate();
-				}, Math.abs(sequence.interval));
 
 			} else { return }
+
+			window.setTimeout(function () {
+				sequence.head.blocked = sequence.tail.blocked = false;
+				this$1.delegate();
+			}, sequence.interval);
 		}
 
-		var styles = [
-			element.styles.inline,
-			element.styles.opacity.computed,
-			element.styles.transform.generated.final ];
+		styles.push(element.styles.opacity.computed);
+		styles.push(element.styles.transform.generated.final);
 
 		if (isDelayed) {
 			styles.push(element.styles.transition.generated.delayed);
@@ -914,25 +900,25 @@ function animate (element) {
 		registerCallbacks(element, isDelayed);
 		element.node.setAttribute('style', styles.join(' '));
 
-	} else if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
+	} else {
+		if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
 
-		if (sequence) {
-			if (sequence.head.index === element.sequence.index) {
-				sequence.head.index++;
-			} else if (sequence.tail.index === element.sequence.index) {
-				sequence.tail.index--;
+			if (sequence) {
+				if (sequence.head.index === element.sequence.index) {
+					sequence.head.index++;
+				} else if (sequence.tail.index === element.sequence.index) {
+					sequence.tail.index--;
+				} else { return }
 			}
+
+			styles.push(element.styles.opacity.generated);
+			styles.push(element.styles.transform.generated.initial);
+			styles.push(element.styles.transition.generated.instant);
+
+			element.visible = false;
+			registerCallbacks(element);
+			element.node.setAttribute('style', styles.join(' '));
 		}
-
-		var styles$1 = [
-			element.styles.inline,
-			element.styles.opacity.generated,
-			element.styles.transform.generated.initial,
-			element.styles.transition.generated.instant ];
-
-		element.visible = false;
-		registerCallbacks(element);
-		element.node.setAttribute('style', styles$1.join(' '));
 	}
 }
 
@@ -1018,7 +1004,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-alpha";
+var version = "4.0.0-beta";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
@@ -1077,7 +1063,6 @@ ScrollReveal.isSupported = function () { return transformSupported() && transiti
 ScrollReveal.prototype.destroy = destroy;
 ScrollReveal.prototype.reveal = reveal;
 ScrollReveal.prototype.sync = sync;
-ScrollReveal.prototype.watch = watch;
 
 /////    /////    /////    /////
 /////    /////    /////    /////
