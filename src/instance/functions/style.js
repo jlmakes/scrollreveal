@@ -29,8 +29,8 @@ export default function style (element) {
 		: computedOpacity
 
 	const opacity = {
-		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : '',
-		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : '',
+		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : null,
+		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : null,
 	}
 
 	/**
@@ -129,14 +129,14 @@ export default function style (element) {
 
 		const { delay, duration, easing } = config
 
-		if (opacity) {
+		if (opacity.generated) {
 			transition.fragments.push({
 				delayed: `opacity ${duration / 1000}s ${easing} ${delay / 1000}s`,
 				instant: `opacity ${duration / 1000}s ${easing} 0s`,
 			})
 		}
 
-		if (transform) {
+		if (transform.generated) {
 			transition.fragments.push({
 				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay / 1000}s`,
 				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`,
