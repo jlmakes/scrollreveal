@@ -64,6 +64,10 @@ export default function ScrollReveal (options = {}) {
 	Object.defineProperty(this, 'version', {
 		get: () => version,
 	})
+
+	Object.defineProperty(this, 'noop', {
+		get: () => false,
+	})
 }
 
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
