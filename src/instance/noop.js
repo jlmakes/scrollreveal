@@ -1,5 +1,5 @@
 export default {
-	noop: true,
+	get noop () { return true },
 	destroy () {},
 	reveal () {},
 	sync () {},
