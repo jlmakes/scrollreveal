@@ -24,13 +24,13 @@ export default function style (element) {
 	 * Generate opacity styles
 	 */
 	const computedOpacity = parseFloat(computed.opacity)
-	const configOpacity = (!isNaN(parseFloat(config.opacity)))
+	const configOpacity = !isNaN(parseFloat(config.opacity))
 		? parseFloat(config.opacity)
-		: computedOpacity
+		: parseFloat(computed.opacity)
 
 	const opacity = {
-		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity}; ` : null,
-		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity}; ` : null,
+		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity};` : '',
+		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity};` : '',
 	}
 
 	/**
@@ -78,15 +78,13 @@ export default function style (element) {
 	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z))
 	if (config.scale !== 1) transformations.push(matrix.scale(config.scale))
 
-	let transform
+	const transform = {}
 	if (transformations.length) {
 
 		const transformProperty = getPrefixedStyleProperty('transform')
-		transform = {
-			computed: {
-				raw: computed[transformProperty],
-			},
-			property: transformProperty,
+		transform.property = transformProperty
+		transform.computed = {
+			raw: computed[transformProperty],
 		}
 
 		/**
@@ -112,13 +110,18 @@ export default function style (element) {
 			initial: `${transform.property}: matrix3d(${product.join(', ')});`,
 			final: `${transform.property}: matrix3d(${transform.computed.matrix.join(', ')});`,
 		}
+	} else {
+		transform.generated = {
+			initial: '',
+			final: '',
+		}
 	}
 
 	/**
 	 * Generate transition styles
 	 */
 	let transition
-	if (opacity.generated || transform.generated) {
+	if (opacity.generated || transform.generated.initial) {
 
 		const transitionProperty = getPrefixedStyleProperty('transition')
 		transition = {
@@ -136,7 +139,7 @@ export default function style (element) {
 			})
 		}
 
-		if (transform.generated) {
+		if (transform.generated.initial) {
 			transition.fragments.push({
 				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay / 1000}s`,
 				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`,
