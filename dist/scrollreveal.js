@@ -7,7 +7,7 @@
 var defaults = {
 	origin: 'bottom',
 	distance: '0',
-	duration: 300,
+	duration: 600,
 	delay: 0,
 	rotate: {
 		x: 0,
@@ -36,7 +36,7 @@ var defaults = {
 };
 
 var noop = {
-	noop: true,
+	get noop () { return true },
 	destroy: function destroy () {},
 	reveal: function reveal () {},
 	sync: function sync () {},
@@ -346,13 +346,13 @@ function style (element) {
 	 * Generate opacity styles
 	 */
 	var computedOpacity = parseFloat(computed.opacity);
-	var configOpacity = (!isNaN(parseFloat(config.opacity)))
+	var configOpacity = !isNaN(parseFloat(config.opacity))
 		? parseFloat(config.opacity)
-		: computedOpacity;
+		: parseFloat(computed.opacity);
 
 	var opacity = {
-		computed: (computedOpacity !== configOpacity) ? ("opacity: " + computedOpacity + "; ") : null,
-		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + "; ") : null,
+		computed: (computedOpacity !== configOpacity) ? ("opacity: " + computedOpacity + ";") : '',
+		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + ";") : '',
 	};
 
 	/**
@@ -402,15 +402,13 @@ function style (element) {
 	if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 	if (config.scale !== 1) { transformations.push(scale(config.scale)); }
 
-	var transform;
+	var transform = {};
 	if (transformations.length) {
 
 		var transformProperty = getPrefixedStyleProperty('transform');
-		transform = {
-			computed: {
-				raw: computed[transformProperty],
-			},
-			property: transformProperty,
+		transform.property = transformProperty;
+		transform.computed = {
+			raw: computed[transformProperty],
 		};
 
 		/**
@@ -436,13 +434,18 @@ function style (element) {
 			initial: ((transform.property) + ": matrix3d(" + (product.join(', ')) + ");"),
 			final: ((transform.property) + ": matrix3d(" + (transform.computed.matrix.join(', ')) + ");"),
 		};
+	} else {
+		transform.generated = {
+			initial: '',
+			final: '',
+		};
 	}
 
 	/**
 	 * Generate transition styles
 	 */
 	var transition;
-	if (opacity.generated || transform.generated) {
+	if (opacity.generated || transform.generated.initial) {
 
 		var transitionProperty = getPrefixedStyleProperty('transition');
 		transition = {
@@ -462,7 +465,7 @@ function style (element) {
 			});
 		}
 
-		if (transform.generated) {
+		if (transform.generated.initial) {
 			transition.fragments.push({
 				delayed: ((transform.property) + " " + (duration / 1000) + "s " + easing + " " + (delay / 1000) + "s"),
 				instant: ((transform.property) + " " + (duration / 1000) + "s " + easing + " 0s"),
@@ -948,6 +951,10 @@ function registerCallbacks (element, isDelayed) {
 		start: Date.now(),
 		clock: window.setTimeout(function () {
 			afterCallback(element.node);
+			if (element.visible && !element.config.reset) {
+				element.node.setAttribute('style', element.styles.inline);
+				element.node.removeAttribute('data-sr-id');
+			}
 			element.callbackTimer = null;
 		}, duration - elapsed),
 	};
@@ -1004,7 +1011,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta";
+var version = "4.0.0-beta.0";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
@@ -1041,7 +1048,9 @@ function ScrollReveal (options) {
 		return noop
 	}
 
-	document.documentElement.classList.add('sr');
+	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
+		document.documentElement.classList.add('sr');
+	}
 
 	this.store = {
 		containers: {},
@@ -1055,6 +1064,10 @@ function ScrollReveal (options) {
 
 	Object.defineProperty(this, 'version', {
 		get: function () { return version; },
+	});
+
+	Object.defineProperty(this, 'noop', {
+		get: function () { return false; },
 	});
 }
 
