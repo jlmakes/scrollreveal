@@ -1,7 +1,7 @@
 export default {
 	origin: 'bottom',
 	distance: '0',
-	duration: 300,
+	duration: 600,
 	delay: 0,
 	rotate: {
 		x: 0,
