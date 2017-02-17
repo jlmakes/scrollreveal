@@ -28,6 +28,7 @@
     "key-spacing": 2,
     "keyword-spacing": 2,
     "no-cond-assign": 2,
+    "no-console": 1,
     "no-const-assign": 2,
     "no-class-assign": 2,
     "no-this-before-super": 2,
