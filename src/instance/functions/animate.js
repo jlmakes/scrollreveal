@@ -95,6 +95,10 @@ function registerCallbacks (element, isDelayed) {
 		start: Date.now(),
 		clock: window.setTimeout(() => {
 			afterCallback(element.node)
+			if (element.visible && !element.config.reset) {
+				element.node.setAttribute('style', element.styles.inline)
+				element.node.removeAttribute('data-sr-id')
+			}
 			element.callbackTimer = null
 		}, duration - elapsed),
 	}

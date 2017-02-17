@@ -11,6 +11,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
 - The `destroy()` method removes generated styles and event listeners.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
+- ScrollReveal removes generated styles after reveals complete when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 
 ### Changed
 - **Breaking:** The `reveal()` method will not accept sequence intervals less than 16 milliseconds.
