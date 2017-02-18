@@ -21,7 +21,7 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
-<script src="https://unpkg.com/scrollreveal@3.3.2/dist/scrollreveal.min.js"></script>
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 ```
 
 But you can also:
@@ -321,6 +321,7 @@ _Continuing our example from 4.1._
       window.sr = ScrollReveal();
 
       // Add class to <html> if ScrollReveal is supported
+      // Note: this method is deprecated, and only works in version 3
       if (sr.isSupported()) {
         document.documentElement.classList.add('sr');
       }
@@ -368,6 +369,7 @@ _Continuing our example from 4.2._
       window.sr = ScrollReveal();
 
       // Add class to <html> if ScrollReveal is supported
+      // Note: this method is deprecated, and only works in version 3
       if (sr.isSupported()) {
         document.documentElement.classList.add('sr');
       }
