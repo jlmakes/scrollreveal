@@ -1,17 +1,18 @@
 import ScrollReveal from '../../src/instance/constructor'
+import { version } from '../../package.json'
 
 describe('ScrollReveal', () => {
 
 	describe('Constructor', () => {
 
 		it('should return a new instance with `new` keyword', () => {
-			const result = new ScrollReveal()
-			expect(result).to.exist
+			const sr = new ScrollReveal()
+			expect(sr).to.exist
 		})
 
 		it('should return a new instance without `new` keyword', () => {
-			const result = ScrollReveal()
-			expect(result).to.exist
+			const sr = ScrollReveal()
+			expect(sr).to.exist
 		})
 
 		it('should add the class `sr` to `<html>` element', () => {
@@ -26,25 +27,25 @@ describe('ScrollReveal', () => {
 				sinon.stub(console, 'log'),
 				sinon.stub(ScrollReveal, 'isSupported'),
 			]
-			const result = new ScrollReveal().noop
+			const sr = new ScrollReveal()
 			stubs.forEach(stub => stub.restore())
-			expect(result).to.be.true
+			expect(sr.noop).to.be.true
 		})
 
 		it('should return a noop instance when container is invalid', () => {
 			const stub = sinon.stub(console, 'log')
-			const result = new ScrollReveal({ container: null }).noop
+			const sr = new ScrollReveal({ container: null })
 			stub.restore()
-			expect(result).to.be.true
+			expect(sr.noop).to.be.true
 		})
 
 		it('should return a noop instance when passed non-object options', () => {
 			const stub = sinon.stub(console, 'log')
-			const result1 = new ScrollReveal(null).noop
-			const result2 = new ScrollReveal('foo').noop
+			const sr1 = new ScrollReveal(null)
+			const sr2 = new ScrollReveal('foo')
 			stub.restore()
-			expect(result1).to.be.true
-			expect(result2).to.be.true
+			expect(sr1.noop).to.be.true
+			expect(sr2.noop).to.be.true
 		})
 	})
 
@@ -53,21 +54,28 @@ describe('ScrollReveal', () => {
 		const sr = new ScrollReveal()
 
 		it('should have a `destroy` method', () => {
-			const result = sr.destroy
-			expect(result).to.exist
-			expect(result).to.be.a('function')
+			expect(sr.destroy).to.exist
+			expect(sr.destroy).to.be.a('function')
 		})
 
 		it('should have a `reveal` method', () => {
-			const result = sr.reveal
-			expect(result).to.exist
-			expect(result).to.be.a('function')
+			expect(sr.reveal).to.exist
+			expect(sr.reveal).to.be.a('function')
 		})
 
 		it('should have a `sync` method', () => {
-			const result = sr.sync
-			expect(result).to.exist
-			expect(result).to.be.a('function')
+			expect(sr.sync).to.exist
+			expect(sr.sync).to.be.a('function')
+		})
+
+		it('should have a `noop` property set to `false`', () => {
+			expect(sr.noop).to.exist
+			expect(sr.noop).to.be.false
+		})
+
+		it('should have a `version` property', () => {
+			expect(sr.version).to.exist
+			expect(sr.version).to.be.equal(version)
 		})
 	})
 
@@ -77,27 +85,27 @@ describe('ScrollReveal', () => {
 			sinon.stub(console, 'log'),
 			sinon.stub(ScrollReveal, 'isSupported'),
 		]
-		const noop = new ScrollReveal()
+		const sr = new ScrollReveal()
 		stubs.forEach(stub => stub.restore())
 
-		it('should have a `noop` property set to `true`', () => {
-			expect(noop.noop).to.exist
-			expect(noop.noop).to.be.true
-		})
-
 		it('should have a `destroy` method', () => {
-			expect(noop.destroy).to.exist
-			expect(noop.destroy).to.be.a('function')
+			expect(sr.destroy).to.exist
+			expect(sr.destroy).to.be.a('function')
 		})
 
 		it('should have a `reveal` method', () => {
-			expect(noop.reveal).to.exist
-			expect(noop.reveal).to.be.a('function')
+			expect(sr.reveal).to.exist
+			expect(sr.reveal).to.be.a('function')
 		})
 
 		it('should have a `sync` method', () => {
-			expect(noop.sync).to.exist
-			expect(noop.sync).to.be.a('function')
+			expect(sr.sync).to.exist
+			expect(sr.sync).to.be.a('function')
+		})
+
+		it('should have a `noop` property set to `true`', () => {
+			expect(sr.noop).to.exist
+			expect(sr.noop).to.be.true
 		})
 	})
 })

@@ -1,6 +1,6 @@
 export default {
-	get noop () { return true },
 	destroy () {},
 	reveal () {},
 	sync () {},
+	get noop () { return true },
 }
