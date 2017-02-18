@@ -857,4 +857,4 @@
   } else {
     window.ScrollReveal = ScrollReveal
   }
-}())
+})();
