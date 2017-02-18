@@ -44,7 +44,7 @@ export default function animate (element) {
 
 		element.seen = true
 		element.visible = true
-		registerCallbacks(element, isDelayed)
+		registerCallbacks.call(this, element, isDelayed)
 		element.node.setAttribute('style', styles.join(' '))
 
 	} else {
@@ -63,7 +63,7 @@ export default function animate (element) {
 			styles.push(element.styles.transition.generated.instant)
 
 			element.visible = false
-			registerCallbacks(element)
+			registerCallbacks.call(this, element)
 			element.node.setAttribute('style', styles.join(' '))
 		}
 	}
@@ -95,11 +95,12 @@ function registerCallbacks (element, isDelayed) {
 		start: Date.now(),
 		clock: window.setTimeout(() => {
 			afterCallback(element.node)
+			element.callbackTimer = null
 			if (element.visible && !element.config.reset) {
 				element.node.setAttribute('style', element.styles.inline)
 				element.node.removeAttribute('data-sr-id')
+				delete this.store.elements[element.id]
 			}
-			element.callbackTimer = null
 		}, duration - elapsed),
 	}
 }
