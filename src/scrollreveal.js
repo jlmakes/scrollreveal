@@ -16,7 +16,7 @@
 /**
  * ScrollReveal
  * ------------
- * Version : 3.3.2
+ * Version : 3.3.3
  * Website : scrollrevealjs.org
  * Repo    : github.com/jlmakes/scrollreveal.js
  * Author  : Julian Lloyd (@jlmakes)
@@ -35,7 +35,7 @@
     }
 
     sr = this // Save reference to instance.
-    sr.version = '3.3.2'
+    sr.version = '3.3.3'
     sr.tools = new Tools() // *required utilities
 
     if (sr.isSupported()) {

@@ -1,7 +1,9 @@
 
 # Changelog
 
-### 3.3.0 — _2016, July 22nd_
+### 3.3.3 - _2017, February 18th
+
+Includes patchwork up to 3.3.3.
 
 #### Features
 
@@ -19,6 +21,11 @@ sr.reveal('.foo', {
   afterReset: (el) => console.log('Reset complete.')
 })
 ```
+
+#### Fixes
+
+- *Functionality*: The default `config.container` now recognizes selectors (Fixes [#289](https://github.com/jlmakes/scrollreveal.js/issues/289))
+- *Compatibility*: Added missing trailing semi-colon (Fixes [#278](https://github.com/jlmakes/scrollreveal.js/issues/278))
 
 ### 3.2.0 — _2016, July 8th_
 
