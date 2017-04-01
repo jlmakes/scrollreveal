@@ -1,4 +1,14 @@
-import * as matrix from 'redpill'
+import {
+	parse,
+	multiply,
+	rotateX,
+	rotateY,
+	rotateZ,
+	scale,
+	translateX,
+	translateY,
+} from 'redpill'
+
 import { getPrefixedStyleProperty } from '../../utils/browser'
 
 
@@ -70,41 +80,31 @@ export default function style (element) {
 				throw new RangeError('Unrecognized or missing distance unit.')
 		}
 
-		transformations.push(matrix[`translate${axis}`](distance))
+		(axis === 'Y')
+			? transformations.push(translateY(distance))
+			: transformations.push(translateX(distance))
 	}
 
-	if (config.rotate.x) transformations.push(matrix.rotateX(config.rotate.x))
-	if (config.rotate.y) transformations.push(matrix.rotateY(config.rotate.y))
-	if (config.rotate.z) transformations.push(matrix.rotateZ(config.rotate.z))
-	if (config.scale !== 1) transformations.push(matrix.scale(config.scale))
+	if (config.rotate.x) transformations.push(rotateX(config.rotate.x))
+	if (config.rotate.y) transformations.push(rotateY(config.rotate.y))
+	if (config.rotate.z) transformations.push(rotateZ(config.rotate.z))
+	if (config.scale !== 1) transformations.push(scale(config.scale))
 
 	const transform = {}
 	if (transformations.length) {
 
-		const transformProperty = getPrefixedStyleProperty('transform')
-		transform.property = transformProperty
-		transform.computed = {
-			raw: computed[transformProperty],
-		}
-
+		transform.property = getPrefixedStyleProperty('transform')
 		/**
 		* The default computed transform value should be one of:
 		* undefined || 'none' || 'matrix()' || 'matrix3d()'
 		*/
-		if (transform.computed.raw === 'none') {
-			transform.computed.matrix = matrix.identity()
-		} else {
-			const match = transform.computed.raw.match(/\(([^)]+)\)/)
-			if (match) {
-				const values = match[1].split(', ').map(value => parseFloat(value))
-				transform.computed.matrix = matrix.format(values)
-			} else {
-				throw new RangeError('Unrecognized computed transform property value.')
-			}
+		transform.computed = {
+			raw: computed[transform.property],
+			matrix: parse(computed[transform.property]),
 		}
 
 		transformations.unshift(transform.computed.matrix)
-		const product = transformations.reduce((m, x) => matrix.multiply(m, x))
+		const product = transformations.reduce(multiply)
 
 		transform.generated = {
 			initial: `${transform.property}: matrix3d(${product.join(', ')});`,
@@ -120,15 +120,12 @@ export default function style (element) {
 	/**
 	 * Generate transition styles
 	 */
-	let transition
+	let transition = {}
 	if (opacity.generated || transform.generated.initial) {
 
-		const transitionProperty = getPrefixedStyleProperty('transition')
-		transition = {
-			computed: computed[transitionProperty],
-			fragments: [],
-			property: transitionProperty,
-		}
+		transition.property = getPrefixedStyleProperty('transition')
+		transition.computed = computed[transition.property]
+		transition.fragments = []
 
 		const { delay, duration, easing } = config
 
