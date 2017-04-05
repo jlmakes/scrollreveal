@@ -1,4 +1,5 @@
 export default {
+	clean () {},
 	destroy () {},
 	reveal () {},
 	sync () {},
