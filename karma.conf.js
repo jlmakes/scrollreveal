@@ -48,6 +48,7 @@ module.exports = function (karma) {
 		browserDisconnectTimeout: 60 * 1000,
 		browserDisconnectTolerance: 1,
 		browserNoActivityTimeout: 60 * 1000,
+		// browserNoActivityTimeout: 60 * 1000 * 10 * 6, // dev tools debugging
 		captureTimeout: 4 * 60 * 1000,
 	})
 
@@ -86,6 +87,7 @@ module.exports = function (karma) {
 	} else {
 		karma.set({
 			browsers: ['PhantomJS'],
+			// browsers: ['Chrome'], // dev tools debugging
 			coverageReporter: {
 				type: 'lcov',
 				dir: '.ignore/coverage/',
