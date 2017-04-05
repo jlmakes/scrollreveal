@@ -1,4 +1,5 @@
 import { isElementVisible } from '../../utils/core'
+import clean from './clean'
 
 
 export default function animate (element) {
@@ -12,7 +13,7 @@ export default function animate (element) {
 
 	if (isElementVisible.call(this, element) && !element.visible) {
 
-		if (sequence) {
+		if (sequence !== null) {
 			if (sequence.head.index === null && sequence.tail.index === null) {
 				sequence.head.index = sequence.tail.index = element.sequence.index
 				sequence.head.blocked = sequence.tail.blocked = true
@@ -97,9 +98,7 @@ function registerCallbacks (element, isDelayed) {
 			afterCallback(element.node)
 			element.callbackTimer = null
 			if (element.visible && !element.config.reset) {
-				element.node.setAttribute('style', element.styles.inline)
-				element.node.removeAttribute('data-sr-id')
-				delete this.store.elements[element.id]
+				clean.call(this, element.node)
 			}
 		}, duration - elapsed),
 	}
