@@ -1,9 +1,9 @@
 
 # Changelog
 
-### 3.3.4 - _2017, February 18th
+### 3.3.5 - _2017, February 18th
 
-Includes patchwork up to 3.3.4.
+Includes patchwork up to 3.3.5.
 
 #### Features
 

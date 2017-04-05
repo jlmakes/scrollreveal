@@ -45,17 +45,6 @@ window.sr = ScrollReveal();
 sr.reveal('.foo');
 sr.reveal('.bar');
 ```
-#### 1.3. Method Chaining
-
-The ScrollReveal constructor, and it's primary methods all support chaining.
-```js
-window.sr = ScrollReveal();
-sr.reveal('.foo');
-sr.reveal('.bar');
-
-// Is the same as...
-window.sr = ScrollReveal().reveal('.foo, .bar');
-```
 
 ## 2. Configuration
 Passing a configuration object to `ScrollReveal()` changes the defaults for all reveals, and passing `reveal()` a configuration object customizes that reveal set further.
@@ -151,29 +140,7 @@ sr.reveal('.box', { duration: 2000 }, 50);
 
 ![sequencer](https://cloud.githubusercontent.com/assets/2044842/13556788/a7dda6c6-e3e2-11e5-93fa-d6a227cbb5dc.gif)
 
-#### 3.2. Override Configurations
-
-`reveal()` is equipped to handle calls on the same element, so it's easy to override element configuration.
-
-```html
-<div class="foo"> Foo </div>
-<div class="foo" id="chocolate"> Chip </div>
-```
-```js
-var fooReveal = {
-  delay    : 200,
-  distance : '90px',
-  easing   : 'ease-in-out',
-  rotate   : { z: 10 },
-  scale    : 1.1
-};
-
-window.sr = ScrollReveal();
-sr.reveal('.foo', fooReveal);
-sr.reveal('#chocolate', { delay: 500, scale: 0.9 });
-```
-
-#### 3.3. Working With DOM Nodes
+#### 3.2. Working With DOM Nodes
 
 You are not just limited to using selectors with `reveal()`, it also accepts a Node or Node List as the first argument.
 
@@ -182,7 +149,7 @@ sr.reveal(document.getElementById('foo'));
 sr.reveal(document.querySelectorAll('.bar'));
 ```
 
-#### 3.4. Custom/Multiple Containers
+#### 3.3. Custom/Multiple Containers
 
 The default container is the viewport, but you can assign any container to any reveal set.
 
@@ -212,7 +179,7 @@ sr.reveal('.foo', { container: fooContainer });
 sr.reveal('.bar', { container: '#barContainer' });
 ```
 
-#### 3.5. Asynchronous Content
+#### 3.4. Asynchronous Content
 
 The `sync()` method updates asynchronously loaded content with any existing reveal sets.
 
