@@ -1,19 +1,12 @@
 import { each } from '../../utils/generic'
+import rinse from './rinse'
 
 
 export default function initialize () {
 
-	const activeContainerIds = []
-	const activeSequenceIds = []
+	rinse.call(this)
 
 	each(this.store.elements, element => {
-		if (activeContainerIds.indexOf(element.containerId) === -1) {
-			activeContainerIds.push(element.containerId)
-		}
-		if (element.sequence && activeSequenceIds.indexOf(element.sequence.id) === -1) {
-			activeSequenceIds.push(element.sequence.id)
-		}
-
 		let styles = [element.styles.inline]
 
 		if (element.visible) {
@@ -27,29 +20,8 @@ export default function initialize () {
 		element.node.setAttribute('style', styles.join(' '))
 	})
 
-	/**
-	 * Remove unused sequences.
-	 */
-	each(this.store.sequences, sequence => {
-		if (activeSequenceIds.indexOf(sequence.id) === -1) {
-			delete this.store.sequences[sequence.id]
-		}
-	})
-
 	each(this.store.containers, container => {
-
-		/**
-		 * Remove unused containers.
-		 */
-		if (activeContainerIds.indexOf(container.id) === -1) {
-			container.node.removeEventListener('scroll', this.delegate)
-			container.node.removeEventListener('resize', this.delegate)
-			delete this.store.containers[container.id]
-
-		/**
-		 * Bind event listeners
-		 */
-		} else if (container.node === document.documentElement) {
+		if (container.node === document.documentElement) {
 			window.addEventListener('scroll', this.delegate)
 			window.addEventListener('resize', this.delegate)
 		} else {
