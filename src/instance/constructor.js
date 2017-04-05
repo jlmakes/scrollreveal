@@ -6,6 +6,7 @@ import reveal from './methods/reveal'
 import sync from './methods/sync'
 
 import delegate from './functions/delegate'
+import clean from './functions/clean'
 
 import { isMobile, transformSupported, transitionSupported } from '../utils/browser'
 import { getNode, logger } from '../utils/core'
@@ -74,4 +75,5 @@ ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
 ScrollReveal.prototype.destroy = destroy
 ScrollReveal.prototype.reveal = reveal
+ScrollReveal.prototype.clean = clean
 ScrollReveal.prototype.sync = sync

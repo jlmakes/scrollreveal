@@ -9,7 +9,8 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
-- The `destroy()` method removes generated styles and event listeners.
+- New `clean()` method removes specific generated styles and event listeners.
+- New `destroy()` method removes all generated styles and event listeners.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
 - ScrollReveal removes generated styles after reveals complete when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 
