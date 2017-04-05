@@ -36,6 +36,7 @@ var defaults = {
 };
 
 var noop = {
+	clean: function clean () {},
 	destroy: function destroy () {},
 	reveal: function reveal () {},
 	sync: function sync () {},
@@ -92,6 +93,293 @@ var nextUniqueId = (function () {
 	var uid = 0;
 	return function () { return uid++; }
 })();
+
+var getPrefixedStyleProperty = (function () {
+	var properties = {};
+	var style = document.documentElement.style;
+
+	function getPrefixedStyleProperty (name, source) {
+		if ( source === void 0 ) source = style;
+
+		if (name && typeof name === 'string') {
+			if (properties[name]) {
+				return properties[name]
+			}
+			if (typeof source[name] === 'string') {
+				return properties[name] = name
+			}
+			if (typeof source[("-webkit-" + name)] === 'string') {
+				return properties[name] = "-webkit-" + name
+			}
+			throw new RangeError(("Unable to find \"" + name + "\" style property."))
+		}
+		throw new TypeError('Expected a string.')
+	}
+
+	getPrefixedStyleProperty.clearCache = function () { return properties = {}; };
+
+	return getPrefixedStyleProperty
+})();
+
+
+function isMobile (agent) {
+	if ( agent === void 0 ) agent = navigator.userAgent;
+
+	return /Android|iPhone|iPad|iPod/i.test(agent)
+}
+
+
+function isNode (target) {
+	return typeof window.Node === 'object'
+		? target instanceof window.Node
+		: target !== null
+			&& typeof target === 'object'
+			&& typeof target.nodeType === 'number'
+			&& typeof target.nodeName === 'string'
+}
+
+
+function isNodeList (target) {
+	var prototypeToString = Object.prototype.toString.call(target);
+	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
+
+	return typeof window.NodeList === 'object'
+		? target instanceof window.NodeList
+		: typeof target === 'object'
+			&& typeof target.length === 'number'
+			&& regex.test(prototypeToString)
+			&& (target.length === 0 || isNode(target[0]))
+}
+
+
+function transformSupported () {
+	var style = document.documentElement.style;
+	return 'transform' in style || 'WebkitTransform' in style
+}
+
+
+function transitionSupported () {
+	var style = document.documentElement.style;
+	return 'transition' in style || 'WebkitTransition' in style
+}
+
+function isElementVisible (element) {
+	var container = this.store.containers[element.containerId];
+	var viewFactor = element.config.viewFactor;
+	var viewOffset = element.config.viewOffset;
+
+	var elementBounds = {
+		top: element.geometry.bounds.top + element.geometry.height * viewFactor,
+		right: element.geometry.bounds.right - element.geometry.width * viewFactor,
+		bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
+		left: element.geometry.bounds.left + element.geometry.width * viewFactor,
+	};
+
+	var containerBounds = {
+		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
+		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
+		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
+		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
+	};
+
+	return elementBounds.top < containerBounds.bottom
+		&& elementBounds.right > containerBounds.left
+		&& elementBounds.bottom > containerBounds.top
+		&& elementBounds.left < containerBounds.right
+		|| element.styles.position === 'fixed'
+}
+
+
+function getGeometry (target, isContainer) {
+	/**
+	 * We want to ignore padding and scrollbars for container elements.
+	 * More information here: https://goo.gl/vOZpbz
+	 */
+	var height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight;
+	var width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth;
+
+	var offsetTop = 0;
+	var offsetLeft = 0;
+	var node = target.node;
+
+	do {
+		if (!isNaN(node.offsetTop)) {
+			offsetTop += node.offsetTop;
+		}
+		if (!isNaN(node.offsetLeft)) {
+			offsetLeft += node.offsetLeft;
+		}
+		node = node.offsetParent;
+	} while (node)
+
+	return {
+		bounds: {
+			top: offsetTop,
+			right: offsetLeft + width,
+			bottom: offsetTop + height,
+			left: offsetLeft,
+		},
+		height: height,
+		width: width,
+	}
+}
+
+
+function getNode (target, container) {
+	if ( container === void 0 ) container = document;
+
+	var node = null;
+	if (typeof target === 'string') {
+		try {
+			node = container.querySelector(target);
+			if (!node) { logger(("Querying the selector \"" + target + "\" returned nothing.")); }
+		} catch (err) {
+			logger(("\"" + target + "\" is not a valid selector."));
+		}
+	}
+	return isNode(target) ? target : node
+}
+
+
+function getNodes (target, container) {
+	if ( container === void 0 ) container = document;
+
+	if (isNode(target)) { return [target] }
+	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
+	if (typeof target === 'string') {
+		try {
+			var query = container.querySelectorAll(target);
+			var nodes = Array.prototype.slice.call(query);
+			if (nodes.length) { return nodes }
+			logger(("Querying the selector \"" + target + "\" returned nothing."));
+		} catch (error) {
+			logger(("\"" + target + "\" is not a valid selector."));
+		}
+	}
+	return []
+}
+
+
+function getScrolled (container) {
+	return (container.node === document.documentElement)
+		? {
+			top: window.pageYOffset,
+			left: window.pageXOffset,
+		} : {
+			top: container.node.scrollTop,
+			left: container.node.scrollLeft,
+		}
+}
+
+
+function logger (message) {
+	var details = [], len = arguments.length - 1;
+	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
+
+	if (console) {
+		var report = "ScrollReveal: " + message;
+		details.forEach(function (detail) { return report += "\n  - " + detail; });
+		console.log(report); // eslint-disable-line no-console
+	}
+}
+
+function rinse () {
+	var this$1 = this;
+
+
+	var elementIds = {
+		active: [],
+		stale: [],
+	};
+
+	var containerIds = {
+		active: [],
+		stale: [],
+	};
+
+	var sequenceIds = {
+		active: [],
+		stale: [],
+	};
+
+	/**
+	 * Take stock of active element IDs.
+	 */
+	each(getNodes('[data-sr-id]'), function (node) {
+		var id = parseInt(node.getAttribute('data-sr-id'));
+		elementIds.active.push(id);
+	});
+
+	/**
+	 * Destroy stale elements.
+	 */
+	each(this.store.elements, function (element) {
+		if (elementIds.active.indexOf(element.id) === -1) {
+			elementIds.stale.push(element.id);
+		}
+	});
+
+	each(elementIds.stale, function (staleId) { return delete this$1.store.elements[staleId]; });
+
+	/**
+	 * Take stock of active container and sequence IDs.
+	 */
+	each(this.store.elements, function (element) {
+		if (containerIds.active.indexOf(element.containerId) === -1) {
+			containerIds.active.push(element.containerId);
+		}
+		if (element.hasOwnProperty('sequence')) {
+			if (sequenceIds.active.indexOf(element.sequence.id) === -1) {
+				sequenceIds.active.push(element.sequence.id);
+			}
+		}
+	});
+
+	/**
+	 * Destroy stale containers.
+	 */
+	each(this.store.containers, function (container) {
+		if (containerIds.active.indexOf(container.id) === -1) {
+			containerIds.stale.push(container.id);
+		}
+	});
+
+	each(containerIds.stale, function (staleId) {
+		this$1.store.containers[staleId].node.removeEventListener('scroll', this$1.delegate);
+		this$1.store.containers[staleId].node.removeEventListener('resize', this$1.delegate);
+		delete this$1.store.containers[staleId];
+	});
+
+	/**
+	 * Destroy stale sequences.
+	 */
+	each(this.store.sequences, function (sequence) {
+		if (sequenceIds.active.indexOf(sequence.id) === -1) {
+			sequenceIds.stale.push(sequence.id);
+		}
+	});
+
+	each(sequenceIds.stale, function (staleId) { return delete this$1.store.sequences[staleId]; });
+}
+
+function clean (target) {
+	var this$1 = this;
+
+
+	var dirty;
+
+	each(getNodes(target), function (node) {
+		var id = node.getAttribute('data-sr-id');
+		if (id !== null) {
+			dirty = true;
+			node.setAttribute('style', this$1.store.elements[id].styles.inline);
+			node.removeAttribute('data-sr-id');
+			delete this$1.store.elements[id];
+		}
+	});
+
+	if (dirty) { rinse.call(this); }
+}
 
 function destroy () {
 	var this$1 = this;
@@ -356,75 +644,6 @@ function translateY (distance) {
 	return matrix
 }
 
-var getPrefixedStyleProperty = (function () {
-	var properties = {};
-	var style = document.documentElement.style;
-
-	function getPrefixedStyleProperty (name, source) {
-		if ( source === void 0 ) source = style;
-
-		if (name && typeof name === 'string') {
-			if (properties[name]) {
-				return properties[name]
-			}
-			if (typeof source[name] === 'string') {
-				return properties[name] = name
-			}
-			if (typeof source[("-webkit-" + name)] === 'string') {
-				return properties[name] = "-webkit-" + name
-			}
-			throw new RangeError(("Unable to find \"" + name + "\" style property."))
-		}
-		throw new TypeError('Expected a string.')
-	}
-
-	getPrefixedStyleProperty.clearCache = function () { return properties = {}; };
-
-	return getPrefixedStyleProperty
-})();
-
-
-function isMobile (agent) {
-	if ( agent === void 0 ) agent = navigator.userAgent;
-
-	return /Android|iPhone|iPad|iPod/i.test(agent)
-}
-
-
-function isNode (target) {
-	return typeof window.Node === 'object'
-		? target instanceof window.Node
-		: target !== null
-			&& typeof target === 'object'
-			&& typeof target.nodeType === 'number'
-			&& typeof target.nodeName === 'string'
-}
-
-
-function isNodeList (target) {
-	var prototypeToString = Object.prototype.toString.call(target);
-	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
-
-	return typeof window.NodeList === 'object'
-		? target instanceof window.NodeList
-		: typeof target === 'object'
-			&& typeof target.length === 'number'
-			&& regex.test(prototypeToString)
-			&& (target.length === 0 || isNode(target[0]))
-}
-
-
-function transformSupported () {
-	var style = document.documentElement.style;
-	return 'transform' in style || 'WebkitTransform' in style
-}
-
-
-function transitionSupported () {
-	var style = document.documentElement.style;
-	return 'transition' in style || 'WebkitTransition' in style
-}
-
 function style (element) {
 	var computed = window.getComputedStyle(element.node);
 	var position = computed.position;
@@ -593,205 +812,6 @@ function style (element) {
 		transform: transform,
 		transition: transition,
 	}
-}
-
-function isElementVisible (element) {
-	var container = this.store.containers[element.containerId];
-	var viewFactor = element.config.viewFactor;
-	var viewOffset = element.config.viewOffset;
-
-	var elementBounds = {
-		top: element.geometry.bounds.top + element.geometry.height * viewFactor,
-		right: element.geometry.bounds.right - element.geometry.width * viewFactor,
-		bottom: element.geometry.bounds.bottom - element.geometry.height * viewFactor,
-		left: element.geometry.bounds.left + element.geometry.width * viewFactor,
-	};
-
-	var containerBounds = {
-		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
-		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
-		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
-		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
-	};
-
-	return elementBounds.top < containerBounds.bottom
-		&& elementBounds.right > containerBounds.left
-		&& elementBounds.bottom > containerBounds.top
-		&& elementBounds.left < containerBounds.right
-		|| element.styles.position === 'fixed'
-}
-
-
-function getGeometry (target, isContainer) {
-	/**
-	 * We want to ignore padding and scrollbars for container elements.
-	 * More information here: https://goo.gl/vOZpbz
-	 */
-	var height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight;
-	var width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth;
-
-	var offsetTop = 0;
-	var offsetLeft = 0;
-	var node = target.node;
-
-	do {
-		if (!isNaN(node.offsetTop)) {
-			offsetTop += node.offsetTop;
-		}
-		if (!isNaN(node.offsetLeft)) {
-			offsetLeft += node.offsetLeft;
-		}
-		node = node.offsetParent;
-	} while (node)
-
-	return {
-		bounds: {
-			top: offsetTop,
-			right: offsetLeft + width,
-			bottom: offsetTop + height,
-			left: offsetLeft,
-		},
-		height: height,
-		width: width,
-	}
-}
-
-
-function getNode (target, container) {
-	if ( container === void 0 ) container = document;
-
-	var node = null;
-	if (typeof target === 'string') {
-		try {
-			node = container.querySelector(target);
-			if (!node) { logger(("Querying the selector \"" + target + "\" returned nothing.")); }
-		} catch (err) {
-			logger(("\"" + target + "\" is not a valid selector."));
-		}
-	}
-	return isNode(target) ? target : node
-}
-
-
-function getNodes (target, container) {
-	if ( container === void 0 ) container = document;
-
-	if (isNode(target)) { return [target] }
-	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
-	if (typeof target === 'string') {
-		try {
-			var query = container.querySelectorAll(target);
-			var nodes = Array.prototype.slice.call(query);
-			if (nodes.length) { return nodes }
-			logger(("Querying the selector \"" + target + "\" returned nothing."));
-		} catch (error) {
-			logger(("\"" + target + "\" is not a valid selector."));
-		}
-	}
-	return []
-}
-
-
-function getScrolled (container) {
-	return (container.node === document.documentElement)
-		? {
-			top: window.pageYOffset,
-			left: window.pageXOffset,
-		} : {
-			top: container.node.scrollTop,
-			left: container.node.scrollLeft,
-		}
-}
-
-
-function logger (message) {
-	var details = [], len = arguments.length - 1;
-	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
-
-	if (console) {
-		var report = "ScrollReveal: " + message;
-		details.forEach(function (detail) { return report += "\n  - " + detail; });
-		console.log(report); // eslint-disable-line no-console
-	}
-}
-
-function rinse () {
-	var this$1 = this;
-
-
-	var elementIds = {
-		active: [],
-		stale: [],
-	};
-
-	var containerIds = {
-		active: [],
-		stale: [],
-	};
-
-	var sequenceIds = {
-		active: [],
-		stale: [],
-	};
-
-	/**
-	 * Take stock of active element IDs.
-	 */
-	each(getNodes('[data-sr-id]'), function (node) {
-		var id = parseInt(node.getAttribute('data-sr-id'));
-		elementIds.active.push(id);
-	});
-
-	/**
-	 * Destroy stale elements.
-	 */
-	each(this.store.elements, function (element) {
-		if (elementIds.active.indexOf(element.id) === -1) {
-			elementIds.stale.push(element.id);
-		}
-	});
-
-	each(elementIds.stale, function (staleId) { return delete this$1.store.elements[staleId]; });
-
-	/**
-	 * Take stock of active container and sequence IDs.
-	 */
-	each(this.store.elements, function (element) {
-		if (containerIds.active.indexOf(element.containerId) === -1) {
-			containerIds.active.push(element.containerId);
-		}
-		if (element.hasOwnProperty('sequence')) {
-			if (sequenceIds.active.indexOf(element.sequence.id) === -1) {
-				sequenceIds.active.push(element.sequence.id);
-			}
-		}
-	});
-
-	/**
-	 * Destroy stale containers.
-	 */
-	each(this.store.containers, function (container) {
-		if (containerIds.active.indexOf(container.id) === -1) {
-			containerIds.stale.push(container.id);
-		}
-	});
-
-	each(containerIds.stale, function (staleId) {
-		this$1.store.containers[staleId].node.removeEventListener('scroll', this$1.delegate);
-		this$1.store.containers[staleId].node.removeEventListener('resize', this$1.delegate);
-		delete this$1.store.containers[staleId];
-	});
-
-	/**
-	 * Destroy stale sequences.
-	 */
-	each(this.store.sequences, function (sequence) {
-		if (sequenceIds.active.indexOf(sequence.id) === -1) {
-			sequenceIds.stale.push(sequence.id);
-		}
-	});
-
-	each(sequenceIds.stale, function (staleId) { return delete this$1.store.sequences[staleId]; });
 }
 
 function initialize () {
@@ -991,25 +1011,6 @@ function sync () {
 	});
 
 	initialize.call(this);
-}
-
-function clean (target) {
-	var this$1 = this;
-
-
-	var dirty;
-
-	each(getNodes(target), function (node) {
-		var id = node.getAttribute('data-sr-id');
-		if (id !== null) {
-			dirty = true;
-			node.setAttribute('style', this$1.store.elements[id].styles.inline);
-			node.removeAttribute('data-sr-id');
-			delete this$1.store.elements[id];
-		}
-	});
-
-	if (dirty) { rinse.call(this); }
 }
 
 function animate (element) {
@@ -1231,9 +1232,9 @@ function ScrollReveal (options) {
 
 ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
+ScrollReveal.prototype.clean = clean;
 ScrollReveal.prototype.destroy = destroy;
 ScrollReveal.prototype.reveal = reveal;
-ScrollReveal.prototype.clean = clean;
 ScrollReveal.prototype.sync = sync;
 
 /////    /////    /////    /////
