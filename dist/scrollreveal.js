@@ -36,10 +36,10 @@ var defaults = {
 };
 
 var noop = {
-	get noop () { return true },
 	destroy: function destroy () {},
 	reveal: function reveal () {},
 	sync: function sync () {},
+	get noop () { return true },
 };
 
 function deepAssign (target) {
@@ -129,21 +129,51 @@ function destroy () {
 	};
 }
 
+/*  @license Redpill v0.4.1
+
+    Copyright (c) 2017, Fisssion LLC
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+*/
+/**
+ * @module Redpill
+ */
+
 /**
 * Transformation matrices in the browser come in two flavors:
 *
-*  - Long (3D) transformation matrix with 16 values
-*  - Short (2D) transformation matrix with 6 values
+*  - `matrix` using 6 values (short)
+*  - `matrix3d` using 16 values (long)
 *
-*  This utility follows this conversion Guide: https://goo.gl/EJlUQ1
-*  to expand short form matrices to their equivalent long form.
+* This utility follows this [conversion guide](https://goo.gl/EJlUQ1)
+* to expand short form matrices to their equivalent long form.
 *
-* @param  {array} source
+* @param  {array} source - Accepts both short and long form matrices.
 * @return {array}
 */
 function format (source) {
-	if (source.constructor !== Array) { throw new TypeError('Expected array.') }
-	if (source.length === 16) { return source }
+	if (source.constructor !== Array) {
+		throw new TypeError('Expected array.')
+	}
+	if (source.length === 16) {
+		return source
+	}
 	if (source.length === 6) {
 		var matrix = identity();
 		matrix[0] = source[0];
@@ -158,6 +188,14 @@ function format (source) {
 }
 
 
+/**
+ * Returns a matrix representing no transformation. The product of any matrix
+ * multiplied by the identity matrix will be the original matrix.
+ *
+ * > **Tip:** Similar to how `5 * 1 === 5`, where `1` is the identity number.
+ *
+ * @return {array}
+ */
 function identity () {
 	var matrix = [];
 	for (var i = 0; i < 16; i++) {
@@ -166,67 +204,139 @@ function identity () {
 	return matrix
 }
 
-function multiply (m, x) {
-	if (m.length !== 16 || x.length !== 16) {
-		throw new RangeError('Expected arrays with 16 values.')
-	}
-	var sum = [];
+
+/**
+ * Returns a 4x4 matrix describing the combined transformations
+ * of both arguments.
+ *
+ * > **Note:** Order is very important. For example, rotating 90°
+ * along the Z-axis, followed by translating 500 pixels along the
+ * Y-axis... is not the same as translating 500 pixels along the
+ * Y-axis, followed by rotating 45° along on the Z-axis.
+ *
+ * @param  {array} m1 - Accepts both short and long form matrices.
+ * @param  {array} m2 - Accepts both short and long form matrices.
+ * @return {array}
+ */
+function multiply (m1, m2) {
+	var fm1 = format(m1);
+	var fm2 = format(m2);
+	var product = [];
+
 	for (var i = 0; i < 4; i++) {
-		var row = [m[i], m[i + 4], m[i + 8], m[i + 12]];
+		var row = [fm1[i], fm1[i + 4], fm1[i + 8], fm1[i + 12]];
 		for (var j = 0; j < 4; j++) {
 			var k = j * 4;
-			var col = [x[k], x[k + 1], x[k + 2], x[k + 3]];
+			var col = [fm2[k], fm2[k + 1], fm2[k + 2], fm2[k + 3]];
 			var result = row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3];
-			sum[i + k] = parseFloat(result.toPrecision(6));
+
+			product[i + k] = result;
 		}
 	}
-	return sum
+
+	return product
 }
 
 
-function rotateX (theta) {
-	var angle = Math.PI / 180 * theta;
+/**
+ * Attempts to returns a 4x4 matrix describing the CSS transform matrix passed
+ * in, but will return the identity matrix as a fallback.
+ *
+ * **Tip:** In virtually all cases, this method is used to convert a CSS matrix
+ * (retrieved as a `string` from computed styles) to its equivalent array format.
+ *
+ * @param  {string} source - String containing a valid CSS `matrix` or `matrix3d` property.
+ * @return {array}
+ */
+function parse (source) {
+	if (typeof source === 'string') {
+		var match = source.match(/matrix(3d)?\(([^)]+)\)/);
+		if (match) {
+			var raw = match[2].split(', ').map(function (value) { return parseFloat(value); });
+			return format(raw)
+		}
+	}
+	return identity()
+}
+
+
+/**
+ * Returns a 4x4 matrix describing X-axis rotation.
+ *
+ * @param  {number} angle - Measured in degrees.
+ * @return {array}
+ */
+function rotateX (angle) {
+	var theta = Math.PI / 180 * angle;
 	var matrix = identity();
 
-	matrix[5] = matrix[10] = Math.cos(angle);
-	matrix[6] = matrix[9] = Math.sin(angle);
+	matrix[5] = matrix[10] = Math.cos(theta);
+	matrix[6] = matrix[9] = Math.sin(theta);
 	matrix[9] *= -1;
 
 	return matrix
 }
 
 
-function rotateY (theta) {
-	var angle = Math.PI / 180 * theta;
+/**
+ * Returns a 4x4 matrix describing Y-axis rotation.
+ *
+ * @param  {number} angle - Measured in degrees.
+ * @return {array}
+ */
+function rotateY (angle) {
+	var theta = Math.PI / 180 * angle;
 	var matrix = identity();
 
-	matrix[0] = matrix[10] = Math.cos(angle);
-	matrix[2] = matrix[8] = Math.sin(angle);
+	matrix[0] = matrix[10] = Math.cos(theta);
+	matrix[2] = matrix[8] = Math.sin(theta);
 	matrix[2] *= -1;
 
 	return matrix
 }
 
 
-function rotateZ (theta) {
-	var angle = Math.PI / 180 * theta;
+/**
+ * Returns a 4x4 matrix describing Z-axis rotation.
+ *
+ * @param  {number} angle - Measured in degrees.
+ * @return {array}
+ */
+function rotateZ (angle) {
+	var theta = Math.PI / 180 * angle;
 	var matrix = identity();
 
-	matrix[0] = matrix[5] = Math.cos(angle);
-	matrix[1] = matrix[4] = Math.sin(angle);
+	matrix[0] = matrix[5] = Math.cos(theta);
+	matrix[1] = matrix[4] = Math.sin(theta);
 	matrix[4] *= -1;
 
 	return matrix
 }
 
 
-function scale (scalar) {
+/**
+* Returns a 4x4 matrix describing 2D scaling. The first argument
+* is used for both X and Y-axis scaling, unless an optional
+* second argument is provided to explicitly define Y-axis scaling.
+*
+* @param  {number} scalarX   - Decimal multiplier.
+* @param  {number} [scalarY] - Decimal multiplier.
+* @return {array}
+*/
+function scale (scalarX, scalarY) {
 	var matrix = identity();
-	matrix[0] = matrix[5] = scalar;
+	matrix[0] = scalarX;
+	matrix[5] = scalarY || scalarX;
 	return matrix
 }
 
 
+/**
+ * Returns a 4x4 matrix describing X-axis translation.
+ *
+ * @param  {number} distance - Measured in pixels.
+ * @return {array}
+ */
 function translateX (distance) {
 	var matrix = identity();
 	matrix[12] = distance;
@@ -234,26 +344,17 @@ function translateX (distance) {
 }
 
 
+/**
+ * Returns a 4x4 matrix describing Y-axis translation.
+ *
+ * @param  {number} distance - Measured in pixels.
+ * @return {array}
+ */
 function translateY (distance) {
 	var matrix = identity();
 	matrix[13] = distance;
 	return matrix
 }
-
-
-
-
-var matrix = Object.freeze({
-	format: format,
-	identity: identity,
-	multiply: multiply,
-	rotateX: rotateX,
-	rotateY: rotateY,
-	rotateZ: rotateZ,
-	scale: scale,
-	translateX: translateX,
-	translateY: translateY
-});
 
 var getPrefixedStyleProperty = (function () {
 	var properties = {};
@@ -394,7 +495,9 @@ function style (element) {
 				throw new RangeError('Unrecognized or missing distance unit.')
 		}
 
-		transformations.push(matrix[("translate" + axis)](distance));
+		(axis === 'Y')
+			? transformations.push(translateY(distance))
+			: transformations.push(translateX(distance));
 	}
 
 	if (config.rotate.x) { transformations.push(rotateX(config.rotate.x)); }
@@ -405,30 +508,18 @@ function style (element) {
 	var transform = {};
 	if (transformations.length) {
 
-		var transformProperty = getPrefixedStyleProperty('transform');
-		transform.property = transformProperty;
-		transform.computed = {
-			raw: computed[transformProperty],
-		};
-
+		transform.property = getPrefixedStyleProperty('transform');
 		/**
 		* The default computed transform value should be one of:
 		* undefined || 'none' || 'matrix()' || 'matrix3d()'
 		*/
-		if (transform.computed.raw === 'none') {
-			transform.computed.matrix = identity();
-		} else {
-			var match = transform.computed.raw.match(/\(([^)]+)\)/);
-			if (match) {
-				var values = match[1].split(', ').map(function (value) { return parseFloat(value); });
-				transform.computed.matrix = format(values);
-			} else {
-				throw new RangeError('Unrecognized computed transform property value.')
-			}
-		}
+		transform.computed = {
+			raw: computed[transform.property],
+			matrix: parse(computed[transform.property]),
+		};
 
 		transformations.unshift(transform.computed.matrix);
-		var product = transformations.reduce(function (m, x) { return multiply(m, x); });
+		var product = transformations.reduce(multiply);
 
 		transform.generated = {
 			initial: ((transform.property) + ": matrix3d(" + (product.join(', ')) + ");"),
@@ -444,15 +535,12 @@ function style (element) {
 	/**
 	 * Generate transition styles
 	 */
-	var transition;
+	var transition = {};
 	if (opacity.generated || transform.generated.initial) {
 
-		var transitionProperty = getPrefixedStyleProperty('transition');
-		transition = {
-			computed: computed[transitionProperty],
-			fragments: [],
-			property: transitionProperty,
-		};
+		transition.property = getPrefixedStyleProperty('transition');
+		transition.computed = computed[transition.property];
+		transition.fragments = [];
 
 		var delay = config.delay;
 		var duration = config.duration;
@@ -505,75 +593,6 @@ function style (element) {
 		transform: transform,
 		transition: transition,
 	}
-}
-
-function initialize () {
-	var this$1 = this;
-
-
-	var activeContainerIds = [];
-	var activeSequenceIds = [];
-
-	each(this.store.elements, function (element) {
-		if (activeContainerIds.indexOf(element.containerId) === -1) {
-			activeContainerIds.push(element.containerId);
-		}
-		if (element.sequence && activeSequenceIds.indexOf(element.sequence.id) === -1) {
-			activeSequenceIds.push(element.sequence.id);
-		}
-
-		var styles = [element.styles.inline];
-
-		if (element.visible) {
-			styles.push(element.styles.opacity.computed);
-			styles.push(element.styles.transform.generated.final);
-		} else {
-			styles.push(element.styles.opacity.generated);
-			styles.push(element.styles.transform.generated.initial);
-		}
-
-		element.node.setAttribute('style', styles.join(' '));
-	});
-
-	/**
-	 * Remove unused sequences.
-	 */
-	each(this.store.sequences, function (sequence) {
-		if (activeSequenceIds.indexOf(sequence.id) === -1) {
-			delete this$1.store.sequences[sequence.id];
-		}
-	});
-
-	each(this.store.containers, function (container) {
-
-		/**
-		 * Remove unused containers.
-		 */
-		if (activeContainerIds.indexOf(container.id) === -1) {
-			container.node.removeEventListener('scroll', this$1.delegate);
-			container.node.removeEventListener('resize', this$1.delegate);
-			delete this$1.store.containers[container.id];
-
-		/**
-		 * Bind event listeners
-		 */
-		} else if (container.node === document.documentElement) {
-			window.addEventListener('scroll', this$1.delegate);
-			window.addEventListener('resize', this$1.delegate);
-		} else {
-			container.node.addEventListener('scroll', this$1.delegate);
-			container.node.addEventListener('resize', this$1.delegate);
-		}
-	});
-
-	/**
-	 * Manually invoke delegate once to capture
-	 * element and container dimensions, container
-	 * scroll position, and trigger any valid reveals
-	 */
-	this.delegate();
-
-	this.initTimeout = null;
 }
 
 function isElementVisible (element) {
@@ -694,6 +713,125 @@ function logger (message) {
 		details.forEach(function (detail) { return report += "\n  - " + detail; });
 		console.log(report); // eslint-disable-line no-console
 	}
+}
+
+function rinse () {
+	var this$1 = this;
+
+
+	var elementIds = {
+		active: [],
+		stale: [],
+	};
+
+	var containerIds = {
+		active: [],
+		stale: [],
+	};
+
+	var sequenceIds = {
+		active: [],
+		stale: [],
+	};
+
+	/**
+	 * Take stock of active element IDs.
+	 */
+	each(getNodes('[data-sr-id]'), function (node) {
+		var id = parseInt(node.getAttribute('data-sr-id'));
+		elementIds.active.push(id);
+	});
+
+	/**
+	 * Destroy stale elements.
+	 */
+	each(this.store.elements, function (element) {
+		if (elementIds.active.indexOf(element.id) === -1) {
+			elementIds.stale.push(element.id);
+		}
+	});
+
+	each(elementIds.stale, function (staleId) { return delete this$1.store.elements[staleId]; });
+
+	/**
+	 * Take stock of active container and sequence IDs.
+	 */
+	each(this.store.elements, function (element) {
+		if (containerIds.active.indexOf(element.containerId) === -1) {
+			containerIds.active.push(element.containerId);
+		}
+		if (element.hasOwnProperty('sequence')) {
+			if (sequenceIds.active.indexOf(element.sequence.id) === -1) {
+				sequenceIds.active.push(element.sequence.id);
+			}
+		}
+	});
+
+	/**
+	 * Destroy stale containers.
+	 */
+	each(this.store.containers, function (container) {
+		if (containerIds.active.indexOf(container.id) === -1) {
+			containerIds.stale.push(container.id);
+		}
+	});
+
+	each(containerIds.stale, function (staleId) {
+		this$1.store.containers[staleId].node.removeEventListener('scroll', this$1.delegate);
+		this$1.store.containers[staleId].node.removeEventListener('resize', this$1.delegate);
+		delete this$1.store.containers[staleId];
+	});
+
+	/**
+	 * Destroy stale sequences.
+	 */
+	each(this.store.sequences, function (sequence) {
+		if (sequenceIds.active.indexOf(sequence.id) === -1) {
+			sequenceIds.stale.push(sequence.id);
+		}
+	});
+
+	each(sequenceIds.stale, function (staleId) { return delete this$1.store.sequences[staleId]; });
+}
+
+function initialize () {
+	var this$1 = this;
+
+
+	rinse.call(this);
+
+	each(this.store.elements, function (element) {
+		var styles = [element.styles.inline];
+
+		if (element.visible) {
+			styles.push(element.styles.opacity.computed);
+			styles.push(element.styles.transform.generated.final);
+		} else {
+			styles.push(element.styles.opacity.generated);
+			styles.push(element.styles.transform.generated.initial);
+		}
+
+		element.node.setAttribute('style', styles.join(' '));
+	});
+
+	each(this.store.containers, function (container) {
+		if (container.node === document.documentElement) {
+			window.addEventListener('scroll', this$1.delegate);
+			window.addEventListener('resize', this$1.delegate);
+		} else {
+			container.node.addEventListener('scroll', this$1.delegate);
+			container.node.addEventListener('resize', this$1.delegate);
+		}
+	});
+
+	/**
+	 * Manually invoke delegate once to capture
+	 * element and container dimensions, container
+	 * scroll position, and trigger any valid reveals
+	 */
+	this.delegate();
+
+	this.initTimeout = null;
 }
 
 function reveal (target, options, interval, sync) {
@@ -855,6 +993,25 @@ function sync () {
 	initialize.call(this);
 }
 
+function clean (target) {
+	var this$1 = this;
+
+
+	var dirty;
+
+	each(getNodes(target), function (node) {
+		var id = node.getAttribute('data-sr-id');
+		if (id !== null) {
+			dirty = true;
+			node.setAttribute('style', this$1.store.elements[id].styles.inline);
+			node.removeAttribute('data-sr-id');
+			delete this$1.store.elements[id];
+		}
+	});
+
+	if (dirty) { rinse.call(this); }
+}
+
 function animate (element) {
 	var this$1 = this;
 
@@ -868,7 +1025,7 @@ function animate (element) {
 
 	if (isElementVisible.call(this, element) && !element.visible) {
 
-		if (sequence) {
+		if (sequence !== null) {
 			if (sequence.head.index === null && sequence.tail.index === null) {
 				sequence.head.index = sequence.tail.index = element.sequence.index;
 				sequence.head.blocked = sequence.tail.blocked = true;
@@ -900,7 +1057,7 @@ function animate (element) {
 
 		element.seen = true;
 		element.visible = true;
-		registerCallbacks(element, isDelayed);
+		registerCallbacks.call(this, element, isDelayed);
 		element.node.setAttribute('style', styles.join(' '));
 
 	} else {
@@ -919,7 +1076,7 @@ function animate (element) {
 			styles.push(element.styles.transition.generated.instant);
 
 			element.visible = false;
-			registerCallbacks(element);
+			registerCallbacks.call(this, element);
 			element.node.setAttribute('style', styles.join(' '));
 		}
 	}
@@ -927,6 +1084,8 @@ function animate (element) {
 
 
 function registerCallbacks (element, isDelayed) {
+	var this$1 = this;
+
 
 	var duration = (isDelayed)
 		? element.config.duration + element.config.delay
@@ -951,11 +1110,10 @@ function registerCallbacks (element, isDelayed) {
 		start: Date.now(),
 		clock: window.setTimeout(function () {
 			afterCallback(element.node);
-			if (element.visible && !element.config.reset) {
-				element.node.setAttribute('style', element.styles.inline);
-				element.node.removeAttribute('data-sr-id');
-			}
 			element.callbackTimer = null;
+			if (element.visible && !element.config.reset) {
+				clean.call(this$1, element.node);
+			}
 		}, duration - elapsed),
 	};
 }
@@ -1011,7 +1169,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.0";
+var version = "4.0.0-beta.2";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
@@ -1075,6 +1233,7 @@ ScrollReveal.isSupported = function () { return transformSupported() && transiti
 
 ScrollReveal.prototype.destroy = destroy;
 ScrollReveal.prototype.reveal = reveal;
+ScrollReveal.prototype.clean = clean;
 ScrollReveal.prototype.sync = sync;
 
 /////    /////    /////    /////
