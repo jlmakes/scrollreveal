@@ -53,6 +53,11 @@ describe('ScrollReveal', () => {
 
 		const sr = new ScrollReveal()
 
+		it('should have a `clean` method', () => {
+			expect(sr.clean).to.exist
+			expect(sr.clean).to.be.a('function')
+		})
+
 		it('should have a `destroy` method', () => {
 			expect(sr.destroy).to.exist
 			expect(sr.destroy).to.be.a('function')
@@ -87,6 +92,11 @@ describe('ScrollReveal', () => {
 		]
 		const sr = new ScrollReveal()
 		stubs.forEach(stub => stub.restore())
+
+		it('should have a `clean` method', () => {
+			expect(sr.clean).to.exist
+			expect(sr.clean).to.be.a('function')
+		})
 
 		it('should have a `destroy` method', () => {
 			expect(sr.destroy).to.exist
