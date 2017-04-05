@@ -1,5 +1,5 @@
 import { isElementVisible } from '../../utils/core'
-import clean from './clean'
+import clean from '../methods/clean'
 
 
 export default function animate (element) {

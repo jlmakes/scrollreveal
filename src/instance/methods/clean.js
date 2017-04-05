@@ -1,6 +1,7 @@
 import { each } from '../../utils/generic'
 import { getNodes } from '../../utils/core'
-import rinse from './rinse'
+import rinse from '../functions/rinse'
+
 
 export default function clean (target) {
 
