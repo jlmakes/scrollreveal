@@ -86,6 +86,9 @@
 
     // Starting scale value, will transition from this value to 1
     scale: 0.9,
+    
+    // Ending scale value, will transition from defined scale to 1
+    endscale: 1,
 
     // Accepts any valid CSS easing, e.g. 'ease', 'ease-in-out', 'linear', etc.
     easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
@@ -426,7 +429,7 @@
     }
     if (config.scale) {
       transform.initial += ' scale(' + config.scale + ')'
-      transform.target += ' scale(1)'
+      transform.target += ' scale(config.endscale)'
     }
     if (config.rotate.x) {
       transform.initial += ' rotateX(' + config.rotate.x + 'deg)'
