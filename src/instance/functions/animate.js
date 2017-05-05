@@ -4,6 +4,7 @@ import clean from '../methods/clean'
 
 export default function animate (element) {
 
+	const isVisible = isElementVisible.call(this, element)
 	const isDelayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
@@ -11,7 +12,7 @@ export default function animate (element) {
 	const sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null
 	const styles = [element.styles.inline]
 
-	if (isElementVisible.call(this, element) && !element.visible) {
+	if (isVisible && !element.visible) {
 
 		if (sequence !== null) {
 			if (sequence.head.index === null && sequence.tail.index === null) {
@@ -46,27 +47,17 @@ export default function animate (element) {
 		element.seen = true
 		element.visible = true
 		registerCallbacks.call(this, element, isDelayed)
-		element.node.setAttribute('style', styles.join(' '))
+		element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 
-	} else {
-		if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
+	} else if (!isVisible && element.visible && element.config.reset) {
 
-			if (sequence) {
-				if (sequence.head.index === element.sequence.index) {
-					sequence.head.index++
-				} else if (sequence.tail.index === element.sequence.index) {
-					sequence.tail.index--
-				} else return
-			}
+		styles.push(element.styles.opacity.generated)
+		styles.push(element.styles.transform.generated.initial)
+		styles.push(element.styles.transition.generated.instant)
 
-			styles.push(element.styles.opacity.generated)
-			styles.push(element.styles.transform.generated.initial)
-			styles.push(element.styles.transition.generated.instant)
-
-			element.visible = false
-			registerCallbacks.call(this, element)
-			element.node.setAttribute('style', styles.join(' '))
-		}
+		element.visible = false
+		registerCallbacks.call(this, element)
+		element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 	}
 }
 
