@@ -17,7 +17,7 @@ export default function initialize () {
 			styles.push(element.styles.transform.generated.initial)
 		}
 
-		element.node.setAttribute('style', styles.join(' '))
+		element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 	})
 
 	each(this.store.containers, container => {
