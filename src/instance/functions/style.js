@@ -167,6 +167,11 @@ export default function style (element) {
 			delayed: `${transition.property}: ${composed.delayed};`,
 			instant: `${transition.property}: ${composed.instant};`,
 		}
+	} else {
+		transition.generated = {
+			delayed: '',
+			instant: '',
+		}
 	}
 
 	return {
