@@ -15,8 +15,8 @@ export function isElementVisible (element) {
 
 	const containerBounds = {
 		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
-		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
-		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
+		right: container.geometry.bounds.right + container.scroll.left - viewOffset.right,
+		bottom: container.geometry.bounds.bottom + container.scroll.top - viewOffset.bottom,
 		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
 	}
 
