@@ -1,4 +1,5 @@
 import { isElementVisible } from '../../utils/core'
+import { each } from '../../utils/generic'
 import clean from '../methods/clean'
 
 
@@ -9,11 +10,21 @@ export default function animate (element) {
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
 
+	const sequence = this.store.sequences[element.sequence.id]
+
 	if (isVisible && !element.visible) {
+		element.visible = element.seen = true
+		if (sequence) {
+			updateSequenceIndexes.call(this, sequence)
+		}
 		return triggerReveal.call(this, element, isDelayed)
 	}
 
 	if (!isVisible && element.visible && element.config.reset) {
+		element.visible = false
+		if (sequence) {
+			updateSequenceIndexes.call(this, sequence)
+		}
 		return triggerReset.call(this, element)
 	}
 }
@@ -28,8 +39,6 @@ function triggerReveal (element, isDelayed) {
 	isDelayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant)
-	element.seen = true
-	element.visible = true
 	registerCallbacks.call(this, element, isDelayed)
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 }
@@ -42,7 +51,6 @@ function triggerReset (element) {
 		element.styles.transform.generated.initial,
 		element.styles.transition.generated.instant,
 	]
-	element.visible = false
 	registerCallbacks.call(this, element)
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 }
@@ -79,4 +87,19 @@ function registerCallbacks (element, isDelayed) {
 			}
 		}, duration - elapsed),
 	}
+}
+
+
+function updateSequenceIndexes (sequence) {
+	let min = Infinity
+	let max = -Infinity
+	each(sequence.elementIds, id => {
+		const element = this.store.elements[id]
+		if (element.visible) {
+			min = Math.min(min, element.sequence.index)
+			max = Math.max(max, element.sequence.index)
+		}
+	})
+	sequence.nose.index = min
+	sequence.tail.index = max
 }
