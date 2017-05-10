@@ -48,8 +48,8 @@ export default function reveal (target, options, interval, sync) {
 			const sequenceId = nextUniqueId()
 			sequence = {
 				elementIds: [],
-				head: { index: null, blocked: false },
-				tail: { index: null, blocked: false },
+				nose: { blocked: false, index: null, pointer: null },
+				tail: { blocked: false, index: null, pointer: null },
 				id: sequenceId,
 				interval: Math.abs(interval),
 			}
