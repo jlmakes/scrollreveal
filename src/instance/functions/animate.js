@@ -59,18 +59,18 @@ export default function animate (element, sequencing) {
 }
 
 
-function triggerReveal (element, isDelayed) {
+function triggerReveal (element, delayed) {
 	const styles = [
 		element.styles.inline,
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final,
 	]
-	isDelayed
+	delayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant)
 	element.revealed = true
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
-	registerCallbacks.call(this, element, isDelayed)
+	registerCallbacks.call(this, element, delayed)
 }
 
 
@@ -126,7 +126,7 @@ function updateSequenceIndexes (sequence) {
 	let max = -Infinity
 	each(sequence.elementIds, id => {
 		const element = this.store.elements[id]
-		if (element.visible) {
+		if (element && element.visible) {
 			min = Math.min(min, element.sequence.index)
 			max = Math.max(max, element.sequence.index)
 		}
