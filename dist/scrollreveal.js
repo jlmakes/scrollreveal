@@ -1075,17 +1075,17 @@ function animate (element, sequencing) {
 }
 
 
-function triggerReveal (element, isDelayed) {
+function triggerReveal (element, delayed) {
 	var styles = [
 		element.styles.inline,
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final ];
-	isDelayed
+	delayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant);
 	element.revealed = true;
 	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
-	registerCallbacks.call(this, element, isDelayed);
+	registerCallbacks.call(this, element, delayed);
 }
 
 
@@ -1144,7 +1144,7 @@ function updateSequenceIndexes (sequence) {
 	var max = -Infinity;
 	each(sequence.elementIds, function (id) {
 		var element = this$1.store.elements[id];
-		if (element.visible) {
+		if (element && element.visible) {
 			min = Math.min(min, element.sequence.index);
 			max = Math.max(max, element.sequence.index);
 		}
@@ -1234,7 +1234,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.4";
+var version = "4.0.0-beta.5";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
