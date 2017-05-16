@@ -177,8 +177,8 @@ function isElementVisible (element) {
 
 	var containerBounds = {
 		top: container.geometry.bounds.top + container.scroll.top + viewOffset.top,
-		right: container.geometry.bounds.right + container.scroll.left + viewOffset.right,
-		bottom: container.geometry.bounds.bottom + container.scroll.top + viewOffset.bottom,
+		right: container.geometry.bounds.right + container.scroll.left - viewOffset.right,
+		bottom: container.geometry.bounds.bottom + container.scroll.top - viewOffset.bottom,
 		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
 	};
 
@@ -803,6 +803,11 @@ function style (element) {
 			delayed: ((transition.property) + ": " + (composed.delayed) + ";"),
 			instant: ((transition.property) + ": " + (composed.instant) + ";"),
 		};
+	} else {
+		transition.generated = {
+			delayed: '',
+			instant: '',
+		};
 	}
 
 	return {
@@ -831,7 +836,7 @@ function initialize () {
 			styles.push(element.styles.transform.generated.initial);
 		}
 
-		element.node.setAttribute('style', styles.join(' '));
+		element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
 	});
 
 	each(this.store.containers, function (container) {
@@ -898,8 +903,8 @@ function reveal (target, options, interval, sync) {
 			var sequenceId = nextUniqueId();
 			sequence = {
 				elementIds: [],
-				head: { index: null, blocked: false },
-				tail: { index: null, blocked: false },
+				nose: { blocked: false, index: null, pointer: null },
+				tail: { blocked: false, index: null, pointer: null },
 				id: sequenceId,
 				interval: Math.abs(interval),
 			};
@@ -939,6 +944,7 @@ function reveal (target, options, interval, sync) {
 				element.id = nextUniqueId();
 				element.node = node;
 				element.seen = false;
+				element.revealed = false;
 				element.visible = false;
 			}
 
@@ -1013,93 +1019,102 @@ function sync () {
 	initialize.call(this);
 }
 
-function animate (element) {
-	var this$1 = this;
+function animate (element, sequencing) {
 
-
-	var isDelayed = element.config.useDelay === 'always'
+	var sequence = this.store.sequences[element.sequence.id];
+	var delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen;
 
-	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : null;
-	var styles = [element.styles.inline];
+	element.visible = isElementVisible.call(this, element);
 
-	if (isElementVisible.call(this, element) && !element.visible) {
-
-		if (sequence !== null) {
-			if (sequence.head.index === null && sequence.tail.index === null) {
-				sequence.head.index = sequence.tail.index = element.sequence.index;
-				sequence.head.blocked = sequence.tail.blocked = true;
-
-			} else if (sequence.head.index - 1 === element.sequence.index && !sequence.head.blocked) {
-				sequence.head.index--;
-				sequence.head.blocked = true;
-
-			} else if (sequence.tail.index + 1 === element.sequence.index && !sequence.tail.blocked) {
-				sequence.tail.index++;
-				sequence.tail.blocked = true;
-
-			} else { return }
-
-			window.setTimeout(function () {
-				sequence.head.blocked = sequence.tail.blocked = false;
-				this$1.delegate();
-			}, sequence.interval);
-		}
-
-		styles.push(element.styles.opacity.computed);
-		styles.push(element.styles.transform.generated.final);
-
-		if (isDelayed) {
-			styles.push(element.styles.transition.generated.delayed);
+	if (sequencing) {
+		if (element.sequence.index === sequence.nose.pointer - 1 && sequence.nose.pointer > sequence.nose.index) {
+			sequence.nose.pointer--;
+			queueSequenceNose.call(this, sequence);
+		} else if (element.sequence.index === sequence.tail.pointer + 1 && sequence.tail.pointer < sequence.tail.index) {
+			sequence.tail.pointer++;
+			queueSequenceTail.call(this, sequence);
 		} else {
-			styles.push(element.styles.transition.generated.instant);
+			return
 		}
-
-		element.seen = true;
-		element.visible = true;
-		registerCallbacks.call(this, element, isDelayed);
-		element.node.setAttribute('style', styles.join(' '));
-
-	} else {
-		if (!isElementVisible.call(this, element) && element.visible && element.config.reset) {
-
-			if (sequence) {
-				if (sequence.head.index === element.sequence.index) {
-					sequence.head.index++;
-				} else if (sequence.tail.index === element.sequence.index) {
-					sequence.tail.index--;
-				} else { return }
-			}
-
-			styles.push(element.styles.opacity.generated);
-			styles.push(element.styles.transform.generated.initial);
-			styles.push(element.styles.transition.generated.instant);
-
-			element.visible = false;
-			registerCallbacks.call(this, element);
-			element.node.setAttribute('style', styles.join(' '));
-		}
+		return triggerReveal.call(this, element, delayed)
 	}
+
+	if (element.visible && !element.revealed) {
+		if (sequence) {
+			updateSequenceIndexes.call(this, sequence);
+			if (sequence.nose.pointer === null && sequence.tail.pointer === null) {
+				sequence.nose.pointer = sequence.tail.pointer = element.sequence.index;
+				queueSequenceNose.call(this, sequence);
+				queueSequenceTail.call(this, sequence);
+			} else if (element.sequence.index === sequence.nose.pointer - 1 && !sequence.nose.blocked) {
+				sequence.nose.pointer--;
+				queueSequenceNose.call(this, sequence);
+			} else if (element.sequence.index === sequence.tail.pointer + 1 && !sequence.tail.blocked) {
+				sequence.tail.pointer++;
+				queueSequenceTail.call(this, sequence);
+			} else {
+				return
+			}
+		}
+		element.seen = true;
+		return triggerReveal.call(this, element, delayed)
+	}
+
+	if (!element.visible && element.revealed && element.config.reset) {
+		if (sequence) {
+			updateSequenceIndexes.call(this, sequence);
+			if (sequence.nose.index !== Infinity && sequence.tail.index !== -Infinity) {
+				sequence.nose.pointer = Math.max(sequence.nose.pointer, sequence.nose.index);
+				sequence.tail.pointer = Math.min(sequence.tail.pointer, sequence.tail.index);
+			}
+		}
+		return triggerReset.call(this, element)
+	}
+}
+
+
+function triggerReveal (element, isDelayed) {
+	var styles = [
+		element.styles.inline,
+		element.styles.opacity.computed,
+		element.styles.transform.generated.final ];
+	isDelayed
+		? styles.push(element.styles.transition.generated.delayed)
+		: styles.push(element.styles.transition.generated.instant);
+	element.revealed = true;
+	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
+	registerCallbacks.call(this, element, isDelayed);
+}
+
+
+function triggerReset (element) {
+	var styles = [
+		element.styles.inline,
+		element.styles.opacity.generated,
+		element.styles.transform.generated.initial,
+		element.styles.transition.generated.instant ];
+	element.revealed = false;
+	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
+	registerCallbacks.call(this, element);
 }
 
 
 function registerCallbacks (element, isDelayed) {
 	var this$1 = this;
 
-
-	var duration = (isDelayed)
+	var duration = isDelayed
 		? element.config.duration + element.config.delay
 		: element.config.duration;
 
-	var afterCallback;
-	if (element.visible) {
-		element.config.beforeReveal(element.node);
-		afterCallback = element.config.afterReveal;
-	} else {
-		element.config.beforeReset(element.node);
-		afterCallback = element.config.afterReset;
-	}
+	var beforeCallback = element.revealed
+		? element.config.beforeReveal
+		: element.config.beforeReset;
+
+	var afterCallback = element.revealed
+		? element.config.afterReveal
+		: element.config.afterReset;
 
 	var elapsed = 0;
 	if (element.callbackTimer) {
@@ -1107,16 +1122,65 @@ function registerCallbacks (element, isDelayed) {
 		window.clearTimeout(element.callbackTimer.clock);
 	}
 
+	beforeCallback(element.node);
+
 	element.callbackTimer = {
 		start: Date.now(),
 		clock: window.setTimeout(function () {
 			afterCallback(element.node);
 			element.callbackTimer = null;
-			if (element.visible && !element.config.reset) {
+			if (element.revealed && !element.config.reset) {
 				clean.call(this$1, element.node);
 			}
 		}, duration - elapsed),
 	};
+}
+
+
+function updateSequenceIndexes (sequence) {
+	var this$1 = this;
+
+	var min = Infinity;
+	var max = -Infinity;
+	each(sequence.elementIds, function (id) {
+		var element = this$1.store.elements[id];
+		if (element.visible) {
+			min = Math.min(min, element.sequence.index);
+			max = Math.max(max, element.sequence.index);
+		}
+	});
+	sequence.nose.index = min;
+	sequence.tail.index = max;
+}
+
+
+function queueSequenceNose (sequence) {
+	var this$1 = this;
+
+	var nextId = sequence.elementIds[sequence.nose.pointer - 1];
+	var nextElement = this.store.elements[nextId];
+	if (nextElement) {
+		sequence.nose.blocked = true;
+		window.setTimeout(function () {
+			sequence.nose.blocked = false;
+			animate.call(this$1, nextElement, true);
+		}, sequence.interval);
+	}
+}
+
+
+function queueSequenceTail (sequence) {
+	var this$1 = this;
+
+	var nextId = sequence.elementIds[sequence.tail.pointer + 1];
+	var nextElement = this.store.elements[nextId];
+	if (nextElement) {
+		sequence.tail.blocked = true;
+		window.setTimeout(function () {
+			sequence.tail.blocked = false;
+			animate.call(this$1, nextElement, true);
+		}, sequence.interval);
+	}
 }
 
 var polyfill = (function () {
@@ -1170,7 +1234,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.2";
+var version = "4.0.0-beta.4";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
