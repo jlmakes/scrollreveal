@@ -3,27 +3,56 @@ import { each } from '../../utils/generic'
 import clean from '../methods/clean'
 
 
-export default function animate (element) {
+export default function animate (element, sequencing) {
 
-	const isVisible = isElementVisible.call(this, element)
-	const isDelayed = element.config.useDelay === 'always'
+	const sequence = this.store.sequences[element.sequence.id]
+	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
 
-	const sequence = this.store.sequences[element.sequence.id]
+	element.visible = isElementVisible.call(this, element)
 
-	if (isVisible && !element.visible) {
-		element.visible = element.seen = true
-		if (sequence) {
-			updateSequenceIndexes.call(this, sequence)
+	if (sequencing) {
+		if (element.sequence.index === sequence.nose.pointer - 1 && sequence.nose.pointer > sequence.nose.index) {
+			sequence.nose.pointer--
+			queueSequenceNose.call(this, sequence)
+		} else if (element.sequence.index === sequence.tail.pointer + 1 && sequence.tail.pointer < sequence.tail.index) {
+			sequence.tail.pointer++
+			queueSequenceTail.call(this, sequence)
+		} else {
+			return
 		}
-		return triggerReveal.call(this, element, isDelayed)
+		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (!isVisible && element.visible && element.config.reset) {
-		element.visible = false
+	if (element.visible && !element.revealed) {
 		if (sequence) {
 			updateSequenceIndexes.call(this, sequence)
+			if (sequence.nose.pointer === null && sequence.tail.pointer === null) {
+				sequence.nose.pointer = sequence.tail.pointer = element.sequence.index
+				queueSequenceNose.call(this, sequence)
+				queueSequenceTail.call(this, sequence)
+			} else if (element.sequence.index === sequence.nose.pointer - 1 && !sequence.nose.blocked) {
+				sequence.nose.pointer--
+				queueSequenceNose.call(this, sequence)
+			} else if (element.sequence.index === sequence.tail.pointer + 1 && !sequence.tail.blocked) {
+				sequence.tail.pointer++
+				queueSequenceTail.call(this, sequence)
+			} else {
+				return
+			}
+		}
+		element.seen = true
+		return triggerReveal.call(this, element, delayed)
+	}
+
+	if (!element.visible && element.revealed && element.config.reset) {
+		if (sequence) {
+			updateSequenceIndexes.call(this, sequence)
+			if (sequence.nose.index !== Infinity && sequence.tail.index !== -Infinity) {
+				sequence.nose.pointer = Math.max(sequence.nose.pointer, sequence.nose.index)
+				sequence.tail.pointer = Math.min(sequence.tail.pointer, sequence.tail.index)
+			}
 		}
 		return triggerReset.call(this, element)
 	}
@@ -39,8 +68,9 @@ function triggerReveal (element, isDelayed) {
 	isDelayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant)
-	registerCallbacks.call(this, element, isDelayed)
+	element.revealed = true
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
+	registerCallbacks.call(this, element, isDelayed)
 }
 
 
@@ -51,8 +81,9 @@ function triggerReset (element) {
 		element.styles.transform.generated.initial,
 		element.styles.transition.generated.instant,
 	]
-	registerCallbacks.call(this, element)
+	element.revealed = false
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
+	registerCallbacks.call(this, element)
 }
 
 
@@ -61,11 +92,11 @@ function registerCallbacks (element, isDelayed) {
 		? element.config.duration + element.config.delay
 		: element.config.duration
 
-	const beforeCallback = element.visible
+	const beforeCallback = element.revealed
 		? element.config.beforeReveal
 		: element.config.beforeReset
 
-	const afterCallback = element.visible
+	const afterCallback = element.revealed
 		? element.config.afterReveal
 		: element.config.afterReset
 
@@ -82,7 +113,7 @@ function registerCallbacks (element, isDelayed) {
 		clock: window.setTimeout(() => {
 			afterCallback(element.node)
 			element.callbackTimer = null
-			if (element.visible && !element.config.reset) {
+			if (element.revealed && !element.config.reset) {
 				clean.call(this, element.node)
 			}
 		}, duration - elapsed),
@@ -102,4 +133,30 @@ function updateSequenceIndexes (sequence) {
 	})
 	sequence.nose.index = min
 	sequence.tail.index = max
+}
+
+
+function queueSequenceNose (sequence) {
+	const nextId = sequence.elementIds[sequence.nose.pointer - 1]
+	const nextElement = this.store.elements[nextId]
+	if (nextElement) {
+		sequence.nose.blocked = true
+		window.setTimeout(() => {
+			sequence.nose.blocked = false
+			animate.call(this, nextElement, true)
+		}, sequence.interval)
+	}
+}
+
+
+function queueSequenceTail (sequence) {
+	const nextId = sequence.elementIds[sequence.tail.pointer + 1]
+	const nextElement = this.store.elements[nextId]
+	if (nextElement) {
+		sequence.tail.blocked = true
+		window.setTimeout(() => {
+			sequence.tail.blocked = false
+			animate.call(this, nextElement, true)
+		}, sequence.interval)
+	}
 }
