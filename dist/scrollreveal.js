@@ -1021,7 +1021,7 @@ function sync () {
 
 function animate (element, sequencing) {
 
-	var sequence = this.store.sequences[element.sequence.id];
+	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : false;
 	var delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen;
@@ -1234,7 +1234,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.5";
+var version = "4.0.0-beta.6";
 
 function ScrollReveal (options) {
 	if ( options === void 0 ) options = {};
