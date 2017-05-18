@@ -16,7 +16,7 @@ Work in progress development branch.
 ### Commercial
 If you want to use ScrollReveal to develop commercial sites, themes, projects, and applications, the Commercial license is the appropriate license. With this option, your source code is kept proprietary.
 
-Purchase a ScrollReveal Commercial License from [scrollrevealjs.org](scrollrevealjs.org)
+Purchase a ScrollReveal Commercial License from [scrollrevealjs.org](https://scrollrevealjs.org)
 
 ### Open Source
 If you are creating an open source application under a license compatible with the [GNU&nbsp;General&nbsp;Public&nbsp;License&nbsp;3.0][license-url], you may use ScrollReveal under the terms of the GPLv3.
