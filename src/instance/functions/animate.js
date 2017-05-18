@@ -5,7 +5,7 @@ import clean from '../methods/clean'
 
 export default function animate (element, sequencing) {
 
-	const sequence = this.store.sequences[element.sequence.id]
+	const sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : false
 	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
