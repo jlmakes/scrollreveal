@@ -26,7 +26,7 @@
     "url": "https://github.com/jlmakes/scrollreveal/issues"
   },
   "dependencies": {
-    "redpill": "^0.4.2"
+    "rematrix": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

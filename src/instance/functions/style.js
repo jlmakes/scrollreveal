@@ -7,7 +7,7 @@ import {
 	scale,
 	translateX,
 	translateY,
-} from 'redpill'
+} from 'rematrix'
 
 import { getPrefixedStyleProperty } from '../../utils/browser'
 
