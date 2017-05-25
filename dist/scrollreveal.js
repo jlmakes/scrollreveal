@@ -417,7 +417,7 @@ function destroy () {
 	};
 }
 
-/*  @license Redpill v0.4.1
+/*  @license Rematrix v0.1.0
 
     Copyright (c) 2017, Fisssion LLC
 
@@ -440,7 +440,7 @@ function destroy () {
     THE SOFTWARE.
 */
 /**
- * @module Redpill
+ * @module Rematrix
  */
 
 /**
@@ -497,25 +497,25 @@ function identity () {
  * Returns a 4x4 matrix describing the combined transformations
  * of both arguments.
  *
- * > **Note:** Order is very important. For example, rotating 90°
+ * > **Note:** Order is very important. For example, rotating 45°
  * along the Z-axis, followed by translating 500 pixels along the
  * Y-axis... is not the same as translating 500 pixels along the
  * Y-axis, followed by rotating 45° along on the Z-axis.
  *
- * @param  {array} m1 - Accepts both short and long form matrices.
- * @param  {array} m2 - Accepts both short and long form matrices.
+ * @param  {array} m - Accepts both short and long form matrices.
+ * @param  {array} x - Accepts both short and long form matrices.
  * @return {array}
  */
-function multiply (m1, m2) {
-	var fm1 = format(m1);
-	var fm2 = format(m2);
+function multiply (m, x) {
+	var fm = format(m);
+	var fx = format(x);
 	var product = [];
 
 	for (var i = 0; i < 4; i++) {
-		var row = [fm1[i], fm1[i + 4], fm1[i + 8], fm1[i + 12]];
+		var row = [fm[i], fm[i + 4], fm[i + 8], fm[i + 12]];
 		for (var j = 0; j < 4; j++) {
 			var k = j * 4;
-			var col = [fm2[k], fm2[k + 1], fm2[k + 2], fm2[k + 3]];
+			var col = [fx[k], fx[k + 1], fx[k + 2], fx[k + 3]];
 			var result = row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3];
 
 			product[i + k] = result;
@@ -527,11 +527,13 @@ function multiply (m1, m2) {
 
 
 /**
- * Attempts to returns a 4x4 matrix describing the CSS transform matrix passed
- * in, but will return the identity matrix as a fallback.
+ * Attempts to return a 4x4 matrix describing the CSS transform
+ * matrix passed in, but will return the identity matrix as a
+ * fallback.
  *
- * **Tip:** In virtually all cases, this method is used to convert a CSS matrix
- * (retrieved as a `string` from computed styles) to its equivalent array format.
+ * **Tip:** In virtually all cases, this method is used to convert
+ * a CSS matrix (retrieved as a `string` from computed styles) to
+ * its equivalent array format.
  *
  * @param  {string} source - String containing a valid CSS `matrix` or `matrix3d` property.
  * @return {array}
@@ -1234,9 +1236,10 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.6";
+var version = "4.0.0-beta.7";
 
 function ScrollReveal (options) {
+	var this$1 = this;
 	if ( options === void 0 ) options = {};
 
 
@@ -1283,15 +1286,10 @@ function ScrollReveal (options) {
 	};
 
 	this.pristine = true;
-	this.delegate = delegate.bind(this);
 
-	Object.defineProperty(this, 'version', {
-		get: function () { return version; },
-	});
-
-	Object.defineProperty(this, 'noop', {
-		get: function () { return false; },
-	});
+	Object.defineProperty(this, 'delegate', { get: function () { return delegate.bind(this$1); } });
+	Object.defineProperty(this, 'version', { get: function () { return version; } });
+	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 }
 
 ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
@@ -1319,7 +1317,7 @@ ScrollReveal.prototype.sync = sync;
 /*!
  * ScrollReveal
  * ------------
- * Website : https://scrollreveal.com
+ * Website : https://scrollrevealjs.org
  * Support : https://github.com/jlmakes/scrollreveal/issues
  * Author  : https://twitter.com/jlmakes
  *
@@ -1328,7 +1326,7 @@ ScrollReveal.prototype.sync = sync;
  *
  * For commercial sites, themes, projects, and applications,
  * keep your source code proprietary and please purchase a
- * commercial license from https://scrollreveal.com
+ * commercial license from https://scrollrevealjs.org
  *
  * Copyright (c) 2014–2017 Julian Lloyd. All rights reserved.
  */
