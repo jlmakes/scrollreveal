@@ -25,6 +25,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
 - Library version is now a read-only instance member.
+- `options.viewFactor` clamps values outside of `0.0` to `1.0`.
 
 ### Fixed
 - The `requestAnimationFrame` polyfill now reliably throttles callback invocations.

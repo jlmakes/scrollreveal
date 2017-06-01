@@ -3,7 +3,7 @@ import { isNode, isNodeList } from '../utils/browser'
 
 export function isElementVisible (element) {
 	const container = this.store.containers[element.containerId]
-	const viewFactor = element.config.viewFactor
+	const viewFactor = Math.max(0, Math.min(1, element.config.viewFactor))
 	const viewOffset = element.config.viewOffset
 
 	const elementBounds = {
