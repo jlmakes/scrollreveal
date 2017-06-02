@@ -88,7 +88,11 @@ export default function style (element) {
 	if (config.rotate.x) transformations.push(rotateX(config.rotate.x))
 	if (config.rotate.y) transformations.push(rotateY(config.rotate.y))
 	if (config.rotate.z) transformations.push(rotateZ(config.rotate.z))
-	if (config.scale !== 1) transformations.push(scale(config.scale))
+	if (config.scale !== 1) {
+		config.scale === 0
+			? transformations.push(scale(0.001))
+			: transformations.push(scale(config.scale))
+	}
 
 	const transform = {}
 	if (transformations.length) {
