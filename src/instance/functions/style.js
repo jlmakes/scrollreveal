@@ -90,7 +90,7 @@ export default function style (element) {
 	if (config.rotate.z) transformations.push(rotateZ(config.rotate.z))
 	if (config.scale !== 1) {
 		config.scale === 0
-			? transformations.push(scale(0.001))
+			? transformations.push(scale(0.0002))
 			: transformations.push(scale(config.scale))
 	}
 
