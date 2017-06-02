@@ -165,7 +165,7 @@ function transitionSupported () {
 
 function isElementVisible (element) {
 	var container = this.store.containers[element.containerId];
-	var viewFactor = element.config.viewFactor;
+	var viewFactor = Math.max(0, Math.min(1, element.config.viewFactor));
 	var viewOffset = element.config.viewOffset;
 
 	var elementBounds = {
@@ -724,7 +724,11 @@ function style (element) {
 	if (config.rotate.x) { transformations.push(rotateX(config.rotate.x)); }
 	if (config.rotate.y) { transformations.push(rotateY(config.rotate.y)); }
 	if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
-	if (config.scale !== 1) { transformations.push(scale(config.scale)); }
+	if (config.scale !== 1) {
+		config.scale === 0
+			? transformations.push(scale(0.001))
+			: transformations.push(scale(config.scale));
+	}
 
 	var transform = {};
 	if (transformations.length) {
@@ -1228,6 +1232,7 @@ function delegate (event) {
 				});
 				each(elements, function (element) {
 					element.geometry = getGeometry.call(this$1, element);
+					element.styles = style(element);
 					animate.call(this$1, element);
 				});
 		}
@@ -1236,7 +1241,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.7";
+var version = "4.0.0-beta.8";
 
 function ScrollReveal (options) {
 	var this$1 = this;
