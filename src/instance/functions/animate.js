@@ -42,7 +42,6 @@ export default function animate (element, sequencing) {
 				return
 			}
 		}
-		element.seen = true
 		return triggerReveal.call(this, element, delayed)
 	}
 
@@ -68,7 +67,7 @@ function triggerReveal (element, delayed) {
 	delayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant)
-	element.revealed = true
+	element.revealed = element.seen = true
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 	registerCallbacks.call(this, element, delayed)
 }
