@@ -17,14 +17,14 @@ export default function clean (target) {
 			}
 		})
 	} catch (e) {
-		return logger('Clean failed.', e.message)
+		return logger.call(this, 'Clean failed.', e.message)
 	}
 
 	if (dirty) {
 		try {
 			rinse.call(this)
 		} catch (e) {
-			return logger('Rinse failed.', e.message)
+			return logger.call(this, 'Rinse failed.', e.message)
 		}
 	}
 }

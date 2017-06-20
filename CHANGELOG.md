@@ -1,5 +1,5 @@
 # Change Log
-All notable changes to this project will be documented in this file,  
+All notable changes to this project will be documented in this file,
 and this project tries its best to use [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
@@ -13,6 +13,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - New `destroy()` method removes all generated styles and event listeners.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
 - ScrollReveal removes generated styles after reveals complete when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
+- New `debug` instance property toggles error messages in console. [#351](https://github.com/jlmakes/scrollreveal/issues/351)
 
 ### Changed
 - **Breaking:** The `reveal()` method will not accept sequence intervals less than 16 milliseconds.

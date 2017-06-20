@@ -36,14 +36,14 @@ export default function reveal (target, options, interval, sync) {
 			throw new Error('Nothing to animate.')
 		}
 	} catch (e) {
-		return logger('Reveal failed.', e.message)
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	/**
 	 * Verify our platform matches our platform configuration.
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		return logger('Reveal aborted.', 'This platform has been disabled.')
+		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
 	}
 
 	/**
@@ -61,7 +61,7 @@ export default function reveal (target, options, interval, sync) {
 				interval: Math.abs(interval),
 			}
 		} else {
-			return logger('Reveal failed.', 'Sequence interval must be at least 16ms.')
+			return logger.call(this, 'Reveal failed.', 'Sequence interval must be at least 16ms.')
 		}
 	}
 
@@ -125,7 +125,7 @@ export default function reveal (target, options, interval, sync) {
 		})
 
 	} catch (e) {
-		return logger('Reveal failed.', e.message)
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	containers[containerId] = containers[containerId] || {

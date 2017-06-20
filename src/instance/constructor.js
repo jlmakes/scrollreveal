@@ -24,8 +24,16 @@ export default function ScrollReveal (options = {}) {
 		return new ScrollReveal(options)
 	}
 
+	let _debug = false
+	Object.defineProperty(this, 'debug', {
+		get: () => _debug,
+		set: value => {
+			if (typeof value === 'boolean') _debug = value
+		},
+	})
+
 	if (!ScrollReveal.isSupported()) {
-		logger('Instantiation aborted.', 'This browser is not supported.')
+		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.')
 		return noop
 	}
 
@@ -38,7 +46,7 @@ export default function ScrollReveal (options = {}) {
 			})(),
 		})
 	} catch (e) {
-		logger('Instantiation failed.', 'Invalid configuration.', e.message)
+		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
 		return noop
 	}
 
@@ -48,7 +56,7 @@ export default function ScrollReveal (options = {}) {
 			throw new Error('Invalid or missing container.')
 		}
 	} catch (e) {
-		logger('Instantiation failed.', e.message)
+		logger.call(this, 'Instantiation failed.', e.message)
 		return noop
 	}
 
