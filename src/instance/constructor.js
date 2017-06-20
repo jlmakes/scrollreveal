@@ -53,7 +53,7 @@ export default function ScrollReveal (options = {}) {
 	try {
 		const container = getNode(this.defaults.container)
 		if (!container) {
-			throw new Error('Invalid or missing container.')
+			throw new Error('Invalid container.')
 		}
 	} catch (e) {
 		logger.call(this, 'Instantiation failed.', e.message)
