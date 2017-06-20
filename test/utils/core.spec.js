@@ -17,34 +17,26 @@ describe('Core Utilities', () => {
 			expect(result).to.equal(actual)
 		})
 
-		it('should return null when no element matches a valid selector', () => {
-			const stub = sinon.stub(console, 'log')
-			const result = getNode('.foo')
-			stub.restore()
-			expect(result).to.be.null
+		it('should throw an error when no element matches a valid selector', () => {
+			let caught
+			try {
+				getNode('.foo')
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(Error)
 		})
 
-		it('should return null when an invalid selector is passed', () => {
-			const stub = sinon.stub(console, 'log')
-			const result = getNode('.foo!')
-			stub.restore()
-			expect(result).to.be.null
-		})
-
-		it('should output to log when no element matches a valid selector', () => {
-			const spy = sinon.spy()
-			const stub = sinon.stub(console, 'log', spy)
-			getNode('.foo')
-			stub.restore()
-			expect(spy).to.have.been.called
-		})
-
-		it('should output to log when an invalid selector is passed', () => {
-			const spy = sinon.spy()
-			const stub = sinon.stub(console, 'log', spy)
-			getNode('.foo!')
-			stub.restore()
-			expect(spy).to.have.been.called
+		it('should throw an error when an invalid selector is passed', () => {
+			let caught
+			try {
+				getNode('foo!')
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(Error)
 		})
 	})
 
@@ -70,34 +62,26 @@ describe('Core Utilities', () => {
 			expect(result).to.deep.equal(actual)
 		})
 
-		it('should return an empty array when no element matches a valid selector', () => {
-			const stub = sinon.stub(console, 'log')
-			const result = getNodes('.foo')
-			stub.restore()
-			expect(result).to.deep.equal([])
+		it('should throw an error when no element matches a valid selector', () => {
+			let caught
+			try {
+				getNodes('.foo')
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(Error)
 		})
 
-		it('should return an empty array when an invalid selector is passed', () => {
-			const stub = sinon.stub(console, 'log')
-			const result = getNodes('.foo!')
-			stub.restore()
-			expect(result).to.deep.equal([])
-		})
-
-		it('should output to log when no element matches a valid selector', () => {
-			const spy = sinon.spy()
-			const stub = sinon.stub(console, 'log', spy)
-			getNodes('.foo')
-			stub.restore()
-			expect(spy).to.have.been.called
-		})
-
-		it('should output to log when an invalid selector is passed', () => {
-			const spy = sinon.spy()
-			const stub = sinon.stub(console, 'log', spy)
-			getNodes('.foo!')
-			stub.restore()
-			expect(spy).to.have.been.called
+		it('should throw an error when an invalid selector is passed', () => {
+			let caught
+			try {
+				getNodes('foo!')
+			} catch (error) {
+				caught = error
+			}
+			expect(caught).to.exist
+			expect(caught).to.be.an.instanceof(Error)
 		})
 	})
 
@@ -105,6 +89,7 @@ describe('Core Utilities', () => {
 
 		let spy
 		let stub
+		let mock = { debug: true }
 
 		before('stub console log', () => {
 			spy = sinon.spy()
@@ -112,17 +97,17 @@ describe('Core Utilities', () => {
 		})
 
 		it('invokes console.log', () => {
-			logger()
+			logger.call(mock)
 			expect(spy).to.have.been.called
 		})
 
 		it('prepends output with `ScrollReveal: `', () => {
-			logger('test')
+			logger.call(mock, 'test')
 			expect(spy).to.have.been.calledWith('ScrollReveal: test')
 		})
 
 		it('accepts multiple arguments as message details', () => {
-			logger('message', 'detail one', 'detail two')
+			logger.call(mock, 'message', 'detail one', 'detail two')
 			expect(spy).to.have.been.calledWith('ScrollReveal: message\n  - detail one\n  - detail two')
 		})
 

@@ -71,6 +71,9 @@ export function getNode (target, container = document) {
 		} catch (e) {
 			throw new Error(`"${target}" is not a valid selector.`)
 		}
+		if (!node) {
+			throw new Error(`The selector "${target}" matches 0 elements.`)
+		}
 	}
 	return isNode(target) ? target : node
 }
@@ -83,15 +86,18 @@ export function getNodes (target, container = document) {
 	if (isNodeList(target)) {
 		return Array.prototype.slice.call(target)
 	}
+	let query
 	if (typeof target === 'string') {
 		try {
-			const query = container.querySelectorAll(target)
-			return Array.prototype.slice.call(query)
+			query = container.querySelectorAll(target)
 		} catch (e) {
 			throw new Error(`"${target}" is not a valid selector.`)
 		}
+		if (query.length === 0) {
+			throw new Error(`The selector "${target}" matches 0 elements.`)
+		}
 	}
-	return []
+	return Array.prototype.slice.call(query)
 }
 
 
