@@ -68,9 +68,8 @@ export function getNode (target, container = document) {
 	if (typeof target === 'string') {
 		try {
 			node = container.querySelector(target)
-			if (!node) logger(`Querying the selector "${target}" returned nothing.`)
-		} catch (err) {
-			logger(`"${target}" is not a valid selector.`)
+		} catch (e) {
+			throw new Error(`"${target}" is not a valid selector.`)
 		}
 	}
 	return isNode(target) ? target : node
@@ -78,16 +77,18 @@ export function getNode (target, container = document) {
 
 
 export function getNodes (target, container = document) {
-	if (isNode(target)) return [target]
-	if (isNodeList(target)) return Array.prototype.slice.call(target)
+	if (isNode(target)) {
+		return [target]
+	}
+	if (isNodeList(target)) {
+		return Array.prototype.slice.call(target)
+	}
 	if (typeof target === 'string') {
 		try {
 			const query = container.querySelectorAll(target)
-			const nodes = Array.prototype.slice.call(query)
-			if (nodes.length) return nodes
-			logger(`Querying the selector "${target}" returned nothing.`)
-		} catch (error) {
-			logger(`"${target}" is not a valid selector.`)
+			return Array.prototype.slice.call(query)
+		} catch (e) {
+			throw new Error(`"${target}" is not a valid selector.`)
 		}
 	}
 	return []

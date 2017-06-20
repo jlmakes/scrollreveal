@@ -21,11 +21,14 @@ export default function rinse () {
 	/**
 	 * Take stock of active element IDs.
 	 */
-	each(getNodes('[data-sr-id]'), node => {
-		const id = parseInt(node.getAttribute('data-sr-id'))
-		elementIds.active.push(id)
-	})
-
+	try {
+		each(getNodes('[data-sr-id]'), node => {
+			const id = parseInt(node.getAttribute('data-sr-id'))
+			elementIds.active.push(id)
+		})
+	} catch (e) {
+		throw e
+	}
 	/**
 	 * Destroy stale elements.
 	 */

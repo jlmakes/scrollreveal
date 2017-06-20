@@ -23,20 +23,27 @@ export default function reveal (target, options, interval, sync) {
 
 	const config = deepAssign({}, this.defaults, options)
 	const containers = this.store.containers
-	const container = getNode(config.container)
-	const targets = getNodes(target, container)
 
-	if (!targets.length) {
-		logger('Reveal aborted.', 'Reveal cannot be performed on 0 elements.')
-		return
+	let container
+	let targets
+	try {
+		container = getNode(config.container)
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+		targets = getNodes(target, container)
+		if (!targets) {
+			throw new Error('Nothing to animate.')
+		}
+	} catch (e) {
+		return logger('Reveal failed.', e.message)
 	}
 
 	/**
 	 * Verify our platform matches our platform configuration.
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		logger('Reveal aborted.', 'This platform has been disabled.')
-		return
+		return logger('Reveal aborted.', 'This platform has been disabled.')
 	}
 
 	/**
@@ -54,8 +61,7 @@ export default function reveal (target, options, interval, sync) {
 				interval: Math.abs(interval),
 			}
 		} else {
-			logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.')
-			return
+			return logger('Reveal failed.', 'Sequence interval must be at least 16ms.')
 		}
 	}
 
@@ -118,9 +124,8 @@ export default function reveal (target, options, interval, sync) {
 			element.node.setAttribute('data-sr-id', element.id)
 		})
 
-	} catch (error) {
-		logger('Reveal failed.', error.message)
-		return
+	} catch (e) {
+		return logger('Reveal failed.', e.message)
 	}
 
 	containers[containerId] = containers[containerId] || {

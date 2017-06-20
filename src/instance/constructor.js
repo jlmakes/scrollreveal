@@ -37,14 +37,18 @@ export default function ScrollReveal (options = {}) {
 				return () => config
 			})(),
 		})
-	} catch (error) {
-		logger('Instantiation failed.', 'Invalid configuration provided.', error.message)
+	} catch (e) {
+		logger('Instantiation failed.', 'Invalid configuration.', e.message)
 		return noop
 	}
 
-	const container = getNode(this.defaults.container)
-	if (!container) {
-		logger('Instantiation failed.', 'Invalid or missing container.')
+	try {
+		const container = getNode(this.defaults.container)
+		if (!container) {
+			throw new Error('Invalid or missing container.')
+		}
+	} catch (e) {
+		logger('Instantiation failed.', e.message)
 		return noop
 	}
 
