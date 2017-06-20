@@ -5,18 +5,18 @@
 }(this, (function () { 'use strict';
 
 var defaults = {
-	origin: 'bottom',
+	delay: 0,
 	distance: '0',
 	duration: 600,
-	delay: 0,
+	easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
+	opacity: 0,
+	origin: 'bottom',
 	rotate: {
 		x: 0,
 		y: 0,
 		z: 0,
 	},
-	opacity: 0,
 	scale: 1,
-	easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
 	container: document.documentElement,
 	desktop: true,
 	mobile: true,
@@ -29,10 +29,10 @@ var defaults = {
 		bottom: 0,
 		left: 0,
 	},
-	beforeReveal: function beforeReveal () {},
-	beforeReset: function beforeReset () {},
-	afterReveal: function afterReveal () {},
 	afterReset: function afterReset () {},
+	afterReveal: function afterReveal () {},
+	beforeReset: function beforeReset () {},
+	beforeReveal: function beforeReveal () {},
 };
 
 var noop = {
@@ -232,9 +232,11 @@ function getNode (target, container) {
 	if (typeof target === 'string') {
 		try {
 			node = container.querySelector(target);
-			if (!node) { logger(("Querying the selector \"" + target + "\" returned nothing.")); }
-		} catch (err) {
-			logger(("\"" + target + "\" is not a valid selector."));
+		} catch (e) {
+			throw new Error(("\"" + target + "\" is not a valid selector."))
+		}
+		if (!node) {
+			throw new Error(("The selector \"" + target + "\" matches 0 elements."))
 		}
 	}
 	return isNode(target) ? target : node
@@ -244,19 +246,24 @@ function getNode (target, container) {
 function getNodes (target, container) {
 	if ( container === void 0 ) container = document;
 
-	if (isNode(target)) { return [target] }
-	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
+	if (isNode(target)) {
+		return [target]
+	}
+	if (isNodeList(target)) {
+		return Array.prototype.slice.call(target)
+	}
+	var query;
 	if (typeof target === 'string') {
 		try {
-			var query = container.querySelectorAll(target);
-			var nodes = Array.prototype.slice.call(query);
-			if (nodes.length) { return nodes }
-			logger(("Querying the selector \"" + target + "\" returned nothing."));
-		} catch (error) {
-			logger(("\"" + target + "\" is not a valid selector."));
+			query = container.querySelectorAll(target);
+		} catch (e) {
+			throw new Error(("\"" + target + "\" is not a valid selector."))
+		}
+		if (query.length === 0) {
+			throw new Error(("The selector \"" + target + "\" matches 0 elements."))
 		}
 	}
-	return []
+	return Array.prototype.slice.call(query)
 }
 
 
@@ -276,7 +283,7 @@ function logger (message) {
 	var details = [], len = arguments.length - 1;
 	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
 
-	if (console) {
+	if (this.debug && console) {
 		var report = "ScrollReveal: " + message;
 		details.forEach(function (detail) { return report += "\n  - " + detail; });
 		console.log(report); // eslint-disable-line no-console
@@ -305,11 +312,14 @@ function rinse () {
 	/**
 	 * Take stock of active element IDs.
 	 */
-	each(getNodes('[data-sr-id]'), function (node) {
-		var id = parseInt(node.getAttribute('data-sr-id'));
-		elementIds.active.push(id);
-	});
-
+	try {
+		each(getNodes('[data-sr-id]'), function (node) {
+			var id = parseInt(node.getAttribute('data-sr-id'));
+			elementIds.active.push(id);
+		});
+	} catch (e) {
+		throw e
+	}
 	/**
 	 * Destroy stale elements.
 	 */
@@ -367,18 +377,27 @@ function clean (target) {
 
 
 	var dirty;
+	try {
+		each(getNodes(target), function (node) {
+			var id = node.getAttribute('data-sr-id');
+			if (id !== null) {
+				dirty = true;
+				node.setAttribute('style', this$1.store.elements[id].styles.inline);
+				node.removeAttribute('data-sr-id');
+				delete this$1.store.elements[id];
+			}
+		});
+	} catch (e) {
+		return logger.call(this, 'Clean failed.', e.message)
+	}
 
-	each(getNodes(target), function (node) {
-		var id = node.getAttribute('data-sr-id');
-		if (id !== null) {
-			dirty = true;
-			node.setAttribute('style', this$1.store.elements[id].styles.inline);
-			node.removeAttribute('data-sr-id');
-			delete this$1.store.elements[id];
+	if (dirty) {
+		try {
+			rinse.call(this);
+		} catch (e) {
+			return logger.call(this, 'Clean failed.', 'Rinse failed.', e.message)
 		}
-	});
-
-	if (dirty) { rinse.call(this); }
+	}
 }
 
 function destroy () {
@@ -726,7 +745,7 @@ function style (element) {
 	if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 	if (config.scale !== 1) {
 		config.scale === 0
-			? transformations.push(scale(0.001))
+			? transformations.push(scale(0.0002))
 			: transformations.push(scale(config.scale));
 	}
 
@@ -884,20 +903,27 @@ function reveal (target, options, interval, sync) {
 
 	var config = deepAssign({}, this.defaults, options);
 	var containers = this.store.containers;
-	var container = getNode(config.container);
-	var targets = getNodes(target, container);
 
-	if (!targets.length) {
-		logger('Reveal aborted.', 'Reveal cannot be performed on 0 elements.');
-		return
+	var container;
+	var targets;
+	try {
+		container = getNode(config.container);
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+		targets = getNodes(target, container);
+		if (!targets) {
+			throw new Error('Nothing to animate.')
+		}
+	} catch (e) {
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	/**
 	 * Verify our platform matches our platform configuration.
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		logger('Reveal aborted.', 'This platform has been disabled.');
-		return
+		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
 	}
 
 	/**
@@ -915,8 +941,7 @@ function reveal (target, options, interval, sync) {
 				interval: Math.abs(interval),
 			};
 		} else {
-			logger('Reveal failed.', 'Sequence intervals must be at least 16 milliseconds.');
-			return
+			return logger.call(this, 'Reveal failed.', 'Sequence interval must be at least 16ms.')
 		}
 	}
 
@@ -979,9 +1004,8 @@ function reveal (target, options, interval, sync) {
 			element.node.setAttribute('data-sr-id', element.id);
 		});
 
-	} catch (error) {
-		logger('Reveal failed.', error.message);
-		return
+	} catch (e) {
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	containers[containerId] = containers[containerId] || {
@@ -1064,7 +1088,6 @@ function animate (element, sequencing) {
 				return
 			}
 		}
-		element.seen = true;
 		return triggerReveal.call(this, element, delayed)
 	}
 
@@ -1089,7 +1112,7 @@ function triggerReveal (element, delayed) {
 	delayed
 		? styles.push(element.styles.transition.generated.delayed)
 		: styles.push(element.styles.transition.generated.instant);
-	element.revealed = true;
+	element.revealed = element.seen = true;
 	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
 	registerCallbacks.call(this, element, delayed);
 }
@@ -1232,7 +1255,6 @@ function delegate (event) {
 				});
 				each(elements, function (element) {
 					element.geometry = getGeometry.call(this$1, element);
-					element.styles = style(element);
 					animate.call(this$1, element);
 				});
 		}
@@ -1241,7 +1263,7 @@ function delegate (event) {
 	});
 }
 
-var version = "4.0.0-beta.8";
+var version = "4.0.0-beta.9";
 
 function ScrollReveal (options) {
 	var this$1 = this;
@@ -1255,8 +1277,16 @@ function ScrollReveal (options) {
 		return new ScrollReveal(options)
 	}
 
+	var _debug = false;
+	Object.defineProperty(this, 'debug', {
+		get: function () { return _debug; },
+		set: function (value) {
+			if (typeof value === 'boolean') { _debug = value; }
+		},
+	});
+
 	if (!ScrollReveal.isSupported()) {
-		logger('Instantiation aborted.', 'This browser is not supported.');
+		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.');
 		return noop
 	}
 
@@ -1268,14 +1298,18 @@ function ScrollReveal (options) {
 				return function () { return config; }
 			})(),
 		});
-	} catch (error) {
-		logger('Instantiation failed.', 'Invalid configuration provided.', error.message);
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
 		return noop
 	}
 
-	var container = getNode(this.defaults.container);
-	if (!container) {
-		logger('Instantiation failed.', 'Invalid or missing container.');
+	try {
+		var container = getNode(this.defaults.container);
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', e.message);
 		return noop
 	}
 

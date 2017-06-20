@@ -36,7 +36,7 @@ ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rig
 
 [version-badge]: https://img.shields.io/badge/version-4.0.0_beta-1283c3.svg
 
-[size-badge]: https://img.shields.io/badge/min+gzip-4.6KB-blue.svg
+[size-badge]: https://img.shields.io/badge/min+gzip-5.0KB-blue.svg
 
 [license-badge]: https://img.shields.io/badge/license-GPLv3-1283c3.svg
 [license-url]: https://opensource.org/licenses/GPL-3.0
