@@ -395,9 +395,8 @@ Feeling inspired? Please contribute! Optimizations, compatibility and bug fixes 
 Here are some cool sites using ScrollReveal:
 
 - [Sequoia Capital](https://www.sequoiacap.com)
+- [Twist App](https://twistapp.com/)
 - [Andrius Petravic](http://petravic.us/)
-- [ISPG Co.](http://www.ispg.co/)
-- [White Rabit Express](https://www.whiterabbitexpress.com/)
 
 Want to see your page here? Please send me your work (or of others) using ScrollReveal on Twitter ([@jlmakes](https://twitter.com/jlmakes))
 
