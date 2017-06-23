@@ -758,8 +758,8 @@
 
       return top < viewBottom &&
         bottom > viewTop &&
-        left > viewLeft &&
-        right < viewRight
+        left < viewRight &&
+        right > viewLeft
     }
 
     function isPositionFixed () {
