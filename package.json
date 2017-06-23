@@ -1,17 +1,11 @@
 {
   "name": "scrollreveal",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "Easy scroll animations for web and mobile browsers.",
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
   "author": "Julian Lloyd",
   "license": "MIT",
-  "standard": {
-    "globals": [
-      "ScrollReveal",
-      "define"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jlmakes/scrollreveal.js.git"

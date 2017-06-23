@@ -24,6 +24,7 @@ sr.reveal('.foo', {
 
 #### Fixes
 
+- *Functionality*: Element visibility detection has been improved. (Fixes [#352](https://github.com/jlmakes/scrollreveal/issues/352))
 - *Functionality*: The default `config.container` now recognizes selectors (Fixes [#289](https://github.com/jlmakes/scrollreveal/issues/289))
 - *Compatibility*: Added missing trailing semi-colon (Fixes [#278](https://github.com/jlmakes/scrollreveal/issues/278))
 
