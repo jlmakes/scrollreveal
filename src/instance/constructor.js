@@ -17,6 +17,7 @@ import { version } from '../../package.json'
 
 let _config
 let _debug
+let _instance
 
 export default function ScrollReveal (options = {}) {
 
@@ -43,15 +44,18 @@ export default function ScrollReveal (options = {}) {
 		get: () => _config || defaults,
 	})
 
+	let buffer
 	try {
-		_config = deepAssign({}, defaults, options)
+		buffer = _config
+			? deepAssign({}, _config, options)
+			: deepAssign({}, defaults, options)
 	} catch (e) {
 		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
 		return noop
 	}
 
 	try {
-		const container = getNode(this.defaults.container)
+		const container = getNode(buffer.container)
 		if (!container) {
 			throw new Error('Invalid container.')
 		}
@@ -59,6 +63,8 @@ export default function ScrollReveal (options = {}) {
 		logger.call(this, 'Instantiation failed.', e.message)
 		return noop
 	}
+
+	_config = buffer
 
 	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
 		document.documentElement.classList.add('sr')
@@ -76,6 +82,8 @@ export default function ScrollReveal (options = {}) {
 	Object.defineProperty(this, 'delegate', { get: () => delegate.bind(this) })
 	Object.defineProperty(this, 'version', { get: () => version })
 	Object.defineProperty(this, 'noop', { get: () => false })
+
+	return _instance ? _instance : _instance = this
 }
 
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()

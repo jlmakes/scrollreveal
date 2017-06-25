@@ -47,6 +47,24 @@ describe('ScrollReveal', () => {
 			expect(sr1.noop).to.be.true
 			expect(sr2.noop).to.be.true
 		})
+
+		it('should return a singleton', () => {
+			const A = ScrollReveal()
+			const B = ScrollReveal()
+			expect(A === B).to.be.true
+		})
+
+		it('should not update the defaults when re-invoked with invalid options', () => {
+			ScrollReveal({ duration: 1000 })
+			ScrollReveal(null)
+			expect(ScrollReveal().defaults.duration).to.equal(1000)
+		})
+
+		it('should update the defaults when re-invoked with valid options', () => {
+			ScrollReveal({ duration: 1000 })
+			ScrollReveal({ duration: 5000 })
+			expect(ScrollReveal().defaults.duration).to.equal(5000)
+		})
 	})
 
 	describe('Instance', () => {
