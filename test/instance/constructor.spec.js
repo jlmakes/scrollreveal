@@ -27,22 +27,22 @@ describe('ScrollReveal', () => {
 				sinon.stub(console, 'log'),
 				sinon.stub(ScrollReveal, 'isSupported'),
 			]
-			const sr = new ScrollReveal()
+			const sr = ScrollReveal()
 			stubs.forEach(stub => stub.restore())
 			expect(sr.noop).to.be.true
 		})
 
 		it('should return a noop instance when container is invalid', () => {
 			const stub = sinon.stub(console, 'log')
-			const sr = new ScrollReveal({ container: null })
+			const sr = ScrollReveal({ container: null })
 			stub.restore()
 			expect(sr.noop).to.be.true
 		})
 
 		it('should return a noop instance when passed non-object options', () => {
 			const stub = sinon.stub(console, 'log')
-			const sr1 = new ScrollReveal(null)
-			const sr2 = new ScrollReveal('foo')
+			const sr1 = ScrollReveal(null)
+			const sr2 = ScrollReveal('foo')
 			stub.restore()
 			expect(sr1.noop).to.be.true
 			expect(sr2.noop).to.be.true
@@ -90,7 +90,7 @@ describe('ScrollReveal', () => {
 			sinon.stub(console, 'log'),
 			sinon.stub(ScrollReveal, 'isSupported'),
 		]
-		const sr = new ScrollReveal()
+		const sr = ScrollReveal()
 		stubs.forEach(stub => stub.restore())
 
 		it('should have a `clean` method', () => {
