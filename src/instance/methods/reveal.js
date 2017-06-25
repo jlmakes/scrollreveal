@@ -14,10 +14,10 @@ export default function reveal (target, options, interval, sync) {
 	 * the interval being passed as the 2nd argument.
 	 */
 	if (typeof options === 'number') {
-		interval = Math.abs(parseInt(options))
+		interval = parseInt(options)
 		options = {}
 	} else {
-		interval = Math.abs(parseInt(interval))
+		interval = parseInt(interval)
 		options = options || {}
 	}
 
