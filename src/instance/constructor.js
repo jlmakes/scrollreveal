@@ -15,6 +15,9 @@ import { deepAssign } from '../utils/generic'
 import { version } from '../../package.json'
 
 
+let _config
+let _debug
+
 export default function ScrollReveal (options = {}) {
 
 	/**
@@ -24,9 +27,8 @@ export default function ScrollReveal (options = {}) {
 		return new ScrollReveal(options)
 	}
 
-	let _debug = false
 	Object.defineProperty(this, 'debug', {
-		get: () => _debug,
+		get: () => _debug || false,
 		set: value => {
 			if (typeof value === 'boolean') _debug = value
 		},
@@ -37,14 +39,12 @@ export default function ScrollReveal (options = {}) {
 		return noop
 	}
 
+	Object.defineProperty(this, 'defaults', {
+		get: () => _config || defaults,
+	})
+
 	try {
-		Object.defineProperty(this, 'defaults', {
-			get: (() => {
-				const config = {}
-				deepAssign(config, defaults, options)
-				return () => config
-			})(),
-		})
+		_config = deepAssign({}, defaults, options)
 	} catch (e) {
 		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
 		return noop
