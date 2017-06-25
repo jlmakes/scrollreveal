@@ -21,12 +21,13 @@ export default function reveal (target, options, interval, sync) {
 		options = options || {}
 	}
 
-	const config = deepAssign({}, this.defaults, options)
 	const containers = this.store.containers
 
+	let config
 	let container
 	let targets
 	try {
+		config = deepAssign({}, this.defaults, options)
 		container = getNode(config.container)
 		if (!container) {
 			throw new Error('Invalid container.')
