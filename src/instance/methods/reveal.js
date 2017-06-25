@@ -25,15 +25,15 @@ export default function reveal (target, options, interval, sync) {
 
 	let config
 	let container
-	let targets
+	let nodes
 	try {
 		config = deepAssign({}, this.defaults, options)
 		container = getNode(config.container)
 		if (!container) {
 			throw new Error('Invalid container.')
 		}
-		targets = getNodes(target, container)
-		if (!targets) {
+		nodes = getNodes(target, container)
+		if (!nodes) {
 			throw new Error('Nothing to animate.')
 		}
 	} catch (e) {
@@ -78,7 +78,7 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	try {
-		const elements = targets.map(node => {
+		const elements = nodes.map(node => {
 			const element = {}
 			const existingId = node.getAttribute('data-sr-id')
 
