@@ -10,10 +10,10 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - ScrollReveal adds `height: 100%` to `<body>` during instantiation when supported. [#298](https://github.com/jlmakes/scrollreveal/issues/298)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
-- New `clean()` method removes specific generated styles and event listeners.
-- New `destroy()` method removes all generated styles and event listeners.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
 - ScrollReveal removes generated styles after reveals complete when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
+- New `clean()` method removes specific generated styles and event listeners.
+- New `destroy()` method removes all generated styles and event listeners.
 - New `debug` instance property toggles error messages in console. [#351](https://github.com/jlmakes/scrollreveal/issues/351)
 
 ### Changed
@@ -26,12 +26,36 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - Elements in a reveal sequence are no longer grouped, and reveal progressively when visible.
 - ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
-- Library version is now a read-only instance member.
+- Library version is now a read-only instance property.
 - `options.viewFactor` clamps values outside of `0.0` to `1.0`.
 - ScrollReveal constructor now returns a singleton.
 
 ### Fixed
 - The `requestAnimationFrame` polyfill now reliably throttles callback invocations.
+
+## [3.3.6] - 2017-23-06
+
+### Fixed
+- Element visibility now checks left and right boundaries correctly. [#352](https://github.com/jlmakes/scrollreveal/issues/352)
+- Library version instance property is again accurate.
+
+## [3.3.5] - 2017-05-04
+
+### Fixed
+- Patched to ensure version 3 is the default NPM package.
+
+## [3.3.4] - 2016-18-02
+
+### Fixed
+- Update stale CDN link in README.
+
+### Changed
+- Add deprecation warnings to README.
+
+## [3.3.3] - 2016-18-02
+
+### Fixed
+- Fix error when using Bower and Wordpress due to missing semi-colon. [#278](https://github.com/jlmakes/scrollreveal/issues/278)
 
 ## [3.3.2] - 2016-10-02
 
