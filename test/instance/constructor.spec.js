@@ -22,6 +22,13 @@ describe('ScrollReveal', () => {
 			expect(result).to.be.true
 		})
 
+		it('should add `height: 100%` to `<body>` element', () => {
+			document.body.removeAttribute('style')
+			ScrollReveal()
+			const result = document.body.style.height === '100%'
+			expect(result).to.be.true
+		})
+
 		it('should return a noop instance when not supported', () => {
 			const stubs = [
 				sinon.stub(console, 'log'),

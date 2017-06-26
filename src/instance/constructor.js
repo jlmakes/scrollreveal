@@ -68,6 +68,7 @@ export default function ScrollReveal (options = {}) {
 
 	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
 		document.documentElement.classList.add('sr')
+		document.body.style.height = '100%'
 	}
 
 	this.store = {

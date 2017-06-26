@@ -7,6 +7,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 ### Added
 - ScrollReveal can be enabled/disabled on desktops using `options.desktop`.
 - ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
+- ScrollReveal adds `height: 100%` to `<body>` during instantiation when supported. [#298](https://github.com/jlmakes/scrollreveal/issues/298)
 - ScrollReveal removes unused containers from the store and unbinds their event listeners.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
 - New `clean()` method removes specific generated styles and event listeners.
