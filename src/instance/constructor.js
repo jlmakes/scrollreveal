@@ -41,7 +41,7 @@ export default function ScrollReveal (options = {}) {
 	}
 
 	Object.defineProperty(this, 'defaults', {
-		get: () => _config || defaults,
+		get: () => _config,
 	})
 
 	let buffer

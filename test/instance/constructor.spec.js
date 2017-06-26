@@ -98,14 +98,37 @@ describe('ScrollReveal', () => {
 			expect(sr.sync).to.be.a('function')
 		})
 
-		it('should have a `noop` property set to `false`', () => {
-			expect(sr.noop).to.exist
-			expect(sr.noop).to.be.false
+		it('should have a `debug` property', () => {
+			expect(sr.debug).to.exist
+			expect(sr.debug).to.be.a('boolean')
+		})
+
+		it('should have a `debug` property', () => {
+			expect(sr.debug).to.exist
+			expect(sr.debug).to.be.a('boolean')
+		})
+
+		it('should only accept boolean values for `debug` property', () => {
+			sr.debug = null
+			expect(sr.debug).to.exist
+			expect(sr.debug).to.be.a('boolean')
+			sr.debug = true
+			expect(sr.debug).to.be.true
+		})
+
+		it('should have a `delegate` property', () => {
+			expect(sr.delegate).to.exist
+			expect(sr.delegate).to.be.a('function')
 		})
 
 		it('should have a `version` property', () => {
 			expect(sr.version).to.exist
 			expect(sr.version).to.be.equal(version)
+		})
+
+		it('should have a `noop` property set to `false`', () => {
+			expect(sr.noop).to.exist
+			expect(sr.noop).to.be.false
 		})
 	})
 
