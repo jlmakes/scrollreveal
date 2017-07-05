@@ -1,9 +1,3 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.ScrollReveal = factory());
-}(this, (function () { 'use strict';
-
 var defaults = {
 	delay: 0,
 	distance: '0',
@@ -1380,6 +1374,4 @@ ScrollReveal.prototype.sync = sync;
  * Copyright (c) 2014–2017 Julian Lloyd. All rights reserved.
  */
 
-return ScrollReveal;
-
-})));
+export default ScrollReveal;

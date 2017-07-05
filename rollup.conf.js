@@ -9,7 +9,15 @@ export default {
 		nodeResolve({ jsnext: true, main: true }),
 		buble(),
 	],
-	format: 'umd',
-	moduleName: 'ScrollReveal',
-	dest: 'dist/scrollreveal.js',
+	targets: [
+		{
+			format: 'umd',
+			moduleName: 'ScrollReveal',
+			dest: 'dist/scrollreveal.js',
+		},
+		{
+			format: 'es',
+			dest: 'dist/scrollreveal.es.js',
+		},
+	],
 }

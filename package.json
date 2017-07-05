@@ -4,6 +4,11 @@
   "description": "Easy scroll animations for web and mobile browsers.",
   "homepage": "https://scrollrevealjs.org",
   "main": "dist/scrollreveal.js",
+  "module": "dist/scrollreveal.es.js",
+  "jsnext:main": "dist/scrollreveal.es.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "rm -rf dist/*",
     "build": "npm run bundle && npm run bundle:min",
