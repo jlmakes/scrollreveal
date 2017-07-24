@@ -1,4 +1,3 @@
-import { isElementVisible } from '../../utils/core'
 import { each } from '../../utils/generic'
 import clean from '../methods/clean'
 
@@ -9,8 +8,6 @@ export default function animate (element, sequencing) {
 	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
-
-	element.visible = isElementVisible.call(this, element)
 
 	if (sequencing) {
 		if (element.sequence.index === sequence.nose.pointer - 1 && sequence.nose.pointer > sequence.nose.index) {

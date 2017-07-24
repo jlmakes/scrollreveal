@@ -35,7 +35,7 @@ export default function initialize () {
 	 * element and container dimensions, container
 	 * scroll position, and trigger any valid reveals
 	 */
-	this.delegate()
+	this.delegate({ type: 'init' })
 
 	this.initTimeout = null
 }
