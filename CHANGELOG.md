@@ -33,18 +33,18 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 ### Fixed
 - The `requestAnimationFrame` polyfill now reliably throttles callback invocations.
 
-## [3.3.6] - 2017-23-06
+## [3.3.6] - 2017-06-23
 
 ### Fixed
 - Element visibility now checks left and right boundaries correctly. [#352](https://github.com/jlmakes/scrollreveal/issues/352)
 - Library version instance property is again accurate.
 
-## [3.3.5] - 2017-05-04
+## [3.3.5] - 2017-04-05
 
 ### Fixed
 - Patched to ensure version 3 is the default NPM package.
 
-## [3.3.4] - 2016-18-02
+## [3.3.4] - 2017-02-18
 
 ### Fixed
 - Update stale CDN link in README.
@@ -52,7 +52,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 ### Changed
 - Add deprecation warnings to README.
 
-## [3.3.3] - 2016-18-02
+## [3.3.3] - 2017-02-18
 
 ### Fixed
 - Fix error when using Bower and Wordpress due to missing semi-colon. [#278](https://github.com/jlmakes/scrollreveal/issues/278)
@@ -390,8 +390,11 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
-[Unreleased]: https://github.com/jlmakes/scrollreveal/compare/v3.3.2...development
-[3.3.2]: https://github.com/jlmakes/scrollreveal/compare/v3.3.2...v3.3.2
+[Unreleased]: https://github.com/jlmakes/scrollreveal/compare/v3.3.6...development
+[3.3.6]: https://github.com/jlmakes/scrollreveal/compare/v3.3.5...v3.3.6
+[3.3.5]: https://github.com/jlmakes/scrollreveal/compare/v3.3.4...v3.3.5
+[3.3.4]: https://github.com/jlmakes/scrollreveal/compare/v3.3.3...v3.3.4
+[3.3.3]: https://github.com/jlmakes/scrollreveal/compare/v3.2.2...v3.3.3
 [3.3.2]: https://github.com/jlmakes/scrollreveal/compare/v3.3.1...v3.3.2
 [3.3.1]: https://github.com/jlmakes/scrollreveal/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/jlmakes/scrollreveal/compare/v3.2.0...v3.3.0
