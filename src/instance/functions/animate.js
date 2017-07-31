@@ -1,7 +1,7 @@
 import clean from '../methods/clean'
 
 
-export default function animate (element, sequencing) {
+export default function animate (element) {
 
 	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
