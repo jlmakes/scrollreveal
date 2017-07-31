@@ -53,13 +53,12 @@ export default function reveal (target, options, interval, sync) {
 	let sequence
 	if (interval) {
 		if (interval >= 16) {
-			const sequenceId = nextUniqueId()
 			sequence = {
-				elementIds: [],
-				nose: { blocked: false, index: null, pointer: null },
-				tail: { blocked: false, index: null, pointer: null },
-				id: sequenceId,
-				interval: Math.abs(interval),
+				id: nextUniqueId(),
+				members: [],
+				headroom: false,
+				legroom: false,
+				interval,
 			}
 		} else {
 			return logger.call(this, 'Reveal failed.', 'Sequence interval must be at least 16ms.')
@@ -107,9 +106,9 @@ export default function reveal (target, options, interval, sync) {
 			if (sequence) {
 				element.sequence = {
 					id: sequence.id,
-					index: sequence.elementIds.length,
+					index: sequence.members.length,
 				}
-				sequence.elementIds.push(element.id)
+				sequence.members.push(element.id)
 			}
 
 			return element
