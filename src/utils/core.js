@@ -80,14 +80,17 @@ export function getNode (target, container = document) {
 
 
 export function getNodes (target, container = document) {
+	if (target instanceof Array) {
+		return target
+	}
 	if (isNode(target)) {
 		return [target]
 	}
 	if (isNodeList(target)) {
 		return Array.prototype.slice.call(target)
 	}
-	let query
 	if (typeof target === 'string') {
+		let query
 		try {
 			query = container.querySelectorAll(target)
 		} catch (e) {
@@ -96,8 +99,8 @@ export function getNodes (target, container = document) {
 		if (query.length === 0) {
 			throw new Error(`The selector "${target}" matches 0 elements.`)
 		}
+		return Array.prototype.slice.call(query)
 	}
-	return Array.prototype.slice.call(query)
 }
 
 

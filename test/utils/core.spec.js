@@ -42,6 +42,12 @@ describe('Core Utilities', () => {
 
 	describe('getNodes()', () => {
 
+		it('should return the same array of nodes when passed an array of nodes', () => {
+			const actual = [].concat(document.querySelectorAll('html, body, script'))
+			const result = getNodes(actual)
+			expect(result).to.equal(actual)
+		})
+
 		it('should return an array containing the same node when passed a node', () => {
 			const element = document.documentElement
 			const actual = [element]

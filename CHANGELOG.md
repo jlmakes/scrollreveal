@@ -15,6 +15,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - New `clean()` method removes specific generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
 - New `destroy()` method removes all generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
 - New `debug` instance property toggles error messages in console. [#351](https://github.com/jlmakes/scrollreveal/issues/351)
+- Instance methods now accept native arrays of HTML elements.
 
 ### Changed
 - **Breaking:** The `reveal()` method will not accept sequence intervals less than 16 milliseconds.
