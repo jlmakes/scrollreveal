@@ -47,9 +47,6 @@ export default function reveal (target, options, interval, sync) {
 		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
 	}
 
-	/**
-	 * Sequence intervals must be at least 16ms (60fps).
-	 */
 	let sequence
 	if (interval) {
 		if (interval >= 16) {
@@ -66,16 +63,20 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	let containerId
-	each(containers, storedContainer => {
-		if (!containerId && storedContainer.node === container) {
-			containerId = storedContainer.id
+	{
+		each(containers, storedContainer => {
+			if (!containerId && storedContainer.node === container) {
+				containerId = storedContainer.id
+			}
+		})
+		if (isNaN(containerId)) {
+			containerId = nextUniqueId()
 		}
-	})
-
-	if (isNaN(containerId)) {
-		containerId = nextUniqueId()
 	}
 
+	/**
+	 * Begin element set-up...
+	 */
 	try {
 		const elements = nodes.map(node => {
 			const element = {}
@@ -128,13 +129,20 @@ export default function reveal (target, options, interval, sync) {
 		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
-	containers[containerId] = containers[containerId] || {
-		id: containerId,
-		node: container,
-	}
-
-	if (sequence) {
-		this.store.sequences[sequence.id] = sequence
+	/**
+	 * Now that element set-up is complete...
+	 *
+	 * Let’s commit the current container and any
+	 * sequence data we have to the store.
+	 */
+	{
+		containers[containerId] = containers[containerId] || {
+			id: containerId,
+			node: container,
+		}
+		if (sequence) {
+			this.store.sequences[sequence.id] = sequence
+		}
 	}
 
 	/**
