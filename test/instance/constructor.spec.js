@@ -22,11 +22,14 @@ describe('ScrollReveal', () => {
 			expect(result).to.be.true
 		})
 
-		it('should add `height: 100%` to `<body>` element', () => {
-			document.body.removeAttribute('style')
+		it('should add `height: 100%` to `<body>` element', done => {
+			document.body.style.height = 'auto'
 			ScrollReveal()
-			const result = document.body.style.height === '100%'
-			expect(result).to.be.true
+			setTimeout(() => {
+				const result = document.body.style.height === '100%'
+				expect(result).to.be.true
+				done()
+			}, 0)
 		})
 
 		it('should return a noop instance when not supported', () => {

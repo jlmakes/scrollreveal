@@ -44,31 +44,46 @@ export default function ScrollReveal (options = {}) {
 		get: () => _config,
 	})
 
+	/**
+	 * Here we use `buffer` to validate our configuration, before
+	 * assigning the contents to the private variable `_config`.
+	 */
 	let buffer
-	try {
-		buffer = _config
-			? deepAssign({}, _config, options)
-			: deepAssign({}, defaults, options)
-	} catch (e) {
-		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
-		return noop
-	}
-
-	try {
-		const container = getNode(buffer.container)
-		if (!container) {
-			throw new Error('Invalid container.')
+	{
+		try {
+			buffer = _config
+				? deepAssign({}, _config, options)
+				: deepAssign({}, defaults, options)
+		} catch (e) {
+			logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
+			return noop
 		}
-	} catch (e) {
-		logger.call(this, 'Instantiation failed.', e.message)
-		return noop
+
+		try {
+			const container = getNode(buffer.container)
+			if (!container) {
+				throw new Error('Invalid container.')
+			}
+		} catch (e) {
+			logger.call(this, 'Instantiation failed.', e.message)
+			return noop
+		}
+
+		_config = buffer
 	}
 
-	_config = buffer
-
+	/**
+	 * Now that we have our configuration, we can
+	 * make our last check for disabled platforms.
+	 */
 	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
+		/**
+		 * Modify the DOM to reflect successful instantiation.
+		 */
 		document.documentElement.classList.add('sr')
-		document.body.style.height = '100%'
+		document.addEventListener('DOMContentLoaded', () => {
+			window.setTimeout(() => document.body.style.height = '100%', 0)
+		})
 	}
 
 	this.store = {
