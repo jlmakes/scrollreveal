@@ -17,7 +17,7 @@ export default function initialize () {
 			styles.push(element.styles.transform.generated.initial)
 		}
 
-		element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
+		element.node.setAttribute('style', styles.filter(s => s !== '').join(' '))
 	})
 
 	each(this.store.containers, container => {
@@ -35,7 +35,11 @@ export default function initialize () {
 	 * element and container dimensions, container
 	 * scroll position, and trigger any valid reveals
 	 */
-	this.delegate({ type: 'init' })
+	this.delegate()
 
+	/**
+	 * Wipe any existing `setTimeout` now
+	 * that initialization has completed.
+	 */
 	this.initTimeout = null
 }

@@ -6,7 +6,10 @@ import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
 import { each } from '../../utils/generic'
 
 
-export default function delegate (event = {}, elements = this.store.elements) {
+export default function delegate (
+	event = { type: 'init' },
+	elements = this.store.elements
+) {
 	requestAnimationFrame(() => {
 		const containers = this.store.containers
 
