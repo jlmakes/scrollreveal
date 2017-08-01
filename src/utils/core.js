@@ -117,7 +117,7 @@ export function getScrolled (container) {
 
 
 export function logger (message, ...details) {
-	if (this.debug && console) {
+	if (this.constructor.debug && console) {
 		let report = `ScrollReveal: ${message}`
 		details.forEach(detail => report += `\n  - ${detail}`)
 		console.log(report) // eslint-disable-line no-console

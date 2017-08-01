@@ -75,6 +75,19 @@ describe('ScrollReveal', () => {
 			ScrollReveal({ duration: 5000 })
 			expect(ScrollReveal().defaults.duration).to.equal(5000)
 		})
+
+		it('should have a static `debug` property', () => {
+			expect(ScrollReveal.debug).to.exist
+			expect(ScrollReveal.debug).to.be.a('boolean')
+		})
+
+		it('should only accept boolean values for static `debug` property', () => {
+			ScrollReveal.debug = null
+			expect(ScrollReveal.debug).to.exist
+			expect(ScrollReveal.debug).to.be.a('boolean')
+			ScrollReveal.debug = true
+			expect(ScrollReveal.debug).to.be.true
+		})
 	})
 
 	describe('Instance', () => {
@@ -99,24 +112,6 @@ describe('ScrollReveal', () => {
 		it('should have a `sync` method', () => {
 			expect(sr.sync).to.exist
 			expect(sr.sync).to.be.a('function')
-		})
-
-		it('should have a `debug` property', () => {
-			expect(sr.debug).to.exist
-			expect(sr.debug).to.be.a('boolean')
-		})
-
-		it('should have a `debug` property', () => {
-			expect(sr.debug).to.exist
-			expect(sr.debug).to.be.a('boolean')
-		})
-
-		it('should only accept boolean values for `debug` property', () => {
-			sr.debug = null
-			expect(sr.debug).to.exist
-			expect(sr.debug).to.be.a('boolean')
-			sr.debug = true
-			expect(sr.debug).to.be.true
 		})
 
 		it('should have a `delegate` property', () => {

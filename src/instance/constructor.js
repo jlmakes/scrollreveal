@@ -28,13 +28,6 @@ export default function ScrollReveal (options = {}) {
 		return new ScrollReveal(options)
 	}
 
-	Object.defineProperty(this, 'debug', {
-		get: () => _debug || false,
-		set: value => {
-			if (typeof value === 'boolean') _debug = value
-		},
-	})
-
 	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.')
 		return noop
@@ -100,10 +93,6 @@ export default function ScrollReveal (options = {}) {
 	return _instance ? _instance : _instance = this
 }
 
-<<<<<<< Updated upstream
-ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
-
-=======
 /**
  * Static members are available immediately during instantiation,
  * so debugging and browser support details are handled here.
@@ -123,7 +112,6 @@ ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
  * The primary API is comprised
  * of these instance methods:
  */
->>>>>>> Stashed changes
 ScrollReveal.prototype.clean = clean
 ScrollReveal.prototype.destroy = destroy
 ScrollReveal.prototype.reveal = reveal

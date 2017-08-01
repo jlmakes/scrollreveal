@@ -93,9 +93,10 @@ describe('Core Utilities', () => {
 
 	describe('logger()', () => {
 
+		const mock = { constructor: { debug: true } }
+
 		let spy
 		let stub
-		let mock = { debug: true }
 
 		before('stub console log', () => {
 			spy = sinon.spy()
@@ -117,8 +118,6 @@ describe('Core Utilities', () => {
 			expect(spy).to.have.been.calledWith('ScrollReveal: message\n  - detail one\n  - detail two')
 		})
 
-		after('restore console log', () => {
-			stub.restore()
-		})
+		after('restore console log', () => stub.restore())
 	})
 })
