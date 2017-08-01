@@ -40,10 +40,6 @@ export default function ScrollReveal (options = {}) {
 		return noop
 	}
 
-	Object.defineProperty(this, 'defaults', {
-		get: () => _config,
-	})
-
 	/**
 	 * Here we use `buffer` to validate our configuration, before
 	 * assigning the contents to the private variable `_config`.
@@ -71,6 +67,8 @@ export default function ScrollReveal (options = {}) {
 
 		_config = buffer
 	}
+
+	Object.defineProperty(this, 'defaults', { get: () => _config })
 
 	/**
 	 * Now that we have our configuration, we can
@@ -102,8 +100,30 @@ export default function ScrollReveal (options = {}) {
 	return _instance ? _instance : _instance = this
 }
 
+<<<<<<< Updated upstream
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
+=======
+/**
+ * Static members are available immediately during instantiation,
+ * so debugging and browser support details are handled here.
+ */
+{
+	ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
+
+	Object.defineProperty(ScrollReveal, 'debug', {
+		get: () => _debug || false,
+		set: value => {
+			if (typeof value === 'boolean') _debug = value
+		},
+	})
+}
+
+/**
+ * The primary API is comprised
+ * of these instance methods:
+ */
+>>>>>>> Stashed changes
 ScrollReveal.prototype.clean = clean
 ScrollReveal.prototype.destroy = destroy
 ScrollReveal.prototype.reveal = reveal
