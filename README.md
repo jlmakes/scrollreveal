@@ -34,7 +34,7 @@ ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rig
 [downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
 [downloads-url]: https://npmjs.org/package/scrollreveal
 
-[version-badge]: https://img.shields.io/badge/version-4.0.0_beta-1283c3.svg
+[version-badge]: https://img.shields.io/npm/v/scrollreveal/beta.svg
 
 [size-badge]: https://img.shields.io/badge/min+gzip-5.0KB-blue.svg
 
