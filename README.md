@@ -1,45 +1,37 @@
-# ScrollReveal
 
-Work in progress development branch.
+<h1 align="center">
+  <br>
+  <a href="https://scrollrevealjs.org"><img src="https://jlmak.es/logos/svg/scrollreveal-logomark.svg" alt="ScrollReveal" width="120"></a>
+  <br>
+  ScrollReveal
+  <br>
+</h1>
 
-[![Travis CI][travis-badge]][travis-url]
-[![Coverage][coveralls-badge]][coveralls-url]
-[![Downloads][downloads-badge]][downloads-url]
-![Version][version-badge]
-![Size][size-badge]
-[![License][license-badge]][license-url]
+<h4 align="center">Easily animate elements when they become visible.</h4>
 
-[![Browser Support][saucelabs-matrix]][saucelabs-url]
+<p align="center">
+	<a href="https://travis-ci.org/jlmakes/scrollreveal"><img src="https://img.shields.io/travis/jlmakes/scrollreveal.svg" alt="Travis CI latest build status"></a>
+	<a href="https://coveralls.io/github/jlmakes/scrollreveal?branch=development"><img src="https://img.shields.io/coveralls/jlmakes/scrollreveal/development.svg" alt="Code coverage as an up-to-date percentage"></a>
+	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/dm/scrollreveal.svg" alt="Current number of monthly NPM installations"></a>
+	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/v/scrollreveal/beta.svg" alt="Latest version released on Node Package Manager"></a>
+	<img src="https://img.shields.io/badge/min+gzip-5.0KB-blue.svg" alt="">
+	<a href="https://opensource.org/licenses/GPL-3.0"><img src="https://img.shields.io/badge/license-GPLv3-1283c3.svg" alt="GPLv3 License"></a>
+</p>
 
-## License
+<br>
 
-### Commercial
-If you want to use ScrollReveal to develop commercial sites, themes, projects, and applications, the Commercial license is the appropriate license. With this option, your source code is kept proprietary.
+![screenshot](http://placehold.it/960x540/f3f3f3/f3f3f3)
 
-Purchase a ScrollReveal Commercial License from [scrollrevealjs.org](https://scrollrevealjs.org)
+<p align="center">
+	<a href="https://saucelabs.com/u/scrollreveal">
+		<img src="https://saucelabs.com/browser-matrix/scrollreveal.svg" alt="Browser compatibility matrix">
+	</a>
+</p>
 
-### Open Source
-If you are creating an open source application under a license compatible with the [GNU&nbsp;General&nbsp;Public&nbsp;License&nbsp;3.0][license-url], you may use ScrollReveal under the terms of the GPLv3.
+<br>
 
-***
-
-ScrollReveal © 2014–2017 [Julian Lloyd](https://twitter.com/jlmakes). All rights reserved.
-
-[travis-badge]: https://img.shields.io/travis/jlmakes/scrollreveal/development.svg
-[travis-url]: https://travis-ci.org/jlmakes/scrollreveal
-
-[coveralls-badge]: https://img.shields.io/coveralls/jlmakes/scrollreveal/development.svg
-[coveralls-url]: https://coveralls.io/github/jlmakes/scrollreveal?branch=development
-
-[downloads-badge]: https://img.shields.io/npm/dm/scrollreveal.svg?style=flat
-[downloads-url]: https://npmjs.org/package/scrollreveal
-
-[version-badge]: https://img.shields.io/npm/v/scrollreveal/beta.svg
-
-[size-badge]: https://img.shields.io/badge/min+gzip-5.0KB-blue.svg
-
-[license-badge]: https://img.shields.io/badge/license-GPLv3-1283c3.svg
-[license-url]: https://opensource.org/licenses/GPL-3.0
-
-[saucelabs-matrix]: https://saucelabs.com/browser-matrix/scrollreveal.svg
-[saucelabs-url]: https://saucelabs.com/u/scrollreveal
+<p align="center">
+  ScrollReveal © 2017 Fisssion LLC. All rights reserved.
+	<br>
+	Made with <img src="http://i.imgur.com/oXJmdtz.gif" alt="love"> by <a href="https://twitter.com/jlmakes" title="Julian Lloyd on Twitter">Julian Lloyd</a>
+</p>
