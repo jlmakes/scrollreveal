@@ -3,22 +3,44 @@ import { each } from '../../utils/generic'
 
 
 export default function sequence (element) {
-	const sequence = this.store.sequences[element.sequence.id]
+	const seq = this.store.sequences[element.sequence.id]
+	const i = element.sequence.index
 
-	if (sequence) {
-		const visible = modelSequenceByProp.call(this, sequence, 'visible')
-		const revealed = modelSequenceByProp.call(this, sequence, 'revealed')
-
-		// console.clear()
-		// console.log(visible)
-		// console.log(revealed)
+	if (seq) {
+		const visible = modelSequenceByProp.call(this, seq, 'visible')
+		const revealed = modelSequenceByProp.call(this, seq, 'revealed')
 
 		/**
-		 * Until more complex logic is implemented...
+		 * First run is a special case, and
+		 * kicks off two recursive calls.
 		 */
-		animate.call(this, element)
-	}
+		if (!revealed.body.length && i === [...visible.body].shift()) {
+			cue.call(this, seq, i, -1)
+			cue.call(this, seq, i, 1)
+		} else if (seq.headroom && i === [...revealed.head].pop()) {
+			cue.call(this, seq, i, -1)
+		} else if (seq.footroom && i === [...revealed.foot].shift()) {
+			cue.call(this, seq, i, 1)
+		} else return
 
+		animate.call(this, element, true)
+	}
+}
+
+
+function cue (seq, last, tilt) {
+	const nextId = seq.members[last + tilt]
+	const nextSpace = ['headroom', null, 'footroom'][1 + tilt]
+	const nextElement = this.store.elements[nextId]
+
+	seq[nextSpace] = false
+
+	setTimeout(() => {
+		seq[nextSpace] = true
+		if (nextElement) {
+			sequence.call(this, nextElement)
+		}
+	}, seq.interval)
 }
 
 

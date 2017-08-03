@@ -54,7 +54,7 @@ export default function reveal (target, options, interval, sync) {
 				id: nextUniqueId(),
 				members: [],
 				headroom: false,
-				legroom: false,
+				footroom: false,
 				interval,
 			}
 		} else {
