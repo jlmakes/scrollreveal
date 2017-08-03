@@ -3,6 +3,7 @@
   <br>
   <a href="https://scrollrevealjs.org"><img src="https://jlmak.es/logos/svg/scrollreveal-logomark.svg" alt="ScrollReveal" width="120"></a>
   <br>
+	<br>
   ScrollReveal
   <br>
 </h1>
@@ -14,7 +15,7 @@
 	<a href="https://coveralls.io/github/jlmakes/scrollreveal?branch=development"><img src="https://img.shields.io/coveralls/jlmakes/scrollreveal/development.svg" alt="Code coverage as an up-to-date percentage"></a>
 	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/dm/scrollreveal.svg" alt="Current number of monthly NPM installations"></a>
 	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/v/scrollreveal/beta.svg" alt="Latest version released on Node Package Manager"></a>
-	<img src="https://img.shields.io/badge/min+gzip-5.0KB-blue.svg" alt="">
+	<img src="https://img.shields.io/badge/min+gzip-5.05KB-blue.svg" alt="">
 	<a href="https://opensource.org/licenses/GPL-3.0"><img src="https://img.shields.io/badge/license-GPLv3-1283c3.svg" alt="GPLv3 License"></a>
 </p>
 
