@@ -53,8 +53,8 @@ export default function reveal (target, options, interval, sync) {
 			sequence = {
 				id: nextUniqueId(),
 				members: [],
-				headroom: false,
-				footroom: false,
+				headblocked: true,
+				footblocked: true,
 				interval,
 			}
 		} else {
