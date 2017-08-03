@@ -1,19 +1,20 @@
 import clean from '../methods/clean'
 
 
-export default function animate (
-	element,
-	shouldReveal = element.visible && !element.revealed,
-	shouldReset = !element.visible && element.revealed && element.config.reset
-) {
+export default function animate (element, charge) {
 	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
 
-	if (shouldReveal) {
-		triggerReveal.call(this, element, delayed)
-	} else if (shouldReset) {
-		triggerReset.call(this, element)
+	const shouldReveal = element.visible && !element.revealed
+	const shouldReset = !element.visible && element.revealed && element.config.reset
+
+	if (shouldReveal || charge === +1) {
+		return triggerReveal.call(this, element, delayed)
+	}
+
+	if (shouldReset || charge === -1) {
+		return triggerReset.call(this, element)
 	}
 }
 
