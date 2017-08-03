@@ -17,6 +17,8 @@ export default function sequence (element) {
 			cue.call(this, seq, i, -1)
 		} else if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
 			cue.call(this, seq, i, +1)
+		} else if (!element.visible && element.revealed && element.config.reset) {
+			return animate.call(this, element, undefined, true)
 		} else return
 
 		animate.call(this, element, true)
