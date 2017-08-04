@@ -9,11 +9,11 @@ export default function animate (element, charge) {
 	const shouldReveal = element.visible && !element.revealed
 	const shouldReset = !element.visible && element.revealed && element.config.reset
 
-	if (shouldReveal || charge === +1) {
+	if (shouldReveal && !charge || charge === +1) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset || charge === -1) {
+	if (shouldReset && !charge || charge === -1) {
 		return triggerReset.call(this, element)
 	}
 }
