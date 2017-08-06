@@ -10,9 +10,15 @@ export default function sequence (element) {
 		const visible = modelSequenceByProp.call(this, seq, 'visible')
 		const revealed = modelSequenceByProp.call(this, seq, 'revealed')
 
-		if (!revealed.body.length && i === [...visible.body].shift()) {
-			cue.call(this, seq, i, -1)
-			cue.call(this, seq, i, +1)
+		if (!revealed.body.length) {
+			const nextId = seq.members[visible.body[0]]
+			const nextElement = this.store.elements[nextId]
+
+			cue.call(this, seq, visible.body[0], -1)
+			cue.call(this, seq, visible.body[0], +1)
+
+			animate.call(this, nextElement, +1)
+
 		} else if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
 			cue.call(this, seq, i, -1)
 		} else if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
