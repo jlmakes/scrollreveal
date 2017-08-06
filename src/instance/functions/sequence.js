@@ -10,6 +10,8 @@ export default function sequence (element) {
 		const visible = modelSequenceByProp.call(this, seq, 'visible')
 		const revealed = modelSequenceByProp.call(this, seq, 'revealed')
 
+		seq.models = { visible, revealed }
+
 		if (!revealed.body.length) {
 			const nextId = seq.members[visible.body[0]]
 			const nextElement = this.store.elements[nextId]
@@ -24,11 +26,13 @@ export default function sequence (element) {
 		} else if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
 			cue.call(this, seq, i, +1)
 		} else if (!element.visible && element.revealed && element.config.reset) {
+			seq.lastReset = i
 			return animate.call(this, element, -1)
 		} else {
 			return
 		}
 
+		seq.lastReveal = i
 		animate.call(this, element, +1)
 	}
 }
