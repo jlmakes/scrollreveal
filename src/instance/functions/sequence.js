@@ -12,6 +12,14 @@ export default function sequence (element) {
 
 		seq.models = { visible, revealed }
 
+		/**
+		 * If the sequence has no revealed members,
+		 * then we reveal the first visible element
+		 * within that sequence.
+		 *
+		 * The sequence then cues a recursive call
+		 * in both directions.
+		 */
 		if (!revealed.body.length) {
 			const nextId = seq.members[visible.body[0]]
 			const nextElement = this.store.elements[nextId]
@@ -19,21 +27,38 @@ export default function sequence (element) {
 			cue.call(this, seq, visible.body[0], -1)
 			cue.call(this, seq, visible.body[0], +1)
 
-			animate.call(this, nextElement, +1)
-
-		} else if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
-			cue.call(this, seq, i, -1)
-		} else if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
-			cue.call(this, seq, i, +1)
-		} else if (!element.visible && element.revealed && element.config.reset) {
-			seq.lastReset = i
-			return animate.call(this, element, -1)
-		} else {
-			return
+			seq.lastReveal = visible.body[0]
+			return animate.call(this, nextElement, +1)
 		}
 
-		seq.lastReveal = i
-		animate.call(this, element, +1)
+		/**
+		 * Assuming we have something visible on screen
+		 * already, and we need to evaluate the element
+		 * that was passed in…
+		 *
+		 * We first check if the element should reset.
+		 */
+		if (!element.visible && element.revealed && element.config.reset) {
+			seq.lastReset = i
+			return animate.call(this, element, -1)
+		}
+
+		/**
+		 * If our element isn’t resetting, we check the
+		 * element sequence index index against the head,
+		 * and then foot of the sequence.
+		 */
+		if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
+			cue.call(this, seq, i, -1)
+			seq.lastReveal = i
+			return animate.call(this, element, +1)
+		}
+
+		if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
+			cue.call(this, seq, i, +1)
+			seq.lastReveal = i
+			return animate.call(this, element, +1)
+		}
 	}
 }
 
