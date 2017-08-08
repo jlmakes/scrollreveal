@@ -45,8 +45,8 @@ export default function sequence (element) {
 
 		/**
 		 * If our element isn’t resetting, we check the
-		 * element sequence index index against the head,
-		 * and then foot of the sequence.
+		 * element sequence index against the head, and
+		 * then the foot of the sequence.
 		 */
 		if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
 			cue.call(this, seq, i, -1)
