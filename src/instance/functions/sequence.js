@@ -7,8 +7,8 @@ export default function sequence (element) {
 	const i = element.sequence.index
 
 	if (seq) {
-		const visible = modelSequenceByProp.call(this, seq, 'visible')
-		const revealed = modelSequenceByProp.call(this, seq, 'revealed')
+		const visible = new SequenceModel('visible', seq, this.store)
+		const revealed = new SequenceModel('revealed', seq, this.store)
 
 		seq.models = { visible, revealed }
 
@@ -98,6 +98,32 @@ export function Sequence (interval) {
 }
 
 
+export function SequenceModel (prop, sequence, store) {
+
+	this.head = [] // Elements before the body with a falsey prop.
+	this.body = [] // Elements with a truthy prop.
+	this.foot = [] // Elements after the body with a falsey prop.
+
+	each(sequence.members, (id, index) => {
+		const element = store.elements[id]
+		if (element[prop]) {
+			this.body.push(index)
+		}
+	})
+
+	if (this.body.length) {
+		each(sequence.members, (id, index) => {
+			const element = store.elements[id]
+			if (!element[prop]) {
+				index < this.body[0]
+					? this.head.push(index)
+					: this.foot.push(index)
+			}
+		})
+	}
+}
+
+
 function cue (seq, i, charge) {
 	const blocked = ['headblocked', null, 'footblocked'][1 + charge]
 	const nextId = seq.members[i + charge]
@@ -111,33 +137,4 @@ function cue (seq, i, charge) {
 			sequence.call(this, nextElement)
 		}
 	}, seq.interval)
-}
-
-
-function modelSequenceByProp (sequence, prop) {
-	const model = {
-		head: [], // Elements before the body with a falsey prop.
-		body: [], // Elements with a truthy prop.
-		foot: [], // Elements after the body with a falsey prop.
-	}
-
-	each(sequence.members, (id, index) => {
-		const element = this.store.elements[id]
-		if (element[prop]) {
-			model.body.push(index)
-		}
-	})
-
-	if (model.body.length) {
-		each(sequence.members, (id, index) => {
-			const element = this.store.elements[id]
-			if (!element[prop]) {
-				index < model.body[0]
-					? model.head.push(index)
-					: model.foot.push(index)
-			}
-		})
-	}
-
-	return model
 }
