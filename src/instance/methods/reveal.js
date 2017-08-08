@@ -1,5 +1,6 @@
 import style from '../functions/style'
 import initialize from '../functions/initialize'
+import { Sequence } from '../functions/sequence'
 
 import { getNode, getNodes, logger } from '../../utils/core'
 import { deepAssign, each, nextUniqueId } from '../../utils/generic'
@@ -7,6 +8,8 @@ import { isMobile } from '../../utils/browser'
 
 
 export default function reveal (target, options, interval, sync) {
+
+	const containers = this.store.containers
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
@@ -21,7 +24,15 @@ export default function reveal (target, options, interval, sync) {
 		options = options || {}
 	}
 
-	const containers = this.store.containers
+	/**
+	 * Now let’s attempt to construct a new sequence.
+	 */
+	let sequence
+	try {
+		sequence = new Sequence(interval) || null
+	} catch (e) {
+		return logger.call(this, 'Reveal failed.', e.message)
+	}
 
 	let config
 	let container
@@ -45,21 +56,6 @@ export default function reveal (target, options, interval, sync) {
 	 */
 	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
 		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
-	}
-
-	let sequence
-	if (interval) {
-		if (interval >= 16) {
-			sequence = {
-				id: nextUniqueId(),
-				members: [],
-				headblocked: true,
-				footblocked: true,
-				interval,
-			}
-		} else {
-			return logger.call(this, 'Reveal failed.', 'Sequence interval must be at least 16ms.')
-		}
 	}
 
 	let containerId
