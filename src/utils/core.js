@@ -117,9 +117,19 @@ export function getScrolled (container) {
 
 
 export function logger (message, ...details) {
+	const css = {
+		heading: `
+			color: #ea654b;
+			background: rgba(234, 101, 75, 0.1);
+		`,
+		body: `
+			color: #efeada;
+			line-height: 1.4em;
+		`,
+	}
 	if (this.constructor.debug && console) {
-		let report = `ScrollReveal: ${message}`
-		details.forEach(detail => report += `\n  - ${detail}`)
-		console.log(report) // eslint-disable-line no-console
+		let report = `%cScrollReveal: ${message}`
+		details.forEach(detail => report += `\n × %c${detail}`)
+		console.log(report, css.heading, css.body) // eslint-disable-line no-console
 	}
 }
