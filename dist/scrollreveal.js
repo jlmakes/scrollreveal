@@ -246,14 +246,17 @@ function getNode (target, container) {
 function getNodes (target, container) {
 	if ( container === void 0 ) container = document;
 
+	if (target instanceof Array) {
+		return target
+	}
 	if (isNode(target)) {
 		return [target]
 	}
 	if (isNodeList(target)) {
 		return Array.prototype.slice.call(target)
 	}
-	var query;
 	if (typeof target === 'string') {
+		var query;
 		try {
 			query = container.querySelectorAll(target);
 		} catch (e) {
@@ -262,8 +265,8 @@ function getNodes (target, container) {
 		if (query.length === 0) {
 			throw new Error(("The selector \"" + target + "\" matches 0 elements."))
 		}
+		return Array.prototype.slice.call(query)
 	}
-	return Array.prototype.slice.call(query)
 }
 
 
@@ -283,10 +286,10 @@ function logger (message) {
 	var details = [], len = arguments.length - 1;
 	while ( len-- > 0 ) details[ len ] = arguments[ len + 1 ];
 
-	if (this.debug && console) {
-		var report = "ScrollReveal: " + message;
-		details.forEach(function (detail) { return report += "\n  - " + detail; });
-		console.log(report); // eslint-disable-line no-console
+	if (this.constructor.debug && console) {
+		var report = "%cScrollReveal: " + message;
+		details.forEach(function (detail) { return report += "\n — " + detail; });
+		console.log(report, 'color: #ea654b;'); // eslint-disable-line no-console
 	}
 }
 
@@ -388,14 +391,14 @@ function clean (target) {
 			}
 		});
 	} catch (e) {
-		return logger.call(this, 'Clean failed.', e.message)
+		return logger.call(this, 'Clean failed.', e.stack || e.message)
 	}
 
 	if (dirty) {
 		try {
 			rinse.call(this);
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', 'Rinse failed.', e.message)
+			return logger.call(this, 'Clean failed.', 'Rinse failed.', e.stack || e.message)
 		}
 	}
 }
@@ -861,7 +864,7 @@ function initialize () {
 			styles.push(element.styles.transform.generated.initial);
 		}
 
-		element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
+		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
 	});
 
 	each(this.store.containers, function (container) {
@@ -881,225 +884,26 @@ function initialize () {
 	 */
 	this.delegate();
 
+	/**
+	 * Wipe any existing `setTimeout` now
+	 * that initialization has completed.
+	 */
 	this.initTimeout = null;
 }
 
-function reveal (target, options, interval, sync) {
-	var this$1 = this;
-
-
-	/**
-	 * The reveal method has an optional 2nd parameter,
-	 * so here we just shuffle things around to accept
-	 * the interval being passed as the 2nd argument.
-	 */
-	if (typeof options === 'number') {
-		interval = parseInt(options);
-		options = {};
-	} else {
-		interval = parseInt(interval);
-		options = options || {};
-	}
-
-	var containers = this.store.containers;
-
-	var config;
-	var container;
-	var nodes;
-	try {
-		config = deepAssign({}, this.defaults, options);
-		container = getNode(config.container);
-		if (!container) {
-			throw new Error('Invalid container.')
-		}
-		nodes = getNodes(target, container);
-		if (!nodes) {
-			throw new Error('Nothing to animate.')
-		}
-	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.message)
-	}
-
-	/**
-	 * Verify our platform matches our platform configuration.
-	 */
-	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
-	}
-
-	/**
-	 * Sequence intervals must be at least 16ms (60fps).
-	 */
-	var sequence;
-	if (interval) {
-		if (interval >= 16) {
-			var sequenceId = nextUniqueId();
-			sequence = {
-				elementIds: [],
-				nose: { blocked: false, index: null, pointer: null },
-				tail: { blocked: false, index: null, pointer: null },
-				id: sequenceId,
-				interval: Math.abs(interval),
-			};
-		} else {
-			return logger.call(this, 'Reveal failed.', 'Sequence interval must be at least 16ms.')
-		}
-	}
-
-	var containerId;
-	each(containers, function (storedContainer) {
-		if (!containerId && storedContainer.node === container) {
-			containerId = storedContainer.id;
-		}
-	});
-
-	if (isNaN(containerId)) {
-		containerId = nextUniqueId();
-	}
-
-	try {
-		var elements = nodes.map(function (node) {
-			var element = {};
-			var existingId = node.getAttribute('data-sr-id');
-
-			if (existingId) {
-				deepAssign(element, this$1.store.elements[existingId]);
-
-				/**
-				 * In order to prevent previously generated styles
-				 * from throwing off the new styles, the style tag
-				 * has to be reverted to it's pre-reveal state.
-				 */
-				element.node.setAttribute('style', element.styles.inline);
-
-			} else {
-				element.id = nextUniqueId();
-				element.node = node;
-				element.seen = false;
-				element.revealed = false;
-				element.visible = false;
-			}
-
-			element.config = config;
-			element.containerId = containerId;
-			element.styles = style(element);
-
-			if (sequence) {
-				element.sequence = {
-					id: sequence.id,
-					index: sequence.elementIds.length,
-				};
-				sequence.elementIds.push(element.id);
-			}
-
-			return element
-		});
-
-		/**
-		* Modifying the DOM via setAttribute needs to be handled
-		* separately from reading computed styles in the map above
-		* for the browser to batch DOM changes (limiting reflows)
-		*/
-		each(elements, function (element) {
-			this$1.store.elements[element.id] = element;
-			element.node.setAttribute('data-sr-id', element.id);
-		});
-
-	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.message)
-	}
-
-	containers[containerId] = containers[containerId] || {
-		id: containerId,
-		node: container,
-	};
-
-	if (sequence) {
-		this.store.sequences[sequence.id] = sequence;
-	}
-
-	/**
-	* If reveal wasn't invoked by sync, we want to
-	* make sure to add this call to the history.
-	*/
-	if (!sync) {
-		this.store.history.push({ target: target, options: options, interval: interval });
-
-		/**
-		* Push initialization to the event queue, giving
-		* multiple reveal calls time to be interpretted.
-		*/
-		if (this.initTimeout) {
-			window.clearTimeout(this.initTimeout);
-		}
-		this.initTimeout = window.setTimeout(initialize.bind(this), 0);
-	}
-}
-
-/**
- * Re-runs the reveal method for each record stored in history,
- * for capturing new content asynchronously loaded into the DOM.
- */
-function sync () {
-	var this$1 = this;
-
-	each(this.store.history, function (record) {
-		reveal.call(this$1, record.target, record.options, record.interval, true);
-	});
-
-	initialize.call(this);
-}
-
-function animate (element, sequencing) {
-
-	var sequence = (element.sequence) ? this.store.sequences[element.sequence.id] : false;
+function animate (element, charge) {
 	var delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen;
 
-	element.visible = isElementVisible.call(this, element);
+	var shouldReveal = element.visible && !element.revealed;
+	var shouldReset = !element.visible && element.revealed && element.config.reset;
 
-	if (sequencing) {
-		if (element.sequence.index === sequence.nose.pointer - 1 && sequence.nose.pointer > sequence.nose.index) {
-			sequence.nose.pointer--;
-			queueSequenceNose.call(this, sequence);
-		} else if (element.sequence.index === sequence.tail.pointer + 1 && sequence.tail.pointer < sequence.tail.index) {
-			sequence.tail.pointer++;
-			queueSequenceTail.call(this, sequence);
-		} else {
-			return
-		}
+	if (shouldReveal && !charge || charge === +1) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (element.visible && !element.revealed) {
-		if (sequence) {
-			updateSequenceIndexes.call(this, sequence);
-			if (sequence.nose.pointer === null && sequence.tail.pointer === null) {
-				sequence.nose.pointer = sequence.tail.pointer = element.sequence.index;
-				queueSequenceNose.call(this, sequence);
-				queueSequenceTail.call(this, sequence);
-			} else if (element.sequence.index === sequence.nose.pointer - 1 && !sequence.nose.blocked) {
-				sequence.nose.pointer--;
-				queueSequenceNose.call(this, sequence);
-			} else if (element.sequence.index === sequence.tail.pointer + 1 && !sequence.tail.blocked) {
-				sequence.tail.pointer++;
-				queueSequenceTail.call(this, sequence);
-			} else {
-				return
-			}
-		}
-		return triggerReveal.call(this, element, delayed)
-	}
-
-	if (!element.visible && element.revealed && element.config.reset) {
-		if (sequence) {
-			updateSequenceIndexes.call(this, sequence);
-			if (sequence.nose.index !== Infinity && sequence.tail.index !== -Infinity) {
-				sequence.nose.pointer = Math.max(sequence.nose.pointer, sequence.nose.index);
-				sequence.tail.pointer = Math.min(sequence.tail.pointer, sequence.tail.index);
-			}
-		}
+	if (shouldReset && !charge || charge === -1) {
 		return triggerReset.call(this, element)
 	}
 }
@@ -1166,51 +970,323 @@ function registerCallbacks (element, isDelayed) {
 	};
 }
 
+function sequence (element) {
+	var seq = this.store.sequences[element.sequence.id];
+	var i = element.sequence.index;
 
-function updateSequenceIndexes (sequence) {
+	if (seq) {
+		var visible = new SequenceModel('visible', seq, this.store);
+		var revealed = new SequenceModel('revealed', seq, this.store);
+
+		seq.models = { visible: visible, revealed: revealed };
+
+		/**
+		 * If the sequence has no revealed members,
+		 * then we reveal the first visible element
+		 * within that sequence.
+		 *
+		 * The sequence then cues a recursive call
+		 * in both directions.
+		 */
+		if (!revealed.body.length) {
+			var nextId = seq.members[visible.body[0]];
+			var nextElement = this.store.elements[nextId];
+
+			cue.call(this, seq, visible.body[0], -1);
+			cue.call(this, seq, visible.body[0], +1);
+
+			seq.lastReveal = visible.body[0];
+			return animate.call(this, nextElement, +1)
+		}
+
+		/**
+		 * Assuming we have something visible on screen
+		 * already, and we need to evaluate the element
+		 * that was passed in…
+		 *
+		 * We first check if the element should reset.
+		 */
+		if (!element.visible && element.revealed && element.config.reset) {
+			seq.lastReset = i;
+			return animate.call(this, element, -1)
+		}
+
+		/**
+		 * If our element isn’t resetting, we check the
+		 * element sequence index against the head, and
+		 * then the foot of the sequence.
+		 */
+		if (!seq.headblocked && i === [].concat( revealed.head ).pop() && i >= [].concat( visible.body ).shift()) {
+			cue.call(this, seq, i, -1);
+			seq.lastReveal = i;
+			return animate.call(this, element, +1)
+		}
+
+		if (!seq.footblocked && i === [].concat( revealed.foot ).shift() && i <= [].concat( visible.body ).pop()) {
+			cue.call(this, seq, i, +1);
+			seq.lastReveal = i;
+			return animate.call(this, element, +1)
+		}
+	}
+}
+
+
+function Sequence (interval) {
+	if (typeof interval === 'number') {
+
+		if (interval >= 16) {
+			/**
+			 * Instance details.
+			 */
+			this.id = nextUniqueId();
+			this.interval = interval;
+			this.members = [];
+
+			/**
+			 * Flow control for sequencing animations.
+			 */
+			this.headblocked = true;
+			this.footblocked = true;
+
+			/**
+			 * The last successful member indexes,
+			 * and a container for DOM models.
+			 */
+			this.lastReveal = null;
+			this.lastReset = null;
+			this.models = {};
+
+		} else {
+			throw new RangeError('Sequence interval must be at least 16ms.')
+		}
+
+	} else {
+		return null
+	}
+}
+
+
+function SequenceModel (prop, sequence, store) {
 	var this$1 = this;
 
-	var min = Infinity;
-	var max = -Infinity;
-	each(sequence.elementIds, function (id) {
-		var element = this$1.store.elements[id];
-		if (element && element.visible) {
-			min = Math.min(min, element.sequence.index);
-			max = Math.max(max, element.sequence.index);
+
+	this.head = []; // Elements before the body with a falsey prop.
+	this.body = []; // Elements with a truthy prop.
+	this.foot = []; // Elements after the body with a falsey prop.
+
+	each(sequence.members, function (id, index) {
+		var element = store.elements[id];
+		if (element[prop]) {
+			this$1.body.push(index);
 		}
 	});
-	sequence.nose.index = min;
-	sequence.tail.index = max;
-}
 
-
-function queueSequenceNose (sequence) {
-	var this$1 = this;
-
-	var nextId = sequence.elementIds[sequence.nose.pointer - 1];
-	var nextElement = this.store.elements[nextId];
-	if (nextElement) {
-		sequence.nose.blocked = true;
-		window.setTimeout(function () {
-			sequence.nose.blocked = false;
-			animate.call(this$1, nextElement, true);
-		}, sequence.interval);
+	if (this.body.length) {
+		each(sequence.members, function (id, index) {
+			var element = store.elements[id];
+			if (!element[prop]) {
+				index < this$1.body[0]
+					? this$1.head.push(index)
+					: this$1.foot.push(index);
+			}
+		});
 	}
 }
 
 
-function queueSequenceTail (sequence) {
+function cue (seq, i, charge) {
 	var this$1 = this;
 
-	var nextId = sequence.elementIds[sequence.tail.pointer + 1];
+	var blocked = ['headblocked', null, 'footblocked'][1 + charge];
+	var nextId = seq.members[i + charge];
 	var nextElement = this.store.elements[nextId];
-	if (nextElement) {
-		sequence.tail.blocked = true;
-		window.setTimeout(function () {
-			sequence.tail.blocked = false;
-			animate.call(this$1, nextElement, true);
-		}, sequence.interval);
+
+	seq[blocked] = true;
+
+	setTimeout(function () {
+		seq[blocked] = false;
+		if (nextElement) {
+			sequence.call(this$1, nextElement);
+		}
+	}, seq.interval);
+}
+
+function reveal (target, options, interval, sync) {
+	var this$1 = this;
+
+
+	var containers = this.store.containers;
+
+	/**
+	 * The reveal method has an optional 2nd parameter,
+	 * so here we just shuffle things around to accept
+	 * the interval being passed as the 2nd argument.
+	 */
+	if (typeof options === 'number') {
+		interval = parseInt(options);
+		options = {};
+	} else {
+		interval = parseInt(interval);
+		options = options || {};
 	}
+
+	/**
+	 * To start things off, build element collection,
+	 * and attempt to instantiate a new sequence.
+	 */
+	var nodes;
+	var sequence$$1;
+	try {
+		nodes = getNodes(target);
+		sequence$$1 = interval ? new Sequence(interval) : null;
+	} catch (e) {
+		return logger.call(this, 'Reveal failed.', e.stack || e.message)
+	}
+
+	/**
+	 * Begin element set-up...
+	 */
+	var config;
+	var container;
+	var containerId;
+	try {
+		var elements = nodes.reduce(function (buffer, node) {
+			var element = {};
+			var existingId = node.getAttribute('data-sr-id');
+
+			if (existingId) {
+				deepAssign(element, this$1.store.elements[existingId]);
+
+				/**
+				 * In order to prevent previously generated styles
+				 * from throwing off the new styles, the style tag
+				 * has to be reverted to it's pre-reveal state.
+				 */
+				element.node.setAttribute('style', element.styles.inline);
+
+			} else {
+				element.id = nextUniqueId();
+				element.node = node;
+				element.seen = false;
+				element.revealed = false;
+				element.visible = false;
+			}
+
+			config = deepAssign({}, element.config || this$1.defaults, options);
+
+			/**
+			* Verify the current device passes our platform configuration,
+			* and cache the result for the rest of the loop.
+			*/
+			var disabled;
+			{
+				if (disabled == null) {
+					disabled = !config.mobile && isMobile() || !config.desktop && !isMobile();
+				}
+				if (disabled) {
+					if (existingId) {
+						clean.call(this$1, element);
+					}
+					return buffer
+				}
+			}
+
+			container = getNode(config.container);
+			{
+				if (!container) {
+					throw new Error('Invalid container.')
+				}
+				if (!container.contains(node)) {
+					return buffer // skip elements found outside the container
+				}
+				if (containerId == null) {
+					each(containers, function (storedContainer) {
+						if (!containerId && storedContainer.node === container) {
+							containerId = storedContainer.id;
+						}
+					});
+					if (isNaN(containerId)) {
+						containerId = nextUniqueId();
+					}
+				}
+			}
+
+			element.config = config;
+			element.containerId = containerId;
+			element.styles = style(element);
+
+			if (sequence$$1) {
+				element.sequence = {
+					id: sequence$$1.id,
+					index: sequence$$1.members.length,
+				};
+				sequence$$1.members.push(element.id);
+			}
+
+			buffer.push(element);
+			return buffer
+		}, []);
+
+		/**
+		* Modifying the DOM via setAttribute needs to be handled
+		* separately from reading computed styles in the map above
+		* for the browser to batch DOM changes (limiting reflows)
+		*/
+		each(elements, function (element) {
+			this$1.store.elements[element.id] = element;
+			element.node.setAttribute('data-sr-id', element.id);
+		});
+
+	} catch (e) {
+		return logger.call(this, 'Reveal failed.', e.stack || e.message)
+	}
+
+	/**
+	 * Now that element set-up is complete...
+	 *
+	 * Let’s commit the current container and any
+	 * sequence data we have to the store.
+	 */
+	{
+		containers[containerId] = containers[containerId] || {
+			id: containerId,
+			node: container,
+		};
+		if (sequence$$1) {
+			this.store.sequences[sequence$$1.id] = sequence$$1;
+		}
+	}
+
+	/**
+	* If reveal wasn't invoked by sync, we want to
+	* make sure to add this call to the history.
+	*/
+	if (!sync) {
+		this.store.history.push({ target: target, options: options, interval: interval });
+
+		/**
+		* Push initialization to the event queue, giving
+		* multiple reveal calls time to be interpretted.
+		*/
+		if (this.initTimeout) {
+			window.clearTimeout(this.initTimeout);
+		}
+		this.initTimeout = window.setTimeout(initialize.bind(this), 0);
+	}
+}
+
+/**
+ * Re-runs the reveal method for each record stored in history,
+ * for capturing new content asynchronously loaded into the DOM.
+ */
+function sync () {
+	var this$1 = this;
+
+	each(this.store.history, function (record) {
+		reveal.call(this$1, record.target, record.options, record.interval, true);
+	});
+
+	initialize.call(this);
 }
 
 var polyfill = (function () {
@@ -1233,38 +1309,35 @@ var requestAnimationFrame = window.requestAnimationFrame
 	|| window.mozRequestAnimationFrame
 	|| polyfill;
 
-function delegate (event) {
+function delegate (
+	event,
+	elements
+) {
 	var this$1 = this;
-	if ( event === void 0 ) event = {};
+	if ( event === void 0 ) event = { type: 'init' };
+	if ( elements === void 0 ) elements = this.store.elements;
 
 	requestAnimationFrame(function () {
 		var containers = this$1.store.containers;
-		var elements = this$1.store.elements;
 
-		switch (event.type) {
-
-			case 'scroll':
-				each(containers, function (container) { return container.scroll = getScrolled.call(this$1, container); });
-				each(elements, function (element) { return animate.call(this$1, element); });
-				break
-
-			case 'resize':
-			default:
-				each(containers, function (container) {
-					container.geometry = getGeometry.call(this$1, container, /* isContainer: */ true);
-					container.scroll = getScrolled.call(this$1, container);
-				});
-				each(elements, function (element) {
-					element.geometry = getGeometry.call(this$1, element);
-					animate.call(this$1, element);
-				});
+		if (event.type === 'init' || event.type === 'resize') {
+			each(containers, function (container) { return container.geometry = getGeometry.call(this$1, container, true); });
+			each(elements, function (element) { return element.geometry = getGeometry.call(this$1, element); });
 		}
+
+		each(containers, function (container) { return container.scroll = getScrolled.call(this$1, container); });
+		each(elements, function (element) { return element.visible = isElementVisible.call(this$1, element); });
+
+		each(elements, function (element) { return element.sequence
+			? sequence.call(this$1, element)
+			: animate.call(this$1, element); }
+		);
 
 		this$1.pristine = false;
 	});
 }
 
-var version = "4.0.0-beta.9";
+var version = "4.0.0-beta.10";
 
 var _config;
 var _debug;
@@ -1282,47 +1355,53 @@ function ScrollReveal (options) {
 		return new ScrollReveal(options)
 	}
 
-	Object.defineProperty(this, 'debug', {
-		get: function () { return _debug || false; },
-		set: function (value) {
-			if (typeof value === 'boolean') { _debug = value; }
-		},
-	});
-
 	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.');
 		return noop
 	}
 
-	Object.defineProperty(this, 'defaults', {
-		get: function () { return _config; },
-	});
-
+	/**
+	 * Here we use `buffer` to validate our configuration, before
+	 * assigning the contents to the private variable `_config`.
+	 */
 	var buffer;
-	try {
-		buffer = _config
-			? deepAssign({}, _config, options)
-			: deepAssign({}, defaults, options);
-	} catch (e) {
-		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
-		return noop
-	}
-
-	try {
-		var container = getNode(buffer.container);
-		if (!container) {
-			throw new Error('Invalid container.')
+	{
+		try {
+			buffer = _config
+				? deepAssign({}, _config, options)
+				: deepAssign({}, defaults, options);
+		} catch (e) {
+			logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
+			return noop
 		}
-	} catch (e) {
-		logger.call(this, 'Instantiation failed.', e.message);
-		return noop
+
+		try {
+			var container = getNode(buffer.container);
+			if (!container) {
+				throw new Error('Invalid container.')
+			}
+		} catch (e) {
+			logger.call(this, 'Instantiation failed.', e.message);
+			return noop
+		}
+
+		_config = buffer;
 	}
 
-	_config = buffer;
+	Object.defineProperty(this, 'defaults', { get: function () { return _config; } });
 
+	/**
+	 * Now that we have our configuration, we can
+	 * make our last check for disabled platforms.
+	 */
 	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
+		/**
+		 * Modify the DOM to reflect successful instantiation.
+		 */
 		document.documentElement.classList.add('sr');
-		document.body.style.height = '100%';
+		document.addEventListener('DOMContentLoaded', function () {
+			window.setTimeout(function () { return document.body.style.height = '100%'; }, 0);
+		});
 	}
 
 	this.store = {
@@ -1341,8 +1420,25 @@ function ScrollReveal (options) {
 	return _instance ? _instance : _instance = this
 }
 
-ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
+/**
+ * Static members are available immediately during instantiation,
+ * so debugging and browser support details are handled here.
+ */
+{
+	ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
+	Object.defineProperty(ScrollReveal, 'debug', {
+		get: function () { return _debug || false; },
+		set: function (value) {
+			if (typeof value === 'boolean') { _debug = value; }
+		},
+	});
+}
+
+/**
+ * The primary API is comprised
+ * of these instance methods:
+ */
 ScrollReveal.prototype.clean = clean;
 ScrollReveal.prototype.destroy = destroy;
 ScrollReveal.prototype.reveal = reveal;
