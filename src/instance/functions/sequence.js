@@ -24,11 +24,15 @@ export default function sequence (element) {
 			const nextId = seq.members[visible.body[0]]
 			const nextElement = this.store.elements[nextId]
 
-			cue.call(this, seq, visible.body[0], -1)
-			cue.call(this, seq, visible.body[0], +1)
+			if (nextElement) {
+				cue.call(this, seq, visible.body[0], -1)
+				cue.call(this, seq, visible.body[0], +1)
 
-			seq.lastReveal = visible.body[0]
-			return animate.call(this, nextElement, +1)
+				seq.lastReveal = visible.body[0]
+				return animate.call(this, nextElement, +1)
+			} else {
+				return animate.call(this, element)
+			}
 		}
 
 		/**
