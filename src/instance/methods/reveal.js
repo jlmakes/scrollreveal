@@ -1,3 +1,4 @@
+import clean from '../methods/clean'
 import style from '../functions/style'
 import initialize from '../functions/initialize'
 import { Sequence } from '../functions/sequence'
@@ -5,7 +6,6 @@ import { Sequence } from '../functions/sequence'
 import { getNode, getNodes, logger } from '../../utils/core'
 import { deepAssign, each, nextUniqueId } from '../../utils/generic'
 import { isMobile } from '../../utils/browser'
-
 
 export default function reveal (target, options, interval, sync) {
 
@@ -25,56 +25,26 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	 * Now let’s attempt to construct a new sequence.
+	 * To start things off, build element collection,
+	 * and attempt to instantiate a new sequence.
 	 */
+	let nodes
 	let sequence
 	try {
-		sequence = new Sequence(interval) || null
+		nodes = getNodes(target)
+		sequence = interval ? new Sequence(interval) : null
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
-	}
-
-	let config
-	let container
-	let nodes
-	try {
-		config = deepAssign({}, this.defaults, options)
-		container = getNode(config.container)
-		if (!container) {
-			throw new Error('Invalid container.')
-		}
-		nodes = getNodes(target, container)
-		if (!nodes) {
-			throw new Error('Nothing to animate.')
-		}
-	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
-	}
-
-	/**
-	 * Verify our platform matches our platform configuration.
-	 */
-	if (!config.mobile && isMobile() || !config.desktop && !isMobile()) {
-		return logger.call(this, 'Reveal aborted.', 'This platform has been disabled.')
-	}
-
-	let containerId
-	{
-		each(containers, storedContainer => {
-			if (!containerId && storedContainer.node === container) {
-				containerId = storedContainer.id
-			}
-		})
-		if (isNaN(containerId)) {
-			containerId = nextUniqueId()
-		}
 	}
 
 	/**
 	 * Begin element set-up...
 	 */
+	let config
+	let container
+	let containerId
 	try {
-		const elements = nodes.map(node => {
+		const elements = nodes.reduce((buffer, node) => {
 			const element = {}
 			const existingId = node.getAttribute('data-sr-id')
 
@@ -96,6 +66,45 @@ export default function reveal (target, options, interval, sync) {
 				element.visible = false
 			}
 
+			config = deepAssign({}, element.config || this.defaults, options)
+
+			/**
+			* Verify the current device passes our platform configuration,
+			* and cache the result for the rest of the loop.
+			*/
+			let disabled
+			{
+				if (disabled == null) {
+					disabled = !config.mobile && isMobile() || !config.desktop && !isMobile()
+				}
+				if (disabled) {
+					if (existingId) {
+						clean.call(this, element)
+					}
+					return buffer
+				}
+			}
+
+			container = getNode(config.container)
+			{
+				if (!container) {
+					throw new Error('Invalid container.')
+				}
+				if (!container.contains(node)) {
+					return buffer // skip elements found outside the container
+				}
+				if (containerId == null) {
+					each(containers, storedContainer => {
+						if (!containerId && storedContainer.node === container) {
+							containerId = storedContainer.id
+						}
+					})
+					if (isNaN(containerId)) {
+						containerId = nextUniqueId()
+					}
+				}
+			}
+
 			element.config = config
 			element.containerId = containerId
 			element.styles = style(element)
@@ -108,8 +117,9 @@ export default function reveal (target, options, interval, sync) {
 				sequence.members.push(element.id)
 			}
 
-			return element
-		})
+			buffer.push(element)
+			return buffer
+		}, [])
 
 		/**
 		* Modifying the DOM via setAttribute needs to be handled

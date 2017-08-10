@@ -19,7 +19,6 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 
 ### Changed
 - **Breaking:** The `reveal()` method will not accept sequence intervals less than 16 milliseconds.
-- **Breaking:** The `reveal()` method ignores existing element configuration.
 - **Breaking:** The instance method `isSupported()` is now static.
 - **Breaking:** `options.distance` supports only `em` `px` and `%` values.
 - **Breaking:** ScrollReveal methods are no longer chainable.
