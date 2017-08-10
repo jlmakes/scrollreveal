@@ -992,11 +992,15 @@ function sequence (element) {
 			var nextId = seq.members[visible.body[0]];
 			var nextElement = this.store.elements[nextId];
 
-			cue.call(this, seq, visible.body[0], -1);
-			cue.call(this, seq, visible.body[0], +1);
+			if (nextElement) {
+				cue.call(this, seq, visible.body[0], -1);
+				cue.call(this, seq, visible.body[0], +1);
 
-			seq.lastReveal = visible.body[0];
-			return animate.call(this, nextElement, +1)
+				seq.lastReveal = visible.body[0];
+				return animate.call(this, nextElement, +1)
+			} else {
+				return animate.call(this, element)
+			}
 		}
 
 		/**
@@ -1115,7 +1119,7 @@ function reveal (target, options, interval, sync) {
 	var this$1 = this;
 
 
-	var containers = this.store.containers;
+	var containerBuffer = [];
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
@@ -1146,13 +1150,10 @@ function reveal (target, options, interval, sync) {
 	/**
 	 * Begin element set-up...
 	 */
-	var config;
-	var container;
-	var containerId;
 	try {
-		var elements = nodes.reduce(function (buffer, node) {
+		var elements = nodes.reduce(function (elementBuffer, elementNode) {
 			var element = {};
-			var existingId = node.getAttribute('data-sr-id');
+			var existingId = elementNode.getAttribute('data-sr-id');
 
 			if (existingId) {
 				deepAssign(element, this$1.store.elements[existingId]);
@@ -1166,13 +1167,13 @@ function reveal (target, options, interval, sync) {
 
 			} else {
 				element.id = nextUniqueId();
-				element.node = node;
+				element.node = elementNode;
 				element.seen = false;
 				element.revealed = false;
 				element.visible = false;
 			}
 
-			config = deepAssign({}, element.config || this$1.defaults, options);
+			var config = deepAssign({}, element.config || this$1.defaults, options);
 
 			/**
 			* Verify the current device passes our platform configuration,
@@ -1187,27 +1188,26 @@ function reveal (target, options, interval, sync) {
 					if (existingId) {
 						clean.call(this$1, element);
 					}
-					return buffer
+					return elementBuffer
 				}
 			}
 
-			container = getNode(config.container);
+			var containerNode = getNode(config.container);
+
+			var containerId;
 			{
-				if (!container) {
+				if (!containerNode) {
 					throw new Error('Invalid container.')
 				}
-				if (!container.contains(node)) {
-					return buffer // skip elements found outside the container
+				if (!containerNode.contains(elementNode)) {
+					return elementBuffer // skip elements found outside the container
 				}
+
+				containerId = getContainerId(containerNode, containerBuffer, this$1.store.containers);
+
 				if (containerId == null) {
-					each(containers, function (storedContainer) {
-						if (!containerId && storedContainer.node === container) {
-							containerId = storedContainer.id;
-						}
-					});
-					if (isNaN(containerId)) {
-						containerId = nextUniqueId();
-					}
+					containerId = nextUniqueId();
+					containerBuffer.push({ id: containerId, node: containerNode });
 				}
 			}
 
@@ -1223,8 +1223,8 @@ function reveal (target, options, interval, sync) {
 				sequence$$1.members.push(element.id);
 			}
 
-			buffer.push(element);
-			return buffer
+			elementBuffer.push(element);
+			return elementBuffer
 		}, []);
 
 		/**
@@ -1243,15 +1243,15 @@ function reveal (target, options, interval, sync) {
 
 	/**
 	 * Now that element set-up is complete...
-	 *
-	 * Let’s commit the current container and any
-	 * sequence data we have to the store.
+	 * Let’s commit any container and sequence data we have to the store.
 	 */
 	{
-		containers[containerId] = containers[containerId] || {
-			id: containerId,
-			node: container,
-		};
+		each(containerBuffer, function (container) {
+			this$1.store.containers[container.id] = {
+				id: container.id,
+				node: container.node,
+			};
+		});
 		if (sequence$$1) {
 			this.store.sequences[sequence$$1.id] = sequence$$1;
 		}
@@ -1273,6 +1273,22 @@ function reveal (target, options, interval, sync) {
 		}
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0);
 	}
+}
+
+
+function getContainerId (node) {
+	var collections = [], len = arguments.length - 1;
+	while ( len-- > 0 ) collections[ len ] = arguments[ len + 1 ];
+
+	var id = null;
+	each(collections, function (collection) {
+		each(collection, function (container) {
+			if (id == null && container.node === node) {
+				id = container.id;
+			}
+		});
+	});
+	return id
 }
 
 /**
@@ -1337,7 +1353,7 @@ function delegate (
 	});
 }
 
-var version = "4.0.0-beta.10";
+var version = "4.0.0-beta.11";
 
 var _config;
 var _debug;
