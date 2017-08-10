@@ -98,7 +98,7 @@ describe('Core Utilities', () => {
 		let spy
 		let stub
 
-		before('stub console log', () => {
+		beforeEach('stub console log', () => {
 			spy = sinon.spy()
 			stub = sinon.stub(console, 'log', spy)
 		})
@@ -110,14 +110,18 @@ describe('Core Utilities', () => {
 
 		it('prepends output with `ScrollReveal: `', () => {
 			logger.call(mock, 'test')
-			expect(spy).to.have.been.calledWith('ScrollReveal: test')
+			const result = '%cScrollReveal: test'
+			const style = 'color: #ea654b;'
+			expect(spy).to.have.been.calledWith(result, style)
 		})
 
 		it('accepts multiple arguments as message details', () => {
 			logger.call(mock, 'message', 'detail one', 'detail two')
-			expect(spy).to.have.been.calledWith('ScrollReveal: message\n  - detail one\n  - detail two')
+			const result = '%cScrollReveal: message\n — detail one\n — detail two'
+			const style = 'color: #ea654b;'
+			expect(spy).to.have.been.calledWith(result, style)
 		})
 
-		after('restore console log', () => stub.restore())
+		afterEach('restore console log', () => stub.restore())
 	})
 })

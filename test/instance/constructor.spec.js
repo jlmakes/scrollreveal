@@ -81,12 +81,15 @@ describe('ScrollReveal', () => {
 			expect(ScrollReveal.debug).to.be.a('boolean')
 		})
 
-		it('should only accept boolean values for static `debug` property', () => {
+		it('should accept boolean value for static `debug` property', () => {
+			ScrollReveal.debug = true
+			expect(ScrollReveal.debug).to.be.true
+		})
+
+		it('should ignore non-boolean values assigned to static `debug` property', () => {
 			ScrollReveal.debug = null
 			expect(ScrollReveal.debug).to.exist
 			expect(ScrollReveal.debug).to.be.a('boolean')
-			ScrollReveal.debug = true
-			expect(ScrollReveal.debug).to.be.true
 		})
 	})
 

@@ -31,7 +31,7 @@ export default function reveal (target, options, interval, sync) {
 	try {
 		sequence = new Sequence(interval) || null
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.message)
+		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
 
 	let config
@@ -48,7 +48,7 @@ export default function reveal (target, options, interval, sync) {
 			throw new Error('Nothing to animate.')
 		}
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.message)
+		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
 
 	/**
@@ -122,7 +122,7 @@ export default function reveal (target, options, interval, sync) {
 		})
 
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.message)
+		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
 
 	/**
