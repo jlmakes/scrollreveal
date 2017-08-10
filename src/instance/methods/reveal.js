@@ -9,7 +9,7 @@ import { isMobile } from '../../utils/browser'
 
 export default function reveal (target, options, interval, sync) {
 
-	const containers = this.store.containers
+	const containerBuffer = []
 
 	/**
 	 * The reveal method has an optional 2nd parameter,
@@ -40,13 +40,10 @@ export default function reveal (target, options, interval, sync) {
 	/**
 	 * Begin element set-up...
 	 */
-	let config
-	let container
-	let containerId
 	try {
-		const elements = nodes.reduce((buffer, node) => {
+		const elements = nodes.reduce((elementBuffer, elementNode) => {
 			const element = {}
-			const existingId = node.getAttribute('data-sr-id')
+			const existingId = elementNode.getAttribute('data-sr-id')
 
 			if (existingId) {
 				deepAssign(element, this.store.elements[existingId])
@@ -60,13 +57,13 @@ export default function reveal (target, options, interval, sync) {
 
 			} else {
 				element.id = nextUniqueId()
-				element.node = node
+				element.node = elementNode
 				element.seen = false
 				element.revealed = false
 				element.visible = false
 			}
 
-			config = deepAssign({}, element.config || this.defaults, options)
+			const config = deepAssign({}, element.config || this.defaults, options)
 
 			/**
 			* Verify the current device passes our platform configuration,
@@ -81,27 +78,26 @@ export default function reveal (target, options, interval, sync) {
 					if (existingId) {
 						clean.call(this, element)
 					}
-					return buffer
+					return elementBuffer
 				}
 			}
 
-			container = getNode(config.container)
+			const containerNode = getNode(config.container)
+
+			let containerId
 			{
-				if (!container) {
+				if (!containerNode) {
 					throw new Error('Invalid container.')
 				}
-				if (!container.contains(node)) {
-					return buffer // skip elements found outside the container
+				if (!containerNode.contains(elementNode)) {
+					return elementBuffer // skip elements found outside the container
 				}
+
+				containerId = getContainerId(containerNode, containerBuffer, this.store.containers)
+
 				if (containerId == null) {
-					each(containers, storedContainer => {
-						if (!containerId && storedContainer.node === container) {
-							containerId = storedContainer.id
-						}
-					})
-					if (isNaN(containerId)) {
-						containerId = nextUniqueId()
-					}
+					containerId = nextUniqueId()
+					containerBuffer.push({ id: containerId, node: containerNode })
 				}
 			}
 
@@ -117,8 +113,8 @@ export default function reveal (target, options, interval, sync) {
 				sequence.members.push(element.id)
 			}
 
-			buffer.push(element)
-			return buffer
+			elementBuffer.push(element)
+			return elementBuffer
 		}, [])
 
 		/**
@@ -137,15 +133,15 @@ export default function reveal (target, options, interval, sync) {
 
 	/**
 	 * Now that element set-up is complete...
-	 *
-	 * Let’s commit the current container and any
-	 * sequence data we have to the store.
+	 * Let’s commit any container and sequence data we have to the store.
 	 */
 	{
-		containers[containerId] = containers[containerId] || {
-			id: containerId,
-			node: container,
-		}
+		each(containerBuffer, container => {
+			this.store.containers[container.id] = {
+				id: container.id,
+				node: container.node,
+			}
+		})
 		if (sequence) {
 			this.store.sequences[sequence.id] = sequence
 		}
@@ -167,4 +163,17 @@ export default function reveal (target, options, interval, sync) {
 		}
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0)
 	}
+}
+
+
+function getContainerId (node, ...collections) {
+	let id = null
+	each(collections, collection => {
+		each(collection, container => {
+			if (id == null && container.node === node) {
+				id = container.id
+			}
+		})
+	})
+	return id
 }
