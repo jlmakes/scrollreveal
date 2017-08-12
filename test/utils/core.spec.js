@@ -68,15 +68,9 @@ describe('Core Utilities', () => {
 			expect(result).to.deep.equal(actual)
 		})
 
-		it('should throw an error when no element matches a valid selector', () => {
-			let caught
-			try {
-				getNodes('.foo')
-			} catch (error) {
-				caught = error
-			}
-			expect(caught).to.exist
-			expect(caught).to.be.an.instanceof(Error)
+		it('should return an empty array when no element matches a valid selector', () => {
+			const result = getNodes('.foo')
+			expect(result).to.deep.equal([])
 		})
 
 		it('should throw an error when an invalid selector is passed', () => {

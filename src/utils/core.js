@@ -96,9 +96,6 @@ export function getNodes (target, container = document) {
 		} catch (e) {
 			throw new Error(`"${target}" is not a valid selector.`)
 		}
-		if (query.length === 0) {
-			throw new Error(`The selector "${target}" matches 0 elements.`)
-		}
 		return Array.prototype.slice.call(query)
 	}
 }
