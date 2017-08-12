@@ -24,7 +24,7 @@ export default function clean (target) {
 		try {
 			rinse.call(this)
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', 'Rinse failed.', e.stack || e.message)
+			return logger.call(this, 'Clean failed.', e.stack || e.message)
 		}
 	}
 }
