@@ -2,7 +2,7 @@ import animate from './animate'
 import { each, nextUniqueId } from '../../utils/generic'
 
 
-export default function sequence (element) {
+export default function sequence (element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]
 	const i = element.sequence.index
 
@@ -25,11 +25,11 @@ export default function sequence (element) {
 			const nextElement = this.store.elements[nextId]
 
 			if (nextElement) {
-				cue.call(this, seq, visible.body[0], -1)
-				cue.call(this, seq, visible.body[0], +1)
+				cue.call(this, seq, visible.body[0], -1, pristine)
+				cue.call(this, seq, visible.body[0], +1, pristine)
 
 				seq.lastReveal = visible.body[0]
-				return animate.call(this, nextElement, { reveal: true })
+				return animate.call(this, nextElement, { reveal: true, pristine })
 			} else {
 				return animate.call(this, element)
 			}
@@ -53,15 +53,15 @@ export default function sequence (element) {
 		 * then the foot of the sequence.
 		 */
 		if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
-			cue.call(this, seq, i, -1)
+			cue.call(this, seq, i, -1, pristine)
 			seq.lastReveal = i
-			return animate.call(this, element, { reveal: true })
+			return animate.call(this, element, { reveal: true, pristine })
 		}
 
 		if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
-			cue.call(this, seq, i, +1)
+			cue.call(this, seq, i, +1, pristine)
 			seq.lastReveal = i
-			return animate.call(this, element, { reveal: true })
+			return animate.call(this, element, { reveal: true, pristine })
 		}
 	}
 }
@@ -128,7 +128,7 @@ export function SequenceModel (prop, sequence, store) {
 }
 
 
-function cue (seq, i, charge) {
+function cue (seq, i, charge, pristine) {
 	const blocked = ['headblocked', null, 'footblocked'][1 + charge]
 	const nextId = seq.members[i + charge]
 	const nextElement = this.store.elements[nextId]
@@ -138,7 +138,7 @@ function cue (seq, i, charge) {
 	setTimeout(() => {
 		seq[blocked] = false
 		if (nextElement) {
-			sequence.call(this, nextElement)
+			sequence.call(this, nextElement, pristine)
 		}
 	}, seq.interval)
 }

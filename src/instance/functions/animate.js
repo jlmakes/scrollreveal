@@ -2,8 +2,9 @@ import clean from '../methods/clean'
 
 
 export default function animate (element, options) {
+	const pristine = options.pristine || this.pristine
 	const delayed = element.config.useDelay === 'always'
-		|| element.config.useDelay === 'onload' && this.pristine
+		|| element.config.useDelay === 'onload' && pristine
 		|| element.config.useDelay === 'once' && !element.seen
 
 	const shouldReveal = element.visible && !element.revealed
