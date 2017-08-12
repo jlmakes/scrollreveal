@@ -889,6 +889,8 @@ function initialize () {
 }
 
 function animate (element, options) {
+	if ( options === void 0 ) options = {};
+
 	var pristine = options.pristine || this.pristine;
 	var delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && pristine
@@ -1353,7 +1355,7 @@ function delegate (
 	});
 }
 
-var version = "4.0.0-beta.12";
+var version = "4.0.0-beta.13";
 
 var _config;
 var _debug;
