@@ -110,7 +110,7 @@ export function SequenceModel (prop, sequence, store) {
 
 	each(sequence.members, (id, index) => {
 		const element = store.elements[id]
-		if (element[prop]) {
+		if (element && element[prop]) {
 			this.body.push(index)
 		}
 	})
@@ -118,7 +118,7 @@ export function SequenceModel (prop, sequence, store) {
 	if (this.body.length) {
 		each(sequence.members, (id, index) => {
 			const element = store.elements[id]
-			if (!element[prop]) {
+			if (element && !element[prop]) {
 				index < this.body[0]
 					? this.head.push(index)
 					: this.foot.push(index)
