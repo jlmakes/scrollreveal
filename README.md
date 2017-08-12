@@ -14,7 +14,7 @@
 	<a href="https://travis-ci.org/jlmakes/scrollreveal"><img src="https://img.shields.io/travis/jlmakes/scrollreveal.svg" alt="Build status"></a>
 	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/dm/scrollreveal.svg" alt="Monthly NPM installations"></a>
 	<a href="https://www.npmjs.com/package/scrollreveal"><img src="https://img.shields.io/npm/v/scrollreveal/beta.svg" alt="Latest NPM version"></a>
-	<img src="https://img.shields.io/badge/min+gzip-5.4KB-blue.svg" alt="">
+	<img src="https://img.shields.io/badge/min+gzip-5.38KB-blue.svg" alt="">
 	<a href="https://opensource.org/licenses/GPL-3.0"><img src="https://img.shields.io/badge/license-GPLv3-1283c3.svg" alt="GPLv3 License"></a>
 </p>
 
