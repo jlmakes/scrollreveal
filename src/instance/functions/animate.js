@@ -1,7 +1,7 @@
 import clean from '../methods/clean'
 
 
-export default function animate (element, charge) {
+export default function animate (element, options) {
 	const delayed = element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && this.pristine
 		|| element.config.useDelay === 'once' && !element.seen
@@ -9,11 +9,11 @@ export default function animate (element, charge) {
 	const shouldReveal = element.visible && !element.revealed
 	const shouldReset = !element.visible && element.revealed && element.config.reset
 
-	if (shouldReveal && !charge || charge === +1) {
+	if (shouldReveal || options.reveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset && !charge || charge === -1) {
+	if (shouldReset || options.reset) {
 		return triggerReset.call(this, element)
 	}
 }

@@ -29,7 +29,7 @@ export default function sequence (element) {
 				cue.call(this, seq, visible.body[0], +1)
 
 				seq.lastReveal = visible.body[0]
-				return animate.call(this, nextElement, +1)
+				return animate.call(this, nextElement, { reveal: true })
 			} else {
 				return animate.call(this, element)
 			}
@@ -44,7 +44,7 @@ export default function sequence (element) {
 		 */
 		if (!element.visible && element.revealed && element.config.reset) {
 			seq.lastReset = i
-			return animate.call(this, element, -1)
+			return animate.call(this, element, { reset: true })
 		}
 
 		/**
@@ -55,13 +55,13 @@ export default function sequence (element) {
 		if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
 			cue.call(this, seq, i, -1)
 			seq.lastReveal = i
-			return animate.call(this, element, +1)
+			return animate.call(this, element, { reveal: true })
 		}
 
 		if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
 			cue.call(this, seq, i, +1)
 			seq.lastReveal = i
-			return animate.call(this, element, +1)
+			return animate.call(this, element, { reveal: true })
 		}
 	}
 }
