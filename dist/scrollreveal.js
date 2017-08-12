@@ -262,9 +262,6 @@ function getNodes (target, container) {
 		} catch (e) {
 			throw new Error(("\"" + target + "\" is not a valid selector."))
 		}
-		if (query.length === 0) {
-			throw new Error(("The selector \"" + target + "\" matches 0 elements."))
-		}
 		return Array.prototype.slice.call(query)
 	}
 }
@@ -398,7 +395,7 @@ function clean (target) {
 		try {
 			rinse.call(this);
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', 'Rinse failed.', e.stack || e.message)
+			return logger.call(this, 'Clean failed.', e.stack || e.message)
 		}
 	}
 }
@@ -891,19 +888,20 @@ function initialize () {
 	this.initTimeout = null;
 }
 
-function animate (element, charge) {
+function animate (element, options) {
+	var pristine = options.pristine || this.pristine;
 	var delayed = element.config.useDelay === 'always'
-		|| element.config.useDelay === 'onload' && this.pristine
+		|| element.config.useDelay === 'onload' && pristine
 		|| element.config.useDelay === 'once' && !element.seen;
 
 	var shouldReveal = element.visible && !element.revealed;
 	var shouldReset = !element.visible && element.revealed && element.config.reset;
 
-	if (shouldReveal && !charge || charge === +1) {
+	if (shouldReveal || options.reveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset && !charge || charge === -1) {
+	if (shouldReset || options.reset) {
 		return triggerReset.call(this, element)
 	}
 }
@@ -970,7 +968,9 @@ function registerCallbacks (element, isDelayed) {
 	};
 }
 
-function sequence (element) {
+function sequence (element, pristine) {
+	if ( pristine === void 0 ) pristine = this.pristine;
+
 	var seq = this.store.sequences[element.sequence.id];
 	var i = element.sequence.index;
 
@@ -993,11 +993,11 @@ function sequence (element) {
 			var nextElement = this.store.elements[nextId];
 
 			if (nextElement) {
-				cue.call(this, seq, visible.body[0], -1);
-				cue.call(this, seq, visible.body[0], +1);
+				cue.call(this, seq, visible.body[0], -1, pristine);
+				cue.call(this, seq, visible.body[0], +1, pristine);
 
 				seq.lastReveal = visible.body[0];
-				return animate.call(this, nextElement, +1)
+				return animate.call(this, nextElement, { reveal: true, pristine: pristine })
 			} else {
 				return animate.call(this, element)
 			}
@@ -1012,7 +1012,7 @@ function sequence (element) {
 		 */
 		if (!element.visible && element.revealed && element.config.reset) {
 			seq.lastReset = i;
-			return animate.call(this, element, -1)
+			return animate.call(this, element, { reset: true })
 		}
 
 		/**
@@ -1021,15 +1021,15 @@ function sequence (element) {
 		 * then the foot of the sequence.
 		 */
 		if (!seq.headblocked && i === [].concat( revealed.head ).pop() && i >= [].concat( visible.body ).shift()) {
-			cue.call(this, seq, i, -1);
+			cue.call(this, seq, i, -1, pristine);
 			seq.lastReveal = i;
-			return animate.call(this, element, +1)
+			return animate.call(this, element, { reveal: true, pristine: pristine })
 		}
 
 		if (!seq.footblocked && i === [].concat( revealed.foot ).shift() && i <= [].concat( visible.body ).pop()) {
-			cue.call(this, seq, i, +1);
+			cue.call(this, seq, i, +1, pristine);
 			seq.lastReveal = i;
-			return animate.call(this, element, +1)
+			return animate.call(this, element, { reveal: true, pristine: pristine })
 		}
 	}
 }
@@ -1098,7 +1098,7 @@ function SequenceModel (prop, sequence, store) {
 }
 
 
-function cue (seq, i, charge) {
+function cue (seq, i, charge, pristine) {
 	var this$1 = this;
 
 	var blocked = ['headblocked', null, 'footblocked'][1 + charge];
@@ -1110,7 +1110,7 @@ function cue (seq, i, charge) {
 	setTimeout(function () {
 		seq[blocked] = false;
 		if (nextElement) {
-			sequence.call(this$1, nextElement);
+			sequence.call(this$1, nextElement, pristine);
 		}
 	}, seq.interval);
 }
@@ -1353,7 +1353,7 @@ function delegate (
 	});
 }
 
-var version = "4.0.0-beta.11";
+var version = "4.0.0-beta.12";
 
 var _config;
 var _debug;
