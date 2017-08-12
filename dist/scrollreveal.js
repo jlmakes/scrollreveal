@@ -1082,7 +1082,7 @@ function SequenceModel (prop, sequence, store) {
 
 	each(sequence.members, function (id, index) {
 		var element = store.elements[id];
-		if (element[prop]) {
+		if (element && element[prop]) {
 			this$1.body.push(index);
 		}
 	});
@@ -1090,7 +1090,7 @@ function SequenceModel (prop, sequence, store) {
 	if (this.body.length) {
 		each(sequence.members, function (id, index) {
 			var element = store.elements[id];
-			if (!element[prop]) {
+			if (element && !element[prop]) {
 				index < this$1.body[0]
 					? this$1.head.push(index)
 					: this$1.foot.push(index);
@@ -1355,7 +1355,7 @@ function delegate (
 	});
 }
 
-var version = "4.0.0-beta.13";
+var version = "4.0.0-beta.14";
 
 var _config;
 var _debug;
