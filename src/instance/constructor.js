@@ -40,7 +40,7 @@ export default function ScrollReveal (options = {}) {
 	let buffer
 	{
 		try {
-			buffer = _config
+			buffer = (_config)
 				? deepAssign({}, _config, options)
 				: deepAssign({}, defaults, options)
 		} catch (e) {
@@ -97,16 +97,14 @@ export default function ScrollReveal (options = {}) {
  * Static members are available immediately during instantiation,
  * so debugging and browser support details are handled here.
  */
-{
-	ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
+ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
-	Object.defineProperty(ScrollReveal, 'debug', {
-		get: () => _debug || false,
-		set: value => {
-			if (typeof value === 'boolean') _debug = value
-		},
-	})
-}
+Object.defineProperty(ScrollReveal, 'debug', {
+	get: () => _debug || false,
+	set: value => {
+		if (typeof value === 'boolean') _debug = value
+	},
+})
 
 /**
  * The primary API is comprised

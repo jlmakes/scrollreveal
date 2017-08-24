@@ -38,7 +38,7 @@ export default function sequence (element, pristine = this.pristine) {
 		/**
 		 * Assuming we have something visible on screen
 		 * already, and we need to evaluate the element
-		 * that was passed in…
+		 * that was passed in...
 		 *
 		 * We first check if the element should reset.
 		 */
@@ -119,9 +119,11 @@ export function SequenceModel (prop, sequence, store) {
 		each(sequence.members, (id, index) => {
 			const element = store.elements[id]
 			if (element && !element[prop]) {
-				index < this.body[0]
-					? this.head.push(index)
-					: this.foot.push(index)
+				if (index < this.body[0]) {
+					this.head.push(index)
+				} else {
+					this.foot.push(index)
+				}
 			}
 		})
 	}

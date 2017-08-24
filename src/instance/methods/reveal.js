@@ -12,9 +12,8 @@ export default function reveal (target, options, interval, sync) {
 	const containerBuffer = []
 
 	/**
-	 * The reveal method has an optional 2nd parameter,
-	 * so here we just shuffle things around to accept
-	 * the interval being passed as the 2nd argument.
+	 * The reveal method has optional 2nd and 3rd parameters,
+	 * so we first explicitly check what was passed in.
 	 */
 	if (typeof options === 'number') {
 		interval = parseInt(options)
@@ -32,7 +31,9 @@ export default function reveal (target, options, interval, sync) {
 	let sequence
 	try {
 		nodes = getNodes(target)
-		sequence = interval ? new Sequence(interval) : null
+		sequence = (interval)
+			? new Sequence(interval)
+			: null
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
@@ -156,7 +157,7 @@ export default function reveal (target, options, interval, sync) {
 
 		/**
 		* Push initialization to the event queue, giving
-		* multiple reveal calls time to be interpretted.
+		* multiple reveal calls time to be interpreted.
 		*/
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout)
@@ -170,7 +171,7 @@ function getContainerId (node, ...collections) {
 	let id = null
 	each(collections, collection => {
 		each(collection, container => {
-			if (id == null && container.node === node) {
+			if (id === null && container.node === node) {
 				id = container.id
 			}
 		})

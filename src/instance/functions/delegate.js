@@ -11,20 +11,35 @@ export default function delegate (
 	elements = this.store.elements
 ) {
 	requestAnimationFrame(() => {
-		const containers = this.store.containers
+		const stale = (event.type === 'init' || event.type === 'resize')
 
-		if (event.type === 'init' || event.type === 'resize') {
-			each(containers, container => container.geometry = getGeometry.call(this, container, true))
-			each(elements, element => element.geometry = getGeometry.call(this, element))
-		}
+		each(this.store.containers, container => {
+			if (stale) {
+				container.geometry = getGeometry.call(this, container, true)
+			}
+			container.scroll = getScrolled.call(this, container)
+		})
 
-		each(containers, container => container.scroll = getScrolled.call(this, container))
-		each(elements, element => element.visible = isElementVisible.call(this, element))
+		/**
+		 * Due to how the sequencer is implemented, it’s
+		 * important that we update the state of all
+		 * elements, before any animation logic is
+		 * evaluated (in the second loop below).
+		 */
+		each(elements, element => {
+			if (stale) {
+				element.geometry = getGeometry.call(this, element)
+			}
+			element.visible = isElementVisible.call(this, element)
+		})
 
-		each(elements, element => element.sequence
-			? sequence.call(this, element)
-			: animate.call(this, element)
-		)
+		each(elements, element => {
+			if (element.sequence) {
+				sequence.call(this, element)
+			} else {
+				animate.call(this, element)
+			}
+		})
 
 		this.pristine = false
 	})

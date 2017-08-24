@@ -1,20 +1,20 @@
 import clean from '../methods/clean'
 
 
-export default function animate (element, options = {}) {
-	const pristine = options.pristine || this.pristine
-	const delayed = element.config.useDelay === 'always'
+export default function animate (element, force = {}) {
+	const pristine = (force.pristine || this.pristine)
+	const delayed = (element.config.useDelay === 'always'
 		|| element.config.useDelay === 'onload' && pristine
-		|| element.config.useDelay === 'once' && !element.seen
+		|| element.config.useDelay === 'once' && !element.seen)
 
-	const shouldReveal = element.visible && !element.revealed
-	const shouldReset = !element.visible && element.revealed && element.config.reset
+	const shouldReveal = (element.visible && !element.revealed)
+	const shouldReset = (!element.visible && element.revealed && element.config.reset)
 
-	if (shouldReveal || options.reveal) {
+	if (shouldReveal || force.reveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset || options.reset) {
+	if (shouldReset || force.reset) {
 		return triggerReset.call(this, element)
 	}
 }
@@ -26,9 +26,11 @@ function triggerReveal (element, delayed) {
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final,
 	]
-	delayed
-		? styles.push(element.styles.transition.generated.delayed)
-		: styles.push(element.styles.transition.generated.instant)
+	if (delayed) {
+		styles.push(element.styles.transition.generated.delayed)
+	} else {
+		styles.push(element.styles.transition.generated.instant)
+	}
 	element.revealed = element.seen = true
 	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
 	registerCallbacks.call(this, element, delayed)
@@ -49,15 +51,15 @@ function triggerReset (element) {
 
 
 function registerCallbacks (element, isDelayed) {
-	const duration = isDelayed
+	const duration = (isDelayed)
 		? element.config.duration + element.config.delay
 		: element.config.duration
 
-	const beforeCallback = element.revealed
+	const beforeCallback = (element.revealed)
 		? element.config.beforeReveal
 		: element.config.beforeReset
 
-	const afterCallback = element.revealed
+	const afterCallback = (element.revealed)
 		? element.config.afterReveal
 		: element.config.afterReset
 

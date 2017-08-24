@@ -34,13 +34,17 @@ export default function style (element) {
 	 * Generate opacity styles
 	 */
 	const computedOpacity = parseFloat(computed.opacity)
-	const configOpacity = !isNaN(parseFloat(config.opacity))
+	const configOpacity = (!isNaN(parseFloat(config.opacity)))
 		? parseFloat(config.opacity)
 		: parseFloat(computed.opacity)
 
 	const opacity = {
-		computed: (computedOpacity !== configOpacity) ? `opacity: ${computedOpacity};` : '',
-		generated: (computedOpacity !== configOpacity) ? `opacity: ${configOpacity};` : '',
+		computed: (computedOpacity !== configOpacity)
+			? `opacity: ${computedOpacity};`
+			: '',
+		generated: (computedOpacity !== configOpacity)
+			? `opacity: ${configOpacity};`
+			: '',
 	}
 
 	/**
@@ -57,7 +61,7 @@ export default function style (element) {
     	 */
 		let distance = config.distance
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = /^-/.test(distance)
+			distance = (/^-/.test(distance))
 				? distance.substr(1)
 				: `-${distance}`
 		}
@@ -72,6 +76,16 @@ export default function style (element) {
 				distance = value
 				break
 			case '%':
+				/**
+				 * Here we use `getBoundingClientRect` instead of
+				 * the existing data attached to `element.geometry`
+				 * because only the former includes any transformations
+				 * current applied to the element.
+				 *
+				 * If that behavior ends up being unintuitive, this
+				 * logic could instead utilize `element.geometry.height`
+				 * and `element.geoemetry.width` for the distaince calculation
+				 */
 				distance = (axis === 'Y')
 					? element.node.getBoundingClientRect().height * value / 100
 					: element.node.getBoundingClientRect().width * value / 100
@@ -80,18 +94,36 @@ export default function style (element) {
 				throw new RangeError('Unrecognized or missing distance unit.')
 		}
 
-		(axis === 'Y')
-			? transformations.push(translateY(distance))
-			: transformations.push(translateX(distance))
+		if (axis === 'Y') {
+			transformations.push(translateY(distance))
+		} else {
+			transformations.push(translateX(distance))
+		}
 	}
 
 	if (config.rotate.x) transformations.push(rotateX(config.rotate.x))
 	if (config.rotate.y) transformations.push(rotateY(config.rotate.y))
 	if (config.rotate.z) transformations.push(rotateZ(config.rotate.z))
 	if (config.scale !== 1) {
-		config.scale === 0
-			? transformations.push(scale(0.0002))
-			: transformations.push(scale(config.scale))
+		if (config.scale === 0) {
+			/**
+			 * The CSS Transforms matrix interpolation specification
+			 * basically disallows transitions of non-invertible
+			 * matrixes, which means browsers won't transition
+			 * elements with zero scale.
+			 *
+			 * That’s inconvenient for the API and developer
+			 * experience, so we simply nudge their value
+			 * slightly above zero; this allows browsers
+			 * to transition our element as expected.
+			 *
+			 * `0.0002` was the smallest number
+			 * that performed across browsers.
+			 */
+			transformations.push(scale(0.0002))
+		} else {
+			transformations.push(scale(config.scale))
+		}
 	}
 
 	const transform = {}

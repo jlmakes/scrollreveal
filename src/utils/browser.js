@@ -30,7 +30,7 @@ export function isMobile (agent = navigator.userAgent) {
 
 
 export function isNode (target) {
-	return typeof window.Node === 'object'
+	return (typeof window.Node === 'object')
 		? target instanceof window.Node
 		: target !== null
 			&& typeof target === 'object'
@@ -43,7 +43,7 @@ export function isNodeList (target) {
 	const prototypeToString = Object.prototype.toString.call(target)
 	const regex = /^\[object (HTMLCollection|NodeList|Object)\]$/
 
-	return typeof window.NodeList === 'object'
+	return (typeof window.NodeList === 'object')
 		? target instanceof window.NodeList
 		: typeof target === 'object'
 			&& typeof target.length === 'number'
