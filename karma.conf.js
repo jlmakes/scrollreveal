@@ -24,20 +24,18 @@ module.exports = function (karma) {
 		frameworks: ['mocha', 'sinon-chai'],
 
 		preprocessors: {
-			'src/**/*.js': ['rollup'],
 			'test/**/*.spec.js': ['rollup'],
 		},
 
 		files: [
-			{ pattern: 'src/**/*.js', included: false },
-			'test/**/*.spec.js',
+			{ pattern: 'test/**/*.spec.js', watched: false },
 		],
 
 		rollupPreprocessor: {
 			plugins: rollupPlugins,
-			sourceMap: 'inline',
 			format: 'iife',
-			moduleName: 'ScrollReveal',
+			name: 'ScrollReveal',
+			sourcemap: 'inline',
 		},
 
 		colors: true,

@@ -3,21 +3,14 @@ import json from 'rollup-plugin-json'
 import nodeResolve from 'rollup-plugin-node-resolve'
 
 export default {
-	entry: 'src/index.js',
+	input: 'src/index.js',
 	plugins: [
 		json(),
 		nodeResolve({ jsnext: true, main: true }),
 		buble(),
 	],
-	targets: [
-		{
-			format: 'umd',
-			moduleName: 'ScrollReveal',
-			dest: 'dist/scrollreveal.js',
-		},
-		{
-			format: 'es',
-			dest: 'dist/scrollreveal.es.js',
-		},
+	output: [
+		{ format: 'umd', file: 'dist/scrollreveal.js', name: 'ScrollReveal' },
+		{ format: 'es', file: 'dist/scrollreveal.es.js' },
 	],
 }
