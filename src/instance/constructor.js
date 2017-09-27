@@ -68,9 +68,13 @@ export default function ScrollReveal (options = {}) {
 		 * Modify the DOM to reflect successful instantiation.
 		 */
 		document.documentElement.classList.add('sr')
-		document.addEventListener('DOMContentLoaded', () => {
-			window.setTimeout(() => (document.body.style.height = '100%'), 0)
-		})
+		if (document.body) {
+			document.body.style.height = '100%'
+		} else {
+			document.addEventListener('DOMContentLoaded', () => {
+				document.body.style.height = '100%'
+			})
+		}
 	}
 
 	this.store = {
