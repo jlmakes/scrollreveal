@@ -1,3 +1,15 @@
+/*!
+	ScrollReveal v4.0.0-beta.14
+
+	Licensed under the GNU General Public License 3.0 for
+	compatible open source projects and non-commercial use.
+
+	For commercial sites, themes, projects, and applications,
+	keep your source code private/proprietary by purchasing
+	a commercial license from https://scrollrevealjs.org/
+
+	Copyright (c) 2017 Fisssion LLC
+*/
 var defaults = {
 	delay: 0,
 	distance: '0',
@@ -34,7 +46,9 @@ var noop = {
 	destroy: function destroy () {},
 	reveal: function reveal () {},
 	sync: function sync () {},
-	get noop () { return true },
+	get noop () {
+		return true
+	},
 };
 
 function deepAssign (target) {
@@ -60,18 +74,20 @@ function deepAssign (target) {
 	}
 }
 
-
 function isObject (object) {
-	return object !== null && typeof object === 'object'
-		&& (object.constructor === Object || Object.prototype.toString.call(object) === '[object Object]')
+	return (
+		object !== null &&
+		typeof object === 'object' &&
+		(object.constructor === Object ||
+			Object.prototype.toString.call(object) === '[object Object]')
+	)
 }
-
 
 function each (collection, callback) {
 	if (isObject(collection)) {
 		var keys = Object.keys(collection);
 		for (var i = 0; i < keys.length; i++) {
-			callback(collection[ keys[i] ], keys[i], collection);
+			callback(collection[keys[i]], keys[i], collection);
 		}
 	} else if (Array.isArray(collection)) {
 		for (var i$1 = 0; i$1 < collection.length; i$1++) {
@@ -81,7 +97,6 @@ function each (collection, callback) {
 		throw new TypeError('Expected either an array or object literal.')
 	}
 }
-
 
 var nextUniqueId = (function () {
 	var uid = 0;
@@ -100,21 +115,20 @@ var getPrefixedStyleProperty = (function () {
 				return properties[name]
 			}
 			if (typeof source[name] === 'string') {
-				return properties[name] = name
+				return (properties[name] = name)
 			}
 			if (typeof source[("-webkit-" + name)] === 'string') {
-				return properties[name] = "-webkit-" + name
+				return (properties[name] = "-webkit-" + name)
 			}
 			throw new RangeError(("Unable to find \"" + name + "\" style property."))
 		}
 		throw new TypeError('Expected a string.')
 	}
 
-	getPrefixedStyleProperty.clearCache = function () { return properties = {}; };
+	getPrefixedStyleProperty.clearCache = function () { return (properties = {}); };
 
 	return getPrefixedStyleProperty
 })();
-
 
 function isMobile (agent) {
 	if ( agent === void 0 ) agent = navigator.userAgent;
@@ -122,16 +136,14 @@ function isMobile (agent) {
 	return /Android|iPhone|iPad|iPod/i.test(agent)
 }
 
-
 function isNode (target) {
 	return typeof window.Node === 'object'
 		? target instanceof window.Node
-		: target !== null
-			&& typeof target === 'object'
-			&& typeof target.nodeType === 'number'
-			&& typeof target.nodeName === 'string'
+		: target !== null &&
+			typeof target === 'object' &&
+			typeof target.nodeType === 'number' &&
+			typeof target.nodeName === 'string'
 }
-
 
 function isNodeList (target) {
 	var prototypeToString = Object.prototype.toString.call(target);
@@ -139,18 +151,16 @@ function isNodeList (target) {
 
 	return typeof window.NodeList === 'object'
 		? target instanceof window.NodeList
-		: typeof target === 'object'
-			&& typeof target.length === 'number'
-			&& regex.test(prototypeToString)
-			&& (target.length === 0 || isNode(target[0]))
+		: typeof target === 'object' &&
+			typeof target.length === 'number' &&
+			regex.test(prototypeToString) &&
+			(target.length === 0 || isNode(target[0]))
 }
-
 
 function transformSupported () {
 	var style = document.documentElement.style;
 	return 'transform' in style || 'WebkitTransform' in style
 }
-
 
 function transitionSupported () {
 	var style = document.documentElement.style;
@@ -176,21 +186,22 @@ function isElementVisible (element) {
 		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
 	};
 
-	return elementBounds.top < containerBounds.bottom
-		&& elementBounds.right > containerBounds.left
-		&& elementBounds.bottom > containerBounds.top
-		&& elementBounds.left < containerBounds.right
-		|| element.styles.position === 'fixed'
+	return (
+		(elementBounds.top < containerBounds.bottom &&
+			elementBounds.right > containerBounds.left &&
+			elementBounds.bottom > containerBounds.top &&
+			elementBounds.left < containerBounds.right) ||
+		element.styles.position === 'fixed'
+	)
 }
-
 
 function getGeometry (target, isContainer) {
 	/**
 	 * We want to ignore padding and scrollbars for container elements.
 	 * More information here: https://goo.gl/vOZpbz
 	 */
-	var height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight;
-	var width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth;
+	var height = isContainer ? target.node.clientHeight : target.node.offsetHeight;
+	var width = isContainer ? target.node.clientWidth : target.node.offsetWidth;
 
 	var offsetTop = 0;
 	var offsetLeft = 0;
@@ -218,7 +229,6 @@ function getGeometry (target, isContainer) {
 	}
 }
 
-
 function getNode (target, container) {
 	if ( container === void 0 ) container = document;
 
@@ -235,7 +245,6 @@ function getNode (target, container) {
 	}
 	return isNode(target) ? target : node
 }
-
 
 function getNodes (target, container) {
 	if ( container === void 0 ) container = document;
@@ -260,18 +269,17 @@ function getNodes (target, container) {
 	}
 }
 
-
 function getScrolled (container) {
-	return (container.node === document.documentElement)
+	return container.node === document.documentElement
 		? {
 			top: window.pageYOffset,
 			left: window.pageXOffset,
-		} : {
+		}
+		: {
 			top: container.node.scrollTop,
 			left: container.node.scrollLeft,
 		}
 }
-
 
 function logger (message) {
 	var details = [], len = arguments.length - 1;
@@ -279,14 +287,13 @@ function logger (message) {
 
 	if (this.constructor.debug && console) {
 		var report = "%cScrollReveal: " + message;
-		details.forEach(function (detail) { return report += "\n — " + detail; });
+		details.forEach(function (detail) { return (report += "\n — " + detail); });
 		console.log(report, 'color: #ea654b;'); // eslint-disable-line no-console
 	}
 }
 
 function rinse () {
 	var this$1 = this;
-
 
 	var elementIds = {
 		active: [],
@@ -369,7 +376,6 @@ function rinse () {
 function clean (target) {
 	var this$1 = this;
 
-
 	var dirty;
 	try {
 		each(getNodes(target), function (node) {
@@ -396,7 +402,6 @@ function clean (target) {
 
 function destroy () {
 	var this$1 = this;
-
 
 	/**
 	 * Remove all generated styles and element ids
@@ -430,7 +435,7 @@ function destroy () {
 	};
 }
 
-/*  @license Rematrix v0.1.1
+/*  @license Rematrix v0.2.0
 
     Copyright (c) 2017 Fisssion LLC
 
@@ -555,7 +560,7 @@ function parse (source) {
 	if (typeof source === 'string') {
 		var match = source.match(/matrix(3d)?\(([^)]+)\)/);
 		if (match) {
-			var raw = match[2].split(', ').map(function (value) { return parseFloat(value); });
+			var raw = match[2].split(', ').map(parseFloat);
 			return format(raw)
 		}
 	}
@@ -628,8 +633,12 @@ function rotateZ (angle) {
 */
 function scale (scalar, scalarY) {
 	var matrix = identity();
+
 	matrix[0] = scalar;
-	matrix[5] = scalarY || scalar;
+	matrix[5] = typeof scalarY === 'number'
+		? scalarY
+		: scalar;
+
 	return matrix
 }
 
@@ -671,9 +680,9 @@ function style (element) {
 	var inlineStyle = element.node.getAttribute('style') || '';
 	var inlineMatch = inlineRegex.exec(inlineStyle);
 
-	var inline = (inlineMatch) ? ((inlineMatch[0]) + ";") : '';
+	var inline = inlineMatch ? ((inlineMatch[0]) + ";") : '';
 	if (inline.indexOf('visibility: visible') === -1) {
-		inline += (inline.length) ? ' ' : '';
+		inline += inline.length ? ' ' : '';
 		inline += 'visibility: visible;';
 	}
 
@@ -686,8 +695,8 @@ function style (element) {
 		: parseFloat(computed.opacity);
 
 	var opacity = {
-		computed: (computedOpacity !== configOpacity) ? ("opacity: " + computedOpacity + ";") : '',
-		generated: (computedOpacity !== configOpacity) ? ("opacity: " + configOpacity + ";") : '',
+		computed: computedOpacity !== configOpacity ? ("opacity: " + computedOpacity + ";") : '',
+		generated: computedOpacity !== configOpacity ? ("opacity: " + configOpacity + ";") : '',
 	};
 
 	/**
@@ -696,7 +705,7 @@ function style (element) {
 	var transformations = [];
 
 	if (parseFloat(config.distance)) {
-		var axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X';
+		var axis = config.origin === 'top' || config.origin === 'bottom' ? 'Y' : 'X';
 
 		/**
 		 * Let’s make sure our our pixel distances are negative for top and left.
@@ -704,9 +713,7 @@ function style (element) {
     	 */
 		var distance = config.distance;
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = /^-/.test(distance)
-				? distance.substr(1)
-				: ("-" + distance);
+			distance = /^-/.test(distance) ? distance.substr(1) : ("-" + distance);
 		}
 
 		var ref = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g);
@@ -721,31 +728,59 @@ function style (element) {
 				distance = value;
 				break
 			case '%':
-				distance = (axis === 'Y')
-					? element.node.getBoundingClientRect().height * value / 100
-					: element.node.getBoundingClientRect().width * value / 100;
+				/**
+				 * Here we use `getBoundingClientRect` instead of
+				 * the existing data attached to `element.geometry`
+				 * because only the former includes any transformations
+				 * current applied to the element.
+				 *
+				 * If that behavior ends up being unintuitive, this
+				 * logic could instead utilize `element.geometry.height`
+				 * and `element.geoemetry.width` for the distaince calculation
+				 */
+				distance =
+					axis === 'Y'
+						? element.node.getBoundingClientRect().height * value / 100
+						: element.node.getBoundingClientRect().width * value / 100;
 				break
 			default:
 				throw new RangeError('Unrecognized or missing distance unit.')
 		}
 
-		(axis === 'Y')
-			? transformations.push(translateY(distance))
-			: transformations.push(translateX(distance));
+		if (axis === 'Y') {
+			transformations.push(translateY(distance));
+		} else {
+			transformations.push(translateX(distance));
+		}
 	}
 
 	if (config.rotate.x) { transformations.push(rotateX(config.rotate.x)); }
 	if (config.rotate.y) { transformations.push(rotateY(config.rotate.y)); }
 	if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 	if (config.scale !== 1) {
-		config.scale === 0
-			? transformations.push(scale(0.0002))
-			: transformations.push(scale(config.scale));
+		if (config.scale === 0) {
+			/**
+			 * The CSS Transforms matrix interpolation specification
+			 * basically disallows transitions of non-invertible
+			 * matrixes, which means browsers won't transition
+			 * elements with zero scale.
+			 *
+			 * That’s inconvenient for the API and developer
+			 * experience, so we simply nudge their value
+			 * slightly above zero; this allows browsers
+			 * to transition our element as expected.
+			 *
+			 * `0.0002` was the smallest number
+			 * that performed across browsers.
+			 */
+			transformations.push(scale(0.0002));
+		} else {
+			transformations.push(scale(config.scale));
+		}
 	}
 
 	var transform = {};
 	if (transformations.length) {
-
 		transform.property = getPrefixedStyleProperty('transform');
 		/**
 		* The default computed transform value should be one of:
@@ -775,7 +810,6 @@ function style (element) {
 	 */
 	var transition = {};
 	if (opacity.generated || transform.generated.initial) {
-
 		transition.property = getPrefixedStyleProperty('transition');
 		transition.computed = computed[transition.property];
 		transition.fragments = [];
@@ -809,14 +843,17 @@ function style (element) {
 			});
 		}
 
-		var composed = transition.fragments.reduce(function (composition, fragment, i) {
-			composition.delayed += (i === 0) ? fragment.delayed : (", " + (fragment.delayed));
-			composition.instant += (i === 0) ? fragment.instant : (", " + (fragment.instant));
-			return composition
-		}, {
-			delayed: '',
-			instant: '',
-		});
+		var composed = transition.fragments.reduce(
+			function (composition, fragment, i) {
+				composition.delayed += i === 0 ? fragment.delayed : (", " + (fragment.delayed));
+				composition.instant += i === 0 ? fragment.instant : (", " + (fragment.instant));
+				return composition
+			},
+			{
+				delayed: '',
+				instant: '',
+			}
+		);
 
 		transition.generated = {
 			delayed: ((transition.property) + ": " + (composed.delayed) + ";"),
@@ -840,7 +877,6 @@ function style (element) {
 
 function initialize () {
 	var this$1 = this;
-
 
 	rinse.call(this);
 
@@ -882,40 +918,41 @@ function initialize () {
 	this.initTimeout = null;
 }
 
-function animate (element, options) {
-	if ( options === void 0 ) options = {};
+function animate (element, force) {
+	if ( force === void 0 ) force = {};
 
-	var pristine = options.pristine || this.pristine;
-	var delayed = element.config.useDelay === 'always'
-		|| element.config.useDelay === 'onload' && pristine
-		|| element.config.useDelay === 'once' && !element.seen;
+	var pristine = force.pristine || this.pristine;
+	var delayed =
+		element.config.useDelay === 'always' ||
+		(element.config.useDelay === 'onload' && pristine) ||
+		(element.config.useDelay === 'once' && !element.seen);
 
 	var shouldReveal = element.visible && !element.revealed;
 	var shouldReset = !element.visible && element.revealed && element.config.reset;
 
-	if (shouldReveal || options.reveal) {
+	if (shouldReveal || force.reveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset || options.reset) {
+	if (shouldReset || force.reset) {
 		return triggerReset.call(this, element)
 	}
 }
-
 
 function triggerReveal (element, delayed) {
 	var styles = [
 		element.styles.inline,
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final ];
-	delayed
-		? styles.push(element.styles.transition.generated.delayed)
-		: styles.push(element.styles.transition.generated.instant);
+	if (delayed) {
+		styles.push(element.styles.transition.generated.delayed);
+	} else {
+		styles.push(element.styles.transition.generated.instant);
+	}
 	element.revealed = element.seen = true;
 	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
 	registerCallbacks.call(this, element, delayed);
 }
-
 
 function triggerReset (element) {
 	var styles = [
@@ -928,7 +965,6 @@ function triggerReset (element) {
 	registerCallbacks.call(this, element);
 }
 
-
 function registerCallbacks (element, isDelayed) {
 	var this$1 = this;
 
@@ -940,9 +976,7 @@ function registerCallbacks (element, isDelayed) {
 		? element.config.beforeReveal
 		: element.config.beforeReset;
 
-	var afterCallback = element.revealed
-		? element.config.afterReveal
-		: element.config.afterReset;
+	var afterCallback = element.revealed ? element.config.afterReveal : element.config.afterReset;
 
 	var elapsed = 0;
 	if (element.callbackTimer) {
@@ -1002,7 +1036,7 @@ function sequence (element, pristine) {
 		/**
 		 * Assuming we have something visible on screen
 		 * already, and we need to evaluate the element
-		 * that was passed in…
+		 * that was passed in...
 		 *
 		 * We first check if the element should reset.
 		 */
@@ -1030,10 +1064,8 @@ function sequence (element, pristine) {
 	}
 }
 
-
 function Sequence (interval) {
 	if (typeof interval === 'number') {
-
 		if (interval >= 16) {
 			/**
 			 * Instance details.
@@ -1055,20 +1087,16 @@ function Sequence (interval) {
 			this.lastReveal = null;
 			this.lastReset = null;
 			this.models = {};
-
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
 		}
-
 	} else {
 		return null
 	}
 }
 
-
 function SequenceModel (prop, sequence, store) {
 	var this$1 = this;
-
 
 	this.head = []; // Elements before the body with a falsey prop.
 	this.body = []; // Elements with a truthy prop.
@@ -1085,14 +1113,15 @@ function SequenceModel (prop, sequence, store) {
 		each(sequence.members, function (id, index) {
 			var element = store.elements[id];
 			if (element && !element[prop]) {
-				index < this$1.body[0]
-					? this$1.head.push(index)
-					: this$1.foot.push(index);
+				if (index < this$1.body[0]) {
+					this$1.head.push(index);
+				} else {
+					this$1.foot.push(index);
+				}
 			}
 		});
 	}
 }
-
 
 function cue (seq, i, charge, pristine) {
 	var this$1 = this;
@@ -1114,13 +1143,11 @@ function cue (seq, i, charge, pristine) {
 function reveal (target, options, interval, sync) {
 	var this$1 = this;
 
-
 	var containerBuffer = [];
 
 	/**
-	 * The reveal method has an optional 2nd parameter,
-	 * so here we just shuffle things around to accept
-	 * the interval being passed as the 2nd argument.
+	 * The reveal method has optional 2nd and 3rd parameters,
+	 * so we first explicitly check what was passed in.
 	 */
 	if (typeof options === 'number') {
 		interval = parseInt(options);
@@ -1160,7 +1187,6 @@ function reveal (target, options, interval, sync) {
 				 * has to be reverted to it's pre-reveal state.
 				 */
 				element.node.setAttribute('style', element.styles.inline);
-
 			} else {
 				element.id = nextUniqueId();
 				element.node = elementNode;
@@ -1178,7 +1204,7 @@ function reveal (target, options, interval, sync) {
 			var disabled;
 			{
 				if (disabled == null) {
-					disabled = !config.mobile && isMobile() || !config.desktop && !isMobile();
+					disabled = (!config.mobile && isMobile()) || (!config.desktop && !isMobile());
 				}
 				if (disabled) {
 					if (existingId) {
@@ -1232,7 +1258,6 @@ function reveal (target, options, interval, sync) {
 			this$1.store.elements[element.id] = element;
 			element.node.setAttribute('data-sr-id', element.id);
 		});
-
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
@@ -1262,7 +1287,7 @@ function reveal (target, options, interval, sync) {
 
 		/**
 		* Push initialization to the event queue, giving
-		* multiple reveal calls time to be interpretted.
+		* multiple reveal calls time to be interpreted.
 		*/
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout);
@@ -1271,7 +1296,6 @@ function reveal (target, options, interval, sync) {
 	}
 }
 
-
 function getContainerId (node) {
 	var collections = [], len = arguments.length - 1;
 	while ( len-- > 0 ) collections[ len ] = arguments[ len + 1 ];
@@ -1279,7 +1303,7 @@ function getContainerId (node) {
 	var id = null;
 	each(collections, function (collection) {
 		each(collection, function (container) {
-			if (id == null && container.node === node) {
+			if (id === null && container.node === node) {
 				id = container.id;
 			}
 		});
@@ -1315,35 +1339,48 @@ var polyfill = (function () {
 	}
 })();
 
-
-var requestAnimationFrame = window.requestAnimationFrame
+// prettier-ignore
+var requestAnimationFrame =
+		window.requestAnimationFrame
 	|| window.webkitRequestAnimationFrame
 	|| window.mozRequestAnimationFrame
 	|| polyfill;
 
-function delegate (
-	event,
-	elements
-) {
+function delegate (event, elements) {
 	var this$1 = this;
 	if ( event === void 0 ) event = { type: 'init' };
 	if ( elements === void 0 ) elements = this.store.elements;
 
 	requestAnimationFrame(function () {
-		var containers = this$1.store.containers;
+		var stale = event.type === 'init' || event.type === 'resize';
 
-		if (event.type === 'init' || event.type === 'resize') {
-			each(containers, function (container) { return container.geometry = getGeometry.call(this$1, container, true); });
-			each(elements, function (element) { return element.geometry = getGeometry.call(this$1, element); });
-		}
+		each(this$1.store.containers, function (container) {
+			if (stale) {
+				container.geometry = getGeometry.call(this$1, container, true);
+			}
+			container.scroll = getScrolled.call(this$1, container);
+		});
 
-		each(containers, function (container) { return container.scroll = getScrolled.call(this$1, container); });
-		each(elements, function (element) { return element.visible = isElementVisible.call(this$1, element); });
+		/**
+		 * Due to how the sequencer is implemented, it’s
+		 * important that we update the state of all
+		 * elements, before any animation logic is
+		 * evaluated (in the second loop below).
+		 */
+		each(elements, function (element) {
+			if (stale) {
+				element.geometry = getGeometry.call(this$1, element);
+			}
+			element.visible = isElementVisible.call(this$1, element);
+		});
 
-		each(elements, function (element) { return element.sequence
-			? sequence.call(this$1, element)
-			: animate.call(this$1, element); }
-		);
+		each(elements, function (element) {
+			if (element.sequence) {
+				sequence.call(this$1, element);
+			} else {
+				animate.call(this$1, element);
+			}
+		});
 
 		this$1.pristine = false;
 	});
@@ -1359,11 +1396,10 @@ function ScrollReveal (options) {
 	var this$1 = this;
 	if ( options === void 0 ) options = {};
 
+	var invokedWithoutNew =
+		typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype;
 
-	/**
-	 * Support instantiation without the `new` keyword.
-	 */
-	if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
+	if (invokedWithoutNew) {
 		return new ScrollReveal(options)
 	}
 
@@ -1379,9 +1415,7 @@ function ScrollReveal (options) {
 	var buffer;
 	{
 		try {
-			buffer = _config
-				? deepAssign({}, _config, options)
-				: deepAssign({}, defaults, options);
+			buffer = _config ? deepAssign({}, _config, options) : deepAssign({}, defaults, options);
 		} catch (e) {
 			logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
 			return noop
@@ -1411,9 +1445,13 @@ function ScrollReveal (options) {
 		 * Modify the DOM to reflect successful instantiation.
 		 */
 		document.documentElement.classList.add('sr');
-		document.addEventListener('DOMContentLoaded', function () {
-			window.setTimeout(function () { return document.body.style.height = '100%'; }, 0);
-		});
+		if (document.body) {
+			document.body.style.height = '100%';
+		} else {
+			document.addEventListener('DOMContentLoaded', function () {
+				document.body.style.height = '100%';
+			});
+		}
 	}
 
 	this.store = {
@@ -1429,23 +1467,21 @@ function ScrollReveal (options) {
 	Object.defineProperty(this, 'version', { get: function () { return version; } });
 	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 
-	return _instance ? _instance : _instance = this
+	return _instance ? _instance : (_instance = this)
 }
 
 /**
  * Static members are available immediately during instantiation,
  * so debugging and browser support details are handled here.
  */
-{
-	ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
+ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
-	Object.defineProperty(ScrollReveal, 'debug', {
-		get: function () { return _debug || false; },
-		set: function (value) {
-			if (typeof value === 'boolean') { _debug = value; }
-		},
-	});
-}
+Object.defineProperty(ScrollReveal, 'debug', {
+	get: function () { return _debug || false; },
+	set: function (value) {
+		if (typeof value === 'boolean') { _debug = value; }
+	},
+});
 
 /**
  * The primary API is comprised
@@ -1455,37 +1491,5 @@ ScrollReveal.prototype.clean = clean;
 ScrollReveal.prototype.destroy = destroy;
 ScrollReveal.prototype.reveal = reveal;
 ScrollReveal.prototype.sync = sync;
-
-/////    /////    /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-/////             /////    /////
-/////             /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-         /////    /////
-         /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-/////    /////    /////    /////
-
-/*!
- * ScrollReveal
- * ------------
- * Website : https://scrollrevealjs.org
- * Support : https://github.com/jlmakes/scrollreveal/issues
- * Author  : https://twitter.com/jlmakes
- *
- * Licensed under the GNU General Public License 3.0 for
- * compatible open source projects and non-commercial use.
- *
- * For commercial sites, themes, projects, and applications,
- * keep your source code proprietary and please purchase a
- * commercial license from https://scrollrevealjs.org
- *
- * Copyright (c) 2014–2017 Julian Lloyd. All rights reserved.
- */
 
 export default ScrollReveal;
