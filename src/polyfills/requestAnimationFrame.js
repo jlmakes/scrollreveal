@@ -12,8 +12,9 @@ export const polyfill = (() => {
 	}
 })()
 
-
-export const requestAnimationFrame = window.requestAnimationFrame
+// prettier-ignore
+export const requestAnimationFrame =
+		window.requestAnimationFrame
 	|| window.webkitRequestAnimationFrame
 	|| window.mozRequestAnimationFrame
 	|| polyfill

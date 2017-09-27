@@ -1,37 +1,24 @@
 {
-  "name": "scrollreveal",
-  "description": "Easy scroll animations for web and mobile browsers.",
-  "homepage": "https://scrollrevealjs.org",
-  "main": [
-    "dist/scrollreveal.js"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jlmakes/scrollreveal.git"
-  },
-  "moduleType": [
-    "amd",
-    "node",
-    "globals"
-  ],
-  "ignore": [
-    "**/.*",
-    "lib",
-    "src",
-    "test",
-    "gulpfile.js",
-    "karma.conf.js",
-    "package.json",
-    "saucelabs-browsers.js"
-  ],
-  "keywords": [
-    "scroll",
-    "reveal",
-    "animate",
-    "animation"
-  ],
-  "authors": [
-    "Julian Lloyd"
-  ],
-  "license": "GPL-3.0"
+    "name": "scrollreveal",
+    "description": "Easy scroll animations for web and mobile browsers.",
+    "homepage": "https://scrollrevealjs.org",
+    "main": ["dist/scrollreveal.js"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jlmakes/scrollreveal.git"
+    },
+    "moduleType": ["amd", "node", "globals"],
+    "ignore": [
+        "**/.*",
+        "lib",
+        "src",
+        "test",
+        "gulpfile.js",
+        "karma.conf.js",
+        "package.json",
+        "saucelabs-browsers.js"
+    ],
+    "keywords": ["scroll", "reveal", "animate", "animation"],
+    "authors": ["Julian Lloyd"],
+    "license": "GPL-3.0"
 }

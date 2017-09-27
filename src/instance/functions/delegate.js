@@ -5,13 +5,9 @@ import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame'
 import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
 import { each } from '../../utils/generic'
 
-
-export default function delegate (
-	event = { type: 'init' },
-	elements = this.store.elements
-) {
+export default function delegate (event = { type: 'init' }, elements = this.store.elements) {
 	requestAnimationFrame(() => {
-		const stale = (event.type === 'init' || event.type === 'resize')
+		const stale = event.type === 'init' || event.type === 'resize'
 
 		each(this.store.containers, container => {
 			if (stale) {

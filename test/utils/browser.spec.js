@@ -1,10 +1,7 @@
 import * as browser from '../../src/utils/browser'
 
-
 describe('Browser Utilities', () => {
-
 	describe('getPrefixedStyleProperty()', () => {
-
 		beforeEach('clear cache', () => {
 			browser.getPrefixedStyleProperty.clearCache()
 		})
@@ -55,9 +52,7 @@ describe('Browser Utilities', () => {
 	})
 
 	describe('isMobile()', () => {
-
 		it('should return true when passed a mobile user agent', () => {
-
 			const android = `Mozilla/5.0 (Linux; U; Android 4.2; en-us;
 				Android SDK built for x86 Build/JOP40C) AppleWebKit/534.30
 				(KHTML, like Gecko) Version/4.0 Mobile Safari/534.30`
@@ -70,7 +65,6 @@ describe('Browser Utilities', () => {
 		})
 
 		it('should return false when passed a desktop user agent', () => {
-
 			const chrome = `Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
 				(KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36`
 
@@ -90,7 +84,6 @@ describe('Browser Utilities', () => {
 	})
 
 	describe('isNode()', () => {
-
 		it('should return true when passed a DOM node', () => {
 			const result = browser.isNode(document.querySelector('body'))
 			expect(result).to.be.true
@@ -103,7 +96,6 @@ describe('Browser Utilities', () => {
 	})
 
 	describe('isNodeList()', () => {
-
 		it('should return true when passed a DOM node list', () => {
 			const result = browser.isNodeList(document.querySelectorAll('script'))
 			expect(result).to.be.true

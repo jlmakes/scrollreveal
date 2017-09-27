@@ -1,11 +1,8 @@
 import { polyfill } from '../../src/polyfills/requestAnimationFrame'
 
-
 describe('Polyfills', () => {
-
 	describe('requestAnimationFrame()', () => {
-
-		beforeEach('wait for animation frame clock to tick', (done) => {
+		beforeEach('wait for animation frame clock to tick', done => {
 			setTimeout(done, 24)
 		})
 
@@ -22,7 +19,9 @@ describe('Polyfills', () => {
 		it('should throttle callback invocations', () => {
 			const spy = sinon.spy()
 			const start = Date.now()
-			do { polyfill(spy) } while (Date.now() - start < 96)
+			do {
+				polyfill(spy)
+			} while (Date.now() - start < 96)
 			expect(spy.callCount).to.be.at.most(7)
 		})
 	})

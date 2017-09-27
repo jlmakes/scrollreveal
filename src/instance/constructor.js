@@ -14,17 +14,15 @@ import { deepAssign } from '../utils/generic'
 
 import { version } from '../../package.json'
 
-
 let _config
 let _debug
 let _instance
 
 export default function ScrollReveal (options = {}) {
+	const invokedWithoutNew =
+		typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype
 
-	/**
-	 * Support instantiation without the `new` keyword.
-	 */
-	if (typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype) {
+	if (invokedWithoutNew) {
 		return new ScrollReveal(options)
 	}
 
@@ -40,9 +38,7 @@ export default function ScrollReveal (options = {}) {
 	let buffer
 	{
 		try {
-			buffer = (_config)
-				? deepAssign({}, _config, options)
-				: deepAssign({}, defaults, options)
+			buffer = _config ? deepAssign({}, _config, options) : deepAssign({}, defaults, options)
 		} catch (e) {
 			logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
 			return noop
@@ -73,7 +69,7 @@ export default function ScrollReveal (options = {}) {
 		 */
 		document.documentElement.classList.add('sr')
 		document.addEventListener('DOMContentLoaded', () => {
-			window.setTimeout(() => document.body.style.height = '100%', 0)
+			window.setTimeout(() => (document.body.style.height = '100%'), 0)
 		})
 	}
 
@@ -90,7 +86,7 @@ export default function ScrollReveal (options = {}) {
 	Object.defineProperty(this, 'version', { get: () => version })
 	Object.defineProperty(this, 'noop', { get: () => false })
 
-	return _instance ? _instance : _instance = this
+	return _instance ? _instance : (_instance = this)
 }
 
 /**

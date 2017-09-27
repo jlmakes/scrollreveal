@@ -1,10 +1,7 @@
 import { deepAssign, isObject, each, nextUniqueId } from '../../src/utils/generic'
 
-
 describe('Generic Utilities', () => {
-
 	describe('deepAssign()', () => {
-
 		it('should assign source values to target object', () => {
 			const target = { foo: 'bar', bun: 'baz' }
 			const source = { foo: 'bonk!', bif: 'baff' }
@@ -43,7 +40,6 @@ describe('Generic Utilities', () => {
 	})
 
 	describe('isObject()', () => {
-
 		it('should return true when passed an object literal', () => {
 			const result = isObject({})
 			expect(result).to.be.true
@@ -71,14 +67,12 @@ describe('Generic Utilities', () => {
 	})
 
 	describe('each()', () => {
-
 		function Fixture () {
 			this.foo = 'bar'
 			this.baz = 'bun'
 		}
 
 		describe('when passed an object literal', () => {
-
 			it('invokes callback for each property', () => {
 				const fixture = new Fixture()
 				const spy = sinon.spy()
@@ -106,11 +100,9 @@ describe('Generic Utilities', () => {
 				expect(_key).to.equal('baz')
 				expect(_collection).to.deep.equal(fixture)
 			})
-
 		})
 
 		describe('when passed an array', () => {
-
 			const fixture = ['apple', 'orange', 'banana']
 
 			it('invokes callback for each value', () => {
@@ -147,7 +139,6 @@ describe('Generic Utilities', () => {
 	})
 
 	describe('nextUniqueId()', () => {
-
 		it('should start at 0', () => {
 			const result = nextUniqueId()
 			expect(result).to.equal(0)

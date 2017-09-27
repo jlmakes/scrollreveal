@@ -1,10 +1,7 @@
 import { getNode, getNodes, logger } from '../../src/utils/core'
 
-
 describe('Core Utilities', () => {
-
 	describe('getNode()', () => {
-
 		it('should return the same node when passed a node', () => {
 			const actual = document.documentElement
 			const result = getNode(actual)
@@ -41,7 +38,6 @@ describe('Core Utilities', () => {
 	})
 
 	describe('getNodes()', () => {
-
 		it('should return the same array of nodes when passed an array of nodes', () => {
 			const actual = [].concat(document.querySelectorAll('html, body, script'))
 			const result = getNodes(actual)
@@ -86,7 +82,6 @@ describe('Core Utilities', () => {
 	})
 
 	describe('logger()', () => {
-
 		const mock = { constructor: { debug: true } }
 
 		let spy

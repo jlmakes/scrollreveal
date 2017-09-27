@@ -1,7 +1,6 @@
 import animate from './animate'
 import { each, nextUniqueId } from '../../utils/generic'
 
-
 export default function sequence (element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]
 	const i = element.sequence.index
@@ -66,10 +65,8 @@ export default function sequence (element, pristine = this.pristine) {
 	}
 }
 
-
 export function Sequence (interval) {
 	if (typeof interval === 'number') {
-
 		if (interval >= 16) {
 			/**
 			 * Instance details.
@@ -91,19 +88,15 @@ export function Sequence (interval) {
 			this.lastReveal = null
 			this.lastReset = null
 			this.models = {}
-
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
 		}
-
 	} else {
 		return null
 	}
 }
 
-
 export function SequenceModel (prop, sequence, store) {
-
 	this.head = [] // Elements before the body with a falsey prop.
 	this.body = [] // Elements with a truthy prop.
 	this.foot = [] // Elements after the body with a falsey prop.
@@ -128,7 +121,6 @@ export function SequenceModel (prop, sequence, store) {
 		})
 	}
 }
-
 
 function cue (seq, i, charge, pristine) {
 	const blocked = ['headblocked', null, 'footblocked'][1 + charge]

@@ -2,9 +2,7 @@ import { each } from '../../utils/generic'
 import { getNodes, logger } from '../../utils/core'
 import rinse from '../functions/rinse'
 
-
 export default function clean (target) {
-
 	let dirty
 	try {
 		each(getNodes(target), node => {

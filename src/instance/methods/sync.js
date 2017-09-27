@@ -3,7 +3,6 @@ import reveal from './reveal'
 
 import { each } from '../../utils/generic'
 
-
 /**
  * Re-runs the reveal method for each record stored in history,
  * for capturing new content asynchronously loaded into the DOM.

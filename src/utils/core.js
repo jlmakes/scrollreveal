@@ -1,6 +1,5 @@
 import { isNode, isNodeList } from '../utils/browser'
 
-
 export function isElementVisible (element) {
 	const container = this.store.containers[element.containerId]
 	const viewFactor = Math.max(0, Math.min(1, element.config.viewFactor))
@@ -20,21 +19,22 @@ export function isElementVisible (element) {
 		left: container.geometry.bounds.left + container.scroll.left + viewOffset.left,
 	}
 
-	return elementBounds.top < containerBounds.bottom
-		&& elementBounds.right > containerBounds.left
-		&& elementBounds.bottom > containerBounds.top
-		&& elementBounds.left < containerBounds.right
-		|| element.styles.position === 'fixed'
+	return (
+		(elementBounds.top < containerBounds.bottom &&
+			elementBounds.right > containerBounds.left &&
+			elementBounds.bottom > containerBounds.top &&
+			elementBounds.left < containerBounds.right) ||
+		element.styles.position === 'fixed'
+	)
 }
-
 
 export function getGeometry (target, isContainer) {
 	/**
 	 * We want to ignore padding and scrollbars for container elements.
 	 * More information here: https://goo.gl/vOZpbz
 	 */
-	const height = (isContainer) ? target.node.clientHeight : target.node.offsetHeight
-	const width = (isContainer) ? target.node.clientWidth : target.node.offsetWidth
+	const height = isContainer ? target.node.clientHeight : target.node.offsetHeight
+	const width = isContainer ? target.node.clientWidth : target.node.offsetWidth
 
 	let offsetTop = 0
 	let offsetLeft = 0
@@ -62,7 +62,6 @@ export function getGeometry (target, isContainer) {
 	}
 }
 
-
 export function getNode (target, container = document) {
 	let node = null
 	if (typeof target === 'string') {
@@ -77,7 +76,6 @@ export function getNode (target, container = document) {
 	}
 	return isNode(target) ? target : node
 }
-
 
 export function getNodes (target, container = document) {
 	if (target instanceof Array) {
@@ -100,23 +98,22 @@ export function getNodes (target, container = document) {
 	}
 }
 
-
 export function getScrolled (container) {
-	return (container.node === document.documentElement)
+	return container.node === document.documentElement
 		? {
 			top: window.pageYOffset,
 			left: window.pageXOffset,
-		} : {
+		}
+		: {
 			top: container.node.scrollTop,
 			left: container.node.scrollLeft,
 		}
 }
 
-
 export function logger (message, ...details) {
 	if (this.constructor.debug && console) {
 		let report = `%cScrollReveal: ${message}`
-		details.forEach(detail => report += `\n — ${detail}`)
+		details.forEach(detail => (report += `\n — ${detail}`))
 		console.log(report, 'color: #ea654b;') // eslint-disable-line no-console
 	}
 }

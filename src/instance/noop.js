@@ -3,5 +3,7 @@ export default {
 	destroy () {},
 	reveal () {},
 	sync () {},
-	get noop () { return true },
+	get noop () {
+		return true
+	},
 }

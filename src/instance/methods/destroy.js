@@ -1,8 +1,6 @@
 import { each } from '../../utils/generic'
 
-
 export default function destroy () {
-
 	/**
 	 * Remove all generated styles and element ids
 	 */

@@ -8,7 +8,6 @@ import { deepAssign, each, nextUniqueId } from '../../utils/generic'
 import { isMobile } from '../../utils/browser'
 
 export default function reveal (target, options, interval, sync) {
-
 	const containerBuffer = []
 
 	/**
@@ -31,9 +30,7 @@ export default function reveal (target, options, interval, sync) {
 	let sequence
 	try {
 		nodes = getNodes(target)
-		sequence = (interval)
-			? new Sequence(interval)
-			: null
+		sequence = interval ? new Sequence(interval) : null
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
@@ -55,7 +52,6 @@ export default function reveal (target, options, interval, sync) {
 				 * has to be reverted to it's pre-reveal state.
 				 */
 				element.node.setAttribute('style', element.styles.inline)
-
 			} else {
 				element.id = nextUniqueId()
 				element.node = elementNode
@@ -73,7 +69,7 @@ export default function reveal (target, options, interval, sync) {
 			let disabled
 			{
 				if (disabled == null) {
-					disabled = !config.mobile && isMobile() || !config.desktop && !isMobile()
+					disabled = (!config.mobile && isMobile()) || (!config.desktop && !isMobile())
 				}
 				if (disabled) {
 					if (existingId) {
@@ -127,7 +123,6 @@ export default function reveal (target, options, interval, sync) {
 			this.store.elements[element.id] = element
 			element.node.setAttribute('data-sr-id', element.id)
 		})
-
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
@@ -165,7 +160,6 @@ export default function reveal (target, options, interval, sync) {
 		this.initTimeout = window.setTimeout(initialize.bind(this), 0)
 	}
 }
-
 
 function getContainerId (node, ...collections) {
 	let id = null

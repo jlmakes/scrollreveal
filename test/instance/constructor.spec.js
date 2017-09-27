@@ -2,9 +2,7 @@ import ScrollReveal from '../../src/instance/constructor'
 import { version } from '../../package.json'
 
 describe('ScrollReveal', () => {
-
 	describe('Constructor', () => {
-
 		it('should return a new instance with `new` keyword', () => {
 			const sr = new ScrollReveal()
 			expect(sr).to.exist
@@ -33,10 +31,7 @@ describe('ScrollReveal', () => {
 		})
 
 		it('should return a noop instance when not supported', () => {
-			const stubs = [
-				sinon.stub(console, 'log'),
-				sinon.stub(ScrollReveal, 'isSupported'),
-			]
+			const stubs = [sinon.stub(console, 'log'), sinon.stub(ScrollReveal, 'isSupported')]
 			const sr = ScrollReveal()
 			stubs.forEach(stub => stub.restore())
 			expect(sr.noop).to.be.true
@@ -94,7 +89,6 @@ describe('ScrollReveal', () => {
 	})
 
 	describe('Instance', () => {
-
 		const sr = new ScrollReveal()
 
 		it('should have a `clean` method', () => {
@@ -134,11 +128,7 @@ describe('ScrollReveal', () => {
 	})
 
 	describe('Non-operational Instance', () => {
-
-		const stubs = [
-			sinon.stub(console, 'log'),
-			sinon.stub(ScrollReveal, 'isSupported'),
-		]
+		const stubs = [sinon.stub(console, 'log'), sinon.stub(ScrollReveal, 'isSupported')]
 		const sr = ScrollReveal()
 		stubs.forEach(stub => stub.restore())
 

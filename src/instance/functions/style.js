@@ -1,16 +1,6 @@
-import {
-	parse,
-	multiply,
-	rotateX,
-	rotateY,
-	rotateZ,
-	scale,
-	translateX,
-	translateY,
-} from 'rematrix'
+import { parse, multiply, rotateX, rotateY, rotateZ, scale, translateX, translateY } from 'rematrix'
 
 import { getPrefixedStyleProperty } from '../../utils/browser'
-
 
 export default function style (element) {
 	const computed = window.getComputedStyle(element.node)
@@ -24,9 +14,9 @@ export default function style (element) {
 	const inlineStyle = element.node.getAttribute('style') || ''
 	const inlineMatch = inlineRegex.exec(inlineStyle)
 
-	let inline = (inlineMatch) ? `${inlineMatch[0]};` : ''
+	let inline = inlineMatch ? `${inlineMatch[0]};` : ''
 	if (inline.indexOf('visibility: visible') === -1) {
-		inline += (inline.length) ? ' ' : ''
+		inline += inline.length ? ' ' : ''
 		inline += 'visibility: visible;'
 	}
 
@@ -34,17 +24,13 @@ export default function style (element) {
 	 * Generate opacity styles
 	 */
 	const computedOpacity = parseFloat(computed.opacity)
-	const configOpacity = (!isNaN(parseFloat(config.opacity)))
+	const configOpacity = !isNaN(parseFloat(config.opacity))
 		? parseFloat(config.opacity)
 		: parseFloat(computed.opacity)
 
 	const opacity = {
-		computed: (computedOpacity !== configOpacity)
-			? `opacity: ${computedOpacity};`
-			: '',
-		generated: (computedOpacity !== configOpacity)
-			? `opacity: ${configOpacity};`
-			: '',
+		computed: computedOpacity !== configOpacity ? `opacity: ${computedOpacity};` : '',
+		generated: computedOpacity !== configOpacity ? `opacity: ${configOpacity};` : '',
 	}
 
 	/**
@@ -53,7 +39,7 @@ export default function style (element) {
 	const transformations = []
 
 	if (parseFloat(config.distance)) {
-		const axis = (config.origin === 'top' || config.origin === 'bottom') ? 'Y' : 'X'
+		const axis = config.origin === 'top' || config.origin === 'bottom' ? 'Y' : 'X'
 
 		/**
 		 * Let’s make sure our our pixel distances are negative for top and left.
@@ -61,9 +47,7 @@ export default function style (element) {
     	 */
 		let distance = config.distance
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = (/^-/.test(distance))
-				? distance.substr(1)
-				: `-${distance}`
+			distance = /^-/.test(distance) ? distance.substr(1) : `-${distance}`
 		}
 
 		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g)
@@ -86,9 +70,10 @@ export default function style (element) {
 				 * logic could instead utilize `element.geometry.height`
 				 * and `element.geoemetry.width` for the distaince calculation
 				 */
-				distance = (axis === 'Y')
-					? element.node.getBoundingClientRect().height * value / 100
-					: element.node.getBoundingClientRect().width * value / 100
+				distance =
+					axis === 'Y'
+						? element.node.getBoundingClientRect().height * value / 100
+						: element.node.getBoundingClientRect().width * value / 100
 				break
 			default:
 				throw new RangeError('Unrecognized or missing distance unit.')
@@ -128,7 +113,6 @@ export default function style (element) {
 
 	const transform = {}
 	if (transformations.length) {
-
 		transform.property = getPrefixedStyleProperty('transform')
 		/**
 		* The default computed transform value should be one of:
@@ -158,7 +142,6 @@ export default function style (element) {
 	 */
 	let transition = {}
 	if (opacity.generated || transform.generated.initial) {
-
 		transition.property = getPrefixedStyleProperty('transition')
 		transition.computed = computed[transition.property]
 		transition.fragments = []
@@ -190,14 +173,17 @@ export default function style (element) {
 			})
 		}
 
-		const composed = transition.fragments.reduce((composition, fragment, i) => {
-			composition.delayed += (i === 0) ? fragment.delayed : `, ${fragment.delayed}`
-			composition.instant += (i === 0) ? fragment.instant : `, ${fragment.instant}`
-			return composition
-		}, {
-			delayed: '',
-			instant: '',
-		})
+		const composed = transition.fragments.reduce(
+			(composition, fragment, i) => {
+				composition.delayed += i === 0 ? fragment.delayed : `, ${fragment.delayed}`
+				composition.instant += i === 0 ? fragment.instant : `, ${fragment.instant}`
+				return composition
+			},
+			{
+				delayed: '',
+				instant: '',
+			}
+		)
 
 		transition.generated = {
 			delayed: `${transition.property}: ${composed.delayed};`,

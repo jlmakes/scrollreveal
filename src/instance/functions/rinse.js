@@ -2,7 +2,6 @@ import { each } from '../../utils/generic'
 import { getNodes } from '../../utils/core'
 
 export default function rinse () {
-
 	const elementIds = {
 		active: [],
 		stale: [],
