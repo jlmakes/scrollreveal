@@ -21,6 +21,8 @@
 The simplest method is to copy paste this snippet just before your closing `</body>` tag.
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- or -->
 <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 ```
 
