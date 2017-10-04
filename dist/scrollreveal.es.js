@@ -1,5 +1,6 @@
-/*!
-	ScrollReveal v4.0.0-beta.14
+/*! @license ScrollReveal v4.0.0-beta.16
+
+	Copyright (C) 2017 Fisssion LLC
 
 	Licensed under the GNU General Public License 3.0 for
 	compatible open source projects and non-commercial use.
@@ -7,8 +8,6 @@
 	For commercial sites, themes, projects, and applications,
 	keep your source code private/proprietary by purchasing
 	a commercial license from https://scrollrevealjs.org/
-
-	Copyright (c) 2017 Fisssion LLC
 */
 var defaults = {
 	delay: 0,
@@ -437,7 +436,7 @@ function destroy () {
 
 /*  @license Rematrix v0.2.0
 
-    Copyright (c) 2017 Fisssion LLC
+    Copyright (C) 2017 Fisssion LLC
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -1386,7 +1385,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.14";
+var version = "4.0.0-beta.16";
 
 var _config;
 var _debug;
