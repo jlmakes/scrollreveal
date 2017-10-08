@@ -63,9 +63,7 @@ evergreenLaunchers.forEach(browser => {
 		let postfix = pastVersions > 0 ? `-${pastVersions}` : ''
 		const version = 'latest' + postfix
 
-		const launcher = `sl_win10_${browser}_latest${postfix}`
-			.replace(/-/g, '_')
-			.toLowerCase()
+		const launcher = `sl_win10_${browser}_latest${postfix}`.replace(/-/g, '_').toLowerCase()
 
 		launchers[launcher] = {
 			name: `${browserName} ${version}, Windows 10`,
