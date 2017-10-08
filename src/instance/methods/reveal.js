@@ -51,7 +51,7 @@ export default function reveal (target, options, interval, sync) {
 				 * from throwing off the new styles, the style tag
 				 * has to be reverted to it's pre-reveal state.
 				 */
-				element.node.setAttribute('style', element.styles.inline)
+				element.node.setAttribute('style', element.styles.inline.computed)
 			} else {
 				element.id = nextUniqueId()
 				element.node = elementNode

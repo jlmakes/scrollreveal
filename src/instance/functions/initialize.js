@@ -5,7 +5,7 @@ export default function initialize () {
 	rinse.call(this)
 
 	each(this.store.elements, element => {
-		let styles = [element.styles.inline]
+		let styles = [element.styles.inline.generated]
 
 		if (element.visible) {
 			styles.push(element.styles.opacity.computed)

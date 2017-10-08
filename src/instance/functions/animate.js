@@ -21,7 +21,7 @@ export default function animate (element, force = {}) {
 
 function triggerReveal (element, delayed) {
 	const styles = [
-		element.styles.inline,
+		element.styles.inline.generated,
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final,
 	]
@@ -37,7 +37,7 @@ function triggerReveal (element, delayed) {
 
 function triggerReset (element) {
 	const styles = [
-		element.styles.inline,
+		element.styles.inline.generated,
 		element.styles.opacity.generated,
 		element.styles.transform.generated.initial,
 		element.styles.transition.generated.instant,

@@ -10,14 +10,17 @@ export default function style (element) {
 	/**
 	 * Generate inline styles
 	 */
-	const inlineRegex = /.+[^;]/g
-	const inlineStyle = element.node.getAttribute('style') || ''
-	const inlineMatch = inlineRegex.exec(inlineStyle)
+	const inline = {}
 
-	let inline = inlineMatch ? `${inlineMatch[0]};` : ''
-	if (inline.indexOf('visibility: visible') === -1) {
-		inline += inline.length ? ' ' : ''
-		inline += 'visibility: visible;'
+	const inlineStyle = element.node.getAttribute('style') || ''
+	const inlineMatch = inlineStyle.match(/.+[^;]/g)
+
+	inline.computed = inlineMatch ? inlineMatch[0] : ''
+
+	if (inline.computed.indexOf('visibility: visible') === -1) {
+		inline.generated = inline.computed
+			? `${inline.raw}; visibility: visible;`
+			: 'visibility: visible;'
 	}
 
 	/**
