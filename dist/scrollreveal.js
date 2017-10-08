@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.16
+/*! @license ScrollReveal v4.0.0-beta.17
 
 	Copyright (C) 2017 Fisssion LLC
 
@@ -442,7 +442,7 @@ function destroy () {
 
 /*  @license Rematrix v0.2.0
 
-    Copyright (C) 2017 Fisssion LLC
+    Copyright (c) 2017 Fisssion LLC
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -681,14 +681,17 @@ function style (element) {
 	/**
 	 * Generate inline styles
 	 */
-	var inlineRegex = /.+[^;]/g;
-	var inlineStyle = element.node.getAttribute('style') || '';
-	var inlineMatch = inlineRegex.exec(inlineStyle);
+	var inline = {};
 
-	var inline = inlineMatch ? ((inlineMatch[0]) + ";") : '';
-	if (inline.indexOf('visibility: visible') === -1) {
-		inline += inline.length ? ' ' : '';
-		inline += 'visibility: visible;';
+	var inlineStyle = element.node.getAttribute('style') || '';
+	var inlineMatch = inlineStyle.match(/.+[^;]/g);
+
+	inline.computed = inlineMatch ? inlineMatch[0] : '';
+
+	if (inline.computed.indexOf('visibility: visible') === -1) {
+		inline.generated = inline.computed
+			? ((inline.raw) + "; visibility: visible;")
+			: 'visibility: visible;';
 	}
 
 	/**
@@ -886,7 +889,7 @@ function initialize () {
 	rinse.call(this);
 
 	each(this.store.elements, function (element) {
-		var styles = [element.styles.inline];
+		var styles = [element.styles.inline.generated];
 
 		if (element.visible) {
 			styles.push(element.styles.opacity.computed);
@@ -946,7 +949,7 @@ function animate (element, force) {
 
 function triggerReveal (element, delayed) {
 	var styles = [
-		element.styles.inline,
+		element.styles.inline.generated,
 		element.styles.opacity.computed,
 		element.styles.transform.generated.final ];
 	if (delayed) {
@@ -961,7 +964,7 @@ function triggerReveal (element, delayed) {
 
 function triggerReset (element) {
 	var styles = [
-		element.styles.inline,
+		element.styles.inline.generated,
 		element.styles.opacity.generated,
 		element.styles.transform.generated.initial,
 		element.styles.transition.generated.instant ];
@@ -1191,7 +1194,7 @@ function reveal (target, options, interval, sync) {
 				 * from throwing off the new styles, the style tag
 				 * has to be reverted to it's pre-reveal state.
 				 */
-				element.node.setAttribute('style', element.styles.inline);
+				element.node.setAttribute('style', element.styles.inline.computed);
 			} else {
 				element.id = nextUniqueId();
 				element.node = elementNode;
@@ -1391,7 +1394,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.16";
+var version = "4.0.0-beta.17";
 
 var _config;
 var _debug;
