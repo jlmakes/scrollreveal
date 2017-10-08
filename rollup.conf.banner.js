@@ -2,7 +2,7 @@ const { version } = require('./package.json')
 
 const banner = `/*! @license ScrollReveal v${version}
 
-	Copyright (C) 2017 Fisssion LLC
+	Copyright 2017 Fisssion LLC.
 
 	Licensed under the GNU General Public License 3.0 for
 	compatible open source projects and non-commercial use.
