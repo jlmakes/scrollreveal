@@ -1,6 +1,6 @@
-/*! @license ScrollReveal v4.0.0-beta.17
+/*! @license ScrollReveal v4.0.0-beta.18
 
-	Copyright (C) 2017 Fisssion LLC
+	Copyright 2017 Fisssion LLC.
 
 	Licensed under the GNU General Public License 3.0 for
 	compatible open source projects and non-commercial use.
@@ -440,27 +440,27 @@ function destroy () {
 	};
 }
 
-/*  @license Rematrix v0.2.0
+/*! @license Rematrix v0.2.1
 
-    Copyright (c) 2017 Fisssion LLC
+	Copyright 2017 Fisssion LLC.
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
 */
 /**
  * @module Rematrix
@@ -498,7 +498,6 @@ function format (source) {
 	throw new RangeError('Expected array with either 6 or 16 values.')
 }
 
-
 /**
  * Returns a matrix representing no transformation. The product of any matrix
  * multiplied by the identity matrix will be the original matrix.
@@ -514,7 +513,6 @@ function identity () {
 	}
 	return matrix
 }
-
 
 /**
  * Returns a 4x4 matrix describing the combined transformations
@@ -548,7 +546,6 @@ function multiply (m, x) {
 	return product
 }
 
-
 /**
  * Attempts to return a 4x4 matrix describing the CSS transform
  * matrix passed in, but will return the identity matrix as a
@@ -572,7 +569,6 @@ function parse (source) {
 	return identity()
 }
 
-
 /**
  * Returns a 4x4 matrix describing X-axis rotation.
  *
@@ -589,7 +585,6 @@ function rotateX (angle) {
 
 	return matrix
 }
-
 
 /**
  * Returns a 4x4 matrix describing Y-axis rotation.
@@ -608,7 +603,6 @@ function rotateY (angle) {
 	return matrix
 }
 
-
 /**
  * Returns a 4x4 matrix describing Z-axis rotation.
  *
@@ -626,7 +620,6 @@ function rotateZ (angle) {
 	return matrix
 }
 
-
 /**
 * Returns a 4x4 matrix describing 2D scaling. The first argument
 * is used for both X and Y-axis scaling, unless an optional
@@ -640,13 +633,10 @@ function scale (scalar, scalarY) {
 	var matrix = identity();
 
 	matrix[0] = scalar;
-	matrix[5] = typeof scalarY === 'number'
-		? scalarY
-		: scalar;
+	matrix[5] = typeof scalarY === 'number' ? scalarY : scalar;
 
 	return matrix
 }
-
 
 /**
  * Returns a 4x4 matrix describing X-axis translation.
@@ -659,7 +649,6 @@ function translateX (distance) {
 	matrix[12] = distance;
 	return matrix
 }
-
 
 /**
  * Returns a 4x4 matrix describing Y-axis translation.
@@ -1394,7 +1383,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.17";
+var version = "4.0.0-beta.18";
 
 var _config;
 var _debug;
