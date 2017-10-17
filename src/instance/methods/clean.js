@@ -9,7 +9,7 @@ export default function clean (target) {
 			const id = node.getAttribute('data-sr-id')
 			if (id !== null) {
 				dirty = true
-				node.setAttribute('style', this.store.elements[id].styles.inline)
+				node.setAttribute('style', this.store.elements[id].styles.inline.generated)
 				node.removeAttribute('data-sr-id')
 				delete this.store.elements[id]
 			}
