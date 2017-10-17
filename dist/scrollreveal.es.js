@@ -381,7 +381,7 @@ function clean (target) {
 			var id = node.getAttribute('data-sr-id');
 			if (id !== null) {
 				dirty = true;
-				node.setAttribute('style', this$1.store.elements[id].styles.inline);
+				node.setAttribute('style', this$1.store.elements[id].styles.inline.generated);
 				node.removeAttribute('data-sr-id');
 				delete this$1.store.elements[id];
 			}
@@ -671,11 +671,9 @@ function style (element) {
 
 	inline.computed = inlineMatch ? inlineMatch[0] : '';
 
-	if (inline.computed.indexOf('visibility: visible') === -1) {
-		inline.generated = inline.computed
-			? ((inline.raw) + "; visibility: visible;")
-			: 'visibility: visible;';
-	}
+	inline.generated = (inline.computed.indexOf('visibility: visible') === -1)
+		? inline.computed + '; visibility: visible;'
+		: inline.computed + ';';
 
 	/**
 	 * Generate opacity styles
