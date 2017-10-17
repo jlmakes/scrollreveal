@@ -17,11 +17,9 @@ export default function style (element) {
 
 	inline.computed = inlineMatch ? inlineMatch[0] : ''
 
-	if (inline.computed.indexOf('visibility: visible') === -1) {
-		inline.generated = inline.computed
-			? `${inline.raw}; visibility: visible;`
-			: 'visibility: visible;'
-	}
+	inline.generated = (inline.computed.indexOf('visibility: visible') === -1)
+		? inline.computed + '; visibility: visible;'
+		: inline.computed + ';'
 
 	/**
 	 * Generate opacity styles
