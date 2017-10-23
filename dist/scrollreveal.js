@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.18
+/*! @license ScrollReveal v4.0.0-beta.19
 
 	Copyright 2017 Fisssion LLC.
 
@@ -1381,7 +1381,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.18";
+var version = "4.0.0-beta.19";
 
 var _config;
 var _debug;
