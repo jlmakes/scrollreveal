@@ -13,13 +13,13 @@ export default function style (element) {
 	const inline = {}
 
 	const inlineStyle = element.node.getAttribute('style') || ''
-	const inlineMatch = inlineStyle.match(/.+[^;]/g)
+	const inlineMatch = inlineStyle.match(/([\w|:|\-\s|\.]+)/ig) || []
 
-	inline.computed = inlineMatch ? inlineMatch[0] : ''
+	inline.computed = (inlineMatch.length) ? inlineMatch.map(value => { return value.trim() }).join(';') + ';': ''
 
-	inline.generated = (inline.computed.indexOf('visibility: visible') === -1)
-		? inline.computed + '; visibility: visible;'
-		: inline.computed + ';'
+	inline.generated = (inline.computed.match(/visibility:(| )visible/ig))
+		? inline.computed
+		: inline.computed + 'visibility: visible;'
 
 	/**
 	 * Generate opacity styles

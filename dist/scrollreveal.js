@@ -673,13 +673,13 @@ function style (element) {
 	var inline = {};
 
 	var inlineStyle = element.node.getAttribute('style') || '';
-	var inlineMatch = inlineStyle.match(/.+[^;]/g);
+	var inlineMatch = inlineStyle.match(/([\w|:|\-\s|\.]+)/ig) || [];
 
-	inline.computed = inlineMatch ? inlineMatch[0] : '';
+	inline.computed = (inlineMatch.length) ? inlineMatch.map(function (value) { return value.trim() }).join(';') + ';': '';
 
-	inline.generated = (inline.computed.indexOf('visibility: visible') === -1)
-		? inline.computed + '; visibility: visible;'
-		: inline.computed + ';';
+	inline.generated = (inline.computed.match(/visibility:(| )visible/ig))
+		? inline.computed
+		: inline.computed + 'visibility: visible;';
 
 	/**
 	 * Generate opacity styles
