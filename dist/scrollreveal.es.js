@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.20
+/*! @license ScrollReveal v4.0.0-beta.21
 
 	Copyright 2017 Fisssion LLC.
 
@@ -1313,7 +1313,10 @@ function sync () {
 	initialize.call(this);
 }
 
-var polyfill = (function () {
+var polyfill = function (x) { return (x > 0) - (x < 0) || +x; };
+var mathSign = Math.sign || polyfill;
+
+var polyfill$1 = (function () {
 	var clock = Date.now();
 
 	return function (callback) {
@@ -1322,17 +1325,16 @@ var polyfill = (function () {
 			clock = currentTime;
 			callback(currentTime);
 		} else {
-			setTimeout(function () { return polyfill(callback); }, 0);
+			setTimeout(function () { return polyfill$1(callback); }, 0);
 		}
 	}
 })();
 
-// prettier-ignore
 var requestAnimationFrame =
-		window.requestAnimationFrame
-	|| window.webkitRequestAnimationFrame
-	|| window.mozRequestAnimationFrame
-	|| polyfill;
+	window.requestAnimationFrame ||
+	window.webkitRequestAnimationFrame ||
+	window.mozRequestAnimationFrame ||
+	polyfill$1;
 
 function delegate (event, elements) {
 	var this$1 = this;
@@ -1349,8 +1351,8 @@ function delegate (event, elements) {
 			var scroll = getScrolled.call(this$1, container);
 			if (container.scroll) {
 				container.direction = {
-					x: Math.sign(scroll.left - container.scroll.left),
-					y: Math.sign(scroll.top - container.scroll.top),
+					x: mathSign(scroll.left - container.scroll.left),
+					y: mathSign(scroll.top - container.scroll.top),
 				};
 			}
 			container.scroll = scroll;
@@ -1381,7 +1383,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.20";
+var version = "4.0.0-beta.21";
 
 var _config;
 var _debug;
