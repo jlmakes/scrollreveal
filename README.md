@@ -17,7 +17,7 @@
 	<a href="https://www.npmjs.com/package/scrollreveal">
 		<img src="https://img.shields.io/npm/v/scrollreveal/beta.svg" alt="Version">
 	</a>
-	<img src="https://img.shields.io/badge/min+gzip-5.3KB-blue.svg" alt="5.3KB min+gzip">
+	<img src="https://img.shields.io/badge/min+gzip-5.4KB-blue.svg" alt="5.4KB min+gzip">
 	<a href="https://opensource.org/licenses/GPL-3.0">
 		<img src="https://img.shields.io/badge/license-GPLv3-1283c3.svg" alt="GPLv3 License">
 	</a>
