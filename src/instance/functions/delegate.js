@@ -13,7 +13,14 @@ export default function delegate (event = { type: 'init' }, elements = this.stor
 			if (stale) {
 				container.geometry = getGeometry.call(this, container, true)
 			}
-			container.scroll = getScrolled.call(this, container)
+			const scroll = getScrolled.call(this, container)
+			if (container.scroll) {
+				container.direction = {
+					x: Math.sign(scroll.left - container.scroll.left),
+					y: Math.sign(scroll.top - container.scroll.top),
+				}
+			}
+			container.scroll = scroll
 		})
 
 		/**
