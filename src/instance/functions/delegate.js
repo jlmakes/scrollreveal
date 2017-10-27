@@ -1,6 +1,7 @@
 import animate from './animate'
 import sequence from './sequence'
 
+import { mathSign } from '../../polyfills/mathSign'
 import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame'
 import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
 import { each } from '../../utils/generic'
@@ -16,8 +17,8 @@ export default function delegate (event = { type: 'init' }, elements = this.stor
 			const scroll = getScrolled.call(this, container)
 			if (container.scroll) {
 				container.direction = {
-					x: Math.sign(scroll.left - container.scroll.left),
-					y: Math.sign(scroll.top - container.scroll.top),
+					x: mathSign(scroll.left - container.scroll.left),
+					y: mathSign(scroll.top - container.scroll.top),
 				}
 			}
 			container.scroll = scroll
