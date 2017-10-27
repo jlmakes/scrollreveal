@@ -11,15 +11,14 @@ export default function style (element) {
 	 * Generate inline styles
 	 */
 	const inline = {}
-
 	const inlineStyle = element.node.getAttribute('style') || ''
-	const inlineMatch = inlineStyle.match(/([\w|:|\-\s|\.]+)/ig) || []
+	const inlineMatch = inlineStyle.match(/[\w-]+\s*:\s*[^;]+\s*/gi) || []
 
-	inline.computed = (inlineMatch.length) ? inlineMatch.map(value => { return value.trim() }).join(';') + ';': ''
+	inline.computed = inlineMatch ? inlineMatch.map(m => m.trim()).join('; ') + ';' : ''
 
-	inline.generated = (inline.computed.match(/visibility:(| )visible/ig))
+	inline.generated = inlineMatch.some(m => m.match(/visibility\:\s?visible/i))
 		? inline.computed
-		: inline.computed + 'visibility: visible;'
+		: [...inlineMatch, 'visibility: visible'].map(m => m.trim()).join('; ') + ';'
 
 	/**
 	 * Generate opacity styles

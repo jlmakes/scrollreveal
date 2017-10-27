@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.19
+/*! @license ScrollReveal v4.0.0-beta.20
 
 	Copyright 2017 Fisssion LLC.
 
@@ -665,15 +665,14 @@ function style (element) {
 	 * Generate inline styles
 	 */
 	var inline = {};
-
 	var inlineStyle = element.node.getAttribute('style') || '';
-	var inlineMatch = inlineStyle.match(/([\w|:|\-\s|\.]+)/ig) || [];
+	var inlineMatch = inlineStyle.match(/[\w-]+\s*:\s*[^;]+\s*/gi) || [];
 
-	inline.computed = (inlineMatch.length) ? inlineMatch.map(function (value) { return value.trim() }).join(';') + ';': '';
+	inline.computed = inlineMatch ? inlineMatch.map(function (m) { return m.trim(); }).join('; ') + ';' : '';
 
-	inline.generated = (inline.computed.match(/visibility:(| )visible/ig))
+	inline.generated = inlineMatch.some(function (m) { return m.match(/visibility\:\s?visible/i); })
 		? inline.computed
-		: inline.computed + 'visibility: visible;';
+		: inlineMatch.concat( ['visibility: visible']).map(function (m) { return m.trim(); }).join('; ') + ';';
 
 	/**
 	 * Generate opacity styles
@@ -1347,7 +1346,14 @@ function delegate (event, elements) {
 			if (stale) {
 				container.geometry = getGeometry.call(this$1, container, true);
 			}
-			container.scroll = getScrolled.call(this$1, container);
+			var scroll = getScrolled.call(this$1, container);
+			if (container.scroll) {
+				container.direction = {
+					x: Math.sign(scroll.left - container.scroll.left),
+					y: Math.sign(scroll.top - container.scroll.top),
+				};
+			}
+			container.scroll = scroll;
 		});
 
 		/**
@@ -1375,7 +1381,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.19";
+var version = "4.0.0-beta.20";
 
 var _config;
 var _debug;

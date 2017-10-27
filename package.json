@@ -1,63 +1,63 @@
 {
-    "name": "scrollreveal",
-    "version": "4.0.0-beta.19",
-    "description": "Animate elements as they scroll into view",
-    "homepage": "https://scrollrevealjs.org",
-    "main": "dist/scrollreveal.js",
-    "module": "dist/scrollreveal.es.js",
-    "jsnext:main": "dist/scrollreveal.es.js",
-    "files": ["dist"],
-    "scripts": {
-        "prebuild": "rm -rf dist/*",
-        "build": "npm run bundle && npm run bundle:min",
-        "bundle": "./node_modules/rollup/bin/rollup -c rollup.conf.js",
-        "bundle:min": "./node_modules/rollup/bin/rollup -c rollup.conf.min.js",
-        "lint": "./node_modules/eslint/bin/eslint.js src test",
-        "pretest": "rm -rf .ignore/coverage/**/ && npm run lint",
-        "test": "./node_modules/karma/bin/karma start karma.conf.js",
-        "testing": "npm test -- --no-single-run",
-        "coverage": "COVERAGE=true ./node_modules/karma/bin/karma start karma.conf.js",
-        "sandbox:bundle":
-            "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
-        "sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
-        "coverage:server": "node ./.ignore/coverage/server.coverage.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/jlmakes/scrollreveal.git"
-    },
-    "bugs": {
-        "url": "https://github.com/jlmakes/scrollreveal/issues"
-    },
-    "dependencies": {
-        "rematrix": "^0.2.1"
-    },
-    "devDependencies": {
-        "chai": "^3.5.0",
-        "eslint": "^3.11.0",
-        "karma": "^1.3.0",
-        "karma-chrome-launcher": "^2.0.0",
-        "karma-coverage": "^1.1.1",
-        "karma-coveralls": "^1.1.2",
-        "karma-mocha": "^1.3.0",
-        "karma-mocha-reporter": "^2.2.0",
-        "karma-phantomjs-launcher": "^1.0.2",
-        "karma-rollup-preprocessor": "^5.0.1",
-        "karma-sauce-launcher": "^1.1.0",
-        "karma-sinon-chai": "^1.2.4",
-        "live-server": "jlmakes/live-server",
-        "mocha": "^3.1.2",
-        "rollup": "^0.48",
-        "rollup-plugin-buble": "^0.x",
-        "rollup-plugin-istanbul": "^1.1.0",
-        "rollup-plugin-json": "^2.1.0",
-        "rollup-plugin-node-resolve": "^2.0.0",
-        "rollup-plugin-strip": "^1.1.1",
-        "rollup-plugin-uglify": "^1.0.1",
-        "rollup-watch": "^3.2.2",
-        "sinon": "^1.17.6",
-        "sinon-chai": "^2.8.0"
-    },
-    "author": "Julian Lloyd",
-    "license": "GPL-3.0"
+	"name": "scrollreveal",
+	"version": "4.0.0-beta.20",
+	"description": "Animate elements as they scroll into view",
+	"homepage": "https://scrollrevealjs.org",
+	"main": "dist/scrollreveal.js",
+	"module": "dist/scrollreveal.es.js",
+	"jsnext:main": "dist/scrollreveal.es.js",
+	"files": ["dist"],
+	"scripts": {
+		"prebuild": "rm -rf dist/*",
+		"build": "npm run bundle && npm run bundle:min",
+		"bundle": "./node_modules/rollup/bin/rollup -c rollup.conf.js",
+		"bundle:min": "./node_modules/rollup/bin/rollup -c rollup.conf.min.js",
+		"lint": "./node_modules/eslint/bin/eslint.js src test",
+		"pretest": "rm -rf .ignore/coverage/**/ && npm run lint",
+		"test": "./node_modules/karma/bin/karma start karma.conf.js",
+		"testing": "npm test -- --no-single-run",
+		"coverage": "COVERAGE=true ./node_modules/karma/bin/karma start karma.conf.js",
+		"sandbox:bundle":
+			"./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
+		"sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
+		"coverage:server": "node ./.ignore/coverage/server.coverage.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jlmakes/scrollreveal.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jlmakes/scrollreveal/issues"
+	},
+	"dependencies": {
+		"rematrix": "^0.2.1"
+	},
+	"devDependencies": {
+		"chai": "^3.5.0",
+		"eslint": "^3.11.0",
+		"karma": "^1.3.0",
+		"karma-chrome-launcher": "^2.0.0",
+		"karma-coverage": "^1.1.1",
+		"karma-coveralls": "^1.1.2",
+		"karma-mocha": "^1.3.0",
+		"karma-mocha-reporter": "^2.2.0",
+		"karma-phantomjs-launcher": "^1.0.2",
+		"karma-rollup-preprocessor": "^5.0.1",
+		"karma-sauce-launcher": "^1.1.0",
+		"karma-sinon-chai": "^1.2.4",
+		"live-server": "jlmakes/live-server",
+		"mocha": "^3.1.2",
+		"rollup": "^0.48",
+		"rollup-plugin-buble": "^0.x",
+		"rollup-plugin-istanbul": "^1.1.0",
+		"rollup-plugin-json": "^2.1.0",
+		"rollup-plugin-node-resolve": "^2.0.0",
+		"rollup-plugin-strip": "^1.1.1",
+		"rollup-plugin-uglify": "^1.0.1",
+		"rollup-watch": "^3.2.2",
+		"sinon": "^1.17.6",
+		"sinon-chai": "^2.8.0"
+	},
+	"author": "Julian Lloyd",
+	"license": "GPL-3.0"
 }
