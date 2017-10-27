@@ -1,17 +1,15 @@
 # Change Log
-All notable changes to this project will be documented in this file,
-and this project tries its best to use [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
 ### Added
 - ScrollReveal can be enabled/disabled on desktops using `options.desktop`.
-- ScrollReveal adds `.sr` to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
-- ScrollReveal adds `height: 100%` to `<body>` during instantiation when supported. [#298](https://github.com/jlmakes/scrollreveal/issues/298)
-- ScrollReveal removes unused containers from the store and unbinds their event listeners.
+- The class `sr` is added to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
+- `height: 100%` is added to `<body>` during instantiation when supported. [#298](https://github.com/jlmakes/scrollreveal/issues/298)
+- Unused containers are removed from the store, and their event listeners destroyed.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
-- ScrollReveal removes generated styles after reveals complete when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
+- Generated styles are removed upon reveal completion, when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal tracks scroll direction as container store data. [#384](https://github.com/jlmakes/scrollreveal/issues/384)
 - New `clean()` method removes specific generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
 - New `destroy()` method removes all generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
@@ -27,7 +25,7 @@ and this project tries its best to use [Semantic Versioning](http://semver.org/)
 - Elements in a reveal sequence are no longer grouped, and reveal progressively when visible.
 - ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
-- Library version is now a read-only instance property.
+- ScrollReveal `version` is now a read-only instance property.
 - `options.viewFactor` clamps values outside of `0.0` to `1.0`.
 - ScrollReveal constructor now returns a singleton.
 
