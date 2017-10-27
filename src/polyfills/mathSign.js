@@ -3,7 +3,7 @@
 	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
  */
 
-module.exports = Math.sign || function(x) {
+var mathSign = Math.sign || function(x) {
 	// If x is NaN, the result is NaN.
 	// If x is -0, the result is -0.
 	// If x is +0, the result is +0.
@@ -19,3 +19,5 @@ module.exports = Math.sign || function(x) {
 	//         +x           // Then the result will be x, (or) if x is
 	//                      // not a number, then x converts to number
 };
+
+export var mathSign = mathSign;
