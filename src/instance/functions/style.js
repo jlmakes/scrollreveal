@@ -16,7 +16,7 @@ export default function style (element) {
 
 	inline.computed = inlineMatch ? inlineMatch.map(m => m.trim()).join('; ') + ';' : ''
 
-	inline.generated = inlineMatch.some(m => m.match(/visibility\:\s?visible/i))
+	inline.generated = inlineMatch.some(m => m.match(/visibility\s?:\s?visible/i))
 		? inline.computed
 		: [...inlineMatch, 'visibility: visible'].map(m => m.trim()).join('; ') + ';'
 
@@ -50,7 +50,7 @@ export default function style (element) {
 			distance = /^-/.test(distance) ? distance.substr(1) : `-${distance}`
 		}
 
-		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g)
+		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|%$)/g)
 
 		switch (unit) {
 			case 'em':
