@@ -13,13 +13,9 @@ export default function destroy () {
 	 * Remove all event listeners.
 	 */
 	each(this.store.containers, container => {
-		if (container.node === document.documentElement) {
-			window.removeEventListener('scroll', this.delegate)
-			window.removeEventListener('resize', this.delegate)
-		} else {
-			container.node.removeEventListener('scroll', this.delegate)
-			container.node.removeEventListener('resize', this.delegate)
-		}
+		const target = container.node === document.documentElement ? window : container.node
+		target.removeEventListener('scroll', this.delegate)
+		target.removeEventListener('resize', this.delegate)
 	})
 
 	/**

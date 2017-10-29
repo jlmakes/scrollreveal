@@ -63,8 +63,9 @@ export default function rinse () {
 	})
 
 	each(containerIds.stale, staleId => {
-		this.store.containers[staleId].node.removeEventListener('scroll', this.delegate)
-		this.store.containers[staleId].node.removeEventListener('resize', this.delegate)
+		const stale = this.store.containers[staleId].node
+		stale.removeEventListener('scroll', this.delegate)
+		stale.removeEventListener('resize', this.delegate)
 		delete this.store.containers[staleId]
 	})
 

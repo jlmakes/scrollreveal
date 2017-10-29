@@ -19,13 +19,9 @@ export default function initialize () {
 	})
 
 	each(this.store.containers, container => {
-		if (container.node === document.documentElement) {
-			window.addEventListener('scroll', this.delegate)
-			window.addEventListener('resize', this.delegate)
-		} else {
-			container.node.addEventListener('scroll', this.delegate)
-			container.node.addEventListener('resize', this.delegate)
-		}
+		const target = container.node === document.documentElement ? window : container.node
+		target.addEventListener('scroll', this.delegate)
+		target.addEventListener('resize', this.delegate)
 	})
 
 	/**
