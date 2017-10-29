@@ -89,7 +89,7 @@ describe('Core Utilities', () => {
 
 		beforeEach('stub console log', () => {
 			spy = sinon.spy()
-			stub = sinon.stub(console, 'log', spy)
+			stub = sinon.stub(console, 'log').callsFake(spy)
 		})
 
 		it('invokes console.log', () => {
