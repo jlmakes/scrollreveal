@@ -2,20 +2,14 @@ import { each } from '../../utils/generic'
 import { getNodes } from '../../utils/core'
 
 export default function rinse () {
-	const elementIds = {
+	const struct = () => ({
 		active: [],
 		stale: [],
-	}
+	})
 
-	const containerIds = {
-		active: [],
-		stale: [],
-	}
-
-	const sequenceIds = {
-		active: [],
-		stale: [],
-	}
+	const elementIds = struct()
+	const sequenceIds = struct()
+	const containerIds = struct()
 
 	/**
 	 * Take stock of active element IDs.

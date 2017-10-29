@@ -122,9 +122,9 @@ export function SequenceModel (prop, sequence, store) {
 	}
 }
 
-function cue (seq, i, charge, pristine) {
-	const blocked = ['headblocked', null, 'footblocked'][1 + charge]
-	const nextId = seq.members[i + charge]
+function cue (seq, i, direction, pristine) {
+	const blocked = ['headblocked', null, 'footblocked'][1 + direction]
+	const nextId = seq.members[i + direction]
 	const nextElement = this.store.elements[nextId]
 
 	seq[blocked] = true
