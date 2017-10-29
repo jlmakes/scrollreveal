@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.21
+/*! @license ScrollReveal v4.0.0-beta.22
 
 	Copyright 2017 Fisssion LLC.
 
@@ -294,20 +294,14 @@ function logger (message) {
 function rinse () {
 	var this$1 = this;
 
-	var elementIds = {
+	var struct = function () { return ({
 		active: [],
 		stale: [],
-	};
+	}); };
 
-	var containerIds = {
-		active: [],
-		stale: [],
-	};
-
-	var sequenceIds = {
-		active: [],
-		stale: [],
-	};
+	var elementIds = struct();
+	var sequenceIds = struct();
+	var containerIds = struct();
 
 	/**
 	 * Take stock of active element IDs.
@@ -355,8 +349,9 @@ function rinse () {
 	});
 
 	each(containerIds.stale, function (staleId) {
-		this$1.store.containers[staleId].node.removeEventListener('scroll', this$1.delegate);
-		this$1.store.containers[staleId].node.removeEventListener('resize', this$1.delegate);
+		var stale = this$1.store.containers[staleId].node;
+		stale.removeEventListener('scroll', this$1.delegate);
+		stale.removeEventListener('resize', this$1.delegate);
 		delete this$1.store.containers[staleId];
 	});
 
@@ -381,7 +376,11 @@ function clean (target) {
 			var id = node.getAttribute('data-sr-id');
 			if (id !== null) {
 				dirty = true;
-				node.setAttribute('style', this$1.store.elements[id].styles.inline.generated);
+				var element = this$1.store.elements[id];
+				if (element.callbackTimer) {
+					window.clearTimeout(element.callbackTimer.clock);
+				}
+				node.setAttribute('style', element.styles.inline.generated);
 				node.removeAttribute('data-sr-id');
 				delete this$1.store.elements[id];
 			}
@@ -414,13 +413,9 @@ function destroy () {
 	 * Remove all event listeners.
 	 */
 	each(this.store.containers, function (container) {
-		if (container.node === document.documentElement) {
-			window.removeEventListener('scroll', this$1.delegate);
-			window.removeEventListener('resize', this$1.delegate);
-		} else {
-			container.node.removeEventListener('scroll', this$1.delegate);
-			container.node.removeEventListener('resize', this$1.delegate);
-		}
+		var target = container.node === document.documentElement ? window : container.node;
+		target.removeEventListener('scroll', this$1.delegate);
+		target.removeEventListener('resize', this$1.delegate);
 	});
 
 	/**
@@ -670,7 +665,7 @@ function style (element) {
 
 	inline.computed = inlineMatch ? inlineMatch.map(function (m) { return m.trim(); }).join('; ') + ';' : '';
 
-	inline.generated = inlineMatch.some(function (m) { return m.match(/visibility\:\s?visible/i); })
+	inline.generated = inlineMatch.some(function (m) { return m.match(/visibility\s?:\s?visible/i); })
 		? inline.computed
 		: inlineMatch.concat( ['visibility: visible']).map(function (m) { return m.trim(); }).join('; ') + ';';
 
@@ -704,7 +699,7 @@ function style (element) {
 			distance = /^-/.test(distance) ? distance.substr(1) : ("-" + distance);
 		}
 
-		var ref = distance.match(/(^-?\d+\.?\d?)|(em$|px$|\%$)/g);
+		var ref = distance.match(/(^-?\d+\.?\d?)|(em$|px$|%$)/g);
 		var value = ref[0];
 		var unit = ref[1];
 
@@ -883,13 +878,9 @@ function initialize () {
 	});
 
 	each(this.store.containers, function (container) {
-		if (container.node === document.documentElement) {
-			window.addEventListener('scroll', this$1.delegate);
-			window.addEventListener('resize', this$1.delegate);
-		} else {
-			container.node.addEventListener('scroll', this$1.delegate);
-			container.node.addEventListener('resize', this$1.delegate);
-		}
+		var target = container.node === document.documentElement ? window : container.node;
+		target.addEventListener('scroll', this$1.delegate);
+		target.addEventListener('resize', this$1.delegate);
 	});
 
 	/**
@@ -938,7 +929,7 @@ function triggerReveal (element, delayed) {
 		styles.push(element.styles.transition.generated.instant);
 	}
 	element.revealed = element.seen = true;
-	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
+	element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
 	registerCallbacks.call(this, element, delayed);
 }
 
@@ -949,7 +940,7 @@ function triggerReset (element) {
 		element.styles.transform.generated.initial,
 		element.styles.transition.generated.instant ];
 	element.revealed = false;
-	element.node.setAttribute('style', styles.filter(function (i) { return i !== ''; }).join(' '));
+	element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
 	registerCallbacks.call(this, element);
 }
 
@@ -1111,11 +1102,11 @@ function SequenceModel (prop, sequence, store) {
 	}
 }
 
-function cue (seq, i, charge, pristine) {
+function cue (seq, i, direction, pristine) {
 	var this$1 = this;
 
-	var blocked = ['headblocked', null, 'footblocked'][1 + charge];
-	var nextId = seq.members[i + charge];
+	var blocked = ['headblocked', null, 'footblocked'][1 + direction];
+	var nextId = seq.members[i + direction];
 	var nextElement = this.store.elements[nextId];
 
 	seq[blocked] = true;
@@ -1383,7 +1374,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.21";
+var version = "4.0.0-beta.22";
 
 var _config;
 var _debug;
