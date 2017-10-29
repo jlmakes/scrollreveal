@@ -31,7 +31,7 @@ function triggerReveal (element, delayed) {
 		styles.push(element.styles.transition.generated.instant)
 	}
 	element.revealed = element.seen = true
-	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
+	element.node.setAttribute('style', styles.filter(s => s !== '').join(' '))
 	registerCallbacks.call(this, element, delayed)
 }
 
@@ -43,7 +43,7 @@ function triggerReset (element) {
 		element.styles.transition.generated.instant,
 	]
 	element.revealed = false
-	element.node.setAttribute('style', styles.filter(i => i !== '').join(' '))
+	element.node.setAttribute('style', styles.filter(s => s !== '').join(' '))
 	registerCallbacks.call(this, element)
 }
 
