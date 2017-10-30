@@ -26,6 +26,7 @@
 - ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
 - ScrollReveal `version` is now a read-only instance property.
+- ScrollReveal methods are now bound read-only instance properties.
 - `options.viewFactor` clamps values outside of `0.0` to `1.0`.
 - ScrollReveal constructor now returns a singleton.
 

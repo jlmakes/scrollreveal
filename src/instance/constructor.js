@@ -87,6 +87,11 @@ export default function ScrollReveal (options = {}) {
 	this.pristine = true
 
 	Object.defineProperty(this, 'delegate', { get: () => delegate.bind(this) })
+	Object.defineProperty(this, 'destroy', { get: () => destroy.bind(this) })
+	Object.defineProperty(this, 'reveal', { get: () => reveal.bind(this) })
+	Object.defineProperty(this, 'clean', { get: () => clean.bind(this) })
+	Object.defineProperty(this, 'sync', { get: () => sync.bind(this) })
+
 	Object.defineProperty(this, 'version', { get: () => version })
 	Object.defineProperty(this, 'noop', { get: () => false })
 
@@ -105,12 +110,3 @@ Object.defineProperty(ScrollReveal, 'debug', {
 		if (typeof value === 'boolean') _debug = value
 	},
 })
-
-/**
- * The primary API is comprised
- * of these instance methods:
- */
-ScrollReveal.prototype.clean = clean
-ScrollReveal.prototype.destroy = destroy
-ScrollReveal.prototype.reveal = reveal
-ScrollReveal.prototype.sync = sync
