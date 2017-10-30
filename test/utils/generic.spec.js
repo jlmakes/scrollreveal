@@ -73,14 +73,14 @@ describe('Generic Utilities', () => {
 		}
 
 		describe('when passed an object literal', () => {
-			it('invokes callback for each property', () => {
+			it('should invoke callback for each property', () => {
 				const fixture = new Fixture()
 				const spy = sinon.spy()
 				each(fixture, spy)
 				expect(spy).to.have.been.calledTwice
 			})
 
-			it('ignores properties on the prototype chain', () => {
+			it('should ignore properties on the prototype chain', () => {
 				Fixture.prototype.biff = 'baff'
 				const fixture = new Fixture()
 				const spy = sinon.spy()
@@ -88,7 +88,7 @@ describe('Generic Utilities', () => {
 				expect(spy).to.have.been.calledTwice
 			})
 
-			it('passes the value, key and collection to the callback', () => {
+			it('should pass the value, key and collection to the callback', () => {
 				const fixture = new Fixture()
 				let _value, _key, _collection
 				each(fixture, (value, key, collection) => {
@@ -105,13 +105,13 @@ describe('Generic Utilities', () => {
 		describe('when passed an array', () => {
 			const fixture = ['apple', 'orange', 'banana']
 
-			it('invokes callback for each value', () => {
+			it('should invoke callback for each value', () => {
 				const spy = sinon.spy()
 				each(fixture, spy)
 				expect(spy).to.have.been.calledThrice
 			})
 
-			it('passes the value, index and collection to the callback', () => {
+			it('should pass the value, index and collection to the callback', () => {
 				let _value, _index, _collection
 				each(fixture, (value, index, collection) => {
 					_value = value
