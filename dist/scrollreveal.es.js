@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.22
+/*! @license ScrollReveal v4.0.0-beta.23
 
 	Copyright 2017 Fisssion LLC.
 
@@ -1374,7 +1374,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.22";
+var version = "4.0.0-beta.23";
 
 var _config;
 var _debug;
@@ -1452,6 +1452,11 @@ function ScrollReveal (options) {
 	this.pristine = true;
 
 	Object.defineProperty(this, 'delegate', { get: function () { return delegate.bind(this$1); } });
+	Object.defineProperty(this, 'destroy', { get: function () { return destroy.bind(this$1); } });
+	Object.defineProperty(this, 'reveal', { get: function () { return reveal.bind(this$1); } });
+	Object.defineProperty(this, 'clean', { get: function () { return clean.bind(this$1); } });
+	Object.defineProperty(this, 'sync', { get: function () { return sync.bind(this$1); } });
+
 	Object.defineProperty(this, 'version', { get: function () { return version; } });
 	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 
@@ -1470,14 +1475,5 @@ Object.defineProperty(ScrollReveal, 'debug', {
 		if (typeof value === 'boolean') { _debug = value; }
 	},
 });
-
-/**
- * The primary API is comprised
- * of these instance methods:
- */
-ScrollReveal.prototype.clean = clean;
-ScrollReveal.prototype.destroy = destroy;
-ScrollReveal.prototype.reveal = reveal;
-ScrollReveal.prototype.sync = sync;
 
 export default ScrollReveal;
