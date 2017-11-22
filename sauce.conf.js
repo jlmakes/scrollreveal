@@ -29,7 +29,7 @@ mobileLaunchers.forEach(([platform, version, browser, device]) => {
 const desktopLaunchers = [
 	['Windows 8.1', 'Internet Explorer', '11.0'],
 	['Windows 8', 'Internet Explorer', '10.0'],
-	['macOS 10.12', 'Safari', '10.0'],
+	['OS X 10.11', 'Safari', '10.0'],
 	['OS X 10.11', 'Safari', '9.0'],
 	['OS X 10.10', 'Safari', '8.0'],
 	['OS X 10.9', 'Safari', '7.0'],
