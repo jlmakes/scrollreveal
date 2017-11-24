@@ -1,5 +1,3 @@
-import { isNode, isNodeList } from '../utils/browser'
-
 export function isElementVisible (element) {
 	const container = this.store.containers[element.containerId]
 	const viewFactor = Math.max(0, Math.min(1, element.config.viewFactor))
@@ -59,42 +57,6 @@ export function getGeometry (target, isContainer) {
 		},
 		height,
 		width,
-	}
-}
-
-export function getNode (target, container = document) {
-	let node = null
-	if (typeof target === 'string') {
-		try {
-			node = container.querySelector(target)
-		} catch (e) {
-			throw new Error(`"${target}" is not a valid selector.`)
-		}
-		if (!node) {
-			throw new Error(`The selector "${target}" matches 0 elements.`)
-		}
-	}
-	return isNode(target) ? target : node
-}
-
-export function getNodes (target, container = document) {
-	if (target instanceof Array) {
-		return target
-	}
-	if (isNode(target)) {
-		return [target]
-	}
-	if (isNodeList(target)) {
-		return Array.prototype.slice.call(target)
-	}
-	if (typeof target === 'string') {
-		let query
-		try {
-			query = container.querySelectorAll(target)
-		} catch (e) {
-			throw new Error(`"${target}" is not a valid selector.`)
-		}
-		return Array.prototype.slice.call(query)
 	}
 }
 

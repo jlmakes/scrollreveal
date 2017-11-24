@@ -1,4 +1,4 @@
-import { each } from '../../utils/generic'
+import { each } from 'tealight'
 import rinse from './rinse'
 
 export default function initialize () {

@@ -1,4 +1,4 @@
-import { each } from '../../utils/generic'
+import { each } from 'tealight'
 
 export default function destroy () {
 	/**

@@ -1,5 +1,6 @@
 import animate from './animate'
-import { each, nextUniqueId } from '../../utils/generic'
+import { each } from 'tealight'
+import { nextUniqueId } from '../../utils/generic'
 
 export default function sequence (element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]

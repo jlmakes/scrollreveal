@@ -3,8 +3,9 @@ import style from '../functions/style'
 import initialize from '../functions/initialize'
 import { Sequence } from '../functions/sequence'
 
-import { getNode, getNodes, logger } from '../../utils/core'
-import { deepAssign, each, nextUniqueId } from '../../utils/generic'
+import { deepAssign, each, getNode, getNodes } from 'tealight'
+import { logger } from '../../utils/core'
+import { nextUniqueId } from '../../utils/generic'
 import { isMobile } from '../../utils/browser'
 
 export default function reveal (target, options, interval, sync) {
@@ -63,9 +64,9 @@ export default function reveal (target, options, interval, sync) {
 			const config = deepAssign({}, element.config || this.defaults, options)
 
 			/**
-			* Verify the current device passes our platform configuration,
-			* and cache the result for the rest of the loop.
-			*/
+			 * Verify the current device passes our platform configuration,
+			 * and cache the result for the rest of the loop.
+			 */
 			let disabled
 			{
 				if (disabled == null) {
@@ -115,10 +116,10 @@ export default function reveal (target, options, interval, sync) {
 		}, [])
 
 		/**
-		* Modifying the DOM via setAttribute needs to be handled
-		* separately from reading computed styles in the map above
-		* for the browser to batch DOM changes (limiting reflows)
-		*/
+		 * Modifying the DOM via setAttribute needs to be handled
+		 * separately from reading computed styles in the map above
+		 * for the browser to batch DOM changes (limiting reflows)
+		 */
 		each(elements, element => {
 			this.store.elements[element.id] = element
 			element.node.setAttribute('data-sr-id', element.id)
@@ -144,16 +145,16 @@ export default function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	* If reveal wasn't invoked by sync, we want to
-	* make sure to add this call to the history.
-	*/
+	 * If reveal wasn't invoked by sync, we want to
+	 * make sure to add this call to the history.
+	 */
 	if (!sync) {
 		this.store.history.push({ target, options, interval })
 
 		/**
-		* Push initialization to the event queue, giving
-		* multiple reveal calls time to be interpreted.
-		*/
+		 * Push initialization to the event queue, giving
+		 * multiple reveal calls time to be interpreted.
+		 */
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout)
 		}

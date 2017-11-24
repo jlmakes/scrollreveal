@@ -1,5 +1,4 @@
-import { each } from '../../utils/generic'
-import { getNodes } from '../../utils/core'
+import { each, getNodes } from 'tealight'
 
 export default function rinse () {
 	const struct = () => ({

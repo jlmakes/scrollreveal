@@ -1,13 +1,11 @@
 import animate from './animate'
 import sequence from './sequence'
 
-import { mathSign } from '../../polyfills/mathSign'
-import { requestAnimationFrame } from '../../polyfills/requestAnimationFrame'
+import { each, mathSign, raf } from 'tealight'
 import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
-import { each } from '../../utils/generic'
 
 export default function delegate (event = { type: 'init' }, elements = this.store.elements) {
-	requestAnimationFrame(() => {
+	raf(() => {
 		const stale = event.type === 'init' || event.type === 'resize'
 
 		each(this.store.containers, container => {

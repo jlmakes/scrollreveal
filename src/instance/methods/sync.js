@@ -1,7 +1,7 @@
 import initialize from '../functions/initialize'
 import reveal from './reveal'
 
-import { each } from '../../utils/generic'
+import { each } from 'tealight'
 
 /**
  * Re-runs the reveal method for each record stored in history,

@@ -9,8 +9,8 @@ import sync from './methods/sync'
 import delegate from './functions/delegate'
 
 import { isMobile, transformSupported, transitionSupported } from '../utils/browser'
-import { getNode, logger } from '../utils/core'
-import { deepAssign } from '../utils/generic'
+import { logger } from '../utils/core'
+import { deepAssign, getNode } from 'tealight'
 
 import { version } from '../../package.json'
 

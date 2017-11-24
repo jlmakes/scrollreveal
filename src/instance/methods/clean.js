@@ -1,5 +1,5 @@
-import { each } from '../../utils/generic'
-import { getNodes, logger } from '../../utils/core'
+import { each, getNodes } from 'tealight'
+import { logger } from '../../utils/core'
 import rinse from '../functions/rinse'
 
 export default function clean (target) {
