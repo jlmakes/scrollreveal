@@ -1,5 +1,3 @@
-process.env.PHANTOMJS_BIN = './node_modules/phantomjs-prebuilt/bin/phantomjs'
-
 const rollupPlugins = [
 	require('rollup-plugin-json')(),
 	require('rollup-plugin-node-resolve')({ jsnext: true, main: true }),
@@ -7,16 +5,14 @@ const rollupPlugins = [
 ]
 
 if (process.env.COVERAGE) {
-	rollupPlugins.push(require('rollup-plugin-istanbul')({
-		exclude: [
-			'src/index.js',
-			'test/**',
-			'**/node_modules/**',
-		],
-		instrumenterConfig: {
-			embedSource: true,
-		},
-	}))
+	rollupPlugins.push(
+		require('rollup-plugin-istanbul')({
+			exclude: ['src/index.js', 'test/**', '**/node_modules/**'],
+			instrumenterConfig: {
+				embedSource: true,
+			},
+		})
+	)
 }
 
 module.exports = function (karma) {
@@ -27,9 +23,7 @@ module.exports = function (karma) {
 			'test/**/*.spec.js': ['rollup'],
 		},
 
-		files: [
-			{ pattern: 'test/**/*.spec.js', watched: false },
-		],
+		files: [{ pattern: 'test/**/*.spec.js', watched: false }],
 
 		rollupPreprocessor: {
 			plugins: rollupPlugins,
@@ -43,26 +37,24 @@ module.exports = function (karma) {
 		logLevel: karma.LOG_ERROR,
 		singleRun: true,
 
-		browserDisconnectTimeout: 60 * 1000,
 		browserDisconnectTolerance: 1,
+		browserDisconnectTimeout: 60 * 1000,
 		browserNoActivityTimeout: 60 * 1000,
 		// browserNoActivityTimeout: 60 * 1000 * 10 * 6, // dev tools debugging
 		captureTimeout: 4 * 60 * 1000,
 	})
 
 	if (process.env.TRAVIS) {
-
 		if (process.env.COVERAGE) {
 			karma.set({
 				autoWatch: false,
-				browsers: ['PhantomJS'],
+				browsers: ['ChromeHeadless'],
 				coverageReporter: {
 					type: 'lcovonly',
 					dir: 'coverage/',
 				},
 				reporters: ['mocha', 'coverage', 'coveralls'],
 			})
-
 		} else {
 			const customLaunchers = require('./sauce.conf')
 			karma.set({
@@ -81,10 +73,9 @@ module.exports = function (karma) {
 				},
 			})
 		}
-
 	} else {
 		karma.set({
-			browsers: ['PhantomJS'],
+			browsers: ['ChromeHeadless'],
 			// browsers: ['Chrome'], // dev tools debugging
 			coverageReporter: {
 				type: 'lcov',
