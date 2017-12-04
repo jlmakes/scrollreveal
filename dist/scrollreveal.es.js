@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.23
+/*! @license ScrollReveal v4.0.0-beta.24
 
 	Copyright 2017 Fisssion LLC.
 
@@ -50,9 +50,63 @@ var noop = {
 	},
 };
 
-function deepAssign (target) {
+/*! @license Tealight v0.1.1
+
+Copyright 2017 Fisssion LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+var polyfill = function (x) { return (x > 0) - (x < 0) || +x; };
+var mathSign = Math.sign || polyfill;
+
+var polyfill$1 = (function () {
+	var clock = Date.now();
+
+	return function (callback) {
+		var currentTime = Date.now();
+		if (currentTime - clock > 16) {
+			clock = currentTime;
+			callback(currentTime);
+		} else {
+			setTimeout(function () { return polyfill$1(callback); }, 0);
+		}
+	}
+})();
+
+var raf = window.requestAnimationFrame ||
+	window.webkitRequestAnimationFrame ||
+	window.mozRequestAnimationFrame ||
+	polyfill$1;
+
+function isObject(x) {
+	return (
+		x !== null &&
+		x instanceof Object &&
+		(x.constructor === Object || Object.prototype.toString.call(x) === '[object Object]')
+	)
+}
+
+function each(collection, callback) {
+	if (isObject(collection)) {
+		var keys = Object.keys(collection);
+		return keys.forEach(function (key) { return callback(collection[key], key, collection); })
+	}
+	if (collection instanceof Array) {
+		return collection.forEach(function (item, i) { return callback(item, i, collection); })
+	}
+	throw new TypeError('Expected either an array or object literal.')
+}
+
+function deepAssign(target) {
+	var arguments$1 = arguments;
+
 	var sources = [], len = arguments.length - 1;
-	while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
+	while ( len-- > 0 ) { sources[ len ] = arguments$1[ len + 1 ]; }
 
 	if (isObject(target)) {
 		each(sources, function (source) {
@@ -69,101 +123,58 @@ function deepAssign (target) {
 		});
 		return target
 	} else {
-		throw new TypeError('Expected an object literal.')
+		throw new TypeError('Target must be an object literal.')
 	}
 }
 
-function isObject (object) {
-	return (
-		object !== null &&
-		typeof object === 'object' &&
-		(object.constructor === Object ||
-			Object.prototype.toString.call(object) === '[object Object]')
-	)
-}
-
-function each (collection, callback) {
-	if (isObject(collection)) {
-		var keys = Object.keys(collection);
-		for (var i = 0; i < keys.length; i++) {
-			callback(collection[keys[i]], keys[i], collection);
-		}
-	} else if (Array.isArray(collection)) {
-		for (var i$1 = 0; i$1 < collection.length; i$1++) {
-			callback(collection[i$1], i$1, collection);
-		}
-	} else {
-		throw new TypeError('Expected either an array or object literal.')
-	}
-}
-
-var nextUniqueId = (function () {
-	var uid = 0;
-	return function () { return uid++; }
-})();
-
-var getPrefixedStyleProperty = (function () {
-	var properties = {};
-	var style = document.documentElement.style;
-
-	function getPrefixedStyleProperty (name, source) {
-		if ( source === void 0 ) source = style;
-
-		if (name && typeof name === 'string') {
-			if (properties[name]) {
-				return properties[name]
-			}
-			if (typeof source[name] === 'string') {
-				return (properties[name] = name)
-			}
-			if (typeof source[("-webkit-" + name)] === 'string') {
-				return (properties[name] = "-webkit-" + name)
-			}
-			throw new RangeError(("Unable to find \"" + name + "\" style property."))
-		}
-		throw new TypeError('Expected a string.')
-	}
-
-	getPrefixedStyleProperty.clearCache = function () { return (properties = {}); };
-
-	return getPrefixedStyleProperty
-})();
-
-function isMobile (agent) {
-	if ( agent === void 0 ) agent = navigator.userAgent;
-
-	return /Android|iPhone|iPad|iPod/i.test(agent)
-}
-
-function isNode (target) {
+function isNode(x) {
 	return typeof window.Node === 'object'
-		? target instanceof window.Node
-		: target !== null &&
-			typeof target === 'object' &&
-			typeof target.nodeType === 'number' &&
-			typeof target.nodeName === 'string'
+		? x instanceof window.Node
+		: x !== null &&
+			typeof x === 'object' &&
+			typeof x.nodeType === 'number' &&
+			typeof x.nodeName === 'string'
 }
 
-function isNodeList (target) {
-	var prototypeToString = Object.prototype.toString.call(target);
+function getNode(target, container) {
+	if ( container === void 0 ) { container = document; }
+
+	if (typeof target === 'string') {
+		try {
+			return container.querySelector(target)
+		} catch (e) {
+			return null
+		}
+	}
+	return isNode(target) ? target : null
+}
+
+function isNodeList(x) {
+	var prototypeToString = Object.prototype.toString.call(x);
 	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
 
 	return typeof window.NodeList === 'object'
-		? target instanceof window.NodeList
-		: typeof target === 'object' &&
-			typeof target.length === 'number' &&
+		? x instanceof window.NodeList
+		: x !== null &&
+			typeof x === 'object' &&
+			typeof x.length === 'number' &&
 			regex.test(prototypeToString) &&
-			(target.length === 0 || isNode(target[0]))
+			(x.length === 0 || isNode(x[0]))
 }
 
-function transformSupported () {
-	var style = document.documentElement.style;
-	return 'transform' in style || 'WebkitTransform' in style
-}
-
-function transitionSupported () {
-	var style = document.documentElement.style;
-	return 'transition' in style || 'WebkitTransition' in style
+function getNodes(target) {
+	if (target instanceof Array) { return target }
+	if (isNode(target)) { return [target] }
+	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
+	if (typeof target === 'string') {
+		try {
+			var query = document.querySelectorAll(target);
+			return Array.prototype.slice.call(query)
+		} catch (err) {
+			return []
+		}
+	}
+	return []
 }
 
 function isElementVisible (element) {
@@ -225,46 +236,6 @@ function getGeometry (target, isContainer) {
 		},
 		height: height,
 		width: width,
-	}
-}
-
-function getNode (target, container) {
-	if ( container === void 0 ) container = document;
-
-	var node = null;
-	if (typeof target === 'string') {
-		try {
-			node = container.querySelector(target);
-		} catch (e) {
-			throw new Error(("\"" + target + "\" is not a valid selector."))
-		}
-		if (!node) {
-			throw new Error(("The selector \"" + target + "\" matches 0 elements."))
-		}
-	}
-	return isNode(target) ? target : node
-}
-
-function getNodes (target, container) {
-	if ( container === void 0 ) container = document;
-
-	if (target instanceof Array) {
-		return target
-	}
-	if (isNode(target)) {
-		return [target]
-	}
-	if (isNodeList(target)) {
-		return Array.prototype.slice.call(target)
-	}
-	if (typeof target === 'string') {
-		var query;
-		try {
-			query = container.querySelectorAll(target);
-		} catch (e) {
-			throw new Error(("\"" + target + "\" is not a valid selector."))
-		}
-		return Array.prototype.slice.call(query)
 	}
 }
 
@@ -651,6 +622,49 @@ function translateY (distance) {
 	return matrix
 }
 
+var getPrefixedStyleProperty = (function () {
+	var properties = {};
+	var style = document.documentElement.style;
+
+	function getPrefixedStyleProperty (name, source) {
+		if ( source === void 0 ) source = style;
+
+		if (name && typeof name === 'string') {
+			if (properties[name]) {
+				return properties[name]
+			}
+			if (typeof source[name] === 'string') {
+				return (properties[name] = name)
+			}
+			if (typeof source[("-webkit-" + name)] === 'string') {
+				return (properties[name] = "-webkit-" + name)
+			}
+			throw new RangeError(("Unable to find \"" + name + "\" style property."))
+		}
+		throw new TypeError('Expected a string.')
+	}
+
+	getPrefixedStyleProperty.clearCache = function () { return (properties = {}); };
+
+	return getPrefixedStyleProperty
+})();
+
+function isMobile (agent) {
+	if ( agent === void 0 ) agent = navigator.userAgent;
+
+	return /Android|iPhone|iPad|iPod/i.test(agent)
+}
+
+function transformSupported () {
+	var style = document.documentElement.style;
+	return 'transform' in style || 'WebkitTransform' in style
+}
+
+function transitionSupported () {
+	var style = document.documentElement.style;
+	return 'transition' in style || 'WebkitTransition' in style
+}
+
 function style (element) {
 	var computed = window.getComputedStyle(element.node);
 	var position = computed.position;
@@ -977,6 +991,11 @@ function registerCallbacks (element, isDelayed) {
 	};
 }
 
+var nextUniqueId = (function () {
+	var uid = 0;
+	return function () { return uid++; }
+})();
+
 function sequence (element, pristine) {
 	if ( pristine === void 0 ) pristine = this.pristine;
 
@@ -1177,9 +1196,9 @@ function reveal (target, options, interval, sync) {
 			var config = deepAssign({}, element.config || this$1.defaults, options);
 
 			/**
-			* Verify the current device passes our platform configuration,
-			* and cache the result for the rest of the loop.
-			*/
+			 * Verify the current device passes our platform configuration,
+			 * and cache the result for the rest of the loop.
+			 */
 			var disabled;
 			{
 				if (disabled == null) {
@@ -1229,10 +1248,10 @@ function reveal (target, options, interval, sync) {
 		}, []);
 
 		/**
-		* Modifying the DOM via setAttribute needs to be handled
-		* separately from reading computed styles in the map above
-		* for the browser to batch DOM changes (limiting reflows)
-		*/
+		 * Modifying the DOM via setAttribute needs to be handled
+		 * separately from reading computed styles in the map above
+		 * for the browser to batch DOM changes (limiting reflows)
+		 */
 		each(elements, function (element) {
 			this$1.store.elements[element.id] = element;
 			element.node.setAttribute('data-sr-id', element.id);
@@ -1258,16 +1277,16 @@ function reveal (target, options, interval, sync) {
 	}
 
 	/**
-	* If reveal wasn't invoked by sync, we want to
-	* make sure to add this call to the history.
-	*/
+	 * If reveal wasn't invoked by sync, we want to
+	 * make sure to add this call to the history.
+	 */
 	if (!sync) {
 		this.store.history.push({ target: target, options: options, interval: interval });
 
 		/**
-		* Push initialization to the event queue, giving
-		* multiple reveal calls time to be interpreted.
-		*/
+		 * Push initialization to the event queue, giving
+		 * multiple reveal calls time to be interpreted.
+		 */
 		if (this.initTimeout) {
 			window.clearTimeout(this.initTimeout);
 		}
@@ -1304,35 +1323,12 @@ function sync () {
 	initialize.call(this);
 }
 
-var polyfill = function (x) { return (x > 0) - (x < 0) || +x; };
-var mathSign = Math.sign || polyfill;
-
-var polyfill$1 = (function () {
-	var clock = Date.now();
-
-	return function (callback) {
-		var currentTime = Date.now();
-		if (currentTime - clock > 16) {
-			clock = currentTime;
-			callback(currentTime);
-		} else {
-			setTimeout(function () { return polyfill$1(callback); }, 0);
-		}
-	}
-})();
-
-var requestAnimationFrame =
-	window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	polyfill$1;
-
 function delegate (event, elements) {
 	var this$1 = this;
 	if ( event === void 0 ) event = { type: 'init' };
 	if ( elements === void 0 ) elements = this.store.elements;
 
-	requestAnimationFrame(function () {
+	raf(function () {
 		var stale = event.type === 'init' || event.type === 'resize';
 
 		each(this$1.store.containers, function (container) {
@@ -1374,7 +1370,7 @@ function delegate (event, elements) {
 	});
 }
 
-var version = "4.0.0-beta.23";
+var version = "4.0.0-beta.24";
 
 var _config;
 var _debug;
@@ -1475,5 +1471,7 @@ Object.defineProperty(ScrollReveal, 'debug', {
 		if (typeof value === 'boolean') { _debug = value; }
 	},
 });
+
+ScrollReveal();
 
 export default ScrollReveal;

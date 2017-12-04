@@ -1,6 +1,6 @@
 {
 	"name": "scrollreveal",
-	"version": "4.0.0-beta.23",
+	"version": "4.0.0-beta.24",
 	"description": "Animate elements as they scroll into view",
 	"homepage": "https://scrollrevealjs.org",
 	"main": "dist/scrollreveal.js",
@@ -31,7 +31,7 @@
 	},
 	"dependencies": {
 		"rematrix": "^0.2.1",
-		"tealight": "^0.1.0"
+		"tealight": "^0.1.1"
 	},
 	"devDependencies": {
 		"chai": "^4.1.2",
