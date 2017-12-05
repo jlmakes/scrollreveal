@@ -396,7 +396,7 @@ Here are some cool sites using ScrollReveal:
 
 - [Sequoia Capital](https://www.sequoiacap.com)
 - [Twist App](https://twistapp.com/)
-- [Andrius Petravic](http://petravic.us/)
+- [Udacity](https://www.udacity.com/)
 
 Want to see your page here? Please send me your work (or of others) using ScrollReveal on Twitter ([@jlmakes](https://twitter.com/jlmakes))
 
