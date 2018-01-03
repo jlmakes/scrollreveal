@@ -1,10 +1,15 @@
 import animate from './animate'
 import sequence from './sequence'
 
-import { each, mathSign, raf } from 'tealight'
+import mathSign from '../../polyfills/math-sign'
+import raf from '../../polyfills/raf'
 import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
+import { each } from 'tealight'
 
-export default function delegate (event = { type: 'init' }, elements = this.store.elements) {
+export default function delegate (
+	event = { type: 'init' },
+	elements = this.store.elements
+) {
 	raf(() => {
 		const stale = event.type === 'init' || event.type === 'resize'
 
