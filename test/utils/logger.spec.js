@@ -1,6 +1,6 @@
-import { logger } from '../../src/utils/core'
+import logger from '../../src/utils/logger'
 
-describe('Core Utilities', () => {
+describe('Utilities', () => {
 	describe('logger()', () => {
 		const mock = { constructor: { debug: true } }
 

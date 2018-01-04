@@ -13,7 +13,7 @@ import transformSupported from '../utils/transform-supported'
 import transitionSupported from '../utils/transition-supported'
 
 import deepAssign from '../utils/deep-assign'
-import { logger } from '../utils/core'
+import logger from '../utils/logger'
 import $ from 'tealight'
 
 import { version } from '../../package.json'

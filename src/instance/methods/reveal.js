@@ -5,7 +5,7 @@ import { Sequence } from '../functions/sequence'
 import $ from 'tealight'
 import each from '../../utils/each'
 import deepAssign from '../../utils/deep-assign'
-import { logger } from '../../utils/core'
+import logger from '../../utils/logger'
 import nextUniqueId from '../../utils/next-unique-id'
 import isMobile from '../../utils/is-mobile'
 

@@ -3,7 +3,9 @@ import sequence from './sequence'
 import mathSign from '../../polyfills/math-sign'
 import raf from '../../polyfills/raf'
 import each from '../../utils/each'
-import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
+import getGeometry from '../../utils/get-geometry'
+import getScrolled from '../../utils/get-scrolled'
+import isElementVisible from '../../utils/is-element-visible'
 
 export default function delegate (
 	event = { type: 'init' },

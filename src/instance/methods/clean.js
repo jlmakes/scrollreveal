@@ -1,6 +1,6 @@
 import $ from 'tealight'
 import each from '../../utils/each'
-import { logger } from '../../utils/core'
+import logger from '../../utils/logger'
 import rinse from '../functions/rinse'
 
 export default function clean (target) {
