@@ -1,6 +1,6 @@
 import animate from './animate'
 import each from '../../utils/each'
-import { nextUniqueId } from '../../utils/generic'
+import nextUniqueId from '../../utils/next-unique-id'
 
 export default function sequence (element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]

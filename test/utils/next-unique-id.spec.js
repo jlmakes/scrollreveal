@@ -1,6 +1,6 @@
-import { nextUniqueId } from '../../src/utils/generic'
+import nextUniqueId from '../../src/utils/next-unique-id'
 
-describe('Generic Utilities', () => {
+describe('Utilities', () => {
 	describe('nextUniqueId()', () => {
 		it('should start at 0', () => {
 			const result = nextUniqueId()
