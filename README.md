@@ -64,6 +64,4 @@ const ScrollReveal = require('scrollreveal')
 import ScrollReveal from 'scrollreveal'
 ```
 
-<p align="center">
-	Copyright © 2017 Fisssion LLC
-</p>
+Copyright 2018 Fisssion LLC
