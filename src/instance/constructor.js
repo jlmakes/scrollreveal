@@ -9,8 +9,9 @@ import sync from './methods/sync'
 import delegate from './functions/delegate'
 
 import { isMobile, transformSupported, transitionSupported } from '../utils/browser'
+import deepAssign from '../utils/deep-assign'
 import { logger } from '../utils/core'
-import { deepAssign, getNode } from 'tealight'
+import $ from 'tealight'
 
 import { version } from '../../package.json'
 
@@ -20,7 +21,8 @@ let _instance
 
 export default function ScrollReveal (options = {}) {
 	const invokedWithoutNew =
-		typeof this === 'undefined' || Object.getPrototypeOf(this) !== ScrollReveal.prototype
+		typeof this === 'undefined' ||
+		Object.getPrototypeOf(this) !== ScrollReveal.prototype
 
 	if (invokedWithoutNew) {
 		return new ScrollReveal(options)
@@ -38,14 +40,21 @@ export default function ScrollReveal (options = {}) {
 	let buffer
 	{
 		try {
-			buffer = _config ? deepAssign({}, _config, options) : deepAssign({}, defaults, options)
+			buffer = _config
+				? deepAssign({}, _config, options)
+				: deepAssign({}, defaults, options)
 		} catch (e) {
-			logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
+			logger.call(
+				this,
+				'Instantiation failed.',
+				'Invalid configuration.',
+				e.message
+			)
 			return noop
 		}
 
 		try {
-			const container = getNode(buffer.container)
+			const container = $(buffer.container)[0]
 			if (!container) {
 				throw new Error('Invalid container.')
 			}

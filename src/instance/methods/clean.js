@@ -1,11 +1,12 @@
-import { each, getNodes } from 'tealight'
+import $ from 'tealight'
+import each from '../../utils/each'
 import { logger } from '../../utils/core'
 import rinse from '../functions/rinse'
 
 export default function clean (target) {
 	let dirty
 	try {
-		each(getNodes(target), node => {
+		each($(target), node => {
 			const id = node.getAttribute('data-sr-id')
 			if (id !== null) {
 				dirty = true

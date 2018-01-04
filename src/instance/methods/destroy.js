@@ -1,4 +1,4 @@
-import { each } from 'tealight'
+import each from '../../utils/each'
 
 export default function destroy () {
 	/**
@@ -13,7 +13,8 @@ export default function destroy () {
 	 * Remove all event listeners.
 	 */
 	each(this.store.containers, container => {
-		const target = container.node === document.documentElement ? window : container.node
+		const target =
+			container.node === document.documentElement ? window : container.node
 		target.removeEventListener('scroll', this.delegate)
 		target.removeEventListener('resize', this.delegate)
 	})

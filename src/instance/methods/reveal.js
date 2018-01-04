@@ -2,8 +2,9 @@ import clean from '../methods/clean'
 import style from '../functions/style'
 import initialize from '../functions/initialize'
 import { Sequence } from '../functions/sequence'
-
-import { deepAssign, each, getNode, getNodes } from 'tealight'
+import $ from 'tealight'
+import each from '../../utils/each'
+import deepAssign from '../../utils/deep-assign'
 import { logger } from '../../utils/core'
 import { nextUniqueId } from '../../utils/generic'
 import { isMobile } from '../../utils/browser'
@@ -30,7 +31,7 @@ export default function reveal (target, options, interval, sync) {
 	let nodes
 	let sequence
 	try {
-		nodes = getNodes(target)
+		nodes = $(target)
 		sequence = interval ? new Sequence(interval) : null
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
@@ -70,7 +71,8 @@ export default function reveal (target, options, interval, sync) {
 			let disabled
 			{
 				if (disabled == null) {
-					disabled = (!config.mobile && isMobile()) || (!config.desktop && !isMobile())
+					disabled =
+						(!config.mobile && isMobile()) || (!config.desktop && !isMobile())
 				}
 				if (disabled) {
 					if (existingId) {
@@ -80,7 +82,7 @@ export default function reveal (target, options, interval, sync) {
 				}
 			}
 
-			const containerNode = getNode(config.container)
+			const containerNode = $(config.container)[0]
 
 			let containerId
 			{
@@ -91,7 +93,11 @@ export default function reveal (target, options, interval, sync) {
 					return elementBuffer // skip elements found outside the container
 				}
 
-				containerId = getContainerId(containerNode, containerBuffer, this.store.containers)
+				containerId = getContainerId(
+					containerNode,
+					containerBuffer,
+					this.store.containers
+				)
 
 				if (containerId == null) {
 					containerId = nextUniqueId()

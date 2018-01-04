@@ -1,10 +1,9 @@
 import animate from './animate'
 import sequence from './sequence'
-
 import mathSign from '../../polyfills/math-sign'
 import raf from '../../polyfills/raf'
+import each from '../../utils/each'
 import { getGeometry, getScrolled, isElementVisible } from '../../utils/core'
-import { each } from 'tealight'
 
 export default function delegate (
 	event = { type: 'init' },

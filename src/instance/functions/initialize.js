@@ -1,4 +1,4 @@
-import { each } from 'tealight'
+import each from '../../utils/each'
 import rinse from './rinse'
 
 export default function initialize () {
@@ -19,7 +19,8 @@ export default function initialize () {
 	})
 
 	each(this.store.containers, container => {
-		const target = container.node === document.documentElement ? window : container.node
+		const target =
+			container.node === document.documentElement ? window : container.node
 		target.addEventListener('scroll', this.delegate)
 		target.addEventListener('resize', this.delegate)
 	})

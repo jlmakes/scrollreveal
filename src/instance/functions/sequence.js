@@ -1,5 +1,5 @@
 import animate from './animate'
-import { each } from 'tealight'
+import each from '../../utils/each'
 import { nextUniqueId } from '../../utils/generic'
 
 export default function sequence (element, pristine = this.pristine) {
@@ -52,13 +52,21 @@ export default function sequence (element, pristine = this.pristine) {
 		 * element sequence index against the head, and
 		 * then the foot of the sequence.
 		 */
-		if (!seq.headblocked && i === [...revealed.head].pop() && i >= [...visible.body].shift()) {
+		if (
+			!seq.headblocked &&
+			i === [...revealed.head].pop() &&
+			i >= [...visible.body].shift()
+		) {
 			cue.call(this, seq, i, -1, pristine)
 			seq.lastReveal = i
 			return animate.call(this, element, { reveal: true, pristine })
 		}
 
-		if (!seq.footblocked && i === [...revealed.foot].shift() && i <= [...visible.body].pop()) {
+		if (
+			!seq.footblocked &&
+			i === [...revealed.foot].shift() &&
+			i <= [...visible.body].pop()
+		) {
 			cue.call(this, seq, i, +1, pristine)
 			seq.lastReveal = i
 			return animate.call(this, element, { reveal: true, pristine })

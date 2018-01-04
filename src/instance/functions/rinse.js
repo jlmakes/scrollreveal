@@ -1,4 +1,5 @@
-import { each, getNodes } from 'tealight'
+import $ from 'tealight'
+import each from '../../utils/each'
 
 export default function rinse () {
 	const struct = () => ({
@@ -14,7 +15,7 @@ export default function rinse () {
 	 * Take stock of active element IDs.
 	 */
 	try {
-		each(getNodes('[data-sr-id]'), node => {
+		each($('[data-sr-id]'), node => {
 			const id = parseInt(node.getAttribute('data-sr-id'))
 			elementIds.active.push(id)
 		})
