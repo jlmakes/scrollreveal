@@ -2,7 +2,7 @@ import each from '../../src/utils/each'
 
 describe('Utilities', () => {
 	describe('each()', () => {
-		function Fixture () {
+		function Fixture() {
 			this.foo = 'bar'
 			this.baz = 'bun'
 		}

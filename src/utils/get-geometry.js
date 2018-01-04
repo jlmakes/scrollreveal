@@ -1,4 +1,4 @@
-export default function getGeometry (target, isContainer) {
+export default function getGeometry(target, isContainer) {
 	/**
 	 * We want to ignore padding and scrollbars for container elements.
 	 * More information here: https://goo.gl/vOZpbz
@@ -25,9 +25,9 @@ export default function getGeometry (target, isContainer) {
 			top: offsetTop,
 			right: offsetLeft + width,
 			bottom: offsetTop + height,
-			left: offsetLeft,
+			left: offsetLeft
 		},
 		height,
-		width,
+		width
 	}
 }

@@ -1,6 +1,6 @@
 import clean from '../methods/clean'
 
-export default function animate (element, force = {}) {
+export default function animate(element, force = {}) {
 	const pristine = force.pristine || this.pristine
 	const delayed =
 		element.config.useDelay === 'always' ||
@@ -19,11 +19,11 @@ export default function animate (element, force = {}) {
 	}
 }
 
-function triggerReveal (element, delayed) {
+function triggerReveal(element, delayed) {
 	const styles = [
 		element.styles.inline.generated,
 		element.styles.opacity.computed,
-		element.styles.transform.generated.final,
+		element.styles.transform.generated.final
 	]
 	if (delayed) {
 		styles.push(element.styles.transition.generated.delayed)
@@ -35,19 +35,19 @@ function triggerReveal (element, delayed) {
 	registerCallbacks.call(this, element, delayed)
 }
 
-function triggerReset (element) {
+function triggerReset(element) {
 	const styles = [
 		element.styles.inline.generated,
 		element.styles.opacity.generated,
 		element.styles.transform.generated.initial,
-		element.styles.transition.generated.instant,
+		element.styles.transition.generated.instant
 	]
 	element.revealed = false
 	element.node.setAttribute('style', styles.filter(s => s !== '').join(' '))
 	registerCallbacks.call(this, element)
 }
 
-function registerCallbacks (element, isDelayed) {
+function registerCallbacks(element, isDelayed) {
 	const duration = isDelayed
 		? element.config.duration + element.config.delay
 		: element.config.duration
@@ -56,7 +56,9 @@ function registerCallbacks (element, isDelayed) {
 		? element.config.beforeReveal
 		: element.config.beforeReset
 
-	const afterCallback = element.revealed ? element.config.afterReveal : element.config.afterReset
+	const afterCallback = element.revealed
+		? element.config.afterReveal
+		: element.config.afterReset
 
 	let elapsed = 0
 	if (element.callbackTimer) {
@@ -74,6 +76,6 @@ function registerCallbacks (element, isDelayed) {
 			if (element.revealed && !element.config.reset) {
 				clean.call(this, element.node)
 			}
-		}, duration - elapsed),
+		}, duration - elapsed)
 	}
 }

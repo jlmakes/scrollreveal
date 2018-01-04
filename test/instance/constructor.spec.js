@@ -28,7 +28,10 @@ describe('ScrollReveal', () => {
 		})
 
 		it('should return a noop instance when not supported', () => {
-			const stubs = [sinon.stub(console, 'log'), sinon.stub(ScrollReveal, 'isSupported')]
+			const stubs = [
+				sinon.stub(console, 'log'),
+				sinon.stub(ScrollReveal, 'isSupported')
+			]
 			const sr = ScrollReveal()
 			stubs.forEach(stub => stub.restore())
 			expect(sr.noop).to.be.true
@@ -125,7 +128,10 @@ describe('ScrollReveal', () => {
 	})
 
 	describe('Non-operational Instance', () => {
-		const stubs = [sinon.stub(console, 'log'), sinon.stub(ScrollReveal, 'isSupported')]
+		const stubs = [
+			sinon.stub(console, 'log'),
+			sinon.stub(ScrollReveal, 'isSupported')
+		]
 		const sr = ScrollReveal()
 		stubs.forEach(stub => stub.restore())
 

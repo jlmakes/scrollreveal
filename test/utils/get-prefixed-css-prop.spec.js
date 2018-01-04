@@ -9,7 +9,7 @@ describe('Utilities', () => {
 		it('should return unprefixed properties before prefixed', () => {
 			const source = {
 				transform: '',
-				'-webkit-transform': '',
+				'-webkit-transform': ''
 			}
 			const result = getPrefixedCssProp('transform', source)
 			expect(result).to.equal('transform')

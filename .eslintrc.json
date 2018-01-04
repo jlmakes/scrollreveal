@@ -1,48 +1,29 @@
 {
-  "env": {
-    "es6": true,
-    "amd": true,
-    "browser": true,
-    "mocha": true,
-    "node": true
-  },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "sourceType": "module"
-  },
-  "globals": {
-    "describe": true,
-    "it": true,
-    "expect": true,
-    "sinon": true
-  },
-  "rules": {
-    "array-bracket-spacing": [2, "never", { "arraysInArrays": true }],
-    "arrow-spacing": 2,
-    "block-spacing": 2,
-    "brace-style": [2, "1tbs", { "allowSingleLine": true }],
-    "comma-dangle": [2, "always-multiline"],
-    "comma-spacing": [2, { "before": false, "after": true }],
-    "eol-last": [2, "always"],
-    "indent": [2, "tab", { "SwitchCase": 1 }],
-    "key-spacing": 2,
-    "keyword-spacing": 2,
-    "no-cond-assign": 2,
-    "no-console": 1,
-    "no-const-assign": 2,
-    "no-class-assign": 2,
-    "no-this-before-super": 2,
-    "no-trailing-spaces": 2,
-    "no-unused-vars": 1,
-    "no-var": 2,
-    "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
-    "object-curly-spacing": [2, "always"],
-    "object-shorthand":  [2, "always"],
-    "semi": [2, "never"],
-    "space-before-blocks": [2, "always"],
-    "space-before-function-paren": [2, "always"],
-    "space-in-parens": [2, "never"],
-    "quote-props": [2, "as-needed"],
-    "quotes": [2, "single"]
-  }
+	"env": {
+		"es6": true,
+		"amd": true,
+		"browser": true,
+		"mocha": true,
+		"node": true
+	},
+	"extends": "eslint:recommended",
+	"parserOptions": {
+		"sourceType": "module"
+	},
+	"globals": {
+		"describe": true,
+		"it": true,
+		"expect": true,
+		"sinon": true
+	},
+	"rules": {
+		"no-cond-assign": 2,
+		"no-console": 1,
+		"no-const-assign": 2,
+		"no-class-assign": 2,
+		"no-this-before-super": 2,
+		"no-unused-vars": 1,
+		"no-var": 2,
+		"object-shorthand": [2, "always"]
+	}
 }

@@ -1,7 +1,7 @@
 import isObject from './is-object'
 import each from './each'
 
-export default function deepAssign (target, ...sources) {
+export default function deepAssign(target, ...sources) {
 	if (isObject(target)) {
 		each(sources, source => {
 			each(source, (data, key) => {

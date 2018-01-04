@@ -3,7 +3,7 @@ import each from '../../utils/each'
 import logger from '../../utils/logger'
 import rinse from '../functions/rinse'
 
-export default function clean (target) {
+export default function clean(target) {
 	let dirty
 	try {
 		each($(target), node => {

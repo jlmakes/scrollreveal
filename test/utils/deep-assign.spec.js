@@ -17,19 +17,19 @@ describe('Utilities', () => {
 				foo: 'initial',
 				bar: 'initial',
 				kel: { pow: 'pop' },
-				zad: null,
+				zad: null
 			}
 			const source = {
 				foo: 'bonk!',
 				bar: { baz: 'baff' },
 				kel: { pow: 'lol' },
-				zad: { min: 'max' },
+				zad: { min: 'max' }
 			}
 			const goal = {
 				foo: 'bonk!',
 				bar: { baz: 'baff' },
 				kel: { pow: 'lol' },
-				zad: { min: 'max' },
+				zad: { min: 'max' }
 			}
 			deepAssign(target, source)
 			expect(target).to.deep.equal(goal)

@@ -8,7 +8,7 @@ export default {
 	rotate: {
 		x: 0,
 		y: 0,
-		z: 0,
+		z: 0
 	},
 	scale: 1,
 	container: document.documentElement,
@@ -21,10 +21,10 @@ export default {
 		top: 0,
 		right: 0,
 		bottom: 0,
-		left: 0,
+		left: 0
 	},
-	afterReset () {},
-	afterReveal () {},
-	beforeReset () {},
-	beforeReveal () {},
+	afterReset() {},
+	afterReveal() {},
+	beforeReset() {},
+	beforeReveal() {}
 }

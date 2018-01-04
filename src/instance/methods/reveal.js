@@ -9,7 +9,7 @@ import logger from '../../utils/logger'
 import nextUniqueId from '../../utils/next-unique-id'
 import isMobile from '../../utils/is-mobile'
 
-export default function reveal (target, options, interval, sync) {
+export default function reveal(target, options, interval, sync) {
 	const containerBuffer = []
 
 	/**
@@ -112,7 +112,7 @@ export default function reveal (target, options, interval, sync) {
 			if (sequence) {
 				element.sequence = {
 					id: sequence.id,
-					index: sequence.members.length,
+					index: sequence.members.length
 				}
 				sequence.members.push(element.id)
 			}
@@ -142,7 +142,7 @@ export default function reveal (target, options, interval, sync) {
 		each(containerBuffer, container => {
 			this.store.containers[container.id] = {
 				id: container.id,
-				node: container.node,
+				node: container.node
 			}
 		})
 		if (sequence) {
@@ -168,7 +168,7 @@ export default function reveal (target, options, interval, sync) {
 	}
 }
 
-function getContainerId (node, ...collections) {
+function getContainerId(node, ...collections) {
 	let id = null
 	each(collections, collection => {
 		each(collection, container => {

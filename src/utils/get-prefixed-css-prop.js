@@ -2,7 +2,7 @@ const getPrefixedCssProp = (() => {
 	let properties = {}
 	const style = document.documentElement.style
 
-	function getPrefixedCssProperty (name, source = style) {
+	function getPrefixedCssProperty(name, source = style) {
 		if (name && typeof name === 'string') {
 			if (properties[name]) {
 				return properties[name]

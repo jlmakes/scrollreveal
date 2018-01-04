@@ -1,6 +1,6 @@
 import each from '../../utils/each'
 
-export default function destroy () {
+export default function destroy() {
 	/**
 	 * Remove all generated styles and element ids
 	 */
@@ -26,6 +26,6 @@ export default function destroy () {
 		containers: {},
 		elements: {},
 		history: [],
-		sequences: {},
+		sequences: {}
 	}
 }

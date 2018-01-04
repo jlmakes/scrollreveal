@@ -22,7 +22,7 @@ let _config
 let _debug
 let _instance
 
-export default function ScrollReveal (options = {}) {
+export default function ScrollReveal(options = {}) {
 	const invokedWithoutNew =
 		typeof this === 'undefined' ||
 		Object.getPrototypeOf(this) !== ScrollReveal.prototype
@@ -93,7 +93,7 @@ export default function ScrollReveal (options = {}) {
 		containers: {},
 		elements: {},
 		history: [],
-		sequences: {},
+		sequences: {}
 	}
 
 	this.pristine = true
@@ -120,5 +120,5 @@ Object.defineProperty(ScrollReveal, 'debug', {
 	get: () => _debug || false,
 	set: value => {
 		if (typeof value === 'boolean') _debug = value
-	},
+	}
 })

@@ -7,7 +7,7 @@ import getGeometry from '../../utils/get-geometry'
 import getScrolled from '../../utils/get-scrolled'
 import isElementVisible from '../../utils/is-element-visible'
 
-export default function delegate (
+export default function delegate(
 	event = { type: 'init' },
 	elements = this.store.elements
 ) {
@@ -22,7 +22,7 @@ export default function delegate (
 			if (container.scroll) {
 				container.direction = {
 					x: mathSign(scroll.left - container.scroll.left),
-					y: mathSign(scroll.top - container.scroll.top),
+					y: mathSign(scroll.top - container.scroll.top)
 				}
 			}
 			container.scroll = scroll

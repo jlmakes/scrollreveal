@@ -1,10 +1,10 @@
 import $ from 'tealight'
 import each from '../../utils/each'
 
-export default function rinse () {
+export default function rinse() {
 	const struct = () => ({
 		active: [],
-		stale: [],
+		stale: []
 	})
 
 	const elementIds = struct()

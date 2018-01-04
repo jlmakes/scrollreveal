@@ -6,12 +6,12 @@ import {
 	rotateZ,
 	scale,
 	translateX,
-	translateY,
+	translateY
 } from 'rematrix'
 
 import getPrefixedCssProp from '../../utils/get-prefixed-css-prop'
 
-export default function style (element) {
+export default function style(element) {
 	const computed = window.getComputedStyle(element.node)
 	const position = computed.position
 	const config = element.config
@@ -39,7 +39,7 @@ export default function style (element) {
 
 	const opacity = {
 		computed: computedOpacity !== configOpacity ? `opacity: ${computedOpacity};` : '',
-		generated: computedOpacity !== configOpacity ? `opacity: ${configOpacity};` : '',
+		generated: computedOpacity !== configOpacity ? `opacity: ${configOpacity};` : ''
 	}
 
 	/**
@@ -129,7 +129,7 @@ export default function style (element) {
 		 */
 		transform.computed = {
 			raw: computed[transform.property],
-			matrix: parse(computed[transform.property]),
+			matrix: parse(computed[transform.property])
 		}
 
 		transformations.unshift(transform.computed.matrix)
@@ -139,12 +139,12 @@ export default function style (element) {
 			initial: `${transform.property}: matrix3d(${product.join(', ')});`,
 			final: `${transform.property}: matrix3d(${transform.computed.matrix.join(
 				', '
-			)});`,
+			)});`
 		}
 	} else {
 		transform.generated = {
 			initial: '',
-			final: '',
+			final: ''
 		}
 	}
 
@@ -162,7 +162,7 @@ export default function style (element) {
 		if (opacity.generated) {
 			transition.fragments.push({
 				delayed: `opacity ${duration / 1000}s ${easing} ${delay / 1000}s`,
-				instant: `opacity ${duration / 1000}s ${easing} 0s`,
+				instant: `opacity ${duration / 1000}s ${easing} 0s`
 			})
 		}
 
@@ -170,7 +170,7 @@ export default function style (element) {
 			transition.fragments.push({
 				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay /
 					1000}s`,
-				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`,
+				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`
 			})
 		}
 
@@ -181,7 +181,7 @@ export default function style (element) {
 		if (transition.computed && !transition.computed.match(/all 0s/)) {
 			transition.fragments.unshift({
 				delayed: transition.computed,
-				instant: transition.computed,
+				instant: transition.computed
 			})
 		}
 
@@ -195,18 +195,18 @@ export default function style (element) {
 			},
 			{
 				delayed: '',
-				instant: '',
+				instant: ''
 			}
 		)
 
 		transition.generated = {
 			delayed: `${transition.property}: ${composed.delayed};`,
-			instant: `${transition.property}: ${composed.instant};`,
+			instant: `${transition.property}: ${composed.instant};`
 		}
 	} else {
 		transition.generated = {
 			delayed: '',
-			instant: '',
+			instant: ''
 		}
 	}
 
@@ -215,6 +215,6 @@ export default function style (element) {
 		opacity,
 		position,
 		transform,
-		transition,
+		transition
 	}
 }

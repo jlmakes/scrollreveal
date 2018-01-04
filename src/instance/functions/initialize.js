@@ -1,7 +1,7 @@
 import each from '../../utils/each'
 import rinse from './rinse'
 
-export default function initialize () {
+export default function initialize() {
 	rinse.call(this)
 
 	each(this.store.elements, element => {

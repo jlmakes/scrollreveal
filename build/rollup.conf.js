@@ -9,6 +9,6 @@ export default {
 	plugins: [json(), nodeResolve({ jsnext: true, main: true }), buble()],
 	output: [
 		{ format: 'umd', file: 'dist/scrollreveal.js', name: 'ScrollReveal' },
-		{ format: 'es', file: 'dist/scrollreveal.es.js' },
-	],
+		{ format: 'es', file: 'dist/scrollreveal.es.js' }
+	]
 }

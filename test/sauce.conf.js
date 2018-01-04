@@ -6,7 +6,7 @@ const mobileLaunchers = [
 	['iOS', '11.1', 'Safari', 'iPhone 6s Simulator'],
 	['Android', '4.4', 'Browser', 'Android Emulator'],
 	['Android', '5.1', 'Browser', 'Android Emulator'],
-	['Android', '6.0', 'Chrome', 'Android Emulator'],
+	['Android', '6.0', 'Chrome', 'Android Emulator']
 ]
 
 mobileLaunchers.forEach(([platform, version, browser, device]) => {
@@ -21,7 +21,7 @@ mobileLaunchers.forEach(([platform, version, browser, device]) => {
 		browserName: browser,
 		deviceName: device,
 		deviceOrientation: 'portrait',
-		appiumVersion: '1.7.1',
+		appiumVersion: '1.7.1'
 	}
 })
 
@@ -30,7 +30,7 @@ const desktopLaunchers = [
 	['Windows 8', 'Internet Explorer', '10.0'],
 	['macOS 10.12', 'Safari', '11.0'],
 	['OS X 10.11', 'Safari', '10.0'],
-	['OS X 10.11', 'Safari', '9.0'],
+	['OS X 10.11', 'Safari', '9.0']
 ]
 
 desktopLaunchers.forEach(([platform, browser, version]) => {
@@ -42,7 +42,7 @@ desktopLaunchers.forEach(([platform, browser, version]) => {
 		name: `${browser} ${version}, ${platform}`,
 		browserName: browser,
 		version,
-		platform,
+		platform
 	}
 })
 
@@ -64,7 +64,7 @@ evergreenLaunchers.forEach(browser => {
 			name: `${browserName} ${version}, Windows 10`,
 			browserName: browser,
 			version,
-			platform: 'Windows 10',
+			platform: 'Windows 10'
 		}
 	} while (pastVersions)
 })

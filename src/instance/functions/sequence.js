@@ -2,7 +2,7 @@ import animate from './animate'
 import each from '../../utils/each'
 import nextUniqueId from '../../utils/next-unique-id'
 
-export default function sequence (element, pristine = this.pristine) {
+export default function sequence(element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]
 	const i = element.sequence.index
 
@@ -74,7 +74,7 @@ export default function sequence (element, pristine = this.pristine) {
 	}
 }
 
-export function Sequence (interval) {
+export function Sequence(interval) {
 	if (typeof interval === 'number') {
 		if (interval >= 16) {
 			/**
@@ -105,7 +105,7 @@ export function Sequence (interval) {
 	}
 }
 
-export function SequenceModel (prop, sequence, store) {
+export function SequenceModel(prop, sequence, store) {
 	this.head = [] // Elements before the body with a falsey prop.
 	this.body = [] // Elements with a truthy prop.
 	this.foot = [] // Elements after the body with a falsey prop.
@@ -131,7 +131,7 @@ export function SequenceModel (prop, sequence, store) {
 	}
 }
 
-function cue (seq, i, direction, pristine) {
+function cue(seq, i, direction, pristine) {
 	const blocked = ['headblocked', null, 'footblocked'][1 + direction]
 	const nextId = seq.members[i + direction]
 	const nextElement = this.store.elements[nextId]
