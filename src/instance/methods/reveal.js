@@ -7,7 +7,7 @@ import each from '../../utils/each'
 import deepAssign from '../../utils/deep-assign'
 import { logger } from '../../utils/core'
 import nextUniqueId from '../../utils/next-unique-id'
-import { isMobile } from '../../utils/browser'
+import isMobile from '../../utils/is-mobile'
 
 export default function reveal (target, options, interval, sync) {
 	const containerBuffer = []

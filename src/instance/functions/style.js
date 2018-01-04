@@ -1,6 +1,15 @@
-import { parse, multiply, rotateX, rotateY, rotateZ, scale, translateX, translateY } from 'rematrix'
+import {
+	parse,
+	multiply,
+	rotateX,
+	rotateY,
+	rotateZ,
+	scale,
+	translateX,
+	translateY,
+} from 'rematrix'
 
-import { getPrefixedStyleProperty } from '../../utils/browser'
+import getPrefixedCssProp from '../../utils/get-prefixed-css-prop'
 
 export default function style (element) {
 	const computed = window.getComputedStyle(element.node)
@@ -44,7 +53,7 @@ export default function style (element) {
 		/**
 		 * Let’s make sure our our pixel distances are negative for top and left.
 		 * e.g. { origin: 'top', distance: '25px' } starts at `top: -25px` in CSS.
-    	 */
+		 */
 		let distance = config.distance
 		if (config.origin === 'top' || config.origin === 'left') {
 			distance = /^-/.test(distance) ? distance.substr(1) : `-${distance}`
@@ -113,11 +122,11 @@ export default function style (element) {
 
 	const transform = {}
 	if (transformations.length) {
-		transform.property = getPrefixedStyleProperty('transform')
+		transform.property = getPrefixedCssProp('transform')
 		/**
-		* The default computed transform value should be one of:
-		* undefined || 'none' || 'matrix()' || 'matrix3d()'
-		*/
+		 * The default computed transform value should be one of:
+		 * undefined || 'none' || 'matrix()' || 'matrix3d()'
+		 */
 		transform.computed = {
 			raw: computed[transform.property],
 			matrix: parse(computed[transform.property]),
@@ -128,7 +137,9 @@ export default function style (element) {
 
 		transform.generated = {
 			initial: `${transform.property}: matrix3d(${product.join(', ')});`,
-			final: `${transform.property}: matrix3d(${transform.computed.matrix.join(', ')});`,
+			final: `${transform.property}: matrix3d(${transform.computed.matrix.join(
+				', '
+			)});`,
 		}
 	} else {
 		transform.generated = {
@@ -142,7 +153,7 @@ export default function style (element) {
 	 */
 	let transition = {}
 	if (opacity.generated || transform.generated.initial) {
-		transition.property = getPrefixedStyleProperty('transition')
+		transition.property = getPrefixedCssProp('transition')
 		transition.computed = computed[transition.property]
 		transition.fragments = []
 
@@ -157,7 +168,8 @@ export default function style (element) {
 
 		if (transform.generated.initial) {
 			transition.fragments.push({
-				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay / 1000}s`,
+				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay /
+					1000}s`,
 				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`,
 			})
 		}
@@ -175,8 +187,10 @@ export default function style (element) {
 
 		const composed = transition.fragments.reduce(
 			(composition, fragment, i) => {
-				composition.delayed += i === 0 ? fragment.delayed : `, ${fragment.delayed}`
-				composition.instant += i === 0 ? fragment.instant : `, ${fragment.instant}`
+				composition.delayed +=
+					i === 0 ? fragment.delayed : `, ${fragment.delayed}`
+				composition.instant +=
+					i === 0 ? fragment.instant : `, ${fragment.instant}`
 				return composition
 			},
 			{

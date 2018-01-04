@@ -8,7 +8,10 @@ import sync from './methods/sync'
 
 import delegate from './functions/delegate'
 
-import { isMobile, transformSupported, transitionSupported } from '../utils/browser'
+import isMobile from '../utils/is-mobile'
+import transformSupported from '../utils/transform-supported'
+import transitionSupported from '../utils/transition-supported'
+
 import deepAssign from '../utils/deep-assign'
 import { logger } from '../utils/core'
 import $ from 'tealight'
