@@ -10,8 +10,8 @@
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
 		"build": "npm run bundle && npm run bundle:min",
-		"bundle": "./node_modules/rollup/bin/rollup -c rollup.conf.js",
-		"bundle:min": "./node_modules/rollup/bin/rollup -c rollup.conf.min.js",
+		"bundle": "./node_modules/rollup/bin/rollup -c ./build/rollup.conf.js",
+		"bundle:min": "./node_modules/rollup/bin/rollup -c ./build/rollup.conf.min.js",
 		"lint": "./node_modules/eslint/bin/eslint.js src test",
 		"pretest": "rm -rf .ignore/coverage/**/ && npm run lint",
 		"test": "./node_modules/karma/bin/karma start karma.conf.js",
