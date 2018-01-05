@@ -1,4 +1,5 @@
 import ScrollReveal from '../../src/instance/constructor'
+import isMobile from '../../src/utils/is-mobile'
 import { version } from '../../package.json'
 
 describe('ScrollReveal', () => {
@@ -35,6 +36,12 @@ describe('ScrollReveal', () => {
 			const sr = ScrollReveal()
 			stubs.forEach(stub => stub.restore())
 			expect(sr.noop).to.be.true
+		})
+
+		it('should return a noop instance when device is disabled', () => {
+			isMobile()
+				? expect(ScrollReveal({ mobile: false }).noop).to.be.true
+				: expect(ScrollReveal({ desktop: false }).noop).to.be.true
 		})
 
 		it('should return a noop instance when container is invalid', () => {
