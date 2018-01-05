@@ -61,6 +61,9 @@ export default function ScrollReveal(options = {}) {
 			if (!container) {
 				throw new Error('Invalid container.')
 			}
+			if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
+				throw new Error('This device is disabled.')
+			}
 		} catch (e) {
 			logger.call(this, 'Instantiation failed.', e.message)
 			return noop
@@ -69,24 +72,16 @@ export default function ScrollReveal(options = {}) {
 		_config = buffer
 	}
 
-	Object.defineProperty(this, 'defaults', { get: () => _config })
-
 	/**
-	 * Now that we have our configuration, we can
-	 * make our last check for disabled platforms.
+	 * Modify the DOM to reflect successful instantiation.
 	 */
-	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
-		/**
-		 * Modify the DOM to reflect successful instantiation.
-		 */
-		document.documentElement.classList.add('sr')
-		if (document.body) {
+	document.documentElement.classList.add('sr')
+	if (document.body) {
+		document.body.style.height = '100%'
+	} else {
+		document.addEventListener('DOMContentLoaded', () => {
 			document.body.style.height = '100%'
-		} else {
-			document.addEventListener('DOMContentLoaded', () => {
-				document.body.style.height = '100%'
-			})
-		}
+		})
 	}
 
 	this.store = {
@@ -104,6 +99,7 @@ export default function ScrollReveal(options = {}) {
 	Object.defineProperty(this, 'clean', { get: () => clean.bind(this) })
 	Object.defineProperty(this, 'sync', { get: () => sync.bind(this) })
 
+	Object.defineProperty(this, 'defaults', { get: () => _config })
 	Object.defineProperty(this, 'version', { get: () => version })
 	Object.defineProperty(this, 'noop', { get: () => false })
 
