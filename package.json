@@ -6,9 +6,7 @@
 	"main": "dist/scrollreveal.js",
 	"module": "dist/scrollreveal.es.js",
 	"jsnext:main": "dist/scrollreveal.es.js",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
 		"build": "npm run bundle && npm run bundle:min",
@@ -19,7 +17,8 @@
 		"test": "./node_modules/karma/bin/karma start ./test/karma.conf.js",
 		"testing": "cross-env COVERAGE=true npm test -- --no-single-run",
 		"coverage": "cross-env COVERAGE=true npm test",
-		"sandbox:bundle": "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
+		"sandbox:bundle":
+			"./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
 		"sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
 		"coverage:server": "node ./.ignore/coverage/server.coverage.js"
 	},
@@ -33,7 +32,7 @@
 	"dependencies": {
 		"miniraf": "^1.0.0",
 		"rematrix": "0.2.2",
-		"tealight": "0.2.1"
+		"tealight": "0.3.0"
 	},
 	"devDependencies": {
 		"chai": "^4.1.2",
