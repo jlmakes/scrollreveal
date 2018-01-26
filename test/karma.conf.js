@@ -7,7 +7,12 @@ const rollupPlugins = [
 if (process.env.COVERAGE) {
 	rollupPlugins.push(
 		require('rollup-plugin-istanbul')({
-			exclude: ['../src/index.js', './**', '**/node_modules/**'],
+			exclude: [
+				'../package.json',
+				'../src/index.js',
+				'./**/*.spec.js',
+				'**/node_modules/**'
+			],
 			instrumenterConfig: {
 				embedSource: true
 			}
@@ -27,13 +32,15 @@ module.exports = function(karma) {
 
 		rollupPreprocessor: {
 			plugins: rollupPlugins,
-			format: 'iife',
-			name: 'ScrollReveal',
-			sourcemap: 'inline'
+			output: {
+				format: 'iife',
+				name: 'ScrollReveal',
+				sourcemap: 'inline'
+			}
 		},
 
 		colors: true,
-		concurrency: 5,
+		concurrency: 10,
 		logLevel: karma.LOG_ERROR,
 		singleRun: true,
 
