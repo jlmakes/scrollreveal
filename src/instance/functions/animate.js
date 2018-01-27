@@ -10,11 +10,11 @@ export default function animate(element, force = {}) {
 	const shouldReveal = element.visible && !element.revealed
 	const shouldReset = !element.visible && element.revealed && element.config.reset
 
-	if (shouldReveal || force.reveal) {
+	if (force.reveal || shouldReveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset || force.reset) {
+	if (force.reset || shouldReset) {
 		return triggerReset.call(this, element)
 	}
 }
