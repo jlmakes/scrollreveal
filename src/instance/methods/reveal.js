@@ -1,16 +1,17 @@
+import tealight from 'tealight'
+
 import clean from '../methods/clean'
+
 import style from '../functions/style'
 import initialize from '../functions/initialize'
-import $ from 'tealight'
+
 import each from '../../utils/each'
-import deepAssign from '../../utils/deep-assign'
 import logger from '../../utils/logger'
-import nextUniqueId from '../../utils/next-unique-id'
 import isMobile from '../../utils/is-mobile'
+import deepAssign from '../../utils/deep-assign'
+import nextUniqueId from '../../utils/next-unique-id'
 
 export default function reveal(target, options, interval, sync) {
-	const containerBuffer = []
-
 	/**
 	 * The reveal method has optional 2nd and 3rd parameters,
 	 * so we first explicitly check what was passed in.
@@ -23,28 +24,26 @@ export default function reveal(target, options, interval, sync) {
 		options = options || {}
 	}
 
-	/**
-	 * To start things off, build element collection,
-	 * and attempt to instantiate a new sequence.
-	 */
+	const containerBuffer = []
 	let sequence
+
 	try {
 		if (interval >= 16) {
 			sequence = {
 				id: nextUniqueId(),
 				interval,
 				members: [],
+				models: {},
 				headblocked: true,
 				footblocked: true,
 				lastReveal: null,
-				lastReset: null,
-				models: {}
+				lastReset: null
 			}
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
 		}
 
-		const nodes = $(target)
+		const nodes = tealight(target)
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')
 		}
@@ -59,7 +58,7 @@ export default function reveal(target, options, interval, sync) {
 				/**
 				 * In order to prevent previously generated styles
 				 * from throwing off the new styles, the style tag
-				 * has to be reverted to it's pre-reveal state.
+				 * has to be reverted to its pre-reveal state.
 				 */
 				element.node.setAttribute('style', element.styles.inline.computed)
 			} else {
@@ -72,42 +71,29 @@ export default function reveal(target, options, interval, sync) {
 
 			const config = deepAssign({}, element.config || this.defaults, options)
 
-			/**
-			 * Verify the current device passes our platform configuration,
-			 * and cache the result for the rest of the loop.
-			 */
-			let disabled
-			{
-				if (disabled == null) {
-					disabled =
-						(!config.mobile && isMobile()) || (!config.desktop && !isMobile())
+			if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
+				if (existingId) {
+					clean.call(this, element)
 				}
-				if (disabled) {
-					if (existingId) {
-						clean.call(this, element)
-					}
-					return elementBuffer
-				}
+				return elementBuffer // skip elements that are disabled
 			}
 
-			const containerNode = $(config.container)[0]
+			const containerNode = tealight(config.container)[0]
+			if (!containerNode) {
+				throw new Error('Invalid container.')
+			}
+			if (!containerNode.contains(elementNode)) {
+				return elementBuffer // skip elements found outside the container
+			}
 
 			let containerId
 			{
-				if (!containerNode) {
-					throw new Error('Invalid container.')
-				}
-				if (!containerNode.contains(elementNode)) {
-					return elementBuffer // skip elements found outside the container
-				}
-
 				containerId = getContainerId(
 					containerNode,
 					containerBuffer,
 					this.store.containers
 				)
-
-				if (containerId == null) {
+				if (containerId === null) {
 					containerId = nextUniqueId()
 					containerBuffer.push({ id: containerId, node: containerNode })
 				}
@@ -146,16 +132,14 @@ export default function reveal(target, options, interval, sync) {
 	 * Now that element set-up is complete...
 	 * Let’s commit any container and sequence data we have to the store.
 	 */
-	{
-		each(containerBuffer, container => {
-			this.store.containers[container.id] = {
-				id: container.id,
-				node: container.node
-			}
-		})
-		if (sequence) {
-			this.store.sequences[sequence.id] = sequence
+	each(containerBuffer, container => {
+		this.store.containers[container.id] = {
+			id: container.id,
+			node: container.node
 		}
+	})
+	if (sequence) {
+		this.store.sequences[sequence.id] = sequence
 	}
 
 	/**
