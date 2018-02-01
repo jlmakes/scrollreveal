@@ -45,14 +45,7 @@ export default function reveal(target, options, interval, sync) {
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
 		}
-	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
-	}
 
-	/**
-	 * Begin element set-up...
-	 */
-	try {
 		const elements = nodes.reduce((elementBuffer, elementNode) => {
 			const element = {}
 			const existingId = elementNode.getAttribute('data-sr-id')
