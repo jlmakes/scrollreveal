@@ -3,6 +3,7 @@ import tealight from 'tealight'
 import clean from '../methods/clean'
 
 import style from '../functions/style'
+import { Sequence } from '../functions/sequence'
 import initialize from '../functions/initialize'
 
 import each from '../../utils/each'
@@ -29,16 +30,7 @@ export default function reveal(target, options, interval, sync) {
 
 	try {
 		if (interval >= 16) {
-			sequence = {
-				id: nextUniqueId(),
-				interval,
-				members: [],
-				models: {},
-				headblocked: true,
-				footblocked: true,
-				lastReveal: null,
-				lastReset: null
-			}
+			sequence = new Sequence(interval)
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
 		}

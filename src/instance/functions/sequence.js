@@ -1,5 +1,6 @@
 import animate from './animate'
 import each from '../../utils/each'
+import nextUniqueId from '../../utils/next-unique-id'
 
 export default function sequence(element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]
@@ -71,6 +72,17 @@ export default function sequence(element, pristine = this.pristine) {
 			return animate.call(this, element, { reveal: true, pristine })
 		}
 	}
+}
+
+export function Sequence(interval) {
+	this.id = nextUniqueId()
+	this.interval = interval
+	this.members = []
+	this.models = {}
+	this.headblocked = true
+	this.footblocked = true
+	this.lastReveal = null
+	this.lastReset = null
 }
 
 function SequenceModel(prop, sequence, store) {
