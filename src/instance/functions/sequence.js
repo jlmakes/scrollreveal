@@ -79,8 +79,8 @@ export function Sequence(interval) {
 	this.interval = interval
 	this.members = []
 	this.models = {}
-	this.headblocked = true
-	this.footblocked = true
+	this.headblocked = false
+	this.footblocked = false
 	this.lastReveal = null
 	this.lastReset = null
 }
