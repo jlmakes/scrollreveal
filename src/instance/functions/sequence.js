@@ -73,7 +73,7 @@ export default function sequence(element, pristine = this.pristine) {
 	}
 }
 
-export function SequenceModel(prop, sequence, store) {
+function SequenceModel(prop, sequence, store) {
 	this.head = [] // Elements before the body with a falsey prop.
 	this.body = [] // Elements with a truthy prop.
 	this.foot = [] // Elements after the body with a falsey prop.
