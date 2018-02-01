@@ -1,6 +1,5 @@
 import animate from './animate'
 import each from '../../utils/each'
-import nextUniqueId from '../../utils/next-unique-id'
 
 export default function sequence(element, pristine = this.pristine) {
 	const seq = this.store.sequences[element.sequence.id]
@@ -71,37 +70,6 @@ export default function sequence(element, pristine = this.pristine) {
 			seq.lastReveal = i
 			return animate.call(this, element, { reveal: true, pristine })
 		}
-	}
-}
-
-export function Sequence(interval) {
-	if (typeof interval === 'number') {
-		if (interval >= 16) {
-			/**
-			 * Instance details.
-			 */
-			this.id = nextUniqueId()
-			this.interval = interval
-			this.members = []
-
-			/**
-			 * Flow control for sequencing animations.
-			 */
-			this.headblocked = true
-			this.footblocked = true
-
-			/**
-			 * The last successful member indexes,
-			 * and a container for DOM models.
-			 */
-			this.lastReveal = null
-			this.lastReset = null
-			this.models = {}
-		} else {
-			throw new RangeError('Sequence interval must be at least 16ms.')
-		}
-	} else {
-		return null
 	}
 }
 

@@ -1,7 +1,6 @@
 import clean from '../methods/clean'
 import style from '../functions/style'
 import initialize from '../functions/initialize'
-import { Sequence } from '../functions/sequence'
 import $ from 'tealight'
 import each from '../../utils/each'
 import deepAssign from '../../utils/deep-assign'
@@ -32,7 +31,20 @@ export default function reveal(target, options, interval, sync) {
 	let sequence
 	try {
 		nodes = $(target)
-		sequence = interval ? new Sequence(interval) : null
+		if (interval >= 16) {
+			sequence = {
+				id: nextUniqueId(),
+				interval,
+				members: [],
+				headblocked: true,
+				footblocked: true,
+				lastReveal: null,
+				lastReset: null,
+				models: {}
+			}
+		} else {
+			throw new RangeError('Sequence interval must be at least 16ms.')
+		}
 	} catch (e) {
 		return logger.call(this, 'Reveal failed.', e.stack || e.message)
 	}
