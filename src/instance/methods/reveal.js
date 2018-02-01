@@ -27,10 +27,8 @@ export default function reveal(target, options, interval, sync) {
 	 * To start things off, build element collection,
 	 * and attempt to instantiate a new sequence.
 	 */
-	let nodes
 	let sequence
 	try {
-		nodes = $(target)
 		if (interval >= 16) {
 			sequence = {
 				id: nextUniqueId(),
@@ -44,6 +42,11 @@ export default function reveal(target, options, interval, sync) {
 			}
 		} else {
 			throw new RangeError('Sequence interval must be at least 16ms.')
+		}
+
+		const nodes = $(target)
+		if (!nodes.length) {
+			throw new Error('Invalid reveal target.')
 		}
 
 		const elements = nodes.reduce((elementBuffer, elementNode) => {
