@@ -7,8 +7,8 @@ export default function sequence(element, pristine = this.pristine) {
 	const i = element.sequence.index
 
 	if (seq) {
-		const visible = new SequenceModel('visible', seq, this.store)
-		const revealed = new SequenceModel('revealed', seq, this.store)
+		const visible = new SequenceModel(seq, 'visible', this.store)
+		const revealed = new SequenceModel(seq, 'revealed', this.store)
 
 		seq.models = { visible, revealed }
 
@@ -78,12 +78,12 @@ export function Sequence(interval) {
 	}
 }
 
-function SequenceModel(prop, sequence, store) {
+function SequenceModel(seq, prop, store) {
 	this.head = [] // Elements before the body with a falsey prop.
 	this.body = [] // Elements with a truthy prop.
 	this.foot = [] // Elements after the body with a falsey prop.
 
-	each(sequence.members, (id, index) => {
+	each(seq.members, (id, index) => {
 		const element = store.elements[id]
 		if (element && element[prop]) {
 			this.body.push(index)
@@ -91,7 +91,7 @@ function SequenceModel(prop, sequence, store) {
 	})
 
 	if (this.body.length) {
-		each(sequence.members, (id, index) => {
+		each(seq.members, (id, index) => {
 			const element = store.elements[id]
 			if (element && !element[prop]) {
 				if (index < this.body[0]) {
