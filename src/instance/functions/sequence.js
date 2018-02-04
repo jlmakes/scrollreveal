@@ -27,8 +27,6 @@ export default function sequence(element, pristine = this.pristine) {
 			if (nextElement) {
 				cue.call(this, seq, visible.body[0], -1, pristine)
 				cue.call(this, seq, visible.body[0], +1, pristine)
-
-				seq.lastReveal = visible.body[0]
 				return animate.call(this, nextElement, { reveal: true, pristine })
 			} else {
 				return animate.call(this, element)
@@ -43,7 +41,6 @@ export default function sequence(element, pristine = this.pristine) {
 		 * We first check if the element should reset.
 		 */
 		if (!element.visible && element.revealed && element.config.reset) {
-			seq.lastReset = i
 			return animate.call(this, element, { reset: true })
 		}
 
@@ -58,7 +55,6 @@ export default function sequence(element, pristine = this.pristine) {
 			i >= [...visible.body].shift()
 		) {
 			cue.call(this, seq, i, -1, pristine)
-			seq.lastReveal = i
 			return animate.call(this, element, { reveal: true, pristine })
 		}
 
@@ -68,7 +64,6 @@ export default function sequence(element, pristine = this.pristine) {
 			i <= [...visible.body].pop()
 		) {
 			cue.call(this, seq, i, +1, pristine)
-			seq.lastReveal = i
 			return animate.call(this, element, { reveal: true, pristine })
 		}
 	}
@@ -81,8 +76,6 @@ export function Sequence(interval) {
 	this.models = {}
 	this.headblocked = false
 	this.footblocked = false
-	this.lastReveal = null
-	this.lastReset = null
 }
 
 function SequenceModel(prop, sequence, store) {
