@@ -3,6 +3,13 @@ import each from '../../utils/each'
 import nextUniqueId from '../../utils/next-unique-id'
 
 export default function sequence(element, pristine = this.pristine) {
+	/**
+	 * We first check if the element should reset.
+	 */
+	if (!element.visible && element.revealed && element.config.reset) {
+		return animate.call(this, element, { reset: true })
+	}
+
 	const seq = this.store.sequences[element.sequence.id]
 	const i = element.sequence.index
 
@@ -29,17 +36,6 @@ export default function sequence(element, pristine = this.pristine) {
 				cue.call(this, seq, visible.body[0], +1, pristine)
 				return animate.call(this, nextElement, { reveal: true, pristine })
 			}
-		}
-
-		/**
-		 * Assuming we have something visible on screen
-		 * already, and we need to evaluate the element
-		 * that was passed in...
-		 *
-		 * We first check if the element should reset.
-		 */
-		if (!element.visible && element.revealed && element.config.reset) {
-			return animate.call(this, element, { reset: true })
 		}
 
 		/**
