@@ -28,8 +28,6 @@ export default function sequence(element, pristine = this.pristine) {
 				cue.call(this, seq, visible.body[0], -1, pristine)
 				cue.call(this, seq, visible.body[0], +1, pristine)
 				return animate.call(this, nextElement, { reveal: true, pristine })
-			} else {
-				return animate.call(this, element)
 			}
 		}
 
