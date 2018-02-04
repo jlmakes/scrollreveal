@@ -48,7 +48,7 @@ export default function sequence(element, pristine = this.pristine) {
 		 * then the foot of the sequence.
 		 */
 		if (
-			!seq.headblocked &&
+			!seq.blocked.head &&
 			i === [...revealed.head].pop() &&
 			i >= [...visible.body].shift()
 		) {
@@ -57,7 +57,7 @@ export default function sequence(element, pristine = this.pristine) {
 		}
 
 		if (
-			!seq.footblocked &&
+			!seq.blocked.foot &&
 			i === [...revealed.foot].shift() &&
 			i <= [...visible.body].pop()
 		) {
@@ -72,8 +72,10 @@ export function Sequence(interval) {
 	this.interval = interval
 	this.members = []
 	this.models = {}
-	this.headblocked = false
-	this.footblocked = false
+	this.blocked = {
+		head: false,
+		foot: false
+	}
 }
 
 function SequenceModel(prop, sequence, store) {
@@ -103,14 +105,14 @@ function SequenceModel(prop, sequence, store) {
 }
 
 function cue(seq, i, direction, pristine) {
-	const blocked = ['headblocked', null, 'footblocked'][1 + direction]
+	const blocked = ['head', null, 'foot'][1 + direction]
 	const nextId = seq.members[i + direction]
 	const nextElement = this.store.elements[nextId]
 
-	seq[blocked] = true
+	seq.blocked[blocked] = true
 
 	setTimeout(() => {
-		seq[blocked] = false
+		seq.blocked[blocked] = false
 		if (nextElement) {
 			sequence.call(this, nextElement, pristine)
 		}
