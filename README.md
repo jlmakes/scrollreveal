@@ -39,7 +39,7 @@
 A simple and fast way to get started is to include this script on your page:
 
 ```html
-<script src="https://unpkg.com/scrollreveal@beta"></script>
+<script src="https://unpkg.com/scrollreveal@beta/dist/scrollreveal.min.js"></script>
 ```
 
 This will create the global variable `ScrollReveal`.
