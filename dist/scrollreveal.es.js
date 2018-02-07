@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.25
+/*! @license ScrollReveal v4.0.0-beta.26
 
 	Copyright 2018 Fisssion LLC.
 
@@ -9,6 +9,10 @@
 	keep your source code private/proprietary by purchasing
 	a commercial license from https://scrollrevealjs.org/
 */
+import $ from 'tealight';
+import { parse, multiply, rotateX, rotateY, rotateZ, scale, translateX, translateY } from 'rematrix';
+import raf from 'miniraf';
+
 var defaults = {
 	delay: 0,
 	distance: '0',
@@ -38,7 +42,7 @@ var defaults = {
 	afterReveal: function afterReveal() {},
 	beforeReset: function beforeReset() {},
 	beforeReveal: function beforeReveal() {}
-};
+}
 
 var noop = {
 	clean: function clean() {},
@@ -48,68 +52,6 @@ var noop = {
 	get noop() {
 		return true
 	}
-};
-
-/*! @license Tealight v0.2.0
-
-Copyright 2018 Fisssion LLC.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-*/
-function isNode(x) {
-	return typeof window.Node === 'object'
-		? x instanceof window.Node
-		: x !== null &&
-			typeof x === 'object' &&
-			typeof x.nodeType === 'number' &&
-			typeof x.nodeName === 'string'
-}
-
-function isNodeList(x) {
-	var prototypeToString = Object.prototype.toString.call(x);
-	var regex = /^\[object (HTMLCollection|NodeList|Object)\]$/;
-
-	return typeof window.NodeList === 'object'
-		? x instanceof window.NodeList
-		: x !== null &&
-			typeof x === 'object' &&
-			typeof x.length === 'number' &&
-			regex.test(prototypeToString) &&
-			(x.length === 0 || isNode(x[0]))
-}
-
-function index(target, context) {
-	if ( context === void 0 ) { context = document; }
-
-	if (target instanceof Array) { return target.filter(isNode) }
-	if (isNode(target)) { return [target] }
-	if (isNodeList(target)) { return Array.prototype.slice.call(target) }
-	if (typeof target === 'string') {
-		try {
-			var query = context.querySelectorAll(target);
-			return Array.prototype.slice.call(query)
-		} catch (err) {
-			return []
-		}
-	}
-	return []
 }
 
 function isObject(x) {
@@ -159,7 +101,7 @@ function rinse() {
 	 * Take stock of active element IDs.
 	 */
 	try {
-		each(index('[data-sr-id]'), function (node) {
+		each($('[data-sr-id]'), function (node) {
 			var id = parseInt(node.getAttribute('data-sr-id'));
 			elementIds.active.push(id);
 		});
@@ -224,7 +166,7 @@ function clean(target) {
 
 	var dirty;
 	try {
-		each(index(target), function (node) {
+		each($(target), function (node) {
 			var id = node.getAttribute('data-sr-id');
 			if (id !== null) {
 				dirty = true;
@@ -280,229 +222,6 @@ function destroy() {
 		history: [],
 		sequences: {}
 	};
-}
-
-/*! @license Rematrix v0.2.2
-
-	Copyright 2018 Fisssion LLC.
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
-/**
- * @module Rematrix
- */
-
-/**
- * Transformation matrices in the browser come in two flavors:
- *
- *  - `matrix` using 6 values (short)
- *  - `matrix3d` using 16 values (long)
- *
- * This utility follows this [conversion guide](https://goo.gl/EJlUQ1)
- * to expand short form matrices to their equivalent long form.
- *
- * @param  {array} source - Accepts both short and long form matrices.
- * @return {array}
- */
-function format(source) {
-	if (source.constructor !== Array) {
-		throw new TypeError('Expected array.')
-	}
-	if (source.length === 16) {
-		return source
-	}
-	if (source.length === 6) {
-		var matrix = identity();
-		matrix[0] = source[0];
-		matrix[1] = source[1];
-		matrix[4] = source[2];
-		matrix[5] = source[3];
-		matrix[12] = source[4];
-		matrix[13] = source[5];
-		return matrix
-	}
-	throw new RangeError('Expected array with either 6 or 16 values.')
-}
-
-/**
- * Returns a matrix representing no transformation. The product of any matrix
- * multiplied by the identity matrix will be the original matrix.
- *
- * > **Tip:** Similar to how `5 * 1 === 5`, where `1` is the identity.
- *
- * @return {array}
- */
-function identity() {
-	var matrix = [];
-	for (var i = 0; i < 16; i++) {
-		i % 5 == 0 ? matrix.push(1) : matrix.push(0);
-	}
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing the combined transformations
- * of both arguments.
- *
- * > **Note:** Order is very important. For example, rotating 45°
- * along the Z-axis, followed by translating 500 pixels along the
- * Y-axis... is not the same as translating 500 pixels along the
- * Y-axis, followed by rotating 45° along on the Z-axis.
- *
- * @param  {array} m - Accepts both short and long form matrices.
- * @param  {array} x - Accepts both short and long form matrices.
- * @return {array}
- */
-function multiply(m, x) {
-	var fm = format(m);
-	var fx = format(x);
-	var product = [];
-
-	for (var i = 0; i < 4; i++) {
-		var row = [fm[i], fm[i + 4], fm[i + 8], fm[i + 12]];
-		for (var j = 0; j < 4; j++) {
-			var k = j * 4;
-			var col = [fx[k], fx[k + 1], fx[k + 2], fx[k + 3]];
-			var result =
-				row[0] * col[0] + row[1] * col[1] + row[2] * col[2] + row[3] * col[3];
-
-			product[i + k] = result;
-		}
-	}
-
-	return product
-}
-
-/**
- * Attempts to return a 4x4 matrix describing the CSS transform
- * matrix passed in, but will return the identity matrix as a
- * fallback.
- *
- * **Tip:** In virtually all cases, this method is used to convert
- * a CSS matrix (retrieved as a `string` from computed styles) to
- * its equivalent array format.
- *
- * @param  {string} source - String containing a valid CSS `matrix` or `matrix3d` property.
- * @return {array}
- */
-function parse(source) {
-	if (typeof source === 'string') {
-		var match = source.match(/matrix(3d)?\(([^)]+)\)/);
-		if (match) {
-			var raw = match[2].split(', ').map(parseFloat);
-			return format(raw)
-		}
-	}
-	return identity()
-}
-
-/**
- * Returns a 4x4 matrix describing X-axis rotation.
- *
- * @param  {number} angle - Measured in degrees.
- * @return {array}
- */
-function rotateX(angle) {
-	var theta = Math.PI / 180 * angle;
-	var matrix = identity();
-
-	matrix[5] = matrix[10] = Math.cos(theta);
-	matrix[6] = matrix[9] = Math.sin(theta);
-	matrix[9] *= -1;
-
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing Y-axis rotation.
- *
- * @param  {number} angle - Measured in degrees.
- * @return {array}
- */
-function rotateY(angle) {
-	var theta = Math.PI / 180 * angle;
-	var matrix = identity();
-
-	matrix[0] = matrix[10] = Math.cos(theta);
-	matrix[2] = matrix[8] = Math.sin(theta);
-	matrix[2] *= -1;
-
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing Z-axis rotation.
- *
- * @param  {number} angle - Measured in degrees.
- * @return {array}
- */
-function rotateZ(angle) {
-	var theta = Math.PI / 180 * angle;
-	var matrix = identity();
-
-	matrix[0] = matrix[5] = Math.cos(theta);
-	matrix[1] = matrix[4] = Math.sin(theta);
-	matrix[4] *= -1;
-
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing 2D scaling. The first argument
- * is used for both X and Y-axis scaling, unless an optional
- * second argument is provided to explicitly define Y-axis scaling.
- *
- * @param  {number} scalar    - Decimal multiplier.
- * @param  {number} [scalarY] - Decimal multiplier.
- * @return {array}
- */
-function scale(scalar, scalarY) {
-	var matrix = identity();
-
-	matrix[0] = scalar;
-	matrix[5] = typeof scalarY === 'number' ? scalarY : scalar;
-
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing X-axis translation.
- *
- * @param  {number} distance - Measured in pixels.
- * @return {array}
- */
-function translateX(distance) {
-	var matrix = identity();
-	matrix[12] = distance;
-	return matrix
-}
-
-/**
- * Returns a 4x4 matrix describing Y-axis translation.
- *
- * @param  {number} distance - Measured in pixels.
- * @return {array}
- */
-function translateY(distance) {
-	var matrix = identity();
-	matrix[13] = distance;
-	return matrix
 }
 
 var getPrefixedCssProp = (function () {
@@ -744,46 +463,6 @@ function style(element) {
 	}
 }
 
-function initialize() {
-	var this$1 = this;
-
-	rinse.call(this);
-
-	each(this.store.elements, function (element) {
-		var styles = [element.styles.inline.generated];
-
-		if (element.visible) {
-			styles.push(element.styles.opacity.computed);
-			styles.push(element.styles.transform.generated.final);
-		} else {
-			styles.push(element.styles.opacity.generated);
-			styles.push(element.styles.transform.generated.initial);
-		}
-
-		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
-	});
-
-	each(this.store.containers, function (container) {
-		var target =
-			container.node === document.documentElement ? window : container.node;
-		target.addEventListener('scroll', this$1.delegate);
-		target.addEventListener('resize', this$1.delegate);
-	});
-
-	/**
-	 * Manually invoke delegate once to capture
-	 * element and container dimensions, container
-	 * scroll position, and trigger any valid reveals
-	 */
-	this.delegate();
-
-	/**
-	 * Wipe any existing `setTimeout` now
-	 * that initialization has completed.
-	 */
-	this.initTimeout = null;
-}
-
 function animate(element, force) {
 	if ( force === void 0 ) force = {};
 
@@ -796,11 +475,11 @@ function animate(element, force) {
 	var shouldReveal = element.visible && !element.revealed;
 	var shouldReset = !element.visible && element.revealed && element.config.reset;
 
-	if (shouldReveal || force.reveal) {
+	if (force.reveal || shouldReveal) {
 		return triggerReveal.call(this, element, delayed)
 	}
 
-	if (shouldReset || force.reset) {
+	if (force.reset || shouldReset) {
 		return triggerReset.call(this, element)
 	}
 }
@@ -876,116 +555,96 @@ var nextUniqueId = (function () {
 function sequence(element, pristine) {
 	if ( pristine === void 0 ) pristine = this.pristine;
 
-	var seq = this.store.sequences[element.sequence.id];
+	/**
+	 * We first check if the element should reset.
+	 */
+	if (!element.visible && element.revealed && element.config.reset) {
+		return animate.call(this, element, { reset: true })
+	}
+
+	var store = this.store;
+	var seq = store.sequences[element.sequence.id];
 	var i = element.sequence.index;
 
 	if (seq) {
-		var visible = new SequenceModel('visible', seq, this.store);
-		var revealed = new SequenceModel('revealed', seq, this.store);
+		var visible = new SequenceModel(seq, 'visible', store);
+		var revealed = new SequenceModel(seq, 'revealed', store);
 
 		seq.models = { visible: visible, revealed: revealed };
 
 		/**
-		 * If the sequence has no revealed members,
-		 * then we reveal the first visible element
-		 * within that sequence.
-		 *
-		 * The sequence then cues a recursive call
-		 * in both directions.
+		 * At any given time, the sequencer
+		 * needs to find these 3 elements:
+		 */
+		var currentElement;
+		var nextHeadElement;
+		var nextFootElement;
+
+		/**
+		 * When no elements within a sequence are revealed,
+		 * these 3 elements are easily pulled from the
+		 * current visible sequence model.
 		 */
 		if (!revealed.body.length) {
-			var nextId = seq.members[visible.body[0]];
-			var nextElement = this.store.elements[nextId];
-
-			if (nextElement) {
-				cue.call(this, seq, visible.body[0], -1, pristine);
-				cue.call(this, seq, visible.body[0], +1, pristine);
-
-				seq.lastReveal = visible.body[0];
-				return animate.call(this, nextElement, { reveal: true, pristine: pristine })
-			} else {
-				return animate.call(this, element)
+			currentElement = getElement(seq, visible.body.shift(), store);
+			nextHeadElement = getElement(seq, visible.head.pop(), store);
+			nextFootElement = getElement(seq, visible.body.shift(), store);
+		} else {
+			/**
+			 * More typically though, something will be revealed
+			 * and we need to model the unrevealed elements.
+			 */
+			var unrevealed = {
+				head: visible.body.filter(function (x) { return revealed.head.indexOf(x) >= 0; }),
+				foot: visible.body.filter(function (x) { return revealed.foot.indexOf(x) >= 0; })
+			};
+			/**
+			 * Now we can compare the current sequence index
+			 * against our new model to determine the current element.
+			 */
+			if (!seq.blocked.head && i === [].concat( unrevealed.head ).pop()) {
+				currentElement = getElement(seq, unrevealed.head.pop(), store);
+			} else if (!seq.blocked.foot && i === [].concat( unrevealed.foot ).shift()) {
+				currentElement = getElement(seq, unrevealed.foot.shift(), store);
 			}
+			/**
+			 * And the next head and foot elements are
+			 * easily pulled from our custom unrevealed model.
+			 */
+			nextHeadElement = getElement(seq, unrevealed.head.pop(), store);
+			nextFootElement = getElement(seq, unrevealed.foot.shift(), store);
 		}
 
 		/**
-		 * Assuming we have something visible on screen
-		 * already, and we need to evaluate the element
-		 * that was passed in...
-		 *
-		 * We first check if the element should reset.
+		 * Verify and animate!
 		 */
-		if (!element.visible && element.revealed && element.config.reset) {
-			seq.lastReset = i;
-			return animate.call(this, element, { reset: true })
-		}
-
-		/**
-		 * If our element isn’t resetting, we check the
-		 * element sequence index against the head, and
-		 * then the foot of the sequence.
-		 */
-		if (
-			!seq.headblocked &&
-			i === [].concat( revealed.head ).pop() &&
-			i >= [].concat( visible.body ).shift()
-		) {
-			cue.call(this, seq, i, -1, pristine);
-			seq.lastReveal = i;
-			return animate.call(this, element, { reveal: true, pristine: pristine })
-		}
-
-		if (
-			!seq.footblocked &&
-			i === [].concat( revealed.foot ).shift() &&
-			i <= [].concat( visible.body ).pop()
-		) {
-			cue.call(this, seq, i, +1, pristine);
-			seq.lastReveal = i;
-			return animate.call(this, element, { reveal: true, pristine: pristine })
+		if (currentElement) {
+			if (nextHeadElement) { cue.call(this, seq, nextHeadElement, 'head', pristine); }
+			if (nextFootElement) { cue.call(this, seq, nextFootElement, 'foot', pristine); }
+			return animate.call(this, currentElement, { reveal: true, pristine: pristine })
 		}
 	}
 }
 
 function Sequence(interval) {
-	if (typeof interval === 'number') {
-		if (interval >= 16) {
-			/**
-			 * Instance details.
-			 */
-			this.id = nextUniqueId();
-			this.interval = interval;
-			this.members = [];
-
-			/**
-			 * Flow control for sequencing animations.
-			 */
-			this.headblocked = true;
-			this.footblocked = true;
-
-			/**
-			 * The last successful member indexes,
-			 * and a container for DOM models.
-			 */
-			this.lastReveal = null;
-			this.lastReset = null;
-			this.models = {};
-		} else {
-			throw new RangeError('Sequence interval must be at least 16ms.')
-		}
-	} else {
-		return null
-	}
+	this.id = nextUniqueId();
+	this.interval = interval;
+	this.members = [];
+	this.models = {};
+	this.blocked = {
+		head: false,
+		foot: false
+	};
 }
 
-function SequenceModel(prop, sequence, store) {
+function SequenceModel(seq, prop, store) {
 	var this$1 = this;
 
 	this.head = []; // Elements before the body with a falsey prop.
 	this.body = []; // Elements with a truthy prop.
 	this.foot = []; // Elements after the body with a falsey prop.
 
-	each(sequence.members, function (id, index) {
+	each(seq.members, function (id, index) {
 		var element = store.elements[id];
 		if (element && element[prop]) {
 			this$1.body.push(index);
@@ -993,7 +652,7 @@ function SequenceModel(prop, sequence, store) {
 	});
 
 	if (this.body.length) {
-		each(sequence.members, function (id, index) {
+		each(seq.members, function (id, index) {
 			var element = store.elements[id];
 			if (element && !element[prop]) {
 				if (index < this$1.body[0]) {
@@ -1006,21 +665,65 @@ function SequenceModel(prop, sequence, store) {
 	}
 }
 
-function cue(seq, i, direction, pristine) {
+function cue(seq, element, direction, pristine) {
 	var this$1 = this;
 
-	var blocked = ['headblocked', null, 'footblocked'][1 + direction];
-	var nextId = seq.members[i + direction];
-	var nextElement = this.store.elements[nextId];
-
-	seq[blocked] = true;
-
+	seq.blocked[direction] = true;
 	setTimeout(function () {
-		seq[blocked] = false;
-		if (nextElement) {
-			sequence.call(this$1, nextElement, pristine);
-		}
+		seq.blocked[direction] = false;
+		sequence.call(this$1, element, pristine);
 	}, seq.interval);
+}
+
+function getElement(seq, index, store) {
+	var id = seq.members[index];
+	return store.elements[id]
+}
+
+function initialize() {
+	var this$1 = this;
+
+	rinse.call(this);
+
+	each(this.store.elements, function (element) {
+		var styles = [element.styles.inline.generated];
+
+		if (element.visible) {
+			styles.push(element.styles.opacity.computed);
+			styles.push(element.styles.transform.generated.final);
+		} else {
+			styles.push(element.styles.opacity.generated);
+			styles.push(element.styles.transform.generated.initial);
+		}
+
+		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
+	});
+
+	each(this.store.containers, function (container) {
+		var target =
+			container.node === document.documentElement ? window : container.node;
+		target.addEventListener('scroll', this$1.delegate);
+		target.addEventListener('resize', this$1.delegate);
+	});
+
+	/**
+	 * Manually invoke delegate once to capture
+	 * element and container dimensions, container
+	 * scroll position, and trigger any valid reveals
+	 */
+	this.delegate();
+
+	/**
+	 * Wipe any existing `setTimeout` now
+	 * that initialization has completed.
+	 */
+	this.initTimeout = null;
+}
+
+function isMobile(agent) {
+	if ( agent === void 0 ) agent = navigator.userAgent;
+
+	return /Android|iPhone|iPad|iPod/i.test(agent)
 }
 
 function deepAssign(target) {
@@ -1046,16 +749,8 @@ function deepAssign(target) {
 	}
 }
 
-function isMobile(agent) {
-	if ( agent === void 0 ) agent = navigator.userAgent;
-
-	return /Android|iPhone|iPad|iPod/i.test(agent)
-}
-
 function reveal(target, options, interval, sync) {
 	var this$1 = this;
-
-	var containerBuffer = [];
 
 	/**
 	 * The reveal method has optional 2nd and 3rd parameters,
@@ -1069,23 +764,23 @@ function reveal(target, options, interval, sync) {
 		options = options || {};
 	}
 
-	/**
-	 * To start things off, build element collection,
-	 * and attempt to instantiate a new sequence.
-	 */
-	var nodes;
+	var containerBuffer = [];
 	var sequence$$1;
-	try {
-		nodes = index(target);
-		sequence$$1 = interval ? new Sequence(interval) : null;
-	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
-	}
 
-	/**
-	 * Begin element set-up...
-	 */
 	try {
+		if (interval) {
+			if (interval >= 16) {
+				sequence$$1 = new Sequence(interval);
+			} else {
+				throw new RangeError('Sequence interval must be at least 16ms.')
+			}
+		}
+
+		var nodes = $(target);
+		if (!nodes.length) {
+			throw new Error('Invalid reveal target.')
+		}
+
 		var elements = nodes.reduce(function (elementBuffer, elementNode) {
 			var element = {};
 			var existingId = elementNode.getAttribute('data-sr-id');
@@ -1096,7 +791,7 @@ function reveal(target, options, interval, sync) {
 				/**
 				 * In order to prevent previously generated styles
 				 * from throwing off the new styles, the style tag
-				 * has to be reverted to it's pre-reveal state.
+				 * has to be reverted to its pre-reveal state.
 				 */
 				element.node.setAttribute('style', element.styles.inline.computed);
 			} else {
@@ -1109,42 +804,29 @@ function reveal(target, options, interval, sync) {
 
 			var config = deepAssign({}, element.config || this$1.defaults, options);
 
-			/**
-			 * Verify the current device passes our platform configuration,
-			 * and cache the result for the rest of the loop.
-			 */
-			var disabled;
-			{
-				if (disabled == null) {
-					disabled =
-						(!config.mobile && isMobile()) || (!config.desktop && !isMobile());
+			if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
+				if (existingId) {
+					clean.call(this$1, element);
 				}
-				if (disabled) {
-					if (existingId) {
-						clean.call(this$1, element);
-					}
-					return elementBuffer
-				}
+				return elementBuffer // skip elements that are disabled
 			}
 
-			var containerNode = index(config.container)[0];
+			var containerNode = $(config.container)[0];
+			if (!containerNode) {
+				throw new Error('Invalid container.')
+			}
+			if (!containerNode.contains(elementNode)) {
+				return elementBuffer // skip elements found outside the container
+			}
 
 			var containerId;
 			{
-				if (!containerNode) {
-					throw new Error('Invalid container.')
-				}
-				if (!containerNode.contains(elementNode)) {
-					return elementBuffer // skip elements found outside the container
-				}
-
 				containerId = getContainerId(
 					containerNode,
 					containerBuffer,
 					this$1.store.containers
 				);
-
-				if (containerId == null) {
+				if (containerId === null) {
 					containerId = nextUniqueId();
 					containerBuffer.push({ id: containerId, node: containerNode });
 				}
@@ -1183,16 +865,14 @@ function reveal(target, options, interval, sync) {
 	 * Now that element set-up is complete...
 	 * Let’s commit any container and sequence data we have to the store.
 	 */
-	{
-		each(containerBuffer, function (container) {
-			this$1.store.containers[container.id] = {
-				id: container.id,
-				node: container.node
-			};
-		});
-		if (sequence$$1) {
-			this.store.sequences[sequence$$1.id] = sequence$$1;
-		}
+	each(containerBuffer, function (container) {
+		this$1.store.containers[container.id] = {
+			id: container.id,
+			node: container.node
+		};
+	});
+	if (sequence$$1) {
+		this.store.sequences[sequence$$1.id] = sequence$$1;
 	}
 
 	/**
@@ -1243,26 +923,7 @@ function sync() {
 }
 
 var polyfill = function (x) { return (x > 0) - (x < 0) || +x; };
-var mathSign = Math.sign || polyfill;
-
-var polyfill$1 = (function () {
-	var clock = Date.now();
-
-	return function (callback) {
-		var currentTime = Date.now();
-		if (currentTime - clock > 16) {
-			clock = currentTime;
-			callback(currentTime);
-		} else {
-			setTimeout(function () { return polyfill$1(callback); }, 0);
-		}
-	}
-})();
-
-var raf = window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	polyfill$1
+var mathSign = Math.sign || polyfill
 
 function getGeometry(target, isContainer) {
 	/**
@@ -1399,7 +1060,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.25";
+var version = "4.0.0-beta.26";
 
 var _config;
 var _debug;
@@ -1443,9 +1104,12 @@ function ScrollReveal(options) {
 		}
 
 		try {
-			var container = index(buffer.container)[0];
+			var container = $(buffer.container)[0];
 			if (!container) {
 				throw new Error('Invalid container.')
+			}
+			if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
+				throw new Error('This device is disabled.')
 			}
 		} catch (e) {
 			logger.call(this, 'Instantiation failed.', e.message);
@@ -1455,24 +1119,16 @@ function ScrollReveal(options) {
 		_config = buffer;
 	}
 
-	Object.defineProperty(this, 'defaults', { get: function () { return _config; } });
-
 	/**
-	 * Now that we have our configuration, we can
-	 * make our last check for disabled platforms.
+	 * Modify the DOM to reflect successful instantiation.
 	 */
-	if (this.defaults.mobile === isMobile() || this.defaults.desktop === !isMobile()) {
-		/**
-		 * Modify the DOM to reflect successful instantiation.
-		 */
-		document.documentElement.classList.add('sr');
-		if (document.body) {
+	document.documentElement.classList.add('sr');
+	if (document.body) {
+		document.body.style.height = '100%';
+	} else {
+		document.addEventListener('DOMContentLoaded', function () {
 			document.body.style.height = '100%';
-		} else {
-			document.addEventListener('DOMContentLoaded', function () {
-				document.body.style.height = '100%';
-			});
-		}
+		});
 	}
 
 	this.store = {
@@ -1490,6 +1146,7 @@ function ScrollReveal(options) {
 	Object.defineProperty(this, 'clean', { get: function () { return clean.bind(this$1); } });
 	Object.defineProperty(this, 'sync', { get: function () { return sync.bind(this$1); } });
 
+	Object.defineProperty(this, 'defaults', { get: function () { return _config; } });
 	Object.defineProperty(this, 'version', { get: function () { return version; } });
 	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 
