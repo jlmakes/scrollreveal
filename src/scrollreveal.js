@@ -308,6 +308,8 @@
       return [target]
     } else if (sr.tools.isNodeList(target)) {
       return Array.prototype.slice.call(target)
+    } else if (Array.isArray(target)) {
+      return target.filter(sr.tools.isNode)
     }
     return []
   }
