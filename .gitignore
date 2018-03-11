@@ -3,6 +3,7 @@
 *.lock
 *.DS_Store
 *.sublime-project
+*.ignore
+*.vscode
 *.sublime-workspace
 node_modules
-dev
