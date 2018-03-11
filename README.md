@@ -374,7 +374,7 @@ _Continuing our example from 4.2._
 
 ## 5. Appendix
 
-Open source under the [MIT License](https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md). ©2014–2017 Julian Lloyd.
+Open source under the [MIT License](https://github.com/jlmakes/scrollreveal.js/blob/master/LICENSE.md). ©2014–2018 Julian Lloyd.
 
 #### 5.1. Browser Compatibility
 
