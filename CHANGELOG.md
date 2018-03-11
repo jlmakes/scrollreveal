@@ -1,7 +1,13 @@
 
 # Changelog
 
-### 3.3.6 - _2017, June 23rd
+### 3.4.0 - _2018, March 11th_
+
+#### Features
+
+- The `reveal()` method now supports native arrays as `target` argument.
+
+### 3.3.6 - _2017, June 23rd_
 
 Includes patchwork up to 3.3.6.
 

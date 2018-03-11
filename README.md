@@ -142,11 +142,16 @@ sr.reveal('.box', { duration: 2000 }, 50);
 
 #### 3.2. Working With DOM Nodes
 
-You are not just limited to using selectors with `reveal()`, it also accepts a Node or Node List as the first argument.
+You may also pass `Node`, `NodeList` and `Array<Node>` as the reveal target.
 
 ```js
-sr.reveal(document.getElementById('foo'));
-sr.reveal(document.querySelectorAll('.bar'));
+var node = document.querySelector('.foo');
+var nodeList = document.querySelectorAll('.bar');
+var array = Array.prototype.slice.call(nodeList);
+
+sr.reveal(node);
+sr.reveal(nodeList);
+sr.reveal(array);
 ```
 
 #### 3.3. Custom/Multiple Containers
