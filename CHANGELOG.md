@@ -9,7 +9,7 @@
 - Unused containers are removed from the store, and their event listeners destroyed.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
 - ScrollReveal retains element CSS transformations. [#251](https://github.com/jlmakes/scrollreveal/issues/251)
-- Generated styles are removed upon reveal completion, when `options.reset` is `false`. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
+- New `options.cleanup` toggles whether generated styles are removed upon reveal completion (when `options.reset` is `false`). [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal tracks scroll direction as container store data. [#384](https://github.com/jlmakes/scrollreveal/issues/384)
 - New `clean()` method removes specific generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
 - New `destroy()` method removes all generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)

@@ -73,7 +73,7 @@ function registerCallbacks(element, isDelayed) {
 		clock: window.setTimeout(() => {
 			afterCallback(element.node)
 			element.callbackTimer = null
-			if (element.revealed && !element.config.reset) {
+			if (element.revealed && !element.config.reset && element.config.cleanup) {
 				clean.call(this, element.node)
 			}
 		}, duration - elapsed)
