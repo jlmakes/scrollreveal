@@ -221,11 +221,11 @@
       // We need to make sure elements are set to visibility: visible, even when
       // on mobile and `config.mobile === false`, or if unsupported.
       if (sr.tools.isMobile() && !elem.config.mobile || !sr.isSupported()) {
-        elem.domEl.setAttribute('style', elem.styles.inline)
+        _applyStyle(elem.domEl, elem.styles.inline)
         elem.disabled = true
       } else if (!elem.revealing) {
         // Otherwise, proceed normally.
-        elem.domEl.setAttribute('style',
+        _applyStyle(elem.domEl,
           elem.styles.inline +
           elem.styles.transform.initial
         )
@@ -291,6 +291,22 @@
     }
     return sr.defaults.container
   }
+
+  /**
+   * apply a CSS string to an element using the CSSOM (element.style) rather
+   * than setAttribute, which may violate the content security policy.
+   *
+   * @param {Node}   [target]  element to apply style to.
+   * @param {string} [css]     the CSS to apply.
+   */
+ function _applyStyle (target, css) {
+   css.split(';').forEach(function (prop) {
+     var attr = prop.split(':')
+     if (attr.length === 2) {
+       target.style[attr[0]] = attr[1]
+     }
+   })
+ }
 
   /**
    * check to see if a node or node list was passed in as the target,
@@ -538,13 +554,13 @@
       if (_shouldReveal(elem)) {
         elem.config.beforeReveal(elem.domEl)
         if (delayed) {
-          elem.domEl.setAttribute('style',
+          _applyStyle(elem.domEl,
             elem.styles.inline +
             elem.styles.transform.target +
             elem.styles.transition.delayed
           )
         } else {
-          elem.domEl.setAttribute('style',
+          _applyStyle(elem.domEl,
             elem.styles.inline +
             elem.styles.transform.target +
             elem.styles.transition.instant
@@ -564,7 +580,7 @@
         //Otherwise reset our element and
         // trigger the `beforeReset` callback.
         elem.config.beforeReset(elem.domEl)
-        elem.domEl.setAttribute('style',
+        _applyStyle(elem.domEl,
           elem.styles.inline +
           elem.styles.transform.initial +
           elem.styles.transition.instant
