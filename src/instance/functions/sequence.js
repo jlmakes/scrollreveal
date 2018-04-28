@@ -10,66 +10,55 @@ export default function sequence(element, pristine = this.pristine) {
 		return animate.call(this, element, { reset: true })
 	}
 
-	const store = this.store
-	const seq = store.sequences[element.sequence.id]
+	const seq = this.store.sequences[element.sequence.id]
 	const i = element.sequence.index
 
 	if (seq) {
-		const visible = new SequenceModel(seq, 'visible', store)
-		const revealed = new SequenceModel(seq, 'revealed', store)
+		const visible = new SequenceModel(seq, 'visible', this.store)
+		const revealed = new SequenceModel(seq, 'revealed', this.store)
 
 		seq.models = { visible, revealed }
 
 		/**
-		 * At any given time, the sequencer
-		 * needs to find these 3 elements:
-		 */
-		let currentElement
-		let nextHeadElement
-		let nextFootElement
-
-		/**
-		 * When no elements within a sequence are revealed,
-		 * these 3 elements are easily pulled from the
-		 * current visible sequence model.
+		 * If the sequence has no revealed members,
+		 * then we reveal the first visible element
+		 * within that sequence.
+		 *
+		 * The sequence then cues a recursive call
+		 * in both directions.
 		 */
 		if (!revealed.body.length) {
-			currentElement = getElement(seq, visible.body.shift(), store)
-			nextHeadElement = getElement(seq, visible.head.pop(), store)
-			nextFootElement = getElement(seq, visible.body.shift(), store)
-		} else {
-			/**
-			 * More typically though, something will be revealed
-			 * and we need to model the unrevealed elements.
-			 */
-			const unrevealed = {
-				head: visible.body.filter(x => revealed.head.indexOf(x) >= 0),
-				foot: visible.body.filter(x => revealed.foot.indexOf(x) >= 0)
+			const nextId = seq.members[visible.body[0]]
+			const nextElement = this.store.elements[nextId]
+
+			if (nextElement) {
+				cue.call(this, seq, visible.body[0], -1, pristine)
+				cue.call(this, seq, visible.body[0], +1, pristine)
+				return animate.call(this, nextElement, { reveal: true, pristine })
 			}
-			/**
-			 * Now we can compare the current sequence index
-			 * against our new model to determine the current element.
-			 */
-			if (!seq.blocked.head && i === [...unrevealed.head].pop()) {
-				currentElement = getElement(seq, unrevealed.head.pop(), store)
-			} else if (!seq.blocked.foot && i === [...unrevealed.foot].shift()) {
-				currentElement = getElement(seq, unrevealed.foot.shift(), store)
-			}
-			/**
-			 * And the next head and foot elements are
-			 * easily pulled from our custom unrevealed model.
-			 */
-			nextHeadElement = getElement(seq, unrevealed.head.pop(), store)
-			nextFootElement = getElement(seq, unrevealed.foot.shift(), store)
 		}
 
 		/**
-		 * Verify and animate!
+		 * If our element isn’t resetting, we check the
+		 * element sequence index against the head, and
+		 * then the foot of the sequence.
 		 */
-		if (currentElement) {
-			if (nextHeadElement) cue.call(this, seq, nextHeadElement, 'head', pristine)
-			if (nextFootElement) cue.call(this, seq, nextFootElement, 'foot', pristine)
-			return animate.call(this, currentElement, { reveal: true, pristine })
+		if (
+			!seq.blocked.head &&
+			i === [...revealed.head].pop() &&
+			i >= [...visible.body].shift()
+		) {
+			cue.call(this, seq, i, -1, pristine)
+			return animate.call(this, element, { reveal: true, pristine })
+		}
+
+		if (
+			!seq.blocked.foot &&
+			i === [...revealed.foot].shift() &&
+			i <= [...visible.body].pop()
+		) {
+			cue.call(this, seq, i, +1, pristine)
+			return animate.call(this, element, { reveal: true, pristine })
 		}
 	}
 }
@@ -111,15 +100,17 @@ function SequenceModel(seq, prop, store) {
 	}
 }
 
-function cue(seq, element, direction, pristine) {
-	seq.blocked[direction] = true
-	setTimeout(() => {
-		seq.blocked[direction] = false
-		sequence.call(this, element, pristine)
-	}, seq.interval)
-}
+function cue(seq, i, direction, pristine) {
+	const blocked = ['head', null, 'foot'][1 + direction]
+	const nextId = seq.members[i + direction]
+	const nextElement = this.store.elements[nextId]
 
-function getElement(seq, index, store) {
-	const id = seq.members[index]
-	return store.elements[id]
+	seq.blocked[blocked] = true
+
+	setTimeout(() => {
+		seq.blocked[blocked] = false
+		if (nextElement) {
+			sequence.call(this, nextElement, pristine)
+		}
+	}, seq.interval)
 }
