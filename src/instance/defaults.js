@@ -3,6 +3,7 @@ export default {
 	distance: '0',
 	duration: 600,
 	easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
+	interval: 0,
 	opacity: 0,
 	origin: 'bottom',
 	rotate: {

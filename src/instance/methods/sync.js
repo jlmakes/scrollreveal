@@ -8,7 +8,7 @@ import reveal from './reveal'
  */
 export default function sync() {
 	each(this.store.history, record => {
-		reveal.call(this, record.target, record.options, record.interval, true)
+		reveal.call(this, record.target, record.options, true)
 	})
 
 	initialize.call(this)

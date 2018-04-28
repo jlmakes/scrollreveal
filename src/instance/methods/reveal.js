@@ -12,25 +12,13 @@ import isMobile from '../../utils/is-mobile'
 import deepAssign from '../../utils/deep-assign'
 import nextUniqueId from '../../utils/next-unique-id'
 
-export default function reveal(target, options, interval, sync) {
-	/**
-	 * The reveal method has optional 2nd and 3rd parameters,
-	 * so we first explicitly check what was passed in.
-	 */
-	if (typeof options === 'number') {
-		interval = parseInt(options)
-		options = {}
-	} else {
-		interval = parseInt(interval)
-		options = options || {}
-	}
-
+export default function reveal(target, options = {}, syncing = false) {
 	const containerBuffer = []
 	let sequence
 
 	try {
-		if (interval) {
-			sequence = new Sequence(interval)
+		if (options.interval) {
+			sequence = new Sequence(options.interval)
 		}
 
 		const nodes = tealight(target)
@@ -136,8 +124,8 @@ export default function reveal(target, options, interval, sync) {
 	 * If reveal wasn't invoked by sync, we want to
 	 * make sure to add this call to the history.
 	 */
-	if (!sync) {
-		this.store.history.push({ target, options, interval })
+	if (syncing !== true) {
+		this.store.history.push({ target, options })
 
 		/**
 		 * Push initialization to the event queue, giving
