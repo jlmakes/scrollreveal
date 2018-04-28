@@ -64,13 +64,17 @@ export default function sequence(element, pristine = this.pristine) {
 }
 
 export function Sequence(interval) {
-	this.id = nextUniqueId()
-	this.interval = interval
-	this.members = []
-	this.models = {}
-	this.blocked = {
-		head: false,
-		foot: false
+	if (Math.abs(interval) < 16) {
+		throw new RangeError('Sequence interval must be at least 16.')
+	} else {
+		this.id = nextUniqueId()
+		this.interval = Math.abs(interval)
+		this.members = []
+		this.models = {}
+		this.blocked = {
+			head: false,
+			foot: false
+		}
 	}
 }
 

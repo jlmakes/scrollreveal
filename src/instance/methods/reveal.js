@@ -30,11 +30,7 @@ export default function reveal(target, options, interval, sync) {
 
 	try {
 		if (interval) {
-			if (interval >= 16) {
-				sequence = new Sequence(interval)
-			} else {
-				throw new RangeError('Sequence interval must be at least 16ms.')
-			}
+			sequence = new Sequence(interval)
 		}
 
 		const nodes = tealight(target)
