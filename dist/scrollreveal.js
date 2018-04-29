@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.26
+/*! @license ScrollReveal v4.0.0-beta.27
 
 	Copyright 2018 Fisssion LLC.
 
@@ -20,6 +20,7 @@ var defaults = {
 	distance: '0',
 	duration: 600,
 	easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
+	interval: 0,
 	opacity: 0,
 	origin: 'bottom',
 	rotate: {
@@ -28,6 +29,7 @@ var defaults = {
 		z: 0
 	},
 	scale: 1,
+	cleanup: true,
 	container: document.documentElement,
 	desktop: true,
 	mobile: true,
@@ -873,7 +875,7 @@ function registerCallbacks(element, isDelayed) {
 		clock: window.setTimeout(function () {
 			afterCallback(element.node);
 			element.callbackTimer = null;
-			if (element.revealed && !element.config.reset) {
+			if (element.revealed && !element.config.reset && element.config.cleanup) {
 				clean.call(this$1, element.node);
 			}
 		}, duration - elapsed)
@@ -895,79 +897,72 @@ function sequence(element, pristine) {
 		return animate.call(this, element, { reset: true })
 	}
 
-	var store = this.store;
-	var seq = store.sequences[element.sequence.id];
+	var seq = this.store.sequences[element.sequence.id];
 	var i = element.sequence.index;
 
 	if (seq) {
-		var visible = new SequenceModel(seq, 'visible', store);
-		var revealed = new SequenceModel(seq, 'revealed', store);
+		var visible = new SequenceModel(seq, 'visible', this.store);
+		var revealed = new SequenceModel(seq, 'revealed', this.store);
 
 		seq.models = { visible: visible, revealed: revealed };
 
 		/**
-		 * At any given time, the sequencer
-		 * needs to find these 3 elements:
-		 */
-		var currentElement;
-		var nextHeadElement;
-		var nextFootElement;
-
-		/**
-		 * When no elements within a sequence are revealed,
-		 * these 3 elements are easily pulled from the
-		 * current visible sequence model.
+		 * If the sequence has no revealed members,
+		 * then we reveal the first visible element
+		 * within that sequence.
+		 *
+		 * The sequence then cues a recursive call
+		 * in both directions.
 		 */
 		if (!revealed.body.length) {
-			currentElement = getElement(seq, visible.body.shift(), store);
-			nextHeadElement = getElement(seq, visible.head.pop(), store);
-			nextFootElement = getElement(seq, visible.body.shift(), store);
-		} else {
-			/**
-			 * More typically though, something will be revealed
-			 * and we need to model the unrevealed elements.
-			 */
-			var unrevealed = {
-				head: visible.body.filter(function (x) { return revealed.head.indexOf(x) >= 0; }),
-				foot: visible.body.filter(function (x) { return revealed.foot.indexOf(x) >= 0; })
-			};
-			/**
-			 * Now we can compare the current sequence index
-			 * against our new model to determine the current element.
-			 */
-			if (!seq.blocked.head && i === [].concat( unrevealed.head ).pop()) {
-				currentElement = getElement(seq, unrevealed.head.pop(), store);
-			} else if (!seq.blocked.foot && i === [].concat( unrevealed.foot ).shift()) {
-				currentElement = getElement(seq, unrevealed.foot.shift(), store);
+			var nextId = seq.members[visible.body[0]];
+			var nextElement = this.store.elements[nextId];
+
+			if (nextElement) {
+				cue.call(this, seq, visible.body[0], -1, pristine);
+				cue.call(this, seq, visible.body[0], +1, pristine);
+				return animate.call(this, nextElement, { reveal: true, pristine: pristine })
 			}
-			/**
-			 * And the next head and foot elements are
-			 * easily pulled from our custom unrevealed model.
-			 */
-			nextHeadElement = getElement(seq, unrevealed.head.pop(), store);
-			nextFootElement = getElement(seq, unrevealed.foot.shift(), store);
 		}
 
 		/**
-		 * Verify and animate!
+		 * If our element isn’t resetting, we check the
+		 * element sequence index against the head, and
+		 * then the foot of the sequence.
 		 */
-		if (currentElement) {
-			if (nextHeadElement) { cue.call(this, seq, nextHeadElement, 'head', pristine); }
-			if (nextFootElement) { cue.call(this, seq, nextFootElement, 'foot', pristine); }
-			return animate.call(this, currentElement, { reveal: true, pristine: pristine })
+		if (
+			!seq.blocked.head &&
+			i === [].concat( revealed.head ).pop() &&
+			i >= [].concat( visible.body ).shift()
+		) {
+			cue.call(this, seq, i, -1, pristine);
+			return animate.call(this, element, { reveal: true, pristine: pristine })
+		}
+
+		if (
+			!seq.blocked.foot &&
+			i === [].concat( revealed.foot ).shift() &&
+			i <= [].concat( visible.body ).pop()
+		) {
+			cue.call(this, seq, i, +1, pristine);
+			return animate.call(this, element, { reveal: true, pristine: pristine })
 		}
 	}
 }
 
 function Sequence(interval) {
-	this.id = nextUniqueId();
-	this.interval = interval;
-	this.members = [];
-	this.models = {};
-	this.blocked = {
-		head: false,
-		foot: false
-	};
+	if (Math.abs(interval) < 16) {
+		throw new RangeError('Sequence interval must be at least 16.')
+	} else {
+		this.id = nextUniqueId();
+		this.interval = Math.abs(interval);
+		this.members = [];
+		this.models = {};
+		this.blocked = {
+			head: false,
+			foot: false
+		};
+	}
 }
 
 function SequenceModel(seq, prop, store) {
@@ -998,19 +993,21 @@ function SequenceModel(seq, prop, store) {
 	}
 }
 
-function cue(seq, element, direction, pristine) {
+function cue(seq, i, direction, pristine) {
 	var this$1 = this;
 
-	seq.blocked[direction] = true;
-	setTimeout(function () {
-		seq.blocked[direction] = false;
-		sequence.call(this$1, element, pristine);
-	}, seq.interval);
-}
+	var blocked = ['head', null, 'foot'][1 + direction];
+	var nextId = seq.members[i + direction];
+	var nextElement = this.store.elements[nextId];
 
-function getElement(seq, index, store) {
-	var id = seq.members[index];
-	return store.elements[id]
+	seq.blocked[blocked] = true;
+
+	setTimeout(function () {
+		seq.blocked[blocked] = false;
+		if (nextElement) {
+			sequence.call(this$1, nextElement, pristine);
+		}
+	}, seq.interval);
 }
 
 function initialize() {
@@ -1082,31 +1079,17 @@ function deepAssign(target) {
 	}
 }
 
-function reveal(target, options, interval, sync) {
+function reveal(target, options, syncing) {
 	var this$1 = this;
-
-	/**
-	 * The reveal method has optional 2nd and 3rd parameters,
-	 * so we first explicitly check what was passed in.
-	 */
-	if (typeof options === 'number') {
-		interval = parseInt(options);
-		options = {};
-	} else {
-		interval = parseInt(interval);
-		options = options || {};
-	}
+	if ( options === void 0 ) options = {};
+	if ( syncing === void 0 ) syncing = false;
 
 	var containerBuffer = [];
 	var sequence$$1;
 
 	try {
-		if (interval) {
-			if (interval >= 16) {
-				sequence$$1 = new Sequence(interval);
-			} else {
-				throw new RangeError('Sequence interval must be at least 16ms.')
-			}
+		if (options.interval) {
+			sequence$$1 = new Sequence(options.interval);
 		}
 
 		var nodes = index(target);
@@ -1212,8 +1195,8 @@ function reveal(target, options, interval, sync) {
 	 * If reveal wasn't invoked by sync, we want to
 	 * make sure to add this call to the history.
 	 */
-	if (!sync) {
-		this.store.history.push({ target: target, options: options, interval: interval });
+	if (syncing !== true) {
+		this.store.history.push({ target: target, options: options });
 
 		/**
 		 * Push initialization to the event queue, giving
@@ -1249,7 +1232,7 @@ function sync() {
 	var this$1 = this;
 
 	each(this.store.history, function (record) {
-		reveal.call(this$1, record.target, record.options, record.interval, true);
+		reveal.call(this$1, record.target, record.options, true);
 	});
 
 	initialize.call(this);
@@ -1435,7 +1418,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.26";
+var version = "4.0.0-beta.27";
 
 var _config;
 var _debug;
