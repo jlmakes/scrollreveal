@@ -1,5 +1,7 @@
 import tealight from 'tealight'
 
+import defaults from '../defaults'
+
 import clean from '../methods/clean'
 
 import style from '../functions/style'
@@ -14,13 +16,9 @@ import nextUniqueId from '../../utils/next-unique-id'
 
 export default function reveal(target, options = {}, syncing = false) {
 	const containerBuffer = []
-	let sequence
+	const sequence = new Sequence(options.interval || defaults.interval)
 
 	try {
-		if (options.interval) {
-			sequence = new Sequence(options.interval)
-		}
-
 		const nodes = tealight(target)
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')
