@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.29
+/*! @license ScrollReveal v4.0.0-beta.30
 
 	Copyright 2018 Fisssion LLC.
 
@@ -1414,7 +1414,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.29";
+var version = "4.0.0-beta.30";
 
 var _config;
 var _debug;
@@ -1432,7 +1432,7 @@ function ScrollReveal(options) {
 		return new ScrollReveal(options)
 	}
 
-	if (ScrollReveal.isSupported() === false) {
+	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation failed.', 'This browser is not supported.');
 		return noop
 	}
