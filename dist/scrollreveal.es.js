@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.27
+/*! @license ScrollReveal v4.0.0-beta.28
 
 	Copyright 2018 Fisssion LLC.
 
@@ -17,7 +17,7 @@ var defaults = {
 	delay: 0,
 	distance: '0',
 	duration: 600,
-	easing: 'cubic-bezier(0.6, 0.2, 0.1, 1)',
+	easing: 'cubic-bezier(0.5, 0, 0, 1)',
 	interval: 0,
 	opacity: 0,
 	origin: 'bottom',
@@ -618,18 +618,18 @@ function sequence(element, pristine) {
 }
 
 function Sequence(interval) {
-	if (Math.abs(interval) < 16) {
-		throw new RangeError('Sequence interval must be at least 16.')
-	} else {
-		this.id = nextUniqueId();
-		this.interval = Math.abs(interval);
-		this.members = [];
-		this.models = {};
-		this.blocked = {
-			head: false,
-			foot: false
-		};
+	var i = Math.abs(interval);
+	if (i === 0) {
+		return null
 	}
+	this.id = nextUniqueId();
+	this.interval = Math.max(i, 16);
+	this.members = [];
+	this.models = {};
+	this.blocked = {
+		head: false,
+		foot: false
+	};
 }
 
 function SequenceModel(seq, prop, store) {
@@ -752,13 +752,9 @@ function reveal(target, options, syncing) {
 	if ( syncing === void 0 ) syncing = false;
 
 	var containerBuffer = [];
-	var sequence$$1;
+	var sequence$$1 = new Sequence(options.interval || defaults.interval);
 
 	try {
-		if (options.interval) {
-			sequence$$1 = new Sequence(options.interval);
-		}
-
 		var nodes = $(target);
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')
@@ -1043,7 +1039,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.27";
+var version = "4.0.0-beta.28";
 
 var _config;
 var _debug;
@@ -1061,7 +1057,7 @@ function ScrollReveal(options) {
 		return new ScrollReveal(options)
 	}
 
-	if (!ScrollReveal.isSupported()) {
+	if (!transformSupported() || !transitionSupported()) {
 		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.');
 		return noop
 	}
@@ -1135,12 +1131,6 @@ function ScrollReveal(options) {
 
 	return _instance ? _instance : (_instance = this)
 }
-
-/**
- * Static members are available immediately during instantiation,
- * so debugging and browser support details are handled here.
- */
-ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
 Object.defineProperty(ScrollReveal, 'debug', {
 	get: function () { return _debug || false; },
