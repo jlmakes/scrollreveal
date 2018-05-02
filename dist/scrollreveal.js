@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.28
+/*! @license ScrollReveal v4.0.0-beta.29
 
 	Copyright 2018 Fisssion LLC.
 
@@ -1414,7 +1414,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.28";
+var version = "4.0.0-beta.29";
 
 var _config;
 var _debug;
@@ -1432,8 +1432,8 @@ function ScrollReveal(options) {
 		return new ScrollReveal(options)
 	}
 
-	if (!transformSupported() || !transitionSupported()) {
-		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.');
+	if (ScrollReveal.isSupported() === false) {
+		logger.call(this, 'Instantiation failed.', 'This browser is not supported.');
 		return noop
 	}
 
@@ -1507,11 +1507,15 @@ function ScrollReveal(options) {
 	return _instance ? _instance : (_instance = this)
 }
 
+/**
+ * Static members are available immediately during instantiation,
+ * so debugging and browser support details are handled here.
+ */
+ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
+
 Object.defineProperty(ScrollReveal, 'debug', {
 	get: function () { return _debug || false; },
-	set: function (value) {
-		if (typeof value === 'boolean') { _debug = value; }
-	}
+	set: function (value) { return (_debug = typeof value === 'boolean' ? value : _debug); }
 });
 
 ScrollReveal();
