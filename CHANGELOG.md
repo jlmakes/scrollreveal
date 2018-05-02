@@ -20,7 +20,7 @@
 ### Changed
 
 *   **Breaking:** The `reveal()` method no longer accepts an `interval` parameter. Instead, sequence intervals are now defined with `options.interval`.
-*   **Breaking:** The instance method `isSupported()` is now static.
+*   **Breaking:** The `isSupported()` method has been removed.
 *   **Breaking:** `options.distance` supports only `em` `px` and `%` values.
 *   **Breaking:** ScrollReveal methods are no longer chainable.
 *   **Breaking:** ScrollReveal requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.
