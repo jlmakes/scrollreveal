@@ -31,7 +31,7 @@ export default function ScrollReveal(options = {}) {
 		return new ScrollReveal(options)
 	}
 
-	if (ScrollReveal.isSupported() === false) {
+	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation failed.', 'This browser is not supported.')
 		return noop
 	}
