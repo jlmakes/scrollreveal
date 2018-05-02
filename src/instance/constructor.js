@@ -31,8 +31,8 @@ export default function ScrollReveal(options = {}) {
 		return new ScrollReveal(options)
 	}
 
-	if (!transformSupported() || !transitionSupported()) {
-		logger.call(this, 'Instantiation aborted.', 'This browser is not supported.')
+	if (ScrollReveal.isSupported() === false) {
+		logger.call(this, 'Instantiation failed.', 'This browser is not supported.')
 		return noop
 	}
 
@@ -106,9 +106,13 @@ export default function ScrollReveal(options = {}) {
 	return _instance ? _instance : (_instance = this)
 }
 
+/**
+ * Static members are available immediately during instantiation,
+ * so debugging and browser support details are handled here.
+ */
+ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
+
 Object.defineProperty(ScrollReveal, 'debug', {
 	get: () => _debug || false,
-	set: value => {
-		if (typeof value === 'boolean') _debug = value
-	}
+	set: value => (_debug = typeof value === 'boolean' ? value : _debug)
 })
