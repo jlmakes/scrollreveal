@@ -16,9 +16,14 @@ import nextUniqueId from '../../utils/next-unique-id'
 
 export default function reveal(target, options = {}, syncing = false) {
 	const containerBuffer = []
-	const sequence = new Sequence(options.interval || defaults.interval)
+	let sequence
+	let interval = options.interval || defaults.interval
 
 	try {
+		if (interval) {
+			sequence = new Sequence(interval)
+		}
+
 		const nodes = tealight(target)
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')

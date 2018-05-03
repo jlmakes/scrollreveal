@@ -65,16 +65,17 @@ export default function sequence(element, pristine = this.pristine) {
 
 export function Sequence(interval) {
 	const i = Math.abs(interval)
-	if (i === 0) {
-		return null
-	}
-	this.id = nextUniqueId()
-	this.interval = Math.max(i, 16)
-	this.members = []
-	this.models = {}
-	this.blocked = {
-		head: false,
-		foot: false
+	if (typeof i === 'number' && !isNaN(i)) {
+		this.id = nextUniqueId()
+		this.interval = Math.max(i, 16)
+		this.members = []
+		this.models = {}
+		this.blocked = {
+			head: false,
+			foot: false
+		}
+	} else {
+		throw new RangeError('Invalid sequence interval.')
 	}
 }
 
