@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.30
+/*! @license ScrollReveal v4.0.0-beta.31
 
 	Copyright 2018 Fisssion LLC.
 
@@ -619,17 +619,18 @@ function sequence(element, pristine) {
 
 function Sequence(interval) {
 	var i = Math.abs(interval);
-	if (i === 0) {
-		return null
+	if (typeof i === 'number' && !isNaN(i)) {
+		this.id = nextUniqueId();
+		this.interval = Math.max(i, 16);
+		this.members = [];
+		this.models = {};
+		this.blocked = {
+			head: false,
+			foot: false
+		};
+	} else {
+		throw new RangeError('Invalid sequence interval.')
 	}
-	this.id = nextUniqueId();
-	this.interval = Math.max(i, 16);
-	this.members = [];
-	this.models = {};
-	this.blocked = {
-		head: false,
-		foot: false
-	};
 }
 
 function SequenceModel(seq, prop, store) {
@@ -752,9 +753,14 @@ function reveal(target, options, syncing) {
 	if ( syncing === void 0 ) syncing = false;
 
 	var containerBuffer = [];
-	var sequence$$1 = new Sequence(options.interval || defaults.interval);
+	var sequence$$1;
+	var interval = options.interval || defaults.interval;
 
 	try {
+		if (interval) {
+			sequence$$1 = new Sequence(interval);
+		}
+
 		var nodes = $(target);
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')
@@ -1039,7 +1045,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.30";
+var version = "4.0.0-beta.31";
 
 var _config;
 var _debug;
