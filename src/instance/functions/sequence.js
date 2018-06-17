@@ -65,7 +65,7 @@ export default function sequence(element, pristine = this.pristine) {
 
 export function Sequence(interval) {
 	const i = Math.abs(interval)
-	if (typeof i === 'number' && !isNaN(i)) {
+	if (!isNaN(i)) {
 		this.id = nextUniqueId()
 		this.interval = Math.max(i, 16)
 		this.members = []
@@ -80,9 +80,9 @@ export function Sequence(interval) {
 }
 
 function SequenceModel(seq, prop, store) {
-	this.head = [] // Elements before the body with a falsey prop.
-	this.body = [] // Elements with a truthy prop.
-	this.foot = [] // Elements after the body with a falsey prop.
+	this.head = []
+	this.body = []
+	this.foot = []
 
 	each(seq.members, (id, index) => {
 		const element = store.elements[id]
