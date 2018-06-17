@@ -20,14 +20,14 @@ export default function clean(target) {
 			}
 		})
 	} catch (e) {
-		return logger.call(this, 'Clean failed.', e.stack || e.message)
+		return logger.call(this, 'Clean failed.', e.message)
 	}
 
 	if (dirty) {
 		try {
 			rinse.call(this)
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', e.stack || e.message)
+			return logger.call(this, 'Clean failed.', e.message)
 		}
 	}
 }

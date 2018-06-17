@@ -106,7 +106,7 @@ export default function reveal(target, options = {}, syncing = false) {
 			element.node.setAttribute('data-sr-id', element.id)
 		})
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	/**
