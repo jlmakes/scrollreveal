@@ -18,9 +18,14 @@ import $ from 'tealight'
 
 import { version } from '../../package.json'
 
-let _config
-let _debug
-let _instance
+let boundDelegate
+let boundDestroy
+let boundReveal
+let boundClean
+let boundSync
+let config
+let debug
+let instance
 
 export default function ScrollReveal(options = {}) {
 	const invokedWithoutNew =
@@ -41,36 +46,29 @@ export default function ScrollReveal(options = {}) {
 	 * assigning the contents to the private variable `_config`.
 	 */
 	let buffer
-	{
-		try {
-			buffer = _config
-				? deepAssign({}, _config, options)
-				: deepAssign({}, defaults, options)
-		} catch (e) {
-			logger.call(
-				this,
-				'Instantiation failed.',
-				'Invalid configuration.',
-				e.message
-			)
-			return noop
-		}
-
-		try {
-			const container = $(buffer.container)[0]
-			if (!container) {
-				throw new Error('Invalid container.')
-			}
-			if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
-				throw new Error('This device is disabled.')
-			}
-		} catch (e) {
-			logger.call(this, 'Instantiation failed.', e.message)
-			return noop
-		}
-
-		_config = buffer
+	try {
+		buffer = config
+			? deepAssign({}, config, options)
+			: deepAssign({}, defaults, options)
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
+		return noop
 	}
+
+	try {
+		const container = $(buffer.container)[0]
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+		if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
+			throw new Error('This device is disabled.')
+		}
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', e.message)
+		return noop
+	}
+
+	config = buffer
 
 	/**
 	 * Modify the DOM to reflect successful instantiation.
@@ -93,17 +91,23 @@ export default function ScrollReveal(options = {}) {
 
 	this.pristine = true
 
-	Object.defineProperty(this, 'delegate', { get: () => delegate.bind(this) })
-	Object.defineProperty(this, 'destroy', { get: () => destroy.bind(this) })
-	Object.defineProperty(this, 'reveal', { get: () => reveal.bind(this) })
-	Object.defineProperty(this, 'clean', { get: () => clean.bind(this) })
-	Object.defineProperty(this, 'sync', { get: () => sync.bind(this) })
+	boundDelegate = boundDelegate || delegate.bind(this)
+	boundDestroy = boundDestroy || destroy.bind(this)
+	boundReveal = boundReveal || reveal.bind(this)
+	boundClean = boundClean || clean.bind(this)
+	boundSync = boundSync || sync.bind(this)
 
-	Object.defineProperty(this, 'defaults', { get: () => _config })
+	Object.defineProperty(this, 'delegate', { get: () => boundDelegate })
+	Object.defineProperty(this, 'destroy', { get: () => boundDestroy })
+	Object.defineProperty(this, 'reveal', { get: () => boundReveal })
+	Object.defineProperty(this, 'clean', { get: () => boundClean })
+	Object.defineProperty(this, 'sync', { get: () => boundSync })
+
+	Object.defineProperty(this, 'defaults', { get: () => config })
 	Object.defineProperty(this, 'version', { get: () => version })
 	Object.defineProperty(this, 'noop', { get: () => false })
 
-	return _instance ? _instance : (_instance = this)
+	return instance ? instance : (instance = this)
 }
 
 /**
@@ -113,6 +117,6 @@ export default function ScrollReveal(options = {}) {
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
 Object.defineProperty(ScrollReveal, 'debug', {
-	get: () => _debug || false,
-	set: value => (_debug = typeof value === 'boolean' ? value : _debug)
+	get: () => debug || false,
+	set: value => (debug = typeof value === 'boolean' ? value : debug)
 })
