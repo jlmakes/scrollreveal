@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.31
+/*! @license ScrollReveal v4.0.0-beta.32
 
 	Copyright 2018 Fisssion LLC.
 
@@ -292,14 +292,14 @@ function clean(target) {
 			}
 		});
 	} catch (e) {
-		return logger.call(this, 'Clean failed.', e.stack || e.message)
+		return logger.call(this, 'Clean failed.', e.message)
 	}
 
 	if (dirty) {
 		try {
 			rinse.call(this);
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', e.stack || e.message)
+			return logger.call(this, 'Clean failed.', e.message)
 		}
 	}
 }
@@ -311,7 +311,7 @@ function destroy() {
 	 * Remove all generated styles and element ids
 	 */
 	each(this.store.elements, function (element) {
-		element.node.setAttribute('style', element.styles.inline);
+		element.node.setAttribute('style', element.styles.inline.generated);
 		element.node.removeAttribute('data-sr-id');
 	});
 
@@ -952,7 +952,7 @@ function sequence(element, pristine) {
 
 function Sequence(interval) {
 	var i = Math.abs(interval);
-	if (typeof i === 'number' && !isNaN(i)) {
+	if (!isNaN(i)) {
 		this.id = nextUniqueId();
 		this.interval = Math.max(i, 16);
 		this.members = [];
@@ -969,9 +969,9 @@ function Sequence(interval) {
 function SequenceModel(seq, prop, store) {
 	var this$1 = this;
 
-	this.head = []; // Elements before the body with a falsey prop.
-	this.body = []; // Elements with a truthy prop.
-	this.foot = []; // Elements after the body with a falsey prop.
+	this.head = [];
+	this.body = [];
+	this.foot = [];
 
 	each(seq.members, function (id, index) {
 		var element = store.elements[id];
@@ -1176,7 +1176,7 @@ function reveal(target, options, syncing) {
 			element.node.setAttribute('data-sr-id', element.id);
 		});
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	/**
@@ -1332,7 +1332,11 @@ function getScrolled(container) {
 }
 
 function isElementVisible(element) {
+	if ( element === void 0 ) element = {};
+
 	var container = this.store.containers[element.containerId];
+	if (!container) { return }
+
 	var viewFactor = Math.max(0, Math.min(1, element.config.viewFactor));
 	var viewOffset = element.config.viewOffset;
 
@@ -1420,14 +1424,18 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.31";
+var version = "4.0.0-beta.32";
 
-var _config;
-var _debug;
-var _instance;
+var boundDelegate;
+var boundDestroy;
+var boundReveal;
+var boundClean;
+var boundSync;
+var config;
+var debug;
+var instance;
 
 function ScrollReveal(options) {
-	var this$1 = this;
 	if ( options === void 0 ) options = {};
 
 	var invokedWithoutNew =
@@ -1448,36 +1456,29 @@ function ScrollReveal(options) {
 	 * assigning the contents to the private variable `_config`.
 	 */
 	var buffer;
-	{
-		try {
-			buffer = _config
-				? deepAssign({}, _config, options)
-				: deepAssign({}, defaults, options);
-		} catch (e) {
-			logger.call(
-				this,
-				'Instantiation failed.',
-				'Invalid configuration.',
-				e.message
-			);
-			return noop
-		}
-
-		try {
-			var container = index(buffer.container)[0];
-			if (!container) {
-				throw new Error('Invalid container.')
-			}
-			if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
-				throw new Error('This device is disabled.')
-			}
-		} catch (e) {
-			logger.call(this, 'Instantiation failed.', e.message);
-			return noop
-		}
-
-		_config = buffer;
+	try {
+		buffer = config
+			? deepAssign({}, config, options)
+			: deepAssign({}, defaults, options);
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
+		return noop
 	}
+
+	try {
+		var container = index(buffer.container)[0];
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+		if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
+			throw new Error('This device is disabled.')
+		}
+	} catch (e) {
+		logger.call(this, 'Instantiation failed.', e.message);
+		return noop
+	}
+
+	config = buffer;
 
 	/**
 	 * Modify the DOM to reflect successful instantiation.
@@ -1500,17 +1501,23 @@ function ScrollReveal(options) {
 
 	this.pristine = true;
 
-	Object.defineProperty(this, 'delegate', { get: function () { return delegate.bind(this$1); } });
-	Object.defineProperty(this, 'destroy', { get: function () { return destroy.bind(this$1); } });
-	Object.defineProperty(this, 'reveal', { get: function () { return reveal.bind(this$1); } });
-	Object.defineProperty(this, 'clean', { get: function () { return clean.bind(this$1); } });
-	Object.defineProperty(this, 'sync', { get: function () { return sync.bind(this$1); } });
+	boundDelegate = boundDelegate || delegate.bind(this);
+	boundDestroy = boundDestroy || destroy.bind(this);
+	boundReveal = boundReveal || reveal.bind(this);
+	boundClean = boundClean || clean.bind(this);
+	boundSync = boundSync || sync.bind(this);
 
-	Object.defineProperty(this, 'defaults', { get: function () { return _config; } });
+	Object.defineProperty(this, 'delegate', { get: function () { return boundDelegate; } });
+	Object.defineProperty(this, 'destroy', { get: function () { return boundDestroy; } });
+	Object.defineProperty(this, 'reveal', { get: function () { return boundReveal; } });
+	Object.defineProperty(this, 'clean', { get: function () { return boundClean; } });
+	Object.defineProperty(this, 'sync', { get: function () { return boundSync; } });
+
+	Object.defineProperty(this, 'defaults', { get: function () { return config; } });
 	Object.defineProperty(this, 'version', { get: function () { return version; } });
 	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 
-	return _instance ? _instance : (_instance = this)
+	return instance ? instance : (instance = this)
 }
 
 /**
@@ -1520,8 +1527,8 @@ function ScrollReveal(options) {
 ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
 Object.defineProperty(ScrollReveal, 'debug', {
-	get: function () { return _debug || false; },
-	set: function (value) { return (_debug = typeof value === 'boolean' ? value : _debug); }
+	get: function () { return debug || false; },
+	set: function (value) { return (debug = typeof value === 'boolean' ? value : debug); }
 });
 
 ScrollReveal();
