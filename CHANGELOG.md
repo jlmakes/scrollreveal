@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [4.0.0] - 2018-08-06
 
 ### Added
 
@@ -462,7 +462,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
-[unreleased]: https://github.com/jlmakes/scrollreveal/compare/v3.3.6...development
+[4.0.0]: https://github.com/jlmakes/scrollreveal/compare/v3.3.6...v4.0.0
 [3.3.6]: https://github.com/jlmakes/scrollreveal/compare/v3.3.5...v3.3.6
 [3.3.5]: https://github.com/jlmakes/scrollreveal/compare/v3.3.4...v3.3.5
 [3.3.4]: https://github.com/jlmakes/scrollreveal/compare/v3.3.3...v3.3.4
