@@ -23,6 +23,7 @@
 		"sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
 		"coverage:server": "node ./.ignore/coverage/server.coverage.js"
 	},
+	"keywords": ["scroll", "animation", "reveal", "css", "transform", "transition"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jlmakes/scrollreveal.git"
