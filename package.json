@@ -26,10 +26,10 @@
 	"keywords": ["scroll", "animation", "reveal", "css", "transform", "transition"],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/jlmakes/scrollreveal.git"
+		"url": "https://github.com/scrollreveal/scrollreveal.git"
 	},
 	"bugs": {
-		"url": "https://github.com/jlmakes/scrollreveal/issues"
+		"url": "https://github.com/scrollreveal/scrollreveal/issues"
 	},
 	"dependencies": {
 		"miniraf": "^1.0.0",
