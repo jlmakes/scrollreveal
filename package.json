@@ -32,7 +32,7 @@
 		"url": "https://github.com/scrollreveal/scrollreveal/issues"
 	},
 	"dependencies": {
-		"miniraf": "^1.0.0",
+		"miniraf": "1.0.0",
 		"rematrix": "0.2.2",
 		"tealight": "0.3.0"
 	},
