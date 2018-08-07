@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+*   Readme links to pricing page no longer 404
+
 ## [4.0.0] - 2018-08-06
 
 ### Added

@@ -1,11 +1,11 @@
 <p align="center">
-	<a href="https://scrollrevealjs.org" title="Visit ScrollReveal homepage">
+	<a href="https://scrollrevealjs.org" title="Visit ScrollReveal home page">
 		<img src="https://scrollrevealjs.org/img/logomark.svg" alt="ScrollReveal" width="120">
 	</a>
 </p>
 <br>
 <p align="center">
-	<a href="https://scrollrevealjs.org" title="Visit ScrollReveal homepage">
+	<a href="https://scrollrevealjs.org" title="Visit ScrollReveal home page">
 		<img width="200" src="https://scrollrevealjs.org/img/scrollreveal-logotype-dark.svg" alt="ScrollReveal">
 	</a>
 </p>
@@ -109,7 +109,9 @@ ScrollReveal().reveal('.headline');
 
 <br>
 
-<img align="right" height="300" src="https://scrollrevealjs.org/img/license.svg" alt="Commercial License Badge">
+<a href="https://scrollrevealjs.org/pricing/" title="Visit ScrollReveal pricing page">
+	<img align="right" height="300" src="https://scrollrevealjs.org/img/license.svg" alt="Commercial License Badge">
+</a>
 
 <br>
 
@@ -117,7 +119,7 @@ ScrollReveal().reveal('.headline');
 
 Licensed under the GNU General Public License 3.0 for compatible open source projects and non-commercial use.
 
-**For commercial sites, themes, projects, and applications, keep your source code private/proprietary by purchasing a [Commercial License](https://scrollrevealjs.org/pricing.html).**
+**For commercial sites, themes, projects, and applications, keep your source code private/proprietary by purchasing a [Commercial License](https://scrollrevealjs.org/pricing/).**
 
 <br>
 
