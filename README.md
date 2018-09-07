@@ -92,20 +92,20 @@ There’s a lot we can do with this instance, but most of the time we’ll be us
 ```
 
 ```js
-ScrollReveal().reveal('.headline');
+ScrollReveal().reveal('.headline')
 ```
 
 **🔎 See this demo live on [JSBin](http://jsbin.com/jufohaxonu/edit?html,output)**
 
 <br>
 
-***
+---
 
 ### The full documentation can be found at [https://scrollrevealjs.org](https://scrollrevealjs.org)
 
 > If you’re using an older version of ScrollReveal, you can find legacy documentation in the [wiki](https://github.com/scrollreveal/scrollreveal/wiki)
 
-***
+---
 
 <br>
 

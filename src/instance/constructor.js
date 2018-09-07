@@ -47,7 +47,12 @@ export default function ScrollReveal(options = {}) {
 			? deepAssign({}, config, options)
 			: deepAssign({}, defaults, options)
 	} catch (e) {
-		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message)
+		logger.call(
+			this,
+			'Instantiation failed.',
+			'Invalid configuration.',
+			e.message
+		)
 		return noop
 	}
 
@@ -68,9 +73,6 @@ export default function ScrollReveal(options = {}) {
 		return noop
 	}
 
-	/**
-	 * Modify the DOM to reflect successful instantiation.
-	 */
 	document.documentElement.classList.add('sr')
 	if (document.body) {
 		document.body.style.height = '100%'
@@ -108,10 +110,6 @@ export default function ScrollReveal(options = {}) {
 	return instance ? instance : (instance = this)
 }
 
-/**
- * Static members are available immediately during instantiation,
- * so debugging and browser support details are handled here.
- */
 ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
 
 Object.defineProperty(ScrollReveal, 'debug', {
