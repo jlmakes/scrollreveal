@@ -41,10 +41,6 @@ export default function ScrollReveal(options = {}) {
 		return noop
 	}
 
-	/**
-	 * Here we use `buffer` to validate our configuration, before
-	 * assigning the contents to the private variable `_config`.
-	 */
 	let buffer
 	try {
 		buffer = config
@@ -60,15 +56,17 @@ export default function ScrollReveal(options = {}) {
 		if (!container) {
 			throw new Error('Invalid container.')
 		}
-		if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
-			throw new Error('This device is disabled.')
-		}
 	} catch (e) {
 		logger.call(this, 'Instantiation failed.', e.message)
 		return noop
 	}
 
 	config = buffer
+
+	if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
+		logger.call(this, 'Instantiation failed.', 'This device is disabled.')
+		return noop
+	}
 
 	/**
 	 * Modify the DOM to reflect successful instantiation.
