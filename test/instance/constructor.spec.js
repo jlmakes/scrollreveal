@@ -42,6 +42,8 @@ describe('ScrollReveal', () => {
 			isMobile()
 				? expect(ScrollReveal({ mobile: false }).noop).to.be.true
 				: expect(ScrollReveal({ desktop: false }).noop).to.be.true
+
+			ScrollReveal({ desktop: true, mobile: true })
 		})
 
 		it('should return a noop instance when container is invalid', () => {
