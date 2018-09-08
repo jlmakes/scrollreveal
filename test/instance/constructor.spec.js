@@ -55,11 +55,14 @@ describe('ScrollReveal', () => {
 
 		it('should return a noop instance when passed non-object options', () => {
 			const stub = sinon.stub(console, 'log')
-			const sr1 = ScrollReveal(null)
-			const sr2 = ScrollReveal('foo')
+			let sr
+			{
+				sr = ScrollReveal(null)
+				expect(sr.noop).to.be.true
+				sr = ScrollReveal('foo')
+				expect(sr.noop).to.be.true
+			}
 			stub.restore()
-			expect(sr1.noop).to.be.true
-			expect(sr2.noop).to.be.true
 		})
 
 		it('should return a singleton', () => {
