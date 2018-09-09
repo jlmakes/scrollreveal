@@ -1,5 +1,5 @@
 import defaults from './defaults'
-import noop from './noop'
+import mount from './mount'
 
 import clean from './methods/clean'
 import destroy from './methods/destroy'
@@ -38,7 +38,7 @@ export default function ScrollReveal(options = {}) {
 
 	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation failed.', 'This browser is not supported.')
-		return noop
+		return mount.failure()
 	}
 
 	let buffer
@@ -47,13 +47,8 @@ export default function ScrollReveal(options = {}) {
 			? deepAssign({}, config, options)
 			: deepAssign({}, defaults, options)
 	} catch (e) {
-		logger.call(
-			this,
-			'Instantiation failed.',
-			'Invalid configuration.',
-			e.message
-		)
-		return noop
+		logger.call(this, 'Invalid configuration.', e.message)
+		return mount.failure()
 	}
 
 	try {
@@ -62,25 +57,23 @@ export default function ScrollReveal(options = {}) {
 			throw new Error('Invalid container.')
 		}
 	} catch (e) {
-		logger.call(this, 'Instantiation failed.', e.message)
-		return noop
+		logger.call(this, e.message)
+		return mount.failure()
 	}
 
 	config = buffer
 
 	if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
-		logger.call(this, 'Instantiation failed.', 'This device is disabled.')
-		return noop
+		logger.call(
+			this,
+			'This device is disabled.',
+			`desktop: ${config.desktop}`,
+			`mobile: ${config.mobile}`
+		)
+		return mount.failure()
 	}
 
-	document.documentElement.classList.add('sr')
-	if (document.body) {
-		document.body.style.height = '100%'
-	} else {
-		document.addEventListener('DOMContentLoaded', () => {
-			document.body.style.height = '100%'
-		})
-	}
+	mount.success()
 
 	this.store = {
 		containers: {},

@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Noop instances not correctly unmounting from the DOM. [#455]
 - Readme links to pricing page no longer 404
 
 ## [4.0.0] - 2018-08-06
