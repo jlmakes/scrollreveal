@@ -1,6 +1,6 @@
 {
 	"name": "scrollreveal",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "Animate elements as they scroll into view",
 	"homepage": "https://scrollrevealjs.org",
 	"main": "dist/scrollreveal.js",
@@ -23,7 +23,14 @@
 		"sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
 		"coverage:server": "node ./.ignore/coverage/server.coverage.js"
 	},
-	"keywords": ["scroll", "animation", "reveal", "css", "transform", "transition"],
+	"keywords": [
+		"scroll",
+		"animation",
+		"reveal",
+		"css",
+		"transform",
+		"transition"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/scrollreveal/scrollreveal.git"

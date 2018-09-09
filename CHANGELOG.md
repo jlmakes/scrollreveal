@@ -1,11 +1,11 @@
 # Change Log
 
-## Unreleased
+## [4.0.1] - 2018-09-09
 
 ### Fixed
 
-- Noop instances not correctly unmounting from the DOM. [#455]
-- Readme links to pricing page no longer 404
+- Noop instances were not correctly unmounting from the DOM. [#455]
+- Readme links to pricing page no longer 404.
 
 ## [4.0.0] - 2018-08-06
 
@@ -469,6 +469,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
+[4.0.0]: https://github.com/jlmakes/scrollreveal/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/jlmakes/scrollreveal/compare/v3.3.6...v4.0.0
 [3.3.6]: https://github.com/jlmakes/scrollreveal/compare/v3.3.5...v3.3.6
 [3.3.5]: https://github.com/jlmakes/scrollreveal/compare/v3.3.4...v3.3.5

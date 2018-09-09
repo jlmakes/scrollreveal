@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0
+/*! @license ScrollReveal v4.0.1
 
 	Copyright 2018 Fisssion LLC.
 
@@ -48,15 +48,38 @@ var defaults = {
 	beforeReveal: function beforeReveal() {}
 }
 
-var noop = {
-	clean: function clean() {},
-	destroy: function destroy() {},
-	reveal: function reveal() {},
-	sync: function sync() {},
-	get noop() {
-		return true
+function failure() {
+	var root = document.documentElement;
+
+	root.classList.remove('sr');
+
+	return {
+		clean: function clean() {},
+		destroy: function destroy() {},
+		reveal: function reveal() {},
+		sync: function sync() {},
+		get noop() {
+			return true
+		}
 	}
 }
+
+function success() {
+	var html = document.documentElement;
+	var body = document.body;
+
+	html.classList.add('sr');
+
+	if (body) {
+		body.style.height = '100%';
+	} else {
+		document.addEventListener('DOMContentLoaded', function () {
+			body.style.height = '100%';
+		});
+	}
+}
+
+var mount = { success: success, failure: failure }
 
 /*! @license is-dom-node v1.0.4
 
@@ -1424,7 +1447,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0";
+var version = "4.0.1";
 
 var boundDelegate;
 var boundDestroy;
@@ -1448,21 +1471,17 @@ function ScrollReveal(options) {
 
 	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation failed.', 'This browser is not supported.');
-		return noop
+		return mount.failure()
 	}
 
-	/**
-	 * Here we use `buffer` to validate our configuration, before
-	 * assigning the contents to the private variable `_config`.
-	 */
 	var buffer;
 	try {
 		buffer = config
 			? deepAssign({}, config, options)
 			: deepAssign({}, defaults, options);
 	} catch (e) {
-		logger.call(this, 'Instantiation failed.', 'Invalid configuration.', e.message);
-		return noop
+		logger.call(this, 'Invalid configuration.', e.message);
+		return mount.failure()
 	}
 
 	try {
@@ -1470,27 +1489,24 @@ function ScrollReveal(options) {
 		if (!container) {
 			throw new Error('Invalid container.')
 		}
-		if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
-			throw new Error('This device is disabled.')
-		}
 	} catch (e) {
-		logger.call(this, 'Instantiation failed.', e.message);
-		return noop
+		logger.call(this, e.message);
+		return mount.failure()
 	}
 
 	config = buffer;
 
-	/**
-	 * Modify the DOM to reflect successful instantiation.
-	 */
-	document.documentElement.classList.add('sr');
-	if (document.body) {
-		document.body.style.height = '100%';
-	} else {
-		document.addEventListener('DOMContentLoaded', function () {
-			document.body.style.height = '100%';
-		});
+	if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
+		logger.call(
+			this,
+			'This device is disabled.',
+			("desktop: " + (config.desktop)),
+			("mobile: " + (config.mobile))
+		);
+		return mount.failure()
 	}
+
+	mount.success();
 
 	this.store = {
 		containers: {},
@@ -1520,10 +1536,6 @@ function ScrollReveal(options) {
 	return instance ? instance : (instance = this)
 }
 
-/**
- * Static members are available immediately during instantiation,
- * so debugging and browser support details are handled here.
- */
 ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
 Object.defineProperty(ScrollReveal, 'debug', {
