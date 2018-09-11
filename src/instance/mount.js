@@ -1,7 +1,5 @@
 function failure() {
-	const root = document.documentElement
-
-	root.classList.remove('sr')
+	document.documentElement.classList.remove('sr')
 
 	return {
 		clean() {},
@@ -15,13 +13,10 @@ function failure() {
 }
 
 function success() {
-	const html = document.documentElement
-	const body = document.body
+	document.documentElement.classList.add('sr')
 
-	html.classList.add('sr')
-
-	if (body) {
-		body.style.height = '100%'
+	if (document.body) {
+		document.body.style.height = '100%'
 	} else {
 		document.addEventListener('DOMContentLoaded', () => {
 			document.body.style.height = '100%'

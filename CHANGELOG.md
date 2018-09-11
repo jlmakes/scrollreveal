@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+- Null property assignment regression in mount function. [#456]
+
 ## [4.0.1] - 2018-09-09
 
 ### Fixed
