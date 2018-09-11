@@ -117,9 +117,9 @@ ScrollReveal().reveal('.headline')
 
 # License
 
-Licensed under the GNU General Public License 3.0 for compatible open source projects and non-commercial use.
-
 **For commercial sites, themes, projects, and applications, keep your source code private/proprietary by purchasing a [Commercial License](https://scrollrevealjs.org/pricing/).**
+
+Licensed under the GNU General Public License 3.0 for compatible open source projects and non-commercial use.
 
 <br>
 
