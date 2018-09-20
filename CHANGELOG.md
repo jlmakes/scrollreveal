@@ -4,13 +4,13 @@
 
 ### Fixed
 
-- Null property assignment regression in mount function. [#456]
+- Null property assignment regression in mount function. [#456](https://github.com/jlmakes/scrollreveal/issues/456)
 
 ## [4.0.1] - 2018-09-09
 
 ### Fixed
 
-- Noop instances were not correctly unmounting from the DOM. [#455]
+- Noop instances were not correctly unmounting from the DOM. [#455](https://github.com/jlmakes/scrollreveal/issues/455)
 - Readme links to pricing page no longer 404.
 
 ## [4.0.0] - 2018-08-06
