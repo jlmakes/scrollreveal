@@ -12,7 +12,7 @@ export default {
 		z: 0
 	},
 	scale: 1,
-	cleanup: true,
+	cleanup: false,
 	container: document.documentElement,
 	desktop: true,
 	mobile: true,
