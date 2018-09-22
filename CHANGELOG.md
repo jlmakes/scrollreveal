@@ -1,5 +1,11 @@
 # Change Log
 
+## [4.0.4] - 2018-09-22
+
+### Fixed
+
+- Malformed `package.json`
+
 ## [4.0.3] - 2018-09-21
 
 ### Fixed
@@ -481,6 +487,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
+[4.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.4...v4.0.4
 [4.0.3]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.0...v4.0.1

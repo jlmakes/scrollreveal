@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.3
+/*! @license ScrollReveal v4.0.4
 
 	Copyright 2018 Fisssion LLC.
 
@@ -1067,7 +1067,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.3";
+var version = "4.0.4";
 
 var boundDelegate;
 var boundDestroy;
