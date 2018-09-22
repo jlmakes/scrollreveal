@@ -70,5 +70,6 @@
 		"sinon-chai": "^2.8.0"
 	},
 	"author": "Julian Lloyd",
-	"license": "GPL-3.0"
+	"license": "GPL-3.0",
+	"postinstall": "node -e \"console.log('\\u001b[35m\\u001b[1mLove ScrollReveal? 🔑  Buy a license!\\u001b[22m\\u001b[35m\\n >> \\u001b[33mhttps://scrollrevealjs.org/pricing/\\u001b[0m\\n')\""
 }
