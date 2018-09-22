@@ -21,7 +21,8 @@
 		"coverage": "cross-env COVERAGE=true npm test",
 		"sandbox:bundle": "./node_modules/rollup/bin/rollup -w -c ./.ignore/sandbox/rollup.conf.sandbox.js",
 		"sandbox:server": "node ./.ignore/sandbox/server.sandbox.js",
-		"coverage:server": "node ./.ignore/coverage/server.coverage.js"
+		"coverage:server": "node ./.ignore/coverage/server.coverage.js",
+		"postinstall": "node -e \"console.log('\\u001b[35m\\u001b[1mLove ScrollReveal? 🔑  Buy a license!\\u001b[22m\\u001b[35m\\n >> \\u001b[33mhttps://scrollrevealjs.org/pricing/\\u001b[0m\\n')\""
 	},
 	"keywords": [
 		"scroll",
@@ -70,6 +71,5 @@
 		"sinon-chai": "^2.8.0"
 	},
 	"author": "Julian Lloyd",
-	"license": "GPL-3.0",
-	"postinstall": "node -e \"console.log('\\u001b[35m\\u001b[1mLove ScrollReveal? 🔑  Buy a license!\\u001b[22m\\u001b[35m\\n >> \\u001b[33mhttps://scrollrevealjs.org/pricing/\\u001b[0m\\n')\""
+	"license": "GPL-3.0"
 }
