@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## [4.0.5] - 2018-10-20
 
 ### Fixed
 
@@ -493,7 +493,8 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
-[4.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.4...v4.0.4
+[4.0.5]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.4...v4.0.5
+[4.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.3...v4.0.4
 [4.0.3]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.0...v4.0.1

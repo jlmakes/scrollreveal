@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.4
+/*! @license ScrollReveal v4.0.5
 
 	Copyright 2018 Fisssion LLC.
 
@@ -1039,9 +1039,11 @@ function initialize() {
 		if (element.visible) {
 			styles.push(element.styles.opacity.computed);
 			styles.push(element.styles.transform.generated.final);
+			element.revealed = true;
 		} else {
 			styles.push(element.styles.opacity.generated);
 			styles.push(element.styles.transform.generated.initial);
+			element.revealed = false;
 		}
 
 		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
@@ -1441,7 +1443,7 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.4";
+var version = "4.0.5";
 
 var boundDelegate;
 var boundDestroy;
