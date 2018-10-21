@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+- Calling `reveal()` on the same `target` breaking animation. [#468](https://github.com/scrollreveal/scrollreveal/issues/468)
+
 ## [4.0.4] - 2018-09-22
 
 ### Fixed
