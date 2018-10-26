@@ -9,8 +9,8 @@ import sync from './methods/sync'
 import delegate from './functions/delegate'
 
 import isMobile from '../utils/is-mobile'
-import transformSupported from '../utils/transform-supported'
-import transitionSupported from '../utils/transition-supported'
+import isTransformSupported from '../utils/is-transform-supported'
+import isTransitionSupported from '../utils/is-transition-supported'
 
 import deepAssign from '../utils/deep-assign'
 import logger from '../utils/logger'
@@ -103,7 +103,8 @@ export default function ScrollReveal(options = {}) {
 	return instance ? instance : (instance = this)
 }
 
-ScrollReveal.isSupported = () => transformSupported() && transitionSupported()
+ScrollReveal.isSupported = () =>
+	isTransformSupported() && isTransitionSupported()
 
 Object.defineProperty(ScrollReveal, 'debug', {
 	get: () => debug || false,
