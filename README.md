@@ -87,7 +87,7 @@ There’s a lot we can do with this instance, but most of the time we’ll be us
 
 ```html
 <h1 class="headline">
-    Widget Inc.
+	Widget Inc.
 </h1>
 ```
 
@@ -123,4 +123,4 @@ Licensed under the GNU General Public License 3.0 for compatible open source pro
 
 <br>
 
-Copyright 2018 Fisssion LLC
+Copyright 2020 Fisssion LLC
