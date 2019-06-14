@@ -1,16 +1,17 @@
-const launchers = {}
+let launchers = {}
 
-const mobileLaunchers = [
-	['iOS', '9.3', 'Safari', 'iPhone 6s Simulator'],
-	['iOS', '10.3', 'Safari', 'iPhone 6s Simulator'],
-	['iOS', '11.1', 'Safari', 'iPhone 6s Simulator'],
-	['Android', '4.4', 'Browser', 'Android Emulator'],
-	['Android', '5.1', 'Browser', 'Android Emulator'],
-	['Android', '6.0', 'Chrome', 'Android Emulator']
+let mobileLaunchers = [
+	['iOS', '10.3', 'Safari', 'iPhone 7 Simulator', '1.9.1'],
+	['iOS', '11.3', 'Safari', 'iPhone 7 Simulator', '1.9.1'],
+	['iOS', '12.2', 'Safari', 'iPhone 7 Simulator', '1.13.0'],
+	['iOS', '13.0', 'Safari', 'iPhone 7 Simulator', '1.15.0'],
+	['Android', '5.1', 'Browser', 'Android Emulator', '1.15.0'],
+	['Android', '6.0', 'Chrome', 'Android Emulator', '1.15.0'],
+	['Android', '8.0', 'Chrome', 'Android Emulator', '1.15.0']
 ]
 
-mobileLaunchers.forEach(([platform, version, browser, device]) => {
-	const launcher = `sl_${platform}_${version}_${browser}`
+for (let [platform, version, browser, device, appium] of mobileLaunchers) {
+	let launcher = `sl_${platform}_${version}_${browser}`
 		.replace(/[^a-z0-9]/gi, '_')
 		.toLowerCase()
 
@@ -21,11 +22,11 @@ mobileLaunchers.forEach(([platform, version, browser, device]) => {
 		browserName: browser,
 		deviceName: device,
 		deviceOrientation: 'portrait',
-		appiumVersion: '1.7.1'
+		appiumVersion: appium
 	}
-})
+}
 
-const desktopLaunchers = [
+let desktopLaunchers = [
 	['Windows 8.1', 'Internet Explorer', '11.0'],
 	['Windows 8', 'Internet Explorer', '10.0'],
 	['macOS 10.12', 'Safari', '11.0'],
@@ -33,8 +34,8 @@ const desktopLaunchers = [
 	['OS X 10.11', 'Safari', '9.0']
 ]
 
-desktopLaunchers.forEach(([platform, browser, version]) => {
-	const launcher = `sl_${platform}_${browser}_${version}`
+for (let [platform, browser, version] of desktopLaunchers) {
+	let launcher = `sl_${platform}_${browser}_${version}`
 		.replace(/[^a-z0-9]/gi, '_')
 		.toLowerCase()
 
@@ -44,21 +45,17 @@ desktopLaunchers.forEach(([platform, browser, version]) => {
 		version,
 		platform
 	}
-})
+}
 
-const evergreenLaunchers = ['Chrome', 'Firefox', 'MicrosoftEdge']
-
-evergreenLaunchers.forEach(browser => {
+for (let browser of ['Chrome', 'Firefox', 'MicrosoftEdge']) {
 	let pastVersions = 3
 	do {
 		pastVersions--
 		let postfix = pastVersions > 0 ? `-${pastVersions}` : ''
-		const version = 'latest' + postfix
+		let version = 'latest' + postfix
 
-		const browserName = browser === 'MicrosoftEdge' ? 'Edge' : browser
-		const launcher = `sl_win10_${browser}_latest${postfix}`
-			.replace(/-/g, '_')
-			.toLowerCase()
+		let browserName = browser === 'MicrosoftEdge' ? 'Edge' : browser
+		let launcher = `sl_win10_${browser}_latest${postfix}`.replace(/-/g, '_').toLowerCase()
 
 		launchers[launcher] = {
 			name: `${browserName} ${version}, Windows 10`,
@@ -67,9 +64,9 @@ evergreenLaunchers.forEach(browser => {
 			platform: 'Windows 10'
 		}
 	} while (pastVersions)
-})
+}
 
-for (const launcher in launchers) {
+for (let launcher in launchers) {
 	launchers[launcher].base = 'SauceLabs'
 }
 

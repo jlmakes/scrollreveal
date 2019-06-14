@@ -4,9 +4,10 @@ node_js:
   - '9'
 addons:
   chrome: stable
+  hosts: localsauce
 sudo: required
 before_script:
-  - "sudo chown root /opt/google/chrome/chrome-sandbox"
-  - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
+  - 'sudo chown root /opt/google/chrome/chrome-sandbox'
+  - 'sudo chmod 4755 /opt/google/chrome/chrome-sandbox'
 after_success:
   - npm run coverage
