@@ -23,7 +23,7 @@ export default function initialize() {
 	each(this.store.containers, container => {
 		const target =
 			container.node === document.documentElement ? window : container.node
-		target.addEventListener('scroll', this.delegate)
+		target.addEventListener('scroll', this.delegate, { passive:true })
 		target.addEventListener('resize', this.delegate)
 	})
 
