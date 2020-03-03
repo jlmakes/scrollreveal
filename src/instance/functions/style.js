@@ -1,6 +1,6 @@
 import {
-	parse,
 	multiply,
+	parse,
 	rotateX,
 	rotateY,
 	rotateZ,
@@ -8,7 +8,6 @@ import {
 	translateX,
 	translateY
 } from 'rematrix'
-
 import getPrefixedCssProp from '../../utils/get-prefixed-css-prop'
 
 export default function style(element) {
@@ -77,12 +76,12 @@ export default function style(element) {
 				 *
 				 * If that behavior ends up being unintuitive, this
 				 * logic could instead utilize `element.geometry.height`
-				 * and `element.geoemetry.width` for the distaince calculation
+				 * and `element.geoemetry.width` for the distance calculation
 				 */
 				distance =
 					axis === 'Y'
-						? element.node.getBoundingClientRect().height * value / 100
-						: element.node.getBoundingClientRect().width * value / 100
+						? (element.node.getBoundingClientRect().height * value) / 100
+						: (element.node.getBoundingClientRect().width * value) / 100
 				break
 			default:
 				throw new RangeError('Unrecognized or missing distance unit.')
@@ -166,8 +165,7 @@ export default function style(element) {
 
 		if (transform.generated.initial) {
 			transition.fragments.push({
-				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay /
-					1000}s`,
+				delayed: `${transform.property} ${duration / 1000}s ${easing} ${delay / 1000}s`,
 				instant: `${transform.property} ${duration / 1000}s ${easing} 0s`
 			})
 		}
@@ -185,10 +183,8 @@ export default function style(element) {
 
 		const composed = transition.fragments.reduce(
 			(composition, fragment, i) => {
-				composition.delayed +=
-					i === 0 ? fragment.delayed : `, ${fragment.delayed}`
-				composition.instant +=
-					i === 0 ? fragment.instant : `, ${fragment.instant}`
+				composition.delayed += i === 0 ? fragment.delayed : `, ${fragment.delayed}`
+				composition.instant += i === 0 ? fragment.instant : `, ${fragment.instant}`
 				return composition
 			},
 			{
