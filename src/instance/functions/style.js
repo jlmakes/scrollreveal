@@ -171,10 +171,13 @@ export default function style(element) {
 		}
 
 		/**
-		 * The default computed transition property should be one of:
-		 * undefined || '' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
+		 * The default computed transition property should be undefined, or one of:
+		 * '' || 'none 0s ease 0s' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
 		 */
-		if (transition.computed && !transition.computed.match(/all 0s/)) {
+		let hasCustomTransition =
+			transition.computed && !transition.computed.match(/all 0s|none 0s/)
+
+		if (hasCustomTransition) {
 			transition.fragments.unshift({
 				delayed: transition.computed,
 				instant: transition.computed

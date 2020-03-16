@@ -1,5 +1,13 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+- Default transition values of `none` are now correctly ignored. [#231](https://github.com/scrollreveal/scrollreveal/issues/231)
+
+### Fixed
+
 ## [4.0.5] - 2018-10-20
 
 ### Fixed
