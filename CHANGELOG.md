@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## [4.0.6] - 2020-03-15
 
 ### Fixed
 
@@ -501,6 +501,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
+[4.0.6]: https://github.com/jlmakes/scrollreveal/compare/v4.0.5...v4.0.6
 [4.0.5]: https://github.com/jlmakes/scrollreveal/compare/v4.0.4...v4.0.5
 [4.0.4]: https://github.com/jlmakes/scrollreveal/compare/v4.0.3...v4.0.4
 [4.0.3]: https://github.com/jlmakes/scrollreveal/compare/v4.0.2...v4.0.3

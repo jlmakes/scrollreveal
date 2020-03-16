@@ -1,6 +1,6 @@
 {
 	"name": "scrollreveal",
-	"version": "4.0.5",
+	"version": "4.0.6",
 	"description": "Animate elements as they scroll into view",
 	"homepage": "https://scrollrevealjs.org",
 	"main": "dist/scrollreveal.js",

@@ -1,6 +1,6 @@
-/*! @license ScrollReveal v4.0.5
+/*! @license ScrollReveal v4.0.6
 
-	Copyright 2018 Fisssion LLC.
+	Copyright 2020 Fisssion LLC.
 
 	Licensed under the GNU General Public License 3.0 for
 	compatible open source projects and non-commercial use.
@@ -10,7 +10,7 @@
 	a commercial license from https://scrollrevealjs.org/
 */
 import $ from 'tealight';
-import { parse, multiply, rotateX, rotateY, rotateZ, scale, translateX, translateY } from 'rematrix';
+import { translateY, translateX, rotateX, rotateY, rotateZ, scale, parse, multiply } from 'rematrix';
 import raf from 'miniraf';
 
 var defaults = {
@@ -44,7 +44,7 @@ var defaults = {
 	afterReveal: function afterReveal() {},
 	beforeReset: function beforeReset() {},
 	beforeReveal: function beforeReveal() {}
-}
+};
 
 function failure() {
 	document.documentElement.classList.remove('sr');
@@ -72,7 +72,7 @@ function success() {
 	}
 }
 
-var mount = { success: success, failure: failure }
+var mount = { success: success, failure: failure };
 
 function isObject(x) {
 	return (
@@ -339,12 +339,12 @@ function style(element) {
 				 *
 				 * If that behavior ends up being unintuitive, this
 				 * logic could instead utilize `element.geometry.height`
-				 * and `element.geoemetry.width` for the distaince calculation
+				 * and `element.geoemetry.width` for the distance calculation
 				 */
 				distance =
 					axis === 'Y'
-						? element.node.getBoundingClientRect().height * value / 100
-						: element.node.getBoundingClientRect().width * value / 100;
+						? (element.node.getBoundingClientRect().height * value) / 100
+						: (element.node.getBoundingClientRect().width * value) / 100;
 				break
 			default:
 				throw new RangeError('Unrecognized or missing distance unit.')
@@ -399,9 +399,7 @@ function style(element) {
 
 		transform.generated = {
 			initial: ((transform.property) + ": matrix3d(" + (product.join(', ')) + ");"),
-			final: ((transform.property) + ": matrix3d(" + (transform.computed.matrix.join(
-				', '
-			)) + ");")
+			final: ((transform.property) + ": matrix3d(" + (transform.computed.matrix.join(', ')) + ");")
 		};
 	} else {
 		transform.generated = {
@@ -432,17 +430,19 @@ function style(element) {
 
 		if (transform.generated.initial) {
 			transition.fragments.push({
-				delayed: ((transform.property) + " " + (duration / 1000) + "s " + easing + " " + (delay /
-					1000) + "s"),
+				delayed: ((transform.property) + " " + (duration / 1000) + "s " + easing + " " + (delay / 1000) + "s"),
 				instant: ((transform.property) + " " + (duration / 1000) + "s " + easing + " 0s")
 			});
 		}
 
 		/**
-		 * The default computed transition property should be one of:
-		 * undefined || '' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
+		 * The default computed transition property should be undefined, or one of:
+		 * '' || 'none 0s ease 0s' || 'all 0s ease 0s' || 'all 0s 0s cubic-bezier()'
 		 */
-		if (transition.computed && !transition.computed.match(/all 0s/)) {
+		var hasCustomTransition =
+			transition.computed && !transition.computed.match(/all 0s|none 0s/);
+
+		if (hasCustomTransition) {
 			transition.fragments.unshift({
 				delayed: transition.computed,
 				instant: transition.computed
@@ -451,10 +451,8 @@ function style(element) {
 
 		var composed = transition.fragments.reduce(
 			function (composition, fragment, i) {
-				composition.delayed +=
-					i === 0 ? fragment.delayed : (", " + (fragment.delayed));
-				composition.instant +=
-					i === 0 ? fragment.instant : (", " + (fragment.instant));
+				composition.delayed += i === 0 ? fragment.delayed : (", " + (fragment.delayed));
+				composition.instant += i === 0 ? fragment.instant : (", " + (fragment.instant));
 				return composition
 			},
 			{
@@ -928,7 +926,7 @@ function sync() {
 }
 
 var polyfill = function (x) { return (x > 0) - (x < 0) || +x; };
-var mathSign = Math.sign || polyfill
+var mathSign = Math.sign || polyfill;
 
 function getGeometry(target, isContainer) {
 	/**
@@ -1059,17 +1057,17 @@ function delegate(
 	});
 }
 
-function transformSupported() {
+function isTransformSupported() {
 	var style = document.documentElement.style;
 	return 'transform' in style || 'WebkitTransform' in style
 }
 
-function transitionSupported() {
+function isTransitionSupported() {
 	var style = document.documentElement.style;
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.5";
+var version = "4.0.6";
 
 var boundDelegate;
 var boundDestroy;
@@ -1158,7 +1156,7 @@ function ScrollReveal(options) {
 	return instance ? instance : (instance = this)
 }
 
-ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
+ScrollReveal.isSupported = function () { return isTransformSupported() && isTransitionSupported(); };
 
 Object.defineProperty(ScrollReveal, 'debug', {
 	get: function () { return debug || false; },
