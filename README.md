@@ -103,7 +103,7 @@ ScrollReveal().reveal('.headline')
 
 ### The full documentation can be found at [https://scrollrevealjs.org](https://scrollrevealjs.org)
 
-> If you’re using an older version of ScrollReveal, you can find legacy documentation in the [wiki](https://github.com/scrollreveal/scrollreveal/wiki)
+> If you’re using an older version of ScrollReveal, you can find legacy documentation in the [wiki](https://github.com/jlmakes/scrollreveal/wiki)
 
 ---
 

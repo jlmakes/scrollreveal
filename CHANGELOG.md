@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- Default transition values of `none` are now correctly ignored. [#231](https://github.com/scrollreveal/scrollreveal/issues/231)
+- Default transition values of `none` are now correctly ignored. [#231](https://github.com/jlmakes/scrollreveal/issues/231)
 
 ### Fixed
 
@@ -12,7 +12,7 @@
 
 ### Fixed
 
-- Calling `reveal()` on the same `target` breaking animation. [#468](https://github.com/scrollreveal/scrollreveal/issues/468)
+- Calling `reveal()` on the same `target` breaking animation. [#468](https://github.com/jlmakes/scrollreveal/issues/468)
 
 ## [4.0.4] - 2018-09-22
 
@@ -24,19 +24,19 @@
 
 ### Fixed
 
-– `options.cleanup` is now correctly set to `false` by default. [#457](https://github.com/scrollreveal/scrollreveal/issues/457)
+– `options.cleanup` is now correctly set to `false` by default. [#457](https://github.com/jlmakes/scrollreveal/issues/457)
 
 ## [4.0.2] - 2018-09-11
 
 ### Fixed
 
-- Null property assignment regression in mount function. [#456](https://github.com/scrollreveal/scrollreveal/issues/456)
+- Null property assignment regression in mount function. [#456](https://github.com/jlmakes/scrollreveal/issues/456)
 
 ## [4.0.1] - 2018-09-09
 
 ### Fixed
 
-- Noop instances were not correctly unmounting from the DOM. [#455](https://github.com/scrollreveal/scrollreveal/issues/455)
+- Noop instances were not correctly unmounting from the DOM. [#455](https://github.com/jlmakes/scrollreveal/issues/455)
 - Readme links to pricing page no longer 404.
 
 ## [4.0.0] - 2018-08-06
@@ -44,16 +44,16 @@
 ### Added
 
 - ScrollReveal can be enabled/disabled on desktops using `options.desktop`.
-- The class `sr` is added to `<html>` during instantiation when supported. [#294](https://github.com/scrollreveal/scrollreveal/issues/294)
-- `height: 100%` is added to `<body>` during instantiation when supported. [#298](https://github.com/scrollreveal/scrollreveal/issues/298)
+- The class `sr` is added to `<html>` during instantiation when supported. [#294](https://github.com/jlmakes/scrollreveal/issues/294)
+- `height: 100%` is added to `<body>` during instantiation when supported. [#298](https://github.com/jlmakes/scrollreveal/issues/298)
 - Unused containers are removed from the store, and their event listeners destroyed.
 - ScrollReveal skips generating opacity styles when `options.opacity` is set to `null`.
-- ScrollReveal retains element CSS transformations. [#251](https://github.com/scrollreveal/scrollreveal/issues/251)
-- New `options.cleanup` toggles whether generated styles are removed upon reveal completion (when `options.reset` is `false`). [#292](https://github.com/scrollreveal/scrollreveal/issues/292)
-- ScrollReveal tracks scroll direction as container store data. [#384](https://github.com/scrollreveal/scrollreveal/issues/384)
-- New `clean()` method removes specific generated styles and event listeners. [#227](https://github.com/scrollreveal/scrollreveal/issues/227)
-- New `destroy()` method removes all generated styles and event listeners. [#227](https://github.com/scrollreveal/scrollreveal/issues/227)
-- New `debug` static property toggles error messages in console. [#351](https://github.com/scrollreveal/scrollreveal/issues/351)
+- ScrollReveal retains element CSS transformations. [#251](https://github.comjlmakes/scrollreveal/issues/251)
+- New `options.cleanup` toggles whether generated styles are removed upon reveal completion (when `options.reset` is `false`). [#292](https://github.comjlmakes/scrollreveal/issues/292)
+- ScrollReveal tracks scroll direction as container store data. [#384](https://github.com/jlmakes/scrollreveal/issues/384)
+- New `clean()` method removes specific generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
+- New `destroy()` method removes all generated styles and event listeners. [#227](https://github.com/jlmakes/scrollreveal/issues/227)
+- New `debug` static property toggles error messages in console. [#351](https://github.com/jlmakes/scrollreveal/issues/351)
 - Instance methods now accept native arrays of HTML elements.
 
 ### Changed
@@ -64,7 +64,7 @@
 - **Breaking:** ScrollReveal methods are no longer chainable.
 - **Breaking:** ScrollReveal requires a commercial license, unless for [GPL-3.0](https://opensource.org/licenses/GPL-3.0) compatible open source projects.
 - Elements in a reveal sequence are no longer grouped, and reveal progressively when visible.
-- ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/scrollreveal/scrollreveal/issues/292)
+- ScrollReveal uses a single `matrix3d()` property, with the correct prefix and only when necessary. [#292](https://github.com/jlmakes/scrollreveal/issues/292)
 - ScrollReveal returns a non-operational instance when instantiated in unsupported browsers.
 - ScrollReveal `version` is now a read-only instance property.
 - ScrollReveal methods are now bound read-only instance properties.
@@ -79,7 +79,7 @@
 
 ### Fixed
 
-- Element visibility now checks left and right boundaries correctly. [#352](https://github.com/scrollreveal/scrollreveal/issues/352)
+- Element visibility now checks left and right boundaries correctly. [#352](https://github.com/jlmakes/scrollreveal/issues/352)
 - Library version instance property is again accurate.
 
 ## [3.3.5] - 2017-04-05
@@ -102,17 +102,17 @@
 
 ### Fixed
 
-- Fix error when using Bower and Wordpress due to missing semi-colon. [#278](https://github.com/scrollreveal/scrollreveal/issues/278)
+- Fix error when using Bower and Wordpress due to missing semi-colon. [#278](https://github.com/jlmakes/scrollreveal/issues/278)
 
 ## [3.3.2] - 2016-10-02
 
 ### Changed
 
-- Updated Starting Defaults section in README. [#273](https://github.com/scrollreveal/scrollreveal/issues/273)
+- Updated Starting Defaults section in README. [#273](https://github.comjlmakes/scrollreveal/issues/273)
 
 ### Fixed
 
-- Using a selector to define a default container during instantiation now works. [#289](https://github.com/scrollreveal/scrollreveal/issues/289)
+- Using a selector to define a default container during instantiation now works. [#289](https://github.com/jlmakes/scrollreveal/issues/289)
 
 ## [3.3.1] - 2016-07-22
 
@@ -124,8 +124,8 @@
 
 ### Added
 
-- New callback `beforeReveal(el)`. [#273](https://github.com/scrollreveal/scrollreveal/issues/273)
-- New callback `beforeReset(el)`. [#273](https://github.com/scrollreveal/scrollreveal/issues/273)
+- New callback `beforeReveal(el)`. [#273](https://github.comjlmakes/scrollreveal/issues/273)
+- New callback `beforeReset(el)`. [#273](https://github.com/jlmakes/scrollreveal/issues/273)
 
 ## [3.2.0] - 2016-07-08
 
@@ -133,8 +133,8 @@
 
 - New `isNodeList()` method added to `Tools`.
 - New `version` instance variable contains library version.
-- HTML Collections are now supported as the first argument in `reveal()`. [#246](https://github.com/scrollreveal/scrollreveal/issues/246)
-- Added fallback for `requestAnimationFrame`. [#267](https://github.com/scrollreveal/scrollreveal/issues/267)
+- HTML Collections are now supported as the first argument in `reveal()`. [#246](https://github.com/jlmakes/scrollreveal/issues/246)
+- Added fallback for `requestAnimationFrame`. [#267](https://github.comjlmakes/scrollreveal/issues/267)
 
 ### Changed
 
@@ -142,8 +142,8 @@
 
 ### Fixed
 
-- Calling `reveal()` multiple times on an element with `config.origin` as `top` or `left` no longer produces invalid CSS. [#270](https://github.com/scrollreveal/scrollreveal/issues/270)
-- Refactored AMD/CommonJS module wrapper to work with Codekit. [#253](https://github.com/scrollreveal/scrollreveal/issues/253)
+- Calling `reveal()` multiple times on an element with `config.origin` as `top` or `left` no longer produces invalid CSS. [#270](https://github.com/jlmakes/scrollreveal/issues/270)
+- Refactored AMD/CommonJS module wrapper to work with Codekit. [#253](https://github.com/jlmakes/scrollreveal/issues/253)
 
 ## [3.1.5] - 2016-07-06
 
@@ -155,13 +155,13 @@
 
 ### Changed
 
-- Added `console.log` calls back to non-minified distribution. [#235](https://github.com/scrollreveal/scrollreveal/issues/235)
+- Added `console.log` calls back to non-minified distribution. [#235](https://github.com/jlmakes/scrollreveal/issues/235)
 
 ## [3.1.3] - 2016-03-28
 
 ### Removed
 
-- Removed `console.log` calls from distribution. [#235](https://github.com/scrollreveal/scrollreveal/issues/235)
+- Removed `console.log` calls from distribution. [#235](https://github.comjlmakes/scrollreveal/issues/235)
 
 ## [3.1.2] - 2016-03-23
 
@@ -173,7 +173,7 @@
 
 ### Fixed
 
-- `config.reset` now works properly with sequences. [#241](https://github.com/scrollreveal/scrollreveal/issues/241)
+- `config.reset` now works properly with sequences. [#241](https://github.comjlmakes/scrollreveal/issues/241)
 
 ## [3.1.0] - 2016-03-07
 
@@ -182,7 +182,7 @@
 - New `isNode()` method added to `Tools`.
 - HTML elements are now supported as the first argument in `reveal()`.
 - Selector strings assigned to `config.container` are now supported.
-- `reveal()` now accepts an `interval` as it's last argument to create sequences. [#86](https://github.com/scrollreveal/scrollreveal/issues/86) [#180](https://github.com/scrollreveal/scrollreveal/issues/180) [#187](https://github.com/scrollreveal/scrollreveal/issues/187) [#215](https://github.com/scrollreveal/scrollreveal/issues/215) [#234](https://github.com/scrollreveal/scrollreveal/issues/234)
+- `reveal()` now accepts an `interval` as it's last argument to create sequences. [#86](https://github.com/jlmakes/scrollreveal/issues/86) [#180](https://github.com/jlmakes/scrollreveal/issues/180) [#187](https://github.comjlmakes/scrollreveal/issues/187) [#215](https://github.com/jlmakes/scrollreveal/issues/215) [#234](https://github.com/jlmakes/scrollreveal/issues/234)
 - New section on sequenced animations added to README.
 
 ### Changed
@@ -194,8 +194,8 @@
 
 ### Fixed
 
-- Added semi-colon before global IIFE to improve reliability. [#228](https://github.com/scrollreveal/scrollreveal/issues/228)
-- The existence of `console.log` is now confirmed for IE9. [#230](https://github.com/scrollreveal/scrollreveal/issues/230)
+- Added semi-colon before global IIFE to improve reliability. [#228](https://github.com/jlmakes/scrollreveal/issues/228)
+- The existence of `console.log` is now confirmed for IE9. [#230](https://github.com/jlmakes/scrollreveal/issues/230)
 - Typos, indentation and semicolons corrected in README.
 
 ## [3.0.9] - 2016-01-14
@@ -206,7 +206,7 @@
 
 ### Fixed
 
-- Fixed operator mismatch inside `supported()`. [#220](https://github.com/scrollreveal/scrollreveal/issues/220)
+- Fixed operator mismatch inside `supported()`. [#220](https://github.comjlmakes/scrollreveal/issues/220)
 
 ## [3.0.8] - 2016-01-13
 
@@ -222,11 +222,11 @@
 
 ### Added
 
-- Added brower support information to README. [#219](https://github.com/scrollreveal/scrollreveal/issues/219)
+- Added brower support information to README. [#219](https://github.comjlmakes/scrollreveal/issues/219)
 
 ### Changed
 
-- `console.log` is now used instead of `console.warn`. [#215](https://github.com/scrollreveal/scrollreveal/issues/215)
+- `console.log` is now used instead of `console.warn`. [#215](https://github.com/jlmakes/scrollreveal/issues/215)
 - Moved `tools.isSupported` method to `ScrollReveal.prototype.supported`.
 - Updated the configuration and tips documentation in the README.
 
@@ -236,27 +236,27 @@
 
 ### Fixed
 
-- Using `config.mobile` in `reveal()` now works. [#216](https://github.com/scrollreveal/scrollreveal/issues/216)
+- Using `config.mobile` in `reveal()` now works. [#216](https://github.comjlmakes/scrollreveal/issues/216)
 
 ## [3.0.6] - 2016-01-02
 
 ### Fixed
 
 - Custom default containers are now used.
-- Critical issues affecting Chrome on iOS were (finally) solved. [#196](https://github.com/scrollreveal/scrollreveal/issues/196)
-- Revisited `3.0.4` changes to chaining `reveal()` calls. [#212](https://github.com/scrollreveal/scrollreveal/issues/212)
+- Critical issues affecting Chrome on iOS were (finally) solved. [#196](https://github.com/jlmakes/scrollreveal/issues/196)
+- Revisited `3.0.4` changes to chaining `reveal()` calls. [#212](https://github.com/jlmakes/scrollreveal/issues/212)
 
 ## [3.0.5] - 2015-12-30
 
 ### Fixed
 
-- Fixed compatibility issues with Webpack. [#209](https://github.com/scrollreveal/scrollreveal/issues/209)
+- Fixed compatibility issues with Webpack. [#209](https://github.comjlmakes/scrollreveal/issues/209)
 
 ## [3.0.4] - 2015-12-30
 
 ### Fixed
 
-- Squashed Webkit browser bugs due to syntax errors. [#208](https://github.com/scrollreveal/scrollreveal/issues/208)
+- Squashed Webkit browser bugs due to syntax errors. [#208](https://github.comjlmakes/scrollreveal/issues/208)
 - Chaining `reveal()` calls no longer prematurely initialize animation.
 - Cleaned up README typos, and stale reference to `config.wait`.
 
@@ -264,17 +264,17 @@
 
 ### Changed
 
-- `reveal()` and `sync()` now return the ScrollReveal instance even on failure. [#198](https://github.com/scrollreveal/scrollreveal/issues/198)
+- `reveal()` and `sync()` now return the ScrollReveal instance even on failure. [#198](https://github.com/jlmakes/scrollreveal/issues/198)
 
 ## [3.0.2] - 2015-12-22
 
 ### Added
 
-- Added `bower.json` to release package. [#199](https://github.com/scrollreveal/scrollreveal/issues/199)
+- Added `bower.json` to release package. [#199](https://github.comjlmakes/scrollreveal/issues/199)
 
 ### Fixed
 
-- Preexisting CSS transition styles are no longer destroyed. [#197](https://github.com/scrollreveal/scrollreveal/issues/197)
+- Preexisting CSS transition styles are no longer destroyed. [#197](https://github.com/jlmakes/scrollreveal/issues/197)
 
 ## [3.0.1] - 2015-12-21
 
@@ -285,7 +285,7 @@
 ### Fixed
 
 - Hard learned NPM and Bower issues related to release management were endured.
-- Issues related to element visibility and animation behavior were addressed. [#193](https://github.com/scrollreveal/scrollreveal/issues/193) [#196](https://github.com/scrollreveal/scrollreveal/issues/196)
+- Issues related to element visibility and animation behavior were addressed. [#193](https://github.com/jlmakes/scrollreveal/issues/193) [#196](https://github.comjlmakes/scrollreveal/issues/196)
 
 ## [3.0.0] - 2015-12-15
 
@@ -293,10 +293,10 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Added
 
-- New method `reveal()`. [#1](https://github.com/scrollreveal/scrollreveal/issues/1) [#122](https://github.com/scrollreveal/scrollreveal/issues/122)
+- New method `reveal()`. [#1](https://github.com/jlmakes/scrollreveal/issues/1) [#122](https://github.com/jlmakes/scrollreveal/issues/122)
 - New method `sync()`.
 - New callback `config.afterReset`.
-- Horizontal scrolling is now supported. [#184](https://github.com/scrollreveal/scrollreveal/issues/184)
+- Horizontal scrolling is now supported. [#184](https://github.comjlmakes/scrollreveal/issues/184)
 
 ### Changed
 
@@ -312,7 +312,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 - **Breaking:** `config.scale` expects value type `number` (instead of `object`).
 - **Breaking:** `config.rotation` axis values require `string` with unit type (instead of `number`).
 - **Breaking:** ScrollReveal constructor is now capitalized.
-- Reveals now resolve to element's computed opacity, instead of `1`. [#185](https://github.com/scrollreveal/scrollreveal/issues/185)
+- Reveals now resolve to element's computed opacity, instead of `1`. [#185](https://github.com/jlmakes/scrollreveal/issues/185)
 
 ### Removed
 
@@ -326,13 +326,13 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Changed
 
-- Updated `bower.json` syntax. [#150](https://github.com/scrollreveal/scrollreveal/issues/150)
+- Updated `bower.json` syntax. [#150](https://github.com/jlmakes/scrollreveal/issues/150)
 
 ## [2.3.1] - 2015-06-04
 
 ### Added
 
-- Simple instantiation (without `new` keyword) is now supported. [#148](https://github.com/scrollreveal/scrollreveal/issues/148)
+- Simple instantiation (without `new` keyword) is now supported. [#148](https://github.com/jlmakes/scrollreveal/issues/148)
 
 ## [2.3.0] - 2015-04-25
 
@@ -361,27 +361,27 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Added
 
-- Various tablets added to mobile device detection. [#32](https://github.com/scrollreveal/scrollreveal/issues/32) [#81](https://github.com/scrollreveal/scrollreveal/issues/81)
-- CSS Transition support is now confirmed during instantiation. [#109](https://github.com/scrollreveal/scrollreveal/issues/109)
+- Various tablets added to mobile device detection. [#32](https://github.comjlmakes/scrollreveal/issues/32) [#81](https://github.com/jlmakes/scrollreveal/issues/81)
+- CSS Transition support is now confirmed during instantiation. [#109](https://github.com/jlmakes/scrollreveal/issues/109)
 
 ## [2.0.5] - 2014-11-23
 
 ### Changed
 
-- Reverted `2.0.4` change to element animation logic. [#108](https://github.com/scrollreveal/scrollreveal/issues/108)
+- Reverted `2.0.4` change to element animation logic. [#108](https://github.comjlmakes/scrollreveal/issues/108)
 
 ## [2.0.4] - 2014-11-21
 
 ### Changed
 
 - Revised how element animations are handled.
-- Reverted `2.0.3` change to element visibility logic. [#106](https://github.com/scrollreveal/scrollreveal/issues/106)
+- Reverted `2.0.3` change to element visibility logic. [#106](https://github.com/jlmakes/scrollreveal/issues/106)
 
 ## [2.0.3] - 2014-11-14
 
 ### Added
 
-- `data-sr` attributes are now stripped from initialized elements. [#100](https://github.com/scrollreveal/scrollreveal/issues/100) @orapouso.
+- `data-sr` attributes are now stripped from initialized elements. [#100](https://github.com/jlmakes/scrollreveal/issues/100) @orapouso.
 - Live Reload added to development environment.
 
 ### Changed
@@ -390,18 +390,18 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Removed
 
-- Multiple instances sharing the same viewport element no longer throw an error. [#98](https://github.com/scrollreveal/scrollreveal/issues/98) @orapouso.
+- Multiple instances sharing the same viewport element no longer throw an error. [#98](https://github.com/jlmakes/scrollreveal/issues/98) @orapouso.
 
 ### Fixed
 
 - Incomplete support for `config.delay = "onload"` was addressed.
-- Issues related to `setTimeout`, `config.complete` and incorrect animation timing were addressed. [#96](https://github.com/scrollreveal/scrollreveal/issues/96)
+- Issues related to `setTimeout`, `config.complete` and incorrect animation timing were addressed. [#96](https://github.com/jlmakes/scrollreveal/issues/96)
 
 ## [2.0.2] - 2014-10-23
 
 ### Added
 
-- An error is now thrown when multiple instances share the same viewport element. [#91](https://github.com/scrollreveal/scrollreveal/issues/91)
+- An error is now thrown when multiple instances share the same viewport element. [#91](https://github.com/jlmakes/scrollreveal/issues/91)
 
 ### Fixed
 
@@ -411,7 +411,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Fixed
 
-- Incomplete support for `config.viewport` was addressed. [#67](https://github.com/scrollreveal/scrollreveal/issues/67) [#68](https://github.com/scrollreveal/scrollreveal/issues/68)
+- Incomplete support for `config.viewport` was addressed. [#67](https://github.com/jlmakes/scrollreveal/issues/67) [#68](https://github.comjlmakes/scrollreveal/issues/68)
 
 ## [2.0.0] - 2014-10-17
 
@@ -436,29 +436,29 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Added
 
-- Configuration now includes starting opacity. [#33](https://github.com/scrollreveal/scrollreveal/issues/33) @kierzniak
+- Configuration now includes starting opacity. [#33](https://github.comjlmakes/scrollreveal/issues/33) @kierzniak
 - New `data-scroll-reveal-id` attribute added to revealed DOM elements.
 
 ### Changed
 
-- Scroll event handling now uses `requestAnimationFrame`. [#48](https://github.com/scrollreveal/scrollreveal/issues/48) @pazguille
-- Generated styles are now stored in an object corresponding to the `data-scroll-reveal-id` attribute on each element. [#38](https://github.com/scrollreveal/scrollreveal/pull/38) @georgelee1
+- Scroll event handling now uses `requestAnimationFrame`. [#48](https://github.com/jlmakes/scrollreveal/issues/48) @pazguille
+- Generated styles are now stored in an object corresponding to the `data-scroll-reveal-id` attribute on each element. [#38](https://github.com/jlmakes/scrollreveal/pull/38) @georgelee1
 
 ## 0.1.2 - 2014-03-13 [YANKED]
 
 ### Added
 
-- Elements with `position: fixed` are now supported. [#35](https://github.com/scrollreveal/scrollreveal/issues/35)
+- Elements with `position: fixed` are now supported. [#35](https://github.comjlmakes/scrollreveal/issues/35)
 
 ### Fixed
 
-- Generated styles are now more specific. [#37](https://github.com/scrollreveal/scrollreveal/issues/37)
+- Generated styles are now more specific. [#37](https://github.comjlmakes/scrollreveal/issues/37)
 
 ## 0.1.1 - 2014-03-06 [YANKED]
 
 ### Fixed
 
-- Squashed bug with `enter top` and `enter left`. [#13](https://github.com/scrollreveal/scrollreveal/issues/13) [#31](https://github.com/scrollreveal/scrollreveal/issues/31) @sherban @danycerone
+- Squashed bug with `enter top` and `enter left`. [#13](https://github.comjlmakes/scrollreveal/issues/13) [#31](https://github.com/jlmakes/scrollreveal/issues/31) @sherban @danycerone
 
 ## 0.1.0 - 2014-03-05 [YANKED]
 
@@ -501,44 +501,44 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
-[4.0.5]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.4...v4.0.5
-[4.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.3...v4.0.4
-[4.0.3]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.2...v4.0.3
-[4.0.2]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.1...v4.0.2
-[4.0.1]: https://github.com/scrollreveal/scrollreveal/compare/v4.0.0...v4.0.1
-[4.0.0]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.6...v4.0.0
-[3.3.6]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.5...v3.3.6
-[3.3.5]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.4...v3.3.5
-[3.3.4]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.3...v3.3.4
-[3.3.3]: https://github.com/scrollreveal/scrollreveal/compare/v3.2.2...v3.3.3
-[3.3.2]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.1...v3.3.2
-[3.3.1]: https://github.com/scrollreveal/scrollreveal/compare/v3.3.0...v3.3.1
-[3.3.0]: https://github.com/scrollreveal/scrollreveal/compare/v3.2.0...v3.3.0
-[3.2.0]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.5...v3.2.0
-[3.1.5]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.4...v3.1.5
-[3.1.4]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.3...v3.1.4
-[3.1.3]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.2...v3.1.3
-[3.1.2]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.1...v3.1.2
-[3.1.1]: https://github.com/scrollreveal/scrollreveal/compare/v3.1.0...v3.1.1
-[3.1.0]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.9...v3.1.0
-[3.0.9]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.8...v3.0.9
-[3.0.8]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.7...v3.0.8
-[3.0.7]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.6...v3.0.7
-[3.0.6]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.5...v3.0.6
-[3.0.5]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.4...v3.0.5
-[3.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.3...v3.0.4
-[3.0.3]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.2...v3.0.3
-[3.0.2]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.1...v3.0.2
-[3.0.1]: https://github.com/scrollreveal/scrollreveal/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/scrollreveal/scrollreveal/compare/v2.3.2...v3.0.0
-[2.3.2]: https://github.com/scrollreveal/scrollreveal/compare/v2.3.1...v2.3.2
-[2.3.1]: https://github.com/scrollreveal/scrollreveal/compare/v2.3.0...v2.3.1
-[2.3.0]: https://github.com/scrollreveal/scrollreveal/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/scrollreveal/scrollreveal/compare/v2.1.0...v2.2.0
-[2.1.0]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.5...v2.1.0
-[2.0.5]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.4...v2.0.5
-[2.0.4]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.3...v2.0.4
-[2.0.3]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.2...v2.0.3
-[2.0.2]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.1...v2.0.2
-[2.0.1]: https://github.com/scrollreveal/scrollreveal/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/scrollreveal/scrollreveal/tree/v2.0.0
+[4.0.5]: https://github.com/jlmakes/scrollreveal/compare/v4.0.4...v4.0.5
+[4.0.4]: https://github.com/jlmakes/scrollreveal/compare/v4.0.3...v4.0.4
+[4.0.3]: https://github.com/jlmakes/scrollreveal/compare/v4.0.2...v4.0.3
+[4.0.2]: https://github.com/jlmakes/scrollreveal/compare/v4.0.1...v4.0.2
+[4.0.1]: https://github.com/jlmakes/scrollreveal/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/jlmakes/scrollreveal/compare/v3.3.6...v4.0.0
+[3.3.6]: https://github.com/jlmakes/scrollreveal/compare/v3.3.5...v3.3.6
+[3.3.5]: https://github.com/jlmakes/scrollreveal/compare/v3.3.4...v3.3.5
+[3.3.4]: https://github.com/jlmakes/scrollreveal/compare/v3.3.3...v3.3.4
+[3.3.3]: https://github.com/jlmakes/scrollreveal/compare/v3.2.2...v3.3.3
+[3.3.2]: https://github.com/jlmakes/scrollreveal/compare/v3.3.1...v3.3.2
+[3.3.1]: https://github.com/jlmakes/scrollreveal/compare/v3.3.0...v3.3.1
+[3.3.0]: https://github.com/jlmakes/scrollreveal/compare/v3.2.0...v3.3.0
+[3.2.0]: https://github.com/jlmakes/scrollreveal/compare/v3.1.5...v3.2.0
+[3.1.5]: https://github.com/jlmakes/scrollreveal/compare/v3.1.4...v3.1.5
+[3.1.4]: https://github.com/jlmakes/scrollreveal/compare/v3.1.3...v3.1.4
+[3.1.3]: https://github.com/jlmakes/scrollreveal/compare/v3.1.2...v3.1.3
+[3.1.2]: https://github.com/jlmakes/scrollreveal/compare/v3.1.1...v3.1.2
+[3.1.1]: https://github.com/jlmakes/scrollreveal/compare/v3.1.0...v3.1.1
+[3.1.0]: https://github.com/jlmakes/scrollreveal/compare/v3.0.9...v3.1.0
+[3.0.9]: https://github.com/jlmakes/scrollreveal/compare/v3.0.8...v3.0.9
+[3.0.8]: https://github.com/jlmakes/scrollreveal/compare/v3.0.7...v3.0.8
+[3.0.7]: https://github.com/jlmakes/scrollreveal/compare/v3.0.6...v3.0.7
+[3.0.6]: https://github.com/jlmakes/scrollreveal/compare/v3.0.5...v3.0.6
+[3.0.5]: https://github.com/jlmakes/scrollreveal/compare/v3.0.4...v3.0.5
+[3.0.4]: https://github.com/jlmakes/scrollreveal/compare/v3.0.3...v3.0.4
+[3.0.3]: https://github.com/jlmakes/scrollreveal/compare/v3.0.2...v3.0.3
+[3.0.2]: https://github.com/jlmakes/scrollreveal/compare/v3.0.1...v3.0.2
+[3.0.1]: https://github.com/jlmakes/scrollreveal/compare/v3.0.0...v3.0.1
+[3.0.0]: https://github.com/jlmakes/scrollreveal/compare/v2.3.2...v3.0.0
+[2.3.2]: https://github.com/jlmakes/scrollreveal/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/jlmakes/scrollreveal/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/jlmakes/scrollreveal/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/jlmakes/scrollreveal/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/jlmakes/scrollreveal/compare/v2.0.5...v2.1.0
+[2.0.5]: https://github.com/jlmakes/scrollreveal/compare/v2.0.4...v2.0.5
+[2.0.4]: https://github.com/jlmakes/scrollreveal/compare/v2.0.3...v2.0.4
+[2.0.3]: https://github.com/jlmakes/scrollreveal/compare/v2.0.2...v2.0.3
+[2.0.2]: https://github.com/jlmakes/scrollreveal/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/jlmakes/scrollreveal/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/jlmakes/scrollreveal/tree/v2.0.0
