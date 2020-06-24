@@ -35,7 +35,7 @@ export default function delegate(
 		 * evaluated (in the second loop below).
 		 */
 		each(elements, element => {
-			if (stale) {
+			if (stale || element.geometry === undefined) {
 				element.geometry = getGeometry.call(this, element)
 			}
 			element.visible = isElementVisible.call(this, element)
