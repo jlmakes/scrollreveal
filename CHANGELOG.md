@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+- Ensure element geometry exists. [#437](https://github.com/jlmakes/scrollreveal/issues/437)
+
 ## [4.0.6] - 2020-03-15
 
 ### Fixed
