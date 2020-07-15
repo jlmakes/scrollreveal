@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.6
+/*! @license ScrollReveal v4.0.7
 
 	Copyright 2020 Fisssion LLC.
 
@@ -1415,7 +1415,7 @@
 			 * evaluated (in the second loop below).
 			 */
 			each(elements, function (element) {
-				if (stale) {
+				if (stale || element.geometry === undefined) {
 					element.geometry = getGeometry.call(this$1, element);
 				}
 				element.visible = isElementVisible.call(this$1, element);
@@ -1443,7 +1443,7 @@
 		return 'transition' in style || 'WebkitTransition' in style
 	}
 
-	var version = "4.0.6";
+	var version = "4.0.7";
 
 	var boundDelegate;
 	var boundDestroy;
