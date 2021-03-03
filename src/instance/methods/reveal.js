@@ -1,18 +1,14 @@
 import tealight from 'tealight'
-
-import defaults from '../defaults'
-
-import clean from '../methods/clean'
-
-import style from '../functions/style'
-import { Sequence } from '../functions/sequence'
-import initialize from '../functions/initialize'
-
-import each from '../../utils/each'
-import logger from '../../utils/logger'
-import isMobile from '../../utils/is-mobile'
 import deepAssign from '../../utils/deep-assign'
+import each from '../../utils/each'
+import isMobile from '../../utils/is-mobile'
+import logger from '../../utils/logger'
 import nextUniqueId from '../../utils/next-unique-id'
+import defaults from '../defaults'
+import initialize from '../functions/initialize'
+import { Sequence } from '../functions/sequence'
+import style, { applyStyle } from '../functions/style'
+import clean from '../methods/clean'
 
 export default function reveal(target, options = {}, syncing = false) {
 	const containerBuffer = []
@@ -41,7 +37,7 @@ export default function reveal(target, options = {}, syncing = false) {
 				 * from throwing off the new styles, the style tag
 				 * has to be reverted to its pre-reveal state.
 				 */
-				element.node.setAttribute('style', element.styles.inline.computed)
+				applyStyle(element.node, element.styles.inline.computed)
 			} else {
 				element.id = nextUniqueId()
 				element.node = elementNode

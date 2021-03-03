@@ -1,4 +1,5 @@
 import each from '../../utils/each'
+import { applyStyle } from '../functions/style'
 import rinse from './rinse'
 
 export default function initialize() {
@@ -17,7 +18,7 @@ export default function initialize() {
 			element.revealed = false
 		}
 
-		element.node.setAttribute('style', styles.filter(s => s !== '').join(' '))
+		applyStyle(element.node, styles.filter((s) => s !== '').join(' '))
 	})
 
 	each(this.store.containers, container => {

@@ -1,11 +1,12 @@
 import each from '../../utils/each'
+import { applyStyle } from '../functions/style'
 
 export default function destroy() {
 	/**
 	 * Remove all generated styles and element ids
 	 */
 	each(this.store.elements, element => {
-		element.node.setAttribute('style', element.styles.inline.generated)
+		applyStyle(element.node, element.styles.inline.generated)
 		element.node.removeAttribute('data-sr-id')
 	})
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+- Avoid Content Security Policy (CSP) violations. [@lambdacasserole](https://github.com/lambdacasserole) [#431](https://github.com/jlmakes/scrollreveal/pull/431)
+
 ## [4.0.7] - 2020-07-15
 
 ### Fixed

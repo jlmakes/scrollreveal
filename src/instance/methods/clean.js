@@ -2,6 +2,7 @@ import $ from 'tealight'
 import each from '../../utils/each'
 import logger from '../../utils/logger'
 import rinse from '../functions/rinse'
+import { applyStyle } from '../functions/style'
 
 export default function clean(target) {
 	let dirty
@@ -14,7 +15,7 @@ export default function clean(target) {
 				if (element.callbackTimer) {
 					window.clearTimeout(element.callbackTimer.clock)
 				}
-				node.setAttribute('style', element.styles.inline.generated)
+				applyStyle(element.node, element.styles.inline.generated)
 				node.removeAttribute('data-sr-id')
 				delete this.store.elements[id]
 			}
