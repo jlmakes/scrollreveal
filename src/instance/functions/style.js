@@ -215,3 +215,20 @@ export default function style(element) {
 		transition
 	}
 }
+
+/**
+ * apply a CSS string to an element using the CSSOM (element.style) rather
+ * than setAttribute, which may violate the content security policy.
+ *
+ * @param {Node}   [el]  Element to receive styles.
+ * @param {string} [declaration] Styles to apply.
+ */
+export function applyStyle (el, declaration) {
+	declaration.split(';').forEach(pair => {
+		const [property, value] = pair.split(':').map(s => s.trim())
+		if (property && value) {
+			el.style[property] = value
+		}
+	})
+}
+
