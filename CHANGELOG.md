@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-### Fixed
+### [4.0.8] - 2021-03-02
 
 - Avoid Content Security Policy (CSP) violations. [@lambdacasserole](https://github.com/lambdacasserole) [#431](https://github.com/jlmakes/scrollreveal/pull/431)
 
@@ -513,6 +513,7 @@ This version marks a significant change in how developers use ScrollReveal, intr
 
 ### Hello World
 
+[4.0.8]: https://github.com/jlmakes/scrollreveal/compare/v4.0.7...v4.0.8
 [4.0.7]: https://github.com/jlmakes/scrollreveal/compare/v4.0.6...v4.0.7
 [4.0.6]: https://github.com/jlmakes/scrollreveal/compare/v4.0.5...v4.0.6
 [4.0.5]: https://github.com/jlmakes/scrollreveal/compare/v4.0.4...v4.0.5

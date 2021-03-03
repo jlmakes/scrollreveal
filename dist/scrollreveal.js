@@ -1,6 +1,6 @@
-/*! @license ScrollReveal v4.0.7
+/*! @license ScrollReveal v4.0.8
 
-	Copyright 2020 Fisssion LLC.
+	Copyright 2021 Fisssion LLC.
 
 	Licensed under the GNU General Public License 3.0 for
 	compatible open source projects and non-commercial use.
@@ -291,69 +291,6 @@
 		});
 
 		each(sequenceIds.stale, function (staleId) { return delete this$1.store.sequences[staleId]; });
-	}
-
-	function clean(target) {
-		var this$1 = this;
-
-		var dirty;
-		try {
-			each(tealight(target), function (node) {
-				var id = node.getAttribute('data-sr-id');
-				if (id !== null) {
-					dirty = true;
-					var element = this$1.store.elements[id];
-					if (element.callbackTimer) {
-						window.clearTimeout(element.callbackTimer.clock);
-					}
-					node.setAttribute('style', element.styles.inline.generated);
-					node.removeAttribute('data-sr-id');
-					delete this$1.store.elements[id];
-				}
-			});
-		} catch (e) {
-			return logger.call(this, 'Clean failed.', e.message)
-		}
-
-		if (dirty) {
-			try {
-				rinse.call(this);
-			} catch (e) {
-				return logger.call(this, 'Clean failed.', e.message)
-			}
-		}
-	}
-
-	function destroy() {
-		var this$1 = this;
-
-		/**
-		 * Remove all generated styles and element ids
-		 */
-		each(this.store.elements, function (element) {
-			element.node.setAttribute('style', element.styles.inline.generated);
-			element.node.removeAttribute('data-sr-id');
-		});
-
-		/**
-		 * Remove all event listeners.
-		 */
-		each(this.store.containers, function (container) {
-			var target =
-				container.node === document.documentElement ? window : container.node;
-			target.removeEventListener('scroll', this$1.delegate);
-			target.removeEventListener('resize', this$1.delegate);
-		});
-
-		/**
-		 * Clear all data from the store
-		 */
-		this.store = {
-			containers: {},
-			elements: {},
-			history: [],
-			sequences: {}
-		};
 	}
 
 	/*! @license Rematrix v0.3.0
@@ -815,6 +752,163 @@
 		}
 	}
 
+	/**
+	 * apply a CSS string to an element using the CSSOM (element.style) rather
+	 * than setAttribute, which may violate the content security policy.
+	 *
+	 * @param {Node}   [el]  Element to receive styles.
+	 * @param {string} [declaration] Styles to apply.
+	 */
+	function applyStyle (el, declaration) {
+		declaration.split(';').forEach(function (pair) {
+			var ref = pair.split(':').map(function (s) { return s.trim(); });
+			var property = ref[0];
+			var value = ref[1];
+			if (property && value) {
+				el.style[property] = value;
+			}
+		});
+	}
+
+	function clean(target) {
+		var this$1 = this;
+
+		var dirty;
+		try {
+			each(tealight(target), function (node) {
+				var id = node.getAttribute('data-sr-id');
+				if (id !== null) {
+					dirty = true;
+					var element = this$1.store.elements[id];
+					if (element.callbackTimer) {
+						window.clearTimeout(element.callbackTimer.clock);
+					}
+					applyStyle(element.node, element.styles.inline.generated);
+					node.removeAttribute('data-sr-id');
+					delete this$1.store.elements[id];
+				}
+			});
+		} catch (e) {
+			return logger.call(this, 'Clean failed.', e.message)
+		}
+
+		if (dirty) {
+			try {
+				rinse.call(this);
+			} catch (e) {
+				return logger.call(this, 'Clean failed.', e.message)
+			}
+		}
+	}
+
+	function destroy() {
+		var this$1 = this;
+
+		/**
+		 * Remove all generated styles and element ids
+		 */
+		each(this.store.elements, function (element) {
+			applyStyle(element.node, element.styles.inline.generated);
+			element.node.removeAttribute('data-sr-id');
+		});
+
+		/**
+		 * Remove all event listeners.
+		 */
+		each(this.store.containers, function (container) {
+			var target =
+				container.node === document.documentElement ? window : container.node;
+			target.removeEventListener('scroll', this$1.delegate);
+			target.removeEventListener('resize', this$1.delegate);
+		});
+
+		/**
+		 * Clear all data from the store
+		 */
+		this.store = {
+			containers: {},
+			elements: {},
+			history: [],
+			sequences: {}
+		};
+	}
+
+	function deepAssign(target) {
+		var sources = [], len = arguments.length - 1;
+		while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
+
+		if (isObject(target)) {
+			each(sources, function (source) {
+				each(source, function (data, key) {
+					if (isObject(data)) {
+						if (!target[key] || !isObject(target[key])) {
+							target[key] = {};
+						}
+						deepAssign(target[key], data);
+					} else {
+						target[key] = data;
+					}
+				});
+			});
+			return target
+		} else {
+			throw new TypeError('Target must be an object literal.')
+		}
+	}
+
+	function isMobile(agent) {
+		if ( agent === void 0 ) agent = navigator.userAgent;
+
+		return /Android|iPhone|iPad|iPod/i.test(agent)
+	}
+
+	var nextUniqueId = (function () {
+		var uid = 0;
+		return function () { return uid++; }
+	})();
+
+	function initialize() {
+		var this$1 = this;
+
+		rinse.call(this);
+
+		each(this.store.elements, function (element) {
+			var styles = [element.styles.inline.generated];
+
+			if (element.visible) {
+				styles.push(element.styles.opacity.computed);
+				styles.push(element.styles.transform.generated.final);
+				element.revealed = true;
+			} else {
+				styles.push(element.styles.opacity.generated);
+				styles.push(element.styles.transform.generated.initial);
+				element.revealed = false;
+			}
+
+			applyStyle(element.node, styles.filter(function (s) { return s !== ''; }).join(' '));
+		});
+
+		each(this.store.containers, function (container) {
+			var target =
+				container.node === document.documentElement ? window : container.node;
+			target.addEventListener('scroll', this$1.delegate);
+			target.addEventListener('resize', this$1.delegate);
+		});
+
+		/**
+		 * Manually invoke delegate once to capture
+		 * element and container dimensions, container
+		 * scroll position, and trigger any valid reveals
+		 */
+		this.delegate();
+
+		/**
+		 * Wipe any existing `setTimeout` now
+		 * that initialization has completed.
+		 */
+		this.initTimeout = null;
+	}
+
 	function animate(element, force) {
 		if ( force === void 0 ) force = {};
 
@@ -848,7 +942,7 @@
 			styles.push(element.styles.transition.generated.instant);
 		}
 		element.revealed = element.seen = true;
-		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
+		applyStyle(element.node, styles.filter(function (s) { return s !== ''; }).join(' '));
 		registerCallbacks.call(this, element, delayed);
 	}
 
@@ -860,7 +954,7 @@
 			element.styles.transition.generated.instant
 		];
 		element.revealed = false;
-		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
+		applyStyle(element.node, styles.filter(function (s) { return s !== ''; }).join(' '));
 		registerCallbacks.call(this, element);
 	}
 
@@ -898,11 +992,6 @@
 			}, duration - elapsed)
 		};
 	}
-
-	var nextUniqueId = (function () {
-		var uid = 0;
-		return function () { return uid++; }
-	})();
 
 	function sequence(element, pristine) {
 		if ( pristine === void 0 ) pristine = this.pristine;
@@ -1028,77 +1117,6 @@
 		}, seq.interval);
 	}
 
-	function initialize() {
-		var this$1 = this;
-
-		rinse.call(this);
-
-		each(this.store.elements, function (element) {
-			var styles = [element.styles.inline.generated];
-
-			if (element.visible) {
-				styles.push(element.styles.opacity.computed);
-				styles.push(element.styles.transform.generated.final);
-				element.revealed = true;
-			} else {
-				styles.push(element.styles.opacity.generated);
-				styles.push(element.styles.transform.generated.initial);
-				element.revealed = false;
-			}
-
-			element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
-		});
-
-		each(this.store.containers, function (container) {
-			var target =
-				container.node === document.documentElement ? window : container.node;
-			target.addEventListener('scroll', this$1.delegate);
-			target.addEventListener('resize', this$1.delegate);
-		});
-
-		/**
-		 * Manually invoke delegate once to capture
-		 * element and container dimensions, container
-		 * scroll position, and trigger any valid reveals
-		 */
-		this.delegate();
-
-		/**
-		 * Wipe any existing `setTimeout` now
-		 * that initialization has completed.
-		 */
-		this.initTimeout = null;
-	}
-
-	function isMobile(agent) {
-		if ( agent === void 0 ) agent = navigator.userAgent;
-
-		return /Android|iPhone|iPad|iPod/i.test(agent)
-	}
-
-	function deepAssign(target) {
-		var sources = [], len = arguments.length - 1;
-		while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
-
-		if (isObject(target)) {
-			each(sources, function (source) {
-				each(source, function (data, key) {
-					if (isObject(data)) {
-						if (!target[key] || !isObject(target[key])) {
-							target[key] = {};
-						}
-						deepAssign(target[key], data);
-					} else {
-						target[key] = data;
-					}
-				});
-			});
-			return target
-		} else {
-			throw new TypeError('Target must be an object literal.')
-		}
-	}
-
 	function reveal(target, options, syncing) {
 		var this$1 = this;
 		if ( options === void 0 ) options = {};
@@ -1130,7 +1148,7 @@
 					 * from throwing off the new styles, the style tag
 					 * has to be reverted to its pre-reveal state.
 					 */
-					element.node.setAttribute('style', element.styles.inline.computed);
+					applyStyle(element.node, element.styles.inline.computed);
 				} else {
 					element.id = nextUniqueId();
 					element.node = elementNode;
@@ -1443,7 +1461,7 @@
 		return 'transition' in style || 'WebkitTransition' in style
 	}
 
-	var version = "4.0.7";
+	var version = "4.0.8";
 
 	var boundDelegate;
 	var boundDestroy;
