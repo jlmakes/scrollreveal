@@ -225,9 +225,9 @@ export default function style(element) {
  */
 export function applyStyle (el, declaration) {
 	declaration.split(';').forEach(pair => {
-		const [property, value] = pair.split(':').map(s => s.trim())
+		const [property, ...value] = pair.split(':')
 		if (property && value) {
-			el.style[property] = value
+			el.style[property.trim()] = value.join(':')
 		}
 	})
 }

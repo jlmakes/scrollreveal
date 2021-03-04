@@ -2,7 +2,13 @@
 
 ## Unreleased
 
-### [4.0.8] - 2021-03-02
+### Fixed
+
+- Styles applied using CSSOM don't drop `:` characters.
+
+## [4.0.8] - 2021-03-02
+
+### Fixed
 
 - Avoid Content Security Policy (CSP) violations. [@lambdacasserole](https://github.com/lambdacasserole) [#431](https://github.com/jlmakes/scrollreveal/pull/431)
 
