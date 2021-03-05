@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.8
+/*! @license ScrollReveal v4.0.9
 
 	Copyright 2021 Fisssion LLC.
 
@@ -427,11 +427,11 @@ function style(element) {
  */
 function applyStyle (el, declaration) {
 	declaration.split(';').forEach(function (pair) {
-		var ref = pair.split(':').map(function (s) { return s.trim(); });
+		var ref = pair.split(':');
 		var property = ref[0];
-		var value = ref[1];
+		var value = ref.slice(1);
 		if (property && value) {
-			el.style[property] = value;
+			el.style[property.trim()] = value.join(':');
 		}
 	});
 }
@@ -1085,7 +1085,7 @@ function isTransitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.8";
+var version = "4.0.9";
 
 var boundDelegate;
 var boundDestroy;
