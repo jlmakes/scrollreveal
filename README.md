@@ -27,14 +27,6 @@
 	</a>
 </p>
 
-<p align="center">
-	<a href="https://saucelabs.com/u/scrollreveal">
-		<img src="https://saucelabs.com/browser-matrix/scrollreveal.svg?y=1" alt="Browser compatibility matrix" width="100%">
-	</a>
-</p>
-
-<br>
-
 <br>
 
 # Introduction
