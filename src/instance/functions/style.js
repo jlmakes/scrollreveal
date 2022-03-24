@@ -55,7 +55,7 @@ export default function style(element) {
 		 */
 		let distance = config.distance
 		if (config.origin === 'top' || config.origin === 'left') {
-			distance = /^-/.test(distance) ? distance.substr(1) : `-${distance}`
+			distance = /^-/.test(distance) ? distance.slice(1) : `-${distance}`
 		}
 
 		const [value, unit] = distance.match(/(^-?\d+\.?\d?)|(em$|px$|%$)/g)
