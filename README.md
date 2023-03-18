@@ -29,12 +29,6 @@
 
 <br>
 
-# Introduction
-
-ScrollReveal is a JavaScript library for easily animating elements as they enter/leave the viewport. It was designed to be robust and flexible, but hopefully you’ll be surprised below at how easy it is to pick up.
-
-<br>
-
 # Installation
 
 ## Browser
@@ -52,7 +46,7 @@ This will create the global variable `ScrollReveal`
 ## Module
 
 ```bash
-npm install scrollreveal
+$ npm install scrollreveal
 ```
 
 #### CommonJS
@@ -115,4 +109,4 @@ Licensed under the GNU General Public License 3.0 for compatible open source pro
 
 <br>
 
-Copyright 2021 Fisssion LLC
+Copyright 2023 Fisssion LLC
