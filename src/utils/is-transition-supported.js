@@ -1,4 +1,4 @@
 export default function isTransitionSupported() {
-	const style = document.documentElement.style
+	const style =typeof document !=='undefined'? document.documentElement.style:{}
 	return 'transition' in style || 'WebkitTransition' in style
 }

@@ -13,7 +13,7 @@ export default {
 	},
 	scale: 1,
 	cleanup: false,
-	container: document.documentElement,
+	container: typeof document !=='undefined'?document.documentElement:{},
 	desktop: true,
 	mobile: true,
 	reset: false,

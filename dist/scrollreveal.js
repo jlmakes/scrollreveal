@@ -30,7 +30,7 @@
 		},
 		scale: 1,
 		cleanup: false,
-		container: document.documentElement,
+		container: typeof document !=='undefined'? document.documentElement:'',
 		desktop: true,
 		mobile: true,
 		reset: false,
@@ -49,7 +49,7 @@
 	};
 
 	function failure() {
-		document.documentElement.classList.remove('sr');
+		typeof document !=='undefined'?document.documentElement.classList.remove('sr'):'';
 
 		return {
 			clean: function clean() {},
@@ -63,12 +63,12 @@
 	}
 
 	function success() {
-		document.documentElement.classList.add('sr');
+		typeof document !=='undefined'?document.documentElement.classList.add('sr'):'';
 
-		if (document.body) {
+		if (typeof document !=='undefined'&&document.body) {
 			document.body.style.height = '100%';
 		} else {
-			document.addEventListener('DOMContentLoaded', function () {
+			typeof document !=='undefined' && document.addEventListener('DOMContentLoaded', function () {
 				document.body.style.height = '100%';
 			});
 		}
@@ -517,7 +517,7 @@
 
 	var getPrefixedCssProp = (function () {
 		var properties = {};
-		var style = document.documentElement.style;
+		var style = typeof document !=='undefined'? document.documentElement.style:{};
 
 		function getPrefixedCssProperty(name, source) {
 			if ( source === void 0 ) source = style;
@@ -1317,10 +1317,10 @@
 		}
 	})();
 
-	var miniraf = window.requestAnimationFrame ||
+	var miniraf = typeof window !=='undefined'? window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
-		polyfill$1;
+		polyfill$1 :'';
 
 	function getGeometry(target, isContainer) {
 		/**
@@ -1358,7 +1358,7 @@
 
 	function getScrolled(container) {
 		var top, left;
-		if (container.node === document.documentElement) {
+		if (typeof document !=='undefined' &&container.node === document.documentElement) {
 			top = window.pageYOffset;
 			left = window.pageXOffset;
 		} else {
@@ -1452,12 +1452,12 @@
 	}
 
 	function isTransformSupported() {
-		var style = document.documentElement.style;
+		var style =typeof document !=='undefined' ? document.documentElement.style:{};
 		return 'transform' in style || 'WebkitTransform' in style
 	}
 
 	function isTransitionSupported() {
-		var style = document.documentElement.style;
+		var style = typeof document !=='undefined' ? document.documentElement.style:{};
 		return 'transition' in style || 'WebkitTransition' in style
 	}
 
