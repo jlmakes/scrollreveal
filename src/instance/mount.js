@@ -1,5 +1,5 @@
 function failure() {
-	document.documentElement.classList.remove('sr')
+	typeof document !=='undefined'&&document.documentElement.classList.remove('sr')
 
 	return {
 		clean() {},
@@ -13,14 +13,14 @@ function failure() {
 }
 
 function success() {
-	document.documentElement.classList.add('sr')
+	typeof document !=='undefined'?document.documentElement.classList.add('sr'):'';
 
-	if (document.body) {
-		document.body.style.height = '100%'
+	if (typeof document !=='undefined'&&document.body) {
+		document.body.style.height = '100%';
 	} else {
-		document.addEventListener('DOMContentLoaded', () => {
-			document.body.style.height = '100%'
-		})
+		typeof document !=='undefined' && document.addEventListener('DOMContentLoaded', function () {
+			document.body.style.height = '100%';
+		});
 	}
 }
 

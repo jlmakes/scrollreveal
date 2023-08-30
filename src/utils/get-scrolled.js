@@ -1,6 +1,6 @@
 export default function getScrolled(container) {
 	let top, left
-	if (container.node === document.documentElement) {
+	if (typeof document !=='undefined' &&container.node === document.documentElement) {
 		top = window.pageYOffset
 		left = window.pageXOffset
 	} else {
